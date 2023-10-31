@@ -1,10 +1,9 @@
 #include <stdio.h>
-#include “myProject.h”
+#include "myProject.h"
 int main(void)
 {
-    printf (“Chief name is [팀장이름]\n”);
-    printMyName1();
-    printMyName2();
-    printMyName3();
-    printMyName4(); //팀원이 팀장 포함 총 5명일 경우
+    printf ("Chief name is [김영찬]\n");
+    printMyName1();//고명성
+    printMyName2();//박주은
+    printMyName3();//이정웅
 }
