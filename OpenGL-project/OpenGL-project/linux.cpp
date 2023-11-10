@@ -5,7 +5,8 @@
 #endif
 #include <stdlib.h>
 
-float angle = 0.0f;
+float angle, speed;
+bool acceration = false;
 
 void changeSize(int w, int h) {
     if (h == 0)  h = 1;
@@ -52,9 +53,17 @@ void changeSize(int w, int h) {
 //    glEnable(GL_COLOR_MATERIAL);
 //    glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
 //}
-void Timer(int val) {
 
-    angle += 0.5f;
+void idle() {
+    //acceration = false;
+}
+void Timer(int val) {
+    if(acceration == true)
+    {
+        if (speed >= 0)speed -= 0.001f;
+        else speed = 0;
+        angle += speed;
+    }
 
     glutPostRedisplay();
     glutTimerFunc(1, Timer, 0);
@@ -119,13 +128,19 @@ void disp() {
     //glEnable(GL_LIGHTING);
     glutSwapBuffers();
 }
-
 void keyboard(unsigned char key, int x, int y) {
     switch (key) {
     case 'q':
     case 'Q': exit(0);break;
     case 'r':
     case 'R': glClearColor(1.0, 0.0, 0.0, 1.0); break;
+    case 'w':
+        acceration = true;
+        if (speed <= 5)
+            speed += 0.1f;
+        else speed = 0;
+        angle += speed; 
+        break;
     }
     glutPostRedisplay();
 }
@@ -156,7 +171,7 @@ int main(int argc, char** argv) {
     glutTimerFunc(1, Timer, 0);
     glutKeyboardFunc(keyboard);
     glutMouseFunc(mouse);
-
+    glutIdleFunc(idle);
     glutMainLoop();
 
     return 1;
