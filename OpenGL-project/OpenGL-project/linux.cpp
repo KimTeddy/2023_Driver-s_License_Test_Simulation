@@ -146,8 +146,8 @@ int main(int argc, char** argv) {
       lightDiffuse[0],  lightDiffuse[1],
       lightDiffuse[2],  lightDiffuse[3] };
     glLightfv(GL_LIGHT0, GL_DIFFUSE, v);*/
-    glutInitWindowPosition(100, 100);
-    glutInitWindowSize(1280, 1020);
+    glutInitWindowSize(1024, 768);
+    glutInitWindowPosition(0, 0);
     glutCreateWindow("Embedded system");
 
     glutDisplayFunc(disp);
