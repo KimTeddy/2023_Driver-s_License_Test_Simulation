@@ -1,5 +1,5 @@
-//#include "GL/freeglut.h"
-#include <GL/glut.h>
+#include "GL/freeglut.h"
+//#include <GL/glut.h>
 
 void changeSize(int w, int h) {
 
