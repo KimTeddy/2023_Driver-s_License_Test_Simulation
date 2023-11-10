@@ -18,40 +18,40 @@ void changeSize(int w, int h) {
     gluPerspective(45.0f, ratio, 0.1f, 100.0f);
     glMatrixMode(GL_MODELVIEW);
 }
-bool lightingEnabled = true;
-GLfloat lightPosition[] = { 0.0f, 2.0f, 0.0f, 1.0f };
-GLfloat lightDiffuse[] = { 1.0, 1.0, 1.0, 1.0f };
-GLfloat lightAmbient[] = { 0.8f, 0.8f, 0.8f, 1.0f };
-void LightInit()
-{
-    glPushMatrix();
-    glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
-    glPopMatrix();
-    glLightfv(GL_LIGHT0, GL_DIFFUSE, lightDiffuse);
-    glLightfv(GL_LIGHT0, GL_AMBIENT, lightAmbient);
-    glLightfv(GL_LIGHT0, GL_SPECULAR, lightAmbient);
-    // Global ambient light
-    float GAmbient[] = { 0.3, 0.3, 0.3, 1.0 };
-    glLightModelfv(GL_LIGHT_MODEL_AMBIENT, GAmbient);
-    // Enable local viewpoint
-    glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER, GL_TRUE);
-    glShadeModel(GL_SMOOTH);
-    // Material
-    GLfloat material_ambient[] = { 0.5, 0.5, 0.5, 1.0 };
-    GLfloat material_diffuse[] = { 1.0, 1.0, 1.0, 1.0 };
-    GLfloat material_specular[] = { 1.0, 1.0, 1.0, 1.0 };
-    GLfloat material_shininess[] = { 32.0 };
-    glMaterialfv(GL_FRONT, GL_DIFFUSE, material_diffuse);
-    glMaterialfv(GL_FRONT, GL_SPECULAR, material_specular);
-    glMaterialfv(GL_FRONT, GL_AMBIENT, material_ambient);
-    glMaterialfv(GL_FRONT, GL_SHININESS, material_shininess);
-
-    glEnable(GL_DEPTH_TEST);
-    glEnable(GL_LIGHTING);
-    glEnable(GL_LIGHT0);
-    glEnable(GL_COLOR_MATERIAL);
-    glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
-}
+//bool lightingEnabled = true;
+//GLfloat lightPosition[] = { 0.0f, 2.0f, 0.0f, 1.0f };
+//GLfloat lightDiffuse[] = { 1.0, 1.0, 1.0, 1.0f };
+//GLfloat lightAmbient[] = { 0.8f, 0.8f, 0.8f, 1.0f };
+//void LightInit()
+//{
+//    glPushMatrix();
+//    glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
+//    glPopMatrix();
+//    glLightfv(GL_LIGHT0, GL_DIFFUSE, lightDiffuse);
+//    glLightfv(GL_LIGHT0, GL_AMBIENT, lightAmbient);
+//    glLightfv(GL_LIGHT0, GL_SPECULAR, lightAmbient);
+//    // Global ambient light
+//    float GAmbient[] = { 0.3, 0.3, 0.3, 1.0 };
+//    glLightModelfv(GL_LIGHT_MODEL_AMBIENT, GAmbient);
+//    // Enable local viewpoint
+//    glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER, GL_TRUE);
+//    glShadeModel(GL_SMOOTH);
+//    // Material
+//    GLfloat material_ambient[] = { 0.5, 0.5, 0.5, 1.0 };
+//    GLfloat material_diffuse[] = { 1.0, 1.0, 1.0, 1.0 };
+//    GLfloat material_specular[] = { 1.0, 1.0, 1.0, 1.0 };
+//    GLfloat material_shininess[] = { 32.0 };
+//    glMaterialfv(GL_FRONT, GL_DIFFUSE, material_diffuse);
+//    glMaterialfv(GL_FRONT, GL_SPECULAR, material_specular);
+//    glMaterialfv(GL_FRONT, GL_AMBIENT, material_ambient);
+//    glMaterialfv(GL_FRONT, GL_SHININESS, material_shininess);
+//
+//    glEnable(GL_DEPTH_TEST);
+//    glEnable(GL_LIGHTING);
+//    glEnable(GL_LIGHT0);
+//    glEnable(GL_COLOR_MATERIAL);
+//    glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
+//}
 void Timer(int val) {
 
     angle += 0.1f;
@@ -59,35 +59,31 @@ void Timer(int val) {
     glutPostRedisplay();
     glutTimerFunc(1, Timer, 0);
 }
-void draw_axes(float scale)
-{
-    glDisable(GL_LIGHTING);
-
-    glPushMatrix();
-    glScalef(scale, scale, scale);
-
-    glBegin(GL_LINES);
-
-    glColor3f(1.0, 0.0, 0.0);
-    glVertex3f(.8f, 0.05f, 0.0);  glVertex3f(1.0, 0.25f, 0.0); /* Letter X*/
-    glVertex3f(0.8f, .25f, 0.0);  glVertex3f(1.0, 0.05f, 0.0);
-    glVertex3f(0.0, 0.0, 0.0);  glVertex3f(1.0, 0.0, 0.0); /* X axis */
-
-    glColor3f(0.0, 1.0, 0.0);
-    glVertex3f(0.0, 0.0, 0.0);  glVertex3f(0.0, 1.0, 0.0); /* Y axis */
-
-    glColor3f(0.0, 0.0, 1.0);
-    glVertex3f(0.0, 0.0, 0.0);  glVertex3f(0.0, 0.0, 1.0); /* Z axis  */
-    glEnd();
-
-    glPushMatrix();
-    draw_axes(10);
-    glPopMatrix();
-
-    glPopMatrix();
-
-    glEnable(GL_LIGHTING);
-}
+//void draw_axes(float scale)
+//{
+//    glDisable(GL_LIGHTING);
+//
+//    glPushMatrix();
+//    glScalef(scale, scale, scale);
+//
+//    glBegin(GL_LINES);
+//
+//    glColor3f(1.0, 0.0, 0.0);
+//    glVertex3f(.8f, 0.05f, 0.0);  glVertex3f(1.0, 0.25f, 0.0); /* Letter X*/
+//    glVertex3f(0.8f, .25f, 0.0);  glVertex3f(1.0, 0.05f, 0.0);
+//    glVertex3f(0.0, 0.0, 0.0);  glVertex3f(1.0, 0.0, 0.0); /* X axis */
+//
+//    glColor3f(0.0, 1.0, 0.0);
+//    glVertex3f(0.0, 0.0, 0.0);  glVertex3f(0.0, 1.0, 0.0); /* Y axis */
+//
+//    glColor3f(0.0, 0.0, 1.0);
+//    glVertex3f(0.0, 0.0, 0.0);  glVertex3f(0.0, 0.0, 1.0); /* Z axis  */
+//    glEnd();
+//
+//    glPopMatrix();
+//
+//    glEnable(GL_LIGHTING);
+//}
 
 void disp() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -97,7 +93,7 @@ void disp() {
 
 
 
-    glDisable(GL_LIGHTING);
+    //glDisable(GL_LIGHTING);
     // 평면 그리기
     glPushMatrix();
     glColor3f(0.2, 0.2, 0.2);
@@ -120,7 +116,7 @@ void disp() {
     glColor4f(1.0, 0.0, 0.6, 0.1);
     glutWireTorus(1, 3, 10, 100);
 
-    glEnable(GL_LIGHTING);
+    //glEnable(GL_LIGHTING);
     glutSwapBuffers();
 }
 
@@ -146,10 +142,10 @@ void mouse(int button, int state, int x, int y)
 int main(int argc, char** argv) {
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGB);
-    float v[] = {
+    /*float v[] = {
       lightDiffuse[0],  lightDiffuse[1],
       lightDiffuse[2],  lightDiffuse[3] };
-    glLightfv(GL_LIGHT0, GL_DIFFUSE, v);
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, v);*/
     glutInitWindowPosition(100, 100);
     glutInitWindowSize(1280, 1020);
     glutCreateWindow("Embedded system");
@@ -159,8 +155,8 @@ int main(int argc, char** argv) {
 
     glutTimerFunc(10, Timer, 0);
     glutKeyboardFunc(keyboard);
-
     glutMouseFunc(mouse);
+
     glutMainLoop();
 
     return 1;
