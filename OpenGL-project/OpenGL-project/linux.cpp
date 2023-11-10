@@ -96,7 +96,7 @@ void disp() {
     //glDisable(GL_LIGHTING);
     // 평면 그리기
     glPushMatrix();
-    glColor3f(0.2, 0.2, 0.2);
+    glColor3f(0.5, 0.5, 0.5);
     glTranslatef(0.0, -0.5, 0.0);
     glScalef(60.0, 1.0, 60.0);
         glutSolidCube(1.0);
