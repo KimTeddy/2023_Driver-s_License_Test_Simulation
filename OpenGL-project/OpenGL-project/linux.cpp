@@ -1,5 +1,8 @@
+#ifdef __LINUX
 #include "GL/freeglut.h"
-//#include <GL/glut.h>
+#else
+#include <GL/glut.h>
+#endif
 
 void changeSize(int w, int h) {
 
@@ -68,13 +71,12 @@ void disp() {
 }
 
 int main(int argc, char** argv) {
-
     // init GLUT and create window
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
     glutInitWindowPosition(100, 100);
     glutInitWindowSize(320, 320);
-    glutCreateWindow("Lighthouse3D- GLUT Tutorial");
+    glutCreateWindow("Embedded system");
 
     // register callbacks
     glutDisplayFunc(disp);
