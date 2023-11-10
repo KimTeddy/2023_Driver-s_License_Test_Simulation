@@ -54,7 +54,7 @@ void changeSize(int w, int h) {
 //}
 void Timer(int val) {
 
-    angle += 0.1f;
+    angle += 0.5f;
 
     glutPostRedisplay();
     glutTimerFunc(1, Timer, 0);
@@ -153,7 +153,7 @@ int main(int argc, char** argv) {
     glutDisplayFunc(disp);
     glutReshapeFunc(changeSize);
 
-    glutTimerFunc(10, Timer, 0);
+    glutTimerFunc(1, Timer, 0);
     glutKeyboardFunc(keyboard);
     glutMouseFunc(mouse);
 
