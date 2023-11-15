@@ -9,19 +9,29 @@
 
 #endif
 
-float angle, speed;
+int Width, Height;
+
+float dspeed, speed;
+float dx=0, dy=0, dl;
 bool acceration = false;
 
 void changeSize(int w, int h) {
     if (h == 0)  h = 1;
-
+    Width = w;
+    Height = h;
     float ratio = w * 1.0 / h;
 
+    //glMatrixMode(GL_PROJECTION);
+    //glLoadIdentity();
+    //glViewport(0, 0, w, h);
+    //gluPerspective(45.0f, ratio, 0.1f, 100.0f);
+    //glMatrixMode(GL_MODELVIEW);
+    glViewport(0, 0, w, h);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    glViewport(0, 0, w, h);
-    gluPerspective(45.0f, ratio, 0.1f, 100.0f);
+    gluPerspective(75.0, (double)w / (double)h, 1.0, 500.0);
     glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
 }
 //bool lightingEnabled = true;
 //GLfloat lightPosition[] = { 0.0f, 2.0f, 0.0f, 1.0f };
@@ -66,7 +76,7 @@ void Timer(int val) {
     {
         if (speed >= 0)speed -= 0.001f;
         else speed = 0;
-        angle += speed;
+        dspeed += speed;
     }
 
     glutPostRedisplay();
@@ -97,34 +107,60 @@ void Timer(int val) {
 //
 //    glEnable(GL_LIGHTING);
 //}
-void drawingCar() {
+
+void drawingCar() {//자동차 모델링, 이동, 회전
+
 
 }
-void disp() {
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    glLoadIdentity();
-    gluLookAt(0.0, 90.0, 30.0, 0.0, -1.0, 0.0, 0.0, 1.0, 0.0);
-
-
-    //glDisable(GL_LIGHTING);
-    // 평면 그리기
+void drawingCar_test() {//테스트용 자동차 모델링, 이동, 회전
     glPushMatrix();
-    glColor3f(0.5, 0.5, 0.5);
     glTranslatef(0.0, -0.5, 0.0);
-    glScalef(60.0, 1.0, 60.0);
+    glutSolidCube(1.0);
+    glPopMatrix();
+}
+void drawScene() {//그릴 물체 전체
+// 평면 그리기
+    glPushMatrix();
+        glColor3f(0.5, 0.5, 0.5);
+        glTranslatef(0.0, -0.5, 0.0);
+        glScalef(100.0, 1.0, 60.0);
         glutSolidCube(1.0);
 
+        glPushMatrix();
+            glColor3f(0.1, 0.1, 0.1);
+            glLineWidth(2);
+            glutWireCube(1.0);
+        glPopMatrix();
     glPopMatrix();
 
-    glRotatef(angle, 0.0f, 1.0f, 0.0f);
-    
+    glRotatef(dspeed, 0.0f, 1.0f, 0.0f);
+
     drawingCar();
 
     glColor3f(1.0, 0.0, 0.6);
     glutWireTorus(1, 3, 10, 100);
+}
 
-    //glEnable(GL_LIGHTING);
+void disp() {
+    glClearColor(.9f, .9f, .9f, 1.0f);//배경색
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    glLoadIdentity();
+    glViewport(0, 0, Width, Height);
+    glPushMatrix();
+    gluLookAt(0.0, 30.0, 60.0, 0.0, -1.0, 0.0, 0.0, 1.0, 0.0);//카메라 위치/바라보는 초점 위치/카메라 기울임
+
+    drawScene();
+
+    glPopMatrix();
+    glViewport(Width* 3/ 5, Height* 3/ 5, Width* 2/ 5, Height* 2/ 5);
+    glPushMatrix();
+    gluLookAt(0.0, 90.0, 30.0, 0.0, -1.0, 0.0, 0.0, 1.0, 0.0);
+
+    drawScene();
+
+    glPopMatrix();
     glutSwapBuffers();
 }
 void keyboard(unsigned char key, int x, int y) {
@@ -138,7 +174,7 @@ void keyboard(unsigned char key, int x, int y) {
         if (speed <= 5)
             speed += 0.1f;
         else speed = 0;
-        angle += speed; 
+        dspeed += speed; 
         break;
     }
     glutPostRedisplay();
