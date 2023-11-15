@@ -5,6 +5,10 @@
 #endif
 #include <stdlib.h>
 
+#ifdef __LINUX//리눅스 전용 코딩
+
+#endif
+
 float angle, speed;
 bool acceration = false;
 
@@ -93,13 +97,14 @@ void Timer(int val) {
 //
 //    glEnable(GL_LIGHTING);
 //}
+void drawingCar() {
 
+}
 void disp() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glLoadIdentity();
-    gluLookAt(0.0, 60.0, 30.0, 0.0, -1.0, 0.0, 0.0, 1.0, 0.0);
-
+    gluLookAt(0.0, 90.0, 30.0, 0.0, -1.0, 0.0, 0.0, 1.0, 0.0);
 
 
     //glDisable(GL_LIGHTING);
@@ -109,20 +114,14 @@ void disp() {
     glTranslatef(0.0, -0.5, 0.0);
     glScalef(60.0, 1.0, 60.0);
         glutSolidCube(1.0);
+
     glPopMatrix();
+
     glRotatef(angle, 0.0f, 1.0f, 0.0f);
-    glRotatef(angle, 0.5f, .0f, 0.0f);
-    glBegin(GL_POLYGON);
-    glColor3f(1.0, 1.0, 0.0);
-    glVertex3f(-2.0f, -2.0f, 0.0f);
-    glColor3f(0.0, 1.0, 1.0);
-    glVertex3f(2.0f, 0.0f, -1.0);
-    glColor3f(1.0, 0.0, 1.0);
-    glVertex3f(0.0f, 2.0f, 0.0);
-    glColor3f(1.0, 1.0, 1.0);
-    glVertex3f(2.0f, 2.0f, 3.0);
-    glEnd();
-    glColor4f(1.0, 0.0, 0.6, 0.1);
+    
+    drawingCar();
+
+    glColor3f(1.0, 0.0, 0.6);
     glutWireTorus(1, 3, 10, 100);
 
     //glEnable(GL_LIGHTING);
@@ -154,6 +153,7 @@ void mouse(int button, int state, int x, int y)
     }
     glutPostRedisplay();
 }
+
 int main(int argc, char** argv) {
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGB);
