@@ -8,9 +8,9 @@
 #include <stdlib.h>
 #include <math.h>
 
-#ifdef __LINUX//리눅스 전용 코딩
-
-#endif
+//#ifdef __LINUX//리눅스 전용 코딩
+//
+//#endif
 
 #define PI 3.141592
 
