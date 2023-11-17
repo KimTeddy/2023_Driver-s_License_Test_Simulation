@@ -496,14 +496,16 @@ void keyboard(unsigned char key, int x, int y) {
 
 void drawingCar_test() {//테스트용 자동차 모델링, 이동, 회전
     glPushMatrix();
-    glTranslatef(xcar, 10, ycar);//자동차 이동
+    glTranslatef(xcar, 1, ycar);//자동차 이동
     glRotatef(rcar, 0.0f, 1.0f, 0.0f);//자동차 회전
     //glRotatef(180, 0.0f, 1.0f, 0.0f);//자동차 회전
-    glBegin(GL_LINES);
-        glColor3f(0.0, 0.0, 1.0);
-        glVertex3f(0.0, 0.0, 0.0);  glVertex3f(-10.0, 0.0, 0.0); /* Z axis  */
-    glEnd();
-    glutWireCube(5.0);
+    //glBegin(GL_LINES);
+    //    glColor3f(0.0, 0.0, 1.0);
+    //    glVertex3f(0.0, 0.0, 0.0);  glVertex3f(-10.0, 0.0, 0.0); /* Z axis  */
+    //glEnd();
+    glRotatef(180, 0.0f, 1.0f, 0.0f);//자동차 회전
+    drawingCar();
+    //glutWireCube(5.0);
     glPopMatrix();
 }
 void drawScene() {//그릴 물체 전체
@@ -524,8 +526,8 @@ void drawScene() {//그릴 물체 전체
     drawingCar_test();
     //drawingCar();
 
-    glColor3f(1.0, 0.0, 0.6);
-    glutWireTorus(1, 3, 10, 100);
+    //glColor3f(1.0, 0.0, 0.6);
+    //glutWireTorus(1, 3, 10, 100);
 }
 
 void disp() {
