@@ -1,0 +1,1 @@
+cmd_/home/myungsung/Desktop/es/kit/driver_sample.ko := arm-linux-gnueabi-ld -EL -r  -T /home/myungsung/Desktop/es/kit/linux_kernel/scripts/module-common.lds --build-id  -o /home/myungsung/Desktop/es/kit/driver_sample.ko /home/myungsung/Desktop/es/kit/driver_sample.o /home/myungsung/Desktop/es/kit/driver_sample.mod.o

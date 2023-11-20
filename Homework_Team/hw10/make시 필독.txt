@@ -1,0 +1,2 @@
+KDIR := /home/myungsung/Desktop/es/kit/linux_kernel/
+이 부분을 linux_kernel 폴더 경로로 수정후 사용할 것

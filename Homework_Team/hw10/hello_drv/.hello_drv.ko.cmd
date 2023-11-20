@@ -1,0 +1,1 @@
+cmd_/home/myungsung/Desktop/es/kit/hello_drv/hello_drv.ko := arm-linux-gnueabi-ld -EL -r  -T /home/myungsung/Desktop/es/kit/linux_kernel/scripts/module-common.lds --build-id  -o /home/myungsung/Desktop/es/kit/hello_drv/hello_drv.ko /home/myungsung/Desktop/es/kit/hello_drv/hello_drv.o /home/myungsung/Desktop/es/kit/hello_drv/hello_drv.mod.o
