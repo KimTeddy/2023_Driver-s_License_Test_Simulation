@@ -22,8 +22,6 @@ pthread_t thread_object_3; //스레드 3 for 7segment
 
 #define PI 3.141592
 
-
-
 int simuwork = 0; //시뮬레이션 게임(?) 동작 여부 확인변수
 int safetybelt = 0, sidebrake = 0, leftlight = 0, rightlight = 0, emerlight = 0; // 안전벨트, 사이드브레이크, 방향지시등좌, 우, 비상등 변수
 int fnddat; // FND(7segment) 데이터 변수
@@ -555,7 +553,7 @@ void disp() {
     if (simuwork == CRS_MAIN)
     {
         perspective();
-        gluLookAt(0.0, 100.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);//카메라 위치/바라보는 초점 위치/카메라 기울임
+        gluLookAt(0.0, 100.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0);//카메라 위치/바라보는 초점 위치/카메라 기울임
         main_menu();
     }
     else

@@ -135,6 +135,7 @@
     <ClCompile Include="traffic_light.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="simuwork.h" />
     <ClInclude Include="textlcd.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
