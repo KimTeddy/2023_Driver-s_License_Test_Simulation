@@ -7,7 +7,10 @@
 #include <sys/shm.h>
 #else//윈도우전용
 #include <GL/glut.h>
+#include <iostream>
+using namespace std;
 #endif
+
 //공통
 #include <stdio.h>
 #include <stdlib.h>
@@ -537,24 +540,84 @@ void drawScene() {//그릴 물체 전체
     //glColor3f(1.0, 0.0, 0.6);
     //glutWireTorus(1, 3, 10, 100);
 }
-void main_menu() {
-    glClearColor(.9f, .9f, .9f, 1.0f);//배경색
-    glLoadIdentity();
+void renderStrokeString(float x, float y, float z, float R, float G, float B, float Scale, void* font, char* string)
+{
+    char* c;
     glPushMatrix();
-        glColor3f(0.0, 0.0, 0.5);
-        glTranslatef(0.0, -0.5, 0.0);
-        glScalef(10.0, 1.0, 10.0);
-        glutSolidCube(1.0);
+    glColor3f(R, G, B);
+    glTranslatef(x, y, z);
+    glScalef(Scale, Scale, Scale);
+    for (c = string; *c != '\0'; c++) {
+        glutStrokeCharacter(font, *c);
+    }
     glPopMatrix();
 }
+
+char start[] = "START";
+char info[] = "INFO";
+char quit[] = "QUIT";
+void main_menu() {
+    glClearColor(.9f, .9f, .9f, 1.0f);//배경색
+
+    glPushMatrix();
+    glRotatef(90, 1.0, 0.0, 0.0);
+    glLineWidth(5);
+    renderStrokeString(-20,   0-5, 1,     1, 1, 1, 0.1, GLUT_STROKE_ROMAN, start);
+    renderStrokeString(-15, -30-5, 1,     1, 1, 1, 0.1, GLUT_STROKE_ROMAN, info);
+    renderStrokeString(-15, -60-5, 1,     1, 1, 1, 0.1, GLUT_STROKE_ROMAN, quit);
+    glPopMatrix(); 
+
+    glColor3f(0.0, 0.3, 0.5);
+
+    //glBegin(GL_QUADS);
+    //glVertex3i(304, 0, 276);
+    //glVertex3i(718, 0, 276);
+    //glVertex3i(718, 0, 357);
+    //glVertex3i(304, 0, 357);
+    //glEnd();
+
+    glPushMatrix();
+    glTranslatef(0.0, 0.0, 0.0);
+    glScalef(100.0, 1.0, 20.0);
+    glutSolidCube(1.0);
+    glPopMatrix();
+
+    glPushMatrix();
+    glColor3f(0.0, 0.3, 0.5);
+    glTranslatef(0.0, 0.0, -30.0);
+    glScalef(100.0, 1.0, 20.0);
+    glutSolidCube(1.0);
+    glPopMatrix();
+
+    glPushMatrix();
+    glColor3f(0.0, 0.3, 0.5);
+    glTranslatef(0.0, 0.0, -60.0);
+    glScalef(100.0, 1.0, 20.0);
+    glutSolidCube(1.0);
+    glPopMatrix();
+}
+
 void disp() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glMatrixMode(GL_MODELVIEW);
     if (simuwork == CRS_MAIN)
     {
         perspective();
-        gluLookAt(0.0, 100.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0);//카메라 위치/바라보는 초점 위치/카메라 기울임
+        glClearColor(.9f, .9f, .9f, 1.0f);//배경색
+
+        glViewport(0, 0, Width, Height);
+
+        glPushMatrix();
+        gluLookAt(0.0, -100.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0);//카메라 위치/바라보는 초점 위치/카메라 기울임
+
+        glRotatef(rotationX, 1.0, 0.0, 0.0);
+        glRotatef(rotationY, 0.0, 1.0, 0.0);
+        glMultMatrixf(view_rotate);
         main_menu();
+
+
+
+        glPopMatrix();
     }
     else
     {
@@ -594,6 +657,7 @@ void mouse(int button, int state, int x, int y)
 {
     if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
     {
+        cout << x << ", " << y << endl;
         mouse_x = x;
         mouse_y = y;
     }
