@@ -595,7 +595,15 @@ void motion(int x, int y)
 
     glutPostRedisplay();
 }
+
+#ifdef __LINUX//리눅스 전용 코딩
+
+#endif
+
 int main(int argc, char** argv) {
+    #ifdef __LINUX//리눅스 전용 코딩
+    
+    #endif
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
     /*float v[] = {
