@@ -1,14 +1,14 @@
-#ifdef __LINUX
+#ifdef __LINUX//리눅스전용
 #include "GL/freeglut.h"
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <pthread.h>
 #include <sys/shm.h>
-#else
+#else//윈도우전용
 #include <GL/glut.h>
 #endif
-
+//공통
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -483,10 +483,8 @@ void drawingCar() {//자동차 모델링, 이동, 회전
 }
 void keyboard(unsigned char key, int x, int y) {
     switch (key) {
-    case 'q':
-    case 'Q': exit(0); break;
-    case 'r':
-    case 'R': glClearColor(1.0, 0.0, 0.0, 1.0); break;
+    case 'q': case 'Q': exit(0); break;
+    case 'r': case 'R': glClearColor(1.0, 0.0, 0.0, 1.0); break;
     case 'w':
         /*acceration = true;
         if (speed < 5)
@@ -497,14 +495,9 @@ void keyboard(unsigned char key, int x, int y) {
         dxcar = speed * cos((180-rcar) * PI / 180.0); xcar += dxcar;
         dycar = speed * sin((180-rcar) * PI / 180.0); ycar += dycar;
         break;
-    case 's': 
-        break;
-    case 'a': rcar += 3;
-        printf("r=%f\n", rcar);
-        break;
-    case 'd': rcar -= 3;
-        printf("r=%f\n", rcar);
-        break;
+    case 's': break;
+    case 'a': rcar += 3; printf("r=%f\n", rcar); break;
+    case 'd': rcar -= 3; printf("r=%f\n", rcar); break;
     }
     glutPostRedisplay();
 }
@@ -546,36 +539,42 @@ void drawScene() {//그릴 물체 전체
 }
 
 void disp() {
-    glClearColor(.9f, .9f, .9f, 1.0f);//배경색
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
+    if (simuwork == CRS_MAIN)
+    {
 
-    glViewport(0, 0, Width, Height);
+    }
+    else
+    {
+        glClearColor(.9f, .9f, .9f, 1.0f);//배경색
+        glLoadIdentity();
 
-    glPushMatrix();
+        glViewport(0, 0, Width, Height);
+
+        glPushMatrix();
         gluLookAt(0.0, 30.0, 60.0, 0.0, -1.0, 0.0, 0.0, 1.0, 0.0);//카메라 위치/바라보는 초점 위치/카메라 기울임
 
         glPushMatrix();
 
-            glRotatef(rotationX, 1.0, 0.0, 0.0);
-            glRotatef(rotationY, 0.0, 1.0, 0.0);
-            glMultMatrixf(view_rotate);
-            drawScene();
+        glRotatef(rotationX, 1.0, 0.0, 0.0);
+        glRotatef(rotationY, 0.0, 1.0, 0.0);
+        glMultMatrixf(view_rotate);
+        drawScene();
 
         glPopMatrix();
-    glPopMatrix();
+        glPopMatrix();
 
-    //---------------------------------------------------------------
+        //---------------------------------------------------------------
 
-    glViewport(Width* 3/ 5, Height* 3/ 5, Width* 2/ 5, Height* 2/ 5);
-    //glViewport(0, Height / 2, Width/3, Height/2);
-    glPushMatrix();
+        glViewport(Width * 3 / 5, Height * 3 / 5, Width * 2 / 5, Height * 2 / 5);
+        //glViewport(0, Height / 2, Width/3, Height/2);
+        glPushMatrix();
         gluLookAt(0.0, 60.0, 10.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0);
 
         drawScene();
-    glPopMatrix();
-
+        glPopMatrix();
+    }
     glutSwapBuffers();
 }
 

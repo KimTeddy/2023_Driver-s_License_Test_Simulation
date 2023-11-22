@@ -130,6 +130,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="linux.cpp" />
+    <ClCompile Include="textlcd.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="textlcd.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
