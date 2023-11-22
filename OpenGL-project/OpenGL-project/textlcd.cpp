@@ -1,8 +1,6 @@
 #include "textlcd.h"
 
 
-
-
 void crs_lcd()	//함수 이름 수정필요하면 하세요.
 {
 	while (1)
