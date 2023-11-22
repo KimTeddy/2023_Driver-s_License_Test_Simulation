@@ -11,6 +11,16 @@ int scBTN_Start=0, scBTN_Manual=0, scBTN_Leaderbd=0; // 스크린터치로 인�
 int page; // 코스 설명 이미지 페이지 카운팅
 int testStart=0, mainScreen=0;
 
+// LCD에 구간 표시하기 위한 트리거 신호들
+int crs_basic = 0; //기본조작평가 트리거 신호
+int crs_uphill = 0; //경사로 구간 트리거
+int crs_junction = 0; //교차로 구간 트리거
+int crs_parking = 0; //주차구간 트리거
+int crs_emergency = 0; //돌발구간 트리거
+int crs_accel = 0; //가속구간 트리거
+
+//additional part 
+int crs_outofcrs = 0; //구간을 벗어난 경우 트리거 ->  
 
 void showMainScreen() {
     //메인 화면 출력. 디자인 구상 UI idea에 구상 올려둠 / 버튼 표시로 버튼을 누르면 위의 변수 바뀜.
