@@ -1,2 +1,0 @@
-﻿  textlcd.cpp
-C:\EmbeddedSystem\OpenGL-project\OpenGL-project\textlcd.h(4,10): fatal  error C1083: 포함 파일을 열 수 없습니다. 'unistd.h': No such file or directory
