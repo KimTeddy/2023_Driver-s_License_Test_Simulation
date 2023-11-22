@@ -39,3 +39,6 @@ OpenGL-project/.vs/OpenGL-project/FileContentIndex/39b1d3cc-be9a-4d88-af5b-0ac3b
 .vs/EmbeddedSystem/v17/Browse.VC.db-shm
 .vs/EmbeddedSystem/v17/Browse.VC.db
 .vs/EmbeddedSystem/v17/.wsuo
+*.db
+*.obj
+*.db
