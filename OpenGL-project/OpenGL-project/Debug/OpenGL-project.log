@@ -1,9 +1,6 @@
 ﻿  button.cpp
-c1xx : fatal  error C1083: 소스 파일을 열 수 없습니다. 'button.cpp': No such file or directory
   linux.cpp
-c1xx : fatal  error C1083: 소스 파일을 열 수 없습니다. 'linux.cpp': No such file or directory
   textlcd.cpp
-c1xx : fatal  error C1083: 소스 파일을 열 수 없습니다. 'textlcd.cpp': No such file or directory
+C:\Users\KimTeddy\Documents\GitHub\EmbeddedSystem\OpenGL-project\OpenGL-project\textlcd.h(4,10): fatal  error C1083: 포함 파일을 열 수 없습니다. 'unistd.h': No such file or directory
   traffic_light.cpp
-c1xx : fatal  error C1083: 소스 파일을 열 수 없습니다. 'traffic_light.cpp': No such file or directory
   코드를 생성하고 있습니다...

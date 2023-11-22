@@ -1,5 +1,6 @@
 #include "textlcd.h"
 
+#include "simuwork.h"
 /*
 #define CRS_MAIN 0  //메인 메뉴 단게
 #define CRS_START 1 // 코스 시작 전 대기 (게임 시작 전 -> ~설명 단계~)
