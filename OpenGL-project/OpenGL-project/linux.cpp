@@ -13,14 +13,17 @@
 #include <stdlib.h>
 #include <math.h>
 
-//#ifdef __LINUX//리눅스 전용 코딩
+#ifdef __LINUX//리눅스 전용 코딩
 pthread_t thread_object_1; //스레드 1 for rgb led
 pthread_t thread_object_2; //스레드 2 for btn and led
 pthread_t thread_object_3; //스레드 3 for 7segment
 
-//#endif
+#endif
 
 #define PI 3.141592
+
+#define CRS_MAIN 0
+#define CRS_START 1
 
 int simuwork = 0; //시뮬레이션 게임(?) 동작 여부 확인변수
 int safetybelt = 0, sidebrake = 0, leftlight = 0, rightlight = 0, emerlight = 0; // 안전벨트, 사이드브레이크, 방향지시등좌, 우, 비상등 변수
@@ -707,7 +710,7 @@ void* sevenseg(void) {
 #endif
 
 int main(int argc, char** argv) {
-    #ifdef __LINUX//리눅스 전용 코딩
+#ifdef __LINUX//리눅스 전용 코딩
     pthread_create(&thread_object_1, NULL, trafLight, NULL);
     pthread_create(&thread_object_2, NULL, btncheck, NULL);
     pthread_create(&thread_object_2, NULL, sevenseg, NULL);
@@ -716,7 +719,7 @@ int main(int argc, char** argv) {
     pthread_join(thread_object_2, NULL);
     pthread_join(thread_object_3, NULL);
 
-    #endif
+#endif
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
     /*float v[] = {
