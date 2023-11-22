@@ -12,6 +12,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include "simuwork.h"
 
 #ifdef __LINUX//리눅스 전용 코딩
 pthread_t thread_object_1; //스레드 1 for rgb led
@@ -21,15 +22,7 @@ pthread_t thread_object_3; //스레드 3 for 7segment
 
 #define PI 3.141592
 
-#define CRS_MAIN 0  //메인 메뉴 단게
-#define CRS_START 1 //코스 시작
-#define CRS_BASIC 2 //기본 조작 단계
-#define CRS_UP 3    //경사로
-#define CRS_JUNCTION 4  //교차로
-#define CRS_PARKING 5   //주차
-#define CRS_EMERGENCY 6 //돌발
-#define CRS_ACCEL 7     //가속 구간
-#define CRS_END 8       //종료 단계
+
 
 int simuwork = 0; //시뮬레이션 게임(?) 동작 여부 확인변수
 int safetybelt = 0, sidebrake = 0, leftlight = 0, rightlight = 0, emerlight = 0; // 안전벨트, 사이드브레이크, 방향지시등좌, 우, 비상등 변수
