@@ -129,8 +129,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="button.cpp" />
     <ClCompile Include="linux.cpp" />
     <ClCompile Include="textlcd.cpp" />
+    <ClCompile Include="traffic_light.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="textlcd.h" />

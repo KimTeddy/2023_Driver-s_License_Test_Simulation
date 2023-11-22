@@ -1,0 +1,6 @@
+﻿  button.cpp
+  linux.cpp
+C:\Users\KimTeddy\Documents\GitHub\EmbeddedSystem\OpenGL-project\OpenGL-project\linux.cpp(9,10): fatal  error C1083: 포함 파일을 열 수 없습니다. 'GL/glut.h': No such file or directory
+  textlcd.cpp
+  traffic_light.cpp
+  코드를 생성하고 있습니다...
