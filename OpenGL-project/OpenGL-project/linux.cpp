@@ -17,7 +17,6 @@
 pthread_t thread_object_1; //스레드 1 for rgb led
 pthread_t thread_object_2; //스레드 2 for btn and led
 pthread_t thread_object_3; //스레드 3 for 7segment
-
 #endif
 
 #define PI 3.141592
@@ -42,26 +41,29 @@ float dxcar = 0, dycar = 0, xcar = 0, ycar = 0;//이동
 float rcar;//로테이션
 bool acceration = false;
 
+void perspective(GLdouble fovy, GLdouble zfar);
+void changeSize(int w, int h);
 
+void perspective(GLdouble fovy = 75.0, GLdouble zfar = 500.0) {
+    glViewport(0, 0, Width, Height);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluPerspective(fovy, (double)Width / (double)Height, 1.0, zfar);
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+}
 void changeSize(int w, int h) {
     if (h == 0)  h = 1;
     Width = w;
     Height = h;
-    float ratio = w * 1.0 / h;
-
+    //float ratio = w * 1.0 / h;
     //glMatrixMode(GL_PROJECTION);
     //glLoadIdentity();
     //glViewport(0, 0, w, h);
     //gluPerspective(45.0f, ratio, 0.1f, 100.0f);
     //glMatrixMode(GL_MODELVIEW);
-    glViewport(0, 0, w, h);
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    gluPerspective(75.0, (double)w / (double)h, 1.0, 500.0);
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
+    perspective();
 }
-
 void idle() {
     //acceration = false;
 }
@@ -537,16 +539,28 @@ void drawScene() {//그릴 물체 전체
     //glColor3f(1.0, 0.0, 0.6);
     //glutWireTorus(1, 3, 10, 100);
 }
-
+void main_menu() {
+    glClearColor(.9f, .9f, .9f, 1.0f);//배경색
+    glLoadIdentity();
+    glPushMatrix();
+        glColor3f(0.0, 0.0, 0.5);
+        glTranslatef(0.0, -0.5, 0.0);
+        glScalef(10.0, 1.0, 10.0);
+        glutSolidCube(1.0);
+    glPopMatrix();
+}
 void disp() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glMatrixMode(GL_MODELVIEW);
     if (simuwork == CRS_MAIN)
     {
-
+        perspective();
+        gluLookAt(0.0, 100.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);//카메라 위치/바라보는 초점 위치/카메라 기울임
+        main_menu();
     }
     else
     {
+        perspective();
         glClearColor(.9f, .9f, .9f, 1.0f);//배경색
         glLoadIdentity();
 
@@ -611,76 +625,6 @@ void motion(int x, int y)
 }
 
 #ifdef __LINUX//리눅스 전용 코딩
-void* trafLight(void) { // 신호등함수
-    //reset RGB LED state
-    while (1) {
-        if (simuwork == 1) { // repeat if simulation is working
-            //LED ON R0 G100 B 0 green
-            sleep(12)
-                //LED ON R100 G63 B 0 orange
-                sleep(3)
-                //LED ON R100 G0 B 0 red
-                sleep(5)
-        }
-    }
-}
-
-
-void* btncheck(void) { //btn and leds. 버튼입력 확인및 LED동작 함수
-    //reset Button flag state
-    while (1) {
-        if (simuwork == 1) { // repeat if simulation is working
-            switch (stEvent.code)
-            {
-            case KEY_HOME:
-                if (safetybelt == 0) {
-                    safetybelt = 1; leddata = leddata ^ 10000000;
-                }
-                else if (safetybelt == 1) {
-                    safetybelt = 1; leddata = leddata ^ 10000000;
-                }
-                break;
-
-            case KEY_BACK: if (sidebrake == 0) {
-                sidebrake = 1; leddata = leddata ^ 01000000;
-            }
-                         else if (sidebrake == 1) {
-                sidebrake = 1; leddata = leddata ^ 01000000;
-            }
-                         break;
-
-            case KEY_SEARCH: if (leftlight == 0) { // 점멸 구현 방법 생각 필요 thread? process?
-                leftlight = 1; leddata = leddata ^ 00110000;
-            }
-                           else if (leftlight == 1) {
-                leftlight = 1; leddata = leddata ^ 00110000;
-            }
-                           break;
-
-            case KEY_MENU: if (rightlight == 0) { // 점멸 구현 방법 생각 필요 thread? process?
-                rightlight = 1; leddata = leddata ^ 00001100;
-            }
-                         else if (rightlight == 1) {
-                rightlight = 1; leddata = leddata ^ 00001100;
-            }
-                         break;
-
-            case KEY_VOLUMEUP: if (emerlight == 0) { // 점멸 구현 방법 생각 필요 thread? process?
-                emerlight = 1; leddata = leddata ^ 00111100;
-            }
-                             else if (emerlight == 1) {
-                emerlight = 1; leddata = leddata ^ 00111100;
-            }
-                             break;
-
-            case KEY_VOLUMEDOWN:
-                // 초기화면으로 복귀 코드
-                break;
-            }
-        }
-    }
-}
-
 
 void* sevenseg(void) {
     //reset 7seg state

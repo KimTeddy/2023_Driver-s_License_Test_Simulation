@@ -21,6 +21,12 @@
     <ClCompile Include="textlcd.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="traffic_light.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="button.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="textlcd.h">
