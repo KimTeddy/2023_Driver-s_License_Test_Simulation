@@ -6,7 +6,7 @@ int main()
     int msgID = msgget(MESSAGE_ID, IPC_CREAT|0666);
     if(msgID == -1)
     {
-        printf("Can't Fing It\r\n");
+        printf("Can't Find It\r\n");
         return 1;
     }
     while(1)
@@ -24,12 +24,13 @@ int main()
                 case KEY_SEARCH : printf("Search key):"); break;
                 case KEY_BACK: printf("Back key):"); break;
                 case KEY_MENU : printf("Menu key):"); break;
-                case KEY_VOLUMEDOWN : ("Volume down key):"); break;
+                case KEY_VOLUMEDOWN : printf("Volume down key):"); break;
             }
             if(B.pressed) printf("Pressed!\n");
             else printf("released\n");
         }
-        else ;  //doNothing
+        else 
+        ;  //doNothing
     }   //While End
 
     buttonExit();
