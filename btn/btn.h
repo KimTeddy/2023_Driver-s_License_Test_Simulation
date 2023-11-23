@@ -17,7 +17,7 @@
 #define MESSAGE_ID 1122
 
 struct input_event A;
-struct BUTTON_MST_T B;
+struct BUTTON_MSG_T B;
 
 typedef struct
 {
