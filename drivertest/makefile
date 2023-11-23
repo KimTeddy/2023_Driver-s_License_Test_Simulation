@@ -1,5 +1,5 @@
 all: ledtest.c libMyPeri.a
-	arm-linux-gnueabi-gcc -o ledtest ledtest.c -l MyPeri -L
+	arm-linux-gnueabi-gcc -o ledtest ledtest.c -l MyPeri -L.
 
 libMyPeri.a : led.o
 	arm-linux-gnueabi-ar rc libMyPeri.a led.o

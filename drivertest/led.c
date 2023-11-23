@@ -13,7 +13,7 @@
 static unsigned int ledValue = 0;
 static int fd = 0;
 unsigned int pdata=0;
-int LEDdat;
+int leddat;
 
 
 int ledOnOff(int ledNum, int onOff) {
@@ -21,8 +21,8 @@ int ledOnOff(int ledNum, int onOff) {
 	i = i << ledNum;
 	ledValue = ledValue & (~i);
 	if (onOff != 0) ledValue |= i;
-	LEDdat = write(fd, &ledValue, 4);
-	return LEDdat;
+	leddat = write(fd, &ledValue, 4);
+	return leddat;
 }
 int ledLibInit(void) {
 	fd = open("/dev/periled", O_WRONLY);
@@ -41,19 +41,19 @@ int ledLibExit(void) {
 	return 0;
 }
 
-int ledChange(const char data[]) {
+int ledRead(const char data[]) {
 	pdata = strtol(data, NULL, 16);
 	//printf("LED Setup: 0x%X\n", pdata);
 
 	for (int i = 0; i < 8; i++) {
 		if (pdata & (0x01 << i)) {
-			LEDdat = ledOnOff(i, 1);
-			if (LEDdat != 4) 
+			leddat = ledOnOff(i, 1);
+			if (leddat != 4) 
 				printf("setup error");
 		}
 		else {
-			LEDdat = ledOnOff(i, 0);
-			if (LEDdat != 4) 
+			leddat = ledOnOff(i, 0);
+			if (leddat != 4) 
 				printf("setup error");
 		}
 	}
