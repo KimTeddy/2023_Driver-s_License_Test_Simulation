@@ -24,6 +24,12 @@ struct BUTTON_MSG_T
     int pressed;
     unsigned short type
 };
+struct input_event{
+    struct timeval time;
+    _u16 type;
+    _u16 code;
+    _s32 value;
+};
 
 struct input_event A;
 struct BUTTON_MSG_T B;

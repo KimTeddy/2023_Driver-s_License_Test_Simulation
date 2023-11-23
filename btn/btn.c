@@ -65,24 +65,7 @@ int buttonExit(void)
     return 0;
 }
 
-void *buttonThFunc(void *arg)
-{
-    int readSize;
-    B.messageNum = 1;
-    while(1)
-    {
-        readSize = read(fd, &A, sizeof(A));
-        if(readSize != sizeof(A))
-        {
-            continue;
-        }
-        B.keyInput = A.code;
-        B.pressed = A.value;
-        B.type = A.type;
-        msgsnd(msgID, &B, sizeof(B)-sizeof(long int), 0);
-    }
-    close(fd);
-}
+
 
 
    
