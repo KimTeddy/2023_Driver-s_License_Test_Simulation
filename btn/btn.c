@@ -30,7 +30,7 @@ int probeButtonPath(char *newPath)
     fclose(fp); //파일 닫기
         if(returnValue == 1) //찾았으면
         {    
-           sprintf(newpath, "%s%d", INPUT_DEVICE_LIST, number);
+           sprintf(newPath, "%s%d", INPUT_DEVICE_LIST, number);
           //newpath에 저장.
          }
         return returnValue;
