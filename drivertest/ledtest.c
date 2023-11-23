@@ -2,29 +2,24 @@
 #include <unistd.h>
 #include "led.h"
 
+void doHelp(void)
+{
+printf("ledtest <hex byte> :data bit0 operation 1=>on 0=>off\n");
+printf(" ledtest 0x05 ;4th and 1th led on\n");
+printf(" ledtest 0xff ;all led on\n");
+printf(" ledtest 0x00 ;all led off\n");
+}
 
 int main(int argc, char** argv)
 {
-	int i;
-	int ledValue = 0;
-	const char ledValuehex[] = "0000";
-
-	printf("LED test");
-	for (i = 0; i < 8; i++) {
-		ledOnOff(i, 1);
-		ledValue = ledStatus();
-		printf("LED Status : %d", ledValue);
-		usleep(500000);
+	if (argc < 2 ){
+		perror(" Args number is less than 2\n");
+		doHelp();
+		return 1;
 	}
-	usleep(1000000);
 
-	while (1) {
-		printf("LED 변화 값을 16진수로 입력하세요: ");
-		if (scanf("%s", ledValuehex) != 1) {
-			printf("올바른 입력이 아닙니다.\n");
-			return 1; // 입력 오류가 발생한 경우 프로그램 종료
-		}
-		ledChange(ledValuehex);
-		printf("led value changed");
-	}
+		ledLibInit();
+		ledRead(argv[1]);
+		ledLibExit();
+	return 0;
 }
