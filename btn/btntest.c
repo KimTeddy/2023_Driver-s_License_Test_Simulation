@@ -21,8 +21,8 @@ int main()
             continue;
         }
 
-        int retmsg = 0;
-        retmsg = msgrcv(msgID, &B, sizeof(B) - sizeof(long int), 0, 0);
+        //int retmsg = 0;
+        //retmsg = msgrcv(msgID, &B, sizeof(B) - sizeof(long int), 0, 0);
 
         if(stEvent.type == EV_KEY)
         {
