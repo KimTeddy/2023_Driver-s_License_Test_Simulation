@@ -1,5 +1,8 @@
 #include "btn.h"
 
+char buttonPath[200] = {0, };
+int fd, msgID;
+pthread_t buttonTh_id;
 int buttonInit(void)
 {
     if(probeButtonPath(buttonPath) == 0)
@@ -62,7 +65,8 @@ int probeButtonPath(char *newpath)
     }    
 }
     fclose(fp); //파일 닫기
-    if(returnValue == 1){    //찾았으면
+    if(returnValue == 1) //찾았으면
+    {    
         sprintf(newpath, "%s%d", INPUT_DEVICE_LIST, number);
         //newpath에 저장.
     }
