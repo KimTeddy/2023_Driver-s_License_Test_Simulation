@@ -9,7 +9,6 @@
 #include <sys/ioctl.h>
 #include <fcntl.h>
 
-#define LED_NUM 8
 #include "led.h"
 static unsigned int ledValue = 0;
 static int fd = 0;
@@ -46,7 +45,7 @@ int ledChange(const char data[]) {
 	pdata = strtol(data, NULL, 16);
 	//printf("LED Setup: 0x%X\n", pdata);
 
-	for (int i = 0; i < LED_NUM; i++) {
+	for (int i = 0; i < 8; i++) {
 		if (pdata & (0x01 << i)) {
 			LEDdat = ledOnOff(i, 1);
 			if (LEDdat != 4) 
