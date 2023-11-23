@@ -6,13 +6,13 @@
 int main(int argc, char** argv)
 {
 	int ledValue = 0;
-	const char ledValuehex[] = "0000"
+	const char ledValuehex[] = "0000";
 
 	printf("LED test");
 	for (i = 0; i < 8; i++) {
 		ledOnOff(i, 1);
 		ledValue = ledStatus();
-		printf("LED Status : %d", ledValue)
+		printf("LED Status : %d", ledValue);
 		usleep(500000);
 	}
 	usleep(1000000);
@@ -24,6 +24,6 @@ int main(int argc, char** argv)
 			return 1; // 입력 오류가 발생한 경우 프로그램 종료
 		}
 		ledChange(ledValuehex);
-		printf("led value changed")
+		printf("led value changed");
 	}
 }
