@@ -29,7 +29,7 @@ struct BUTTON_MSG_T
 struct input_event1{
     struct timeval time;
     uint16_t type;
-    uint16_5 code;
+    uint16_t code;
     int32_t value;
 };
 
