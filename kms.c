@@ -20,11 +20,11 @@ void* trafLight(void) {
     while(1) {
         if(simuwork==1) { // repeat if simulation is working
         //LED ON R0 G100 B 0 green
-        sleep(12)
+        sleep(12);
         //LED ON R100 G63 B 0 orange
-        sleep(3)
+        sleep(3);
         //LED ON R100 G0 B 0 red
-        sleep(5)
+        sleep(5);
         }
     }
 }

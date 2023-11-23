@@ -10,13 +10,14 @@
 #include <fcntl.h>
 
 #define LED_NUM 8
-#include ¡°led.h¡±
+#include "led.h"
 static unsigned int ledValue = 0;
 static int fd = 0;
+unsigned int pdata=0;
+int LEDdat;
 
 
 int ledOnOff(int ledNum, int onOff) {
-	int LEDdat;
 	int i = 1;
 	i = i << ledNum;
 	ledValue = ledValue & (~i);
@@ -25,8 +26,8 @@ int ledOnOff(int ledNum, int onOff) {
 	return LEDdat;
 }
 int ledLibInit(void) {
-	fd = open("/dev/periled¡±, O_WRONLY);
-		ledValue = 0;
+	fd = open("/dev/periled", O_WRONLY);
+	ledValue = 0;
 	return fd;
 }
 
@@ -45,7 +46,7 @@ int ledChange(const char data[]) {
 	pdata = strtol(data, NULL, 16);
 	//printf("LED Setup: 0x%X\n", pdata);
 
-	for (int i = 0; i < MAX_LED_NUM; i++) {
+	for (int i = 0; i < LED_NUM; i++) {
 		if (pdata & (0x01 << i)) {
 			LEDdat = ledOnOff(i, 1);
 			if (LEDdat != 4) 
