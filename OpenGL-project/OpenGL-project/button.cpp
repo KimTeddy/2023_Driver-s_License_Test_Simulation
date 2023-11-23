@@ -2,7 +2,7 @@
 void* btncheck(void) { //btn and leds. 버튼입력 확인및 LED동작 함수
     //reset Button flag state
     while (1) {
-        if (simuwork == 1) { // repeat if simulation is working
+        if (simuwork != CRS_MAIN) { // repeat if simulation is working
             switch (stEvent.code)
             {
             case KEY_HOME:

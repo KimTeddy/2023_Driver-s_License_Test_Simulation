@@ -660,6 +660,7 @@ void mouse(int button, int state, int x, int y)
         cout << x << ", " << y << endl;
         mouse_x = x;
         mouse_y = y;
+        simuwork++;
     }
     else if (button == GLUT_LEFT_BUTTON && state == GLUT_UP) //마우스 버튼에서 손 뗄 때
     {
