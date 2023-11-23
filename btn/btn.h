@@ -11,6 +11,7 @@
 #include <sys/msg.h>
 #include "btn.h"
 #include <unistd.h>
+#include <stdint.h>
 
 #define INPUT_DEVICE_LIST "/dev/input/event"
 #define PROBE_FILE "/proc/bus/input/devices"
