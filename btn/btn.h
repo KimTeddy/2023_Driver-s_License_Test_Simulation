@@ -8,7 +8,9 @@
 #include <fcntl.h>
 #include <sys/ioctl.h>
 #include <pthread.h>
+#include <sys/msg.h>
 #include "btn.h"
+#include <unistd.h>
 
 #define INPUT_DEVICE_LIST "/dev/input/event"
 #define PROBE_FILE "/procs/bus/input/devices"
