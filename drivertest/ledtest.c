@@ -5,6 +5,7 @@
 
 int main(int argc, char** argv)
 {
+	int i;
 	int ledValue = 0;
 	const char ledValuehex[] = "0000";
 
