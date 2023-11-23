@@ -16,16 +16,18 @@
 #define HAVE_TO_FIND_2 "H: Handlers=kbd event"
 #define MESSAGE_ID 1122
 
-struct input_event A;
-struct BUTTON_MSG_T B;
 
-typedef struct
+
+struct BUTTON_MSG_T
 {
     long int messageNum;
     int keyInput;
     int pressed;
     unsigned short type
-} BUTTON_MSG_T;
+};
+
+struct input_event A;
+struct BUTTON_MSG_T B;
 
 int buttonInit(void);
 int buttonExit(void);
