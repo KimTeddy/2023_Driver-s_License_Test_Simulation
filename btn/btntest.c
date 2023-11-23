@@ -5,7 +5,7 @@ int main()
     buttonInit();
     int fp;
     int readSize, inputIndex;
-    struct input_event stEvent;
+    struct input_event1 stEvent;
     char inputDevPath[200] = {0, };
     if(probeButtonPath(inputDevPath) == 0)
     {

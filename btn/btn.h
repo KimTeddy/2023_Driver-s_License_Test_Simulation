@@ -12,6 +12,7 @@
 #include "btn.h"
 #include <unistd.h>
 #include <stdint.h>
+#include <sys/time.h>
 
 #define INPUT_DEVICE_LIST "/dev/input/event"
 #define PROBE_FILE "/proc/bus/input/devices"
@@ -25,11 +26,11 @@ struct BUTTON_MSG_T
     int pressed;
     unsigned short type
 };
-struct input_event{
+struct input_event1{
     struct timeval time;
-    u16 type;
-    u16 code;
-    s32 value;
+    uint16_t type;
+    uint16_5 code;
+    int32_t value;
 };
 
 
