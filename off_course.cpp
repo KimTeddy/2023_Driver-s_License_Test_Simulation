@@ -1,13 +1,4 @@
 //임시로 만든 -- 줄에 닿으면 -5반환
-#include <GL/glut.h>
-#include <iostream>
-using namespace std;
-
-int squareX = -90; // 작은 사각형의 초기 x 좌표
-int squareY = 0;   // 작은 사각형의 초기 y 좌표
-int squareSize = 10; // 작은 사각형의 크기
-
-//그 2차원 배열 -> 라인 만들 곳! (경로)
 /*
 백색줄 --------------------------------------------------------
 {-97, -61}, {-97, 55},{91,55}, {91, -61},
@@ -27,6 +18,17 @@ int squareSize = 10; // 작은 사각형의 크기
 {-85, 9}, {-85, 45}, {82, 45}, {82, 9},
 {0, 9}, {0, 36}
 */
+
+#include <GL/glut.h>
+#include <iostream>
+using namespace std;
+
+int squareX = -90; // 작은 사각형의 초기 x 좌표
+int squareY = 0;   // 작은 사각형의 초기 y 좌표
+int squareSize = 10; // 작은 사각형의 크기
+
+//그 2차원 배열 -> 라인 만들 곳! (경로)
+
 
 
 
