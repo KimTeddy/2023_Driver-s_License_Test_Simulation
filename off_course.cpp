@@ -22,8 +22,8 @@
 #include <GL/glut.h>
 #include <iostream>
 
-int squareX = -90; // 작은 사각형의 초기 x 좌표
-int squareY = 0;   // 작은 사각형의 초기 y 좌표
+int squareX = 0; // 작은 사각형의 초기 x 좌표
+int squareY = 50; // 작은 사각형의 초기 y 좌표
 int squareSize = 10; // 작은 사각형의 크기
 
 // 4개의 루프 선분의 좌표
@@ -32,6 +32,12 @@ int lineCoordinates[][2] = {
     {-97, 55},
     {91, 55},
     {91, -61}
+};
+int additionalLineCoordinates1[][2] = {
+    {-73, 9},
+    {-73, 36},
+    {-9, 36},
+    {-9, 9}
 };
 
 bool touchingLoop = false;
@@ -53,8 +59,49 @@ void drawLoopLines() {
     for (int i = 0; i < sizeof(lineCoordinates) / sizeof(lineCoordinates[0]); ++i) {
         glVertex2i(lineCoordinates[i][0], lineCoordinates[i][1]);
     }
-
+    for (int i = 0; i < sizeof(additionalLineCoordinates1) / sizeof(additionalLineCoordinates1[0]); ++i) {
+        glVertex2i(additionalLineCoordinates1[i][0], additionalLineCoordinates1[i][1]);
+    }
     glEnd();
+}
+
+bool isPointOnSegment(int px, int py, int x1, int y1, int x2, int y2) {
+    return (px >= std::min(x1, x2) && px <= std::max(x1, x2) &&
+        py >= std::min(y1, y2) && py <= std::max(y1, y2));
+}
+
+bool doIntersect(int x1, int y1, int x2, int y2, int x3, int y3, int x4, int y4) {
+    int o1 = (x2 - x1) * (y3 - y1) - (y2 - y1) * (x3 - x1);
+    int o2 = (x2 - x1) * (y4 - y1) - (y2 - y1) * (x4 - x1);
+    int o3 = (x4 - x3) * (y1 - y3) - (y4 - y3) * (x1 - x3);
+    int o4 = (x4 - x3) * (y2 - y3) - (y4 - y3) * (x2 - x3);
+
+    if ((o1 * o2 < 0) && (o3 * o4 < 0)) {
+        return true;
+    }
+
+    if (o1 == 0 && isPointOnSegment(x3, y3, x1, y1, x2, y2)) return true;
+    if (o2 == 0 && isPointOnSegment(x4, y4, x1, y1, x2, y2)) return true;
+    if (o3 == 0 && isPointOnSegment(x1, y1, x3, y3, x4, y4)) return true;
+    if (o4 == 0 && isPointOnSegment(x2, y2, x3, y3, x4, y4)) return true;
+
+    return false;
+}
+
+void checkIntersection() {
+    touchingLoop = false;
+
+    for (int i = 0; i < sizeof(lineCoordinates) / sizeof(lineCoordinates[0]) - 1; ++i) {
+        int x1 = lineCoordinates[i][0];
+        int y1 = lineCoordinates[i][1];
+        int x2 = lineCoordinates[i + 1][0];
+        int y2 = lineCoordinates[i + 1][1];
+
+        if (doIntersect(squareX, squareY, squareX, squareY + squareSize, x1, y1, x2, y2)) {
+            touchingLoop = true;
+            break;
+        }
+    }
 }
 
 void display() {
@@ -75,8 +122,8 @@ void display() {
 }
 
 void timer(int value) {
-    touchingLoop = false;
     glutPostRedisplay();
+    glutTimerFunc(16, timer, 0); // 60fps로 설정
 }
 
 void keyboard(unsigned char key, int x, int y) {
@@ -96,28 +143,8 @@ void keyboard(unsigned char key, int x, int y) {
         break;
     }
 
-    // 작은 사각형이 루프 선에 닿으면 1초 동안 "-5"를 출력
-    for (int i = 0; i < sizeof(lineCoordinates) / sizeof(lineCoordinates[0]) - 1; ++i) {
-        int x1 = lineCoordinates[i][0];
-        int y1 = lineCoordinates[i][1];
-        int x2 = lineCoordinates[i + 1][0];
-        int y2 = lineCoordinates[i + 1][1];
-
-        int squareCenterX = squareX;
-        int squareCenterY = squareY;
-
-        if ((squareCenterY > y1 && squareCenterY <= y2) || (squareCenterY > y2 && squareCenterY <= y1)) {
-            int intersectX = ((squareCenterY - y1) * (x2 - x1)) / (y2 - y1) + x1;
-            if (intersectX <= squareCenterX) {
-                touchingLoop = true;
-                glutTimerFunc(1000, timer, 0); // 1초 후에 타이머 콜백 함수 호출
-                break;
-            }
-        }
-    }
-
-    // 화면을 다시 그림
-    glutPostRedisplay();
+    // 작은 사각형이 루프 선에 닿으면 -5 출력
+    checkIntersection();
 }
 
 void init() {
@@ -135,6 +162,7 @@ int main(int argc, char** argv) {
 
     init();
     glutDisplayFunc(display);
+    glutTimerFunc(0, timer, 0);
     glutKeyboardFunc(keyboard);
     glutMainLoop();
 
