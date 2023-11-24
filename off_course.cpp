@@ -21,6 +21,7 @@
 //그 2차원 배열 -> 라인 만들 곳! (경로)
 #include <GL/glut.h>
 #include <iostream>
+#include <string>
 
 int squareX = 0; // 작은 사각형의 초기 x 좌표
 int squareY = 50; // 작은 사각형의 초기 y 좌표
@@ -33,7 +34,9 @@ int lineCoordinates[][2] = {
     {91, 55},
     {91, -61}
 };
-int additionalLineCoordinates1[][2] = {
+
+// 추가 선의 좌표
+int additionalLineCoordinates[][2] = {
     {-73, 9},
     {-73, 36},
     {-9, 36},
@@ -41,6 +44,8 @@ int additionalLineCoordinates1[][2] = {
 };
 
 bool touchingLoop = false;
+bool displayNegativeFive = false; // -5를 표시할지 여부
+int negativeFiveDisplayDuration = 1000; // -5 표시 지속 시간 (1초)
 
 void drawSquare() {
     glBegin(GL_QUADS);
@@ -59,36 +64,34 @@ void drawLoopLines() {
     for (int i = 0; i < sizeof(lineCoordinates) / sizeof(lineCoordinates[0]); ++i) {
         glVertex2i(lineCoordinates[i][0], lineCoordinates[i][1]);
     }
-    for (int i = 0; i < sizeof(additionalLineCoordinates1) / sizeof(additionalLineCoordinates1[0]); ++i) {
-        glVertex2i(additionalLineCoordinates1[i][0], additionalLineCoordinates1[i][1]);
-    }
+
     glEnd();
 }
 
-bool isPointOnSegment(int px, int py, int x1, int y1, int x2, int y2) {
-    return (px >= std::min(x1, x2) && px <= std::max(x1, x2) &&
-        py >= std::min(y1, y2) && py <= std::max(y1, y2));
-}
+void drawAdditionalLine() {
+    glBegin(GL_LINE_STRIP);
+    glColor3f(1.0, 1.0, 1.0); // 흰색 선
 
-bool doIntersect(int x1, int y1, int x2, int y2, int x3, int y3, int x4, int y4) {
-    int o1 = (x2 - x1) * (y3 - y1) - (y2 - y1) * (x3 - x1);
-    int o2 = (x2 - x1) * (y4 - y1) - (y2 - y1) * (x4 - x1);
-    int o3 = (x4 - x3) * (y1 - y3) - (y4 - y3) * (x1 - x3);
-    int o4 = (x4 - x3) * (y2 - y3) - (y4 - y3) * (x2 - x3);
-
-    if ((o1 * o2 < 0) && (o3 * o4 < 0)) {
-        return true;
+    for (int i = 0; i < sizeof(additionalLineCoordinates) / sizeof(additionalLineCoordinates[0]); ++i) {
+        glVertex2i(additionalLineCoordinates[i][0], additionalLineCoordinates[i][1]);
     }
 
-    if (o1 == 0 && isPointOnSegment(x3, y3, x1, y1, x2, y2)) return true;
-    if (o2 == 0 && isPointOnSegment(x4, y4, x1, y1, x2, y2)) return true;
-    if (o3 == 0 && isPointOnSegment(x1, y1, x3, y3, x4, y4)) return true;
-    if (o4 == 0 && isPointOnSegment(x2, y2, x3, y3, x4, y4)) return true;
-
-    return false;
+    glEnd();
 }
 
-void checkIntersection() {
+void drawNegativeFive() {
+    if (displayNegativeFive) {
+        glColor3f(1.0, 1.0, 1.0); // 흰색 텍스트
+        glRasterPos2i(0, 0);
+
+        std::string text = "-5";
+        for (char c : text) {
+            glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, c);
+        }
+    }
+}
+
+void isSquareInsideLoop() {
     touchingLoop = false;
 
     for (int i = 0; i < sizeof(lineCoordinates) / sizeof(lineCoordinates[0]) - 1; ++i) {
@@ -97,10 +100,29 @@ void checkIntersection() {
         int x2 = lineCoordinates[i + 1][0];
         int y2 = lineCoordinates[i + 1][1];
 
-        if (doIntersect(squareX, squareY, squareX, squareY + squareSize, x1, y1, x2, y2)) {
+        if ((squareX >= std::min(x1, x2) && squareX <= std::max(x1, x2) &&
+            squareY >= std::min(y1, y2) && squareY <= std::max(y1, y2)) ||
+            (squareX + squareSize >= std::min(x1, x2) && squareX + squareSize <= std::max(x1, x2) &&
+                squareY >= std::min(y1, y2) && squareY <= std::max(y1, y2)) ||
+            (squareX >= std::min(x1, x2) && squareX <= std::max(x1, x2) &&
+                squareY + squareSize >= std::min(y1, y2) && squareY + squareSize <= std::max(y1, y2)) ||
+            (squareX + squareSize >= std::min(x1, x2) && squareX + squareSize <= std::max(x1, x2) &&
+                squareY + squareSize >= std::min(y1, y2) && squareY + squareSize <= std::max(y1, y2))) {
             touchingLoop = true;
             break;
         }
+    }
+}
+
+void checkIntersection() {
+    isSquareInsideLoop();
+
+    // 사각형이 루프 선에 닿으면 "-5" 표시 및 타이머 설정
+    if (touchingLoop) {
+        displayNegativeFive = true;
+        glutTimerFunc(negativeFiveDisplayDuration, [](int value) {
+            displayNegativeFive = false;
+            }, 0);
     }
 }
 
@@ -113,10 +135,14 @@ void display() {
     // 루프 선 그리기
     drawLoopLines();
 
+    // 추가 선 그리기
+    drawAdditionalLine();
+
     // 작은 사각형이 루프 선에 닿으면 "-5"를 출력
-    if (touchingLoop) {
-        std::cout << "-5" << std::endl;
-    }
+    checkIntersection();
+
+    // "-5" 표시
+    drawNegativeFive();
 
     glutSwapBuffers();
 }
