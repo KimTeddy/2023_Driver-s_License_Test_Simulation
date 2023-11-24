@@ -18,19 +18,13 @@
 {-85, 9}, {-85, 45}, {82, 45}, {82, 9},
 {0, 9}, {0, 36}
 */
-
+//그 2차원 배열 -> 라인 만들 곳! (경로)
 #include <GL/glut.h>
 #include <iostream>
-using namespace std;
 
 int squareX = -90; // 작은 사각형의 초기 x 좌표
 int squareY = 0;   // 작은 사각형의 초기 y 좌표
 int squareSize = 10; // 작은 사각형의 크기
-
-//그 2차원 배열 -> 라인 만들 곳! (경로)
-
-
-
 
 // 4개의 루프 선분의 좌표
 int lineCoordinates[][2] = {
@@ -45,10 +39,10 @@ bool touchingLoop = false;
 void drawSquare() {
     glBegin(GL_QUADS);
     glColor3f(1.0, 1.0, 1.0); // 흰색 사각형
-    glVertex2i(squareX, squareY);
-    glVertex2i(squareX + squareSize, squareY);
-    glVertex2i(squareX + squareSize, squareY + squareSize);
-    glVertex2i(squareX, squareY + squareSize);
+    glVertex2i(squareX - 7, squareY - 2);
+    glVertex2i(squareX + 7, squareY - 2);
+    glVertex2i(squareX + 7, squareY + 2);
+    glVertex2i(squareX - 7, squareY + 2);
     glEnd();
 }
 
@@ -74,7 +68,7 @@ void display() {
 
     // 작은 사각형이 루프 선에 닿으면 "-5"를 출력
     if (touchingLoop) {
-        std:cout << "-5" << std::endl;
+        std::cout << "-5" << std::endl;
     }
 
     glutSwapBuffers();
@@ -109,8 +103,8 @@ void keyboard(unsigned char key, int x, int y) {
         int x2 = lineCoordinates[i + 1][0];
         int y2 = lineCoordinates[i + 1][1];
 
-        int squareCenterX = squareX + squareSize / 2;
-        int squareCenterY = squareY + squareSize / 2;
+        int squareCenterX = squareX;
+        int squareCenterY = squareY;
 
         if ((squareCenterY > y1 && squareCenterY <= y2) || (squareCenterY > y2 && squareCenterY <= y1)) {
             int intersectX = ((squareCenterY - y1) * (x2 - x1)) / (y2 - y1) + x1;
