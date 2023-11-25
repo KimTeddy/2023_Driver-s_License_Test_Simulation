@@ -1,8 +1,11 @@
 #include <algorithm>
 #include <GL/glut.h>
+#include <iostream>
 
 int squareX = 0; // 작은 사각형의 초기 x 좌표
 int squareY = 50; // 작은 사각형의 초기 y 좌표
+int a = 0; // 점수 깎을 일종의 버퍼
+int b = 100; // 기능 시험 처음 주어지는 점수
 
 // 첫 번째 경로 좌표
 int pathCoordinates1[][2] = {
@@ -66,30 +69,13 @@ void drawSquare() { // 작은 사각형 그리기
     glEnd();
 }
 
-bool isPointOnPath(int x, int y) {
-    // 모든 경로의 좌표 범위 확인
-
-    // 첫 번째 경로 확인
-    for (int i = 0; i < sizeof(pathCoordinates1) / sizeof(pathCoordinates1[0]) - 1; ++i) {
-        int x1 = pathCoordinates1[i][0];
-        int y1 = pathCoordinates1[i][1];
-        int x2 = pathCoordinates1[i + 1][0];
-        int y2 = pathCoordinates1[i + 1][1];
-
-        // 현재 점이 선분 위에 있는지 확인
-        if ((y - y1) * (x2 - x1) == (y2 - y1) * (x - x1) &&
-            x >= std::min(x1, x2) && x <= std::max(x1, x2) &&
-            y >= std::min(y1, y2) && y <= std::max(y1, y2)) {
-            return true;
-        }
-    }
- 
-    // 두 번째 경로 확인
-    for (int i = 0; i < sizeof(pathCoordinates2) / sizeof(pathCoordinates2[0]) - 1; ++i) {
-        int x1 = pathCoordinates2[i][0];
-        int y1 = pathCoordinates2[i][1];
-        int x2 = pathCoordinates2[i + 1][0];
-        int y2 = pathCoordinates2[i + 1][1];
+// 경로의 좌표 범위 확인
+bool isPointOnPath(int x, int y, const int pathCoordinates[][2], int pathSize) {
+    for (int i = 0; i < pathSize - 1; ++i) {
+        int x1 = pathCoordinates[i][0];
+        int y1 = pathCoordinates[i][1];
+        int x2 = pathCoordinates[i + 1][0];
+        int y2 = pathCoordinates[i + 1][1];
 
         // 현재 점이 선분 위에 있는지 확인
         if ((y - y1) * (x2 - x1) == (y2 - y1) * (x - x1) &&
@@ -99,34 +85,29 @@ bool isPointOnPath(int x, int y) {
         }
     }
 
-    // 세 번째 경로 확인
-    for (int i = 0; i < sizeof(pathCoordinates3) / sizeof(pathCoordinates3[0]) - 1; ++i) {
-        int x1 = pathCoordinates3[i][0];
-        int y1 = pathCoordinates3[i][1];
-        int x2 = pathCoordinates3[i + 1][0];
-        int y2 = pathCoordinates3[i + 1][1];
+    // 마지막 선분 확인
+    int lastX1 = pathCoordinates[pathSize - 1][0];
+    int lastY1 = pathCoordinates[pathSize - 1][1];
+    int lastX2 = pathCoordinates[0][0];
+    int lastY2 = pathCoordinates[0][1];
 
-        // 현재 점이 선분 위에 있는지 확인
-        if ((y - y1) * (x2 - x1) == (y2 - y1) * (x - x1) &&
-            x >= std::min(x1, x2) && x <= std::max(x1, x2) &&
-            y >= std::min(y1, y2) && y <= std::max(y1, y2)) {
-            return true;
-        }
+    if ((y - lastY1) * (lastX2 - lastX1) == (lastY2 - lastY1) * (x - lastX1) &&
+        x >= std::min(lastX1, lastX2) && x <= std::max(lastX1, lastX2) &&
+        y >= std::min(lastY1, lastY2) && y <= std::max(lastY1, lastY2)) {
+        return true;
     }
 
-    // 네 번째 경로 확인
-    for (int i = 0; i < sizeof(pathCoordinates4) / sizeof(pathCoordinates4[0]) - 1; ++i) {
-        int x1 = pathCoordinates4[i][0];
-        int y1 = pathCoordinates4[i][1];
-        int x2 = pathCoordinates4[i + 1][0];
-        int y2 = pathCoordinates4[i + 1][1];
+    return false;
+}
 
-        // 현재 점이 선분 위에 있는지 확인
-        if ((y - y1) * (x2 - x1) == (y2 - y1) * (x - x1) &&
-            x >= std::min(x1, x2) && x <= std::max(x1, x2) &&
-            y >= std::min(y1, y2) && y <= std::max(y1, y2)) {
-            return true;
-        }
+// 작은 사각형의 각 꼭짓점이 경로 위에 있는지 확인하는 함수
+bool isSquareOnPath(int x, int y, const int pathCoordinates[][2], int pathSize) {
+    // 작은 사각형의 각 꼭짓점에 대해 확인
+    if (isPointOnPath(x - 7, y - 2, pathCoordinates, pathSize) ||
+        isPointOnPath(x + 7, y - 2, pathCoordinates, pathSize) ||
+        isPointOnPath(x + 7, y + 2, pathCoordinates, pathSize) ||
+        isPointOnPath(x - 7, y + 2, pathCoordinates, pathSize)) {
+        return true;
     }
 
     return false;
@@ -139,21 +120,36 @@ void drawText(const char* text, int x, int y) {
     }
 }
 
+int current_score() {
+    if (a > 0) {
+        return b;
+    }
+    else {
+        b -= 5;
+        return b;
+    }
+}
+
 void display() {
     glClear(GL_COLOR_BUFFER_BIT);
 
     // 작은 사각형과 네 개의 경로 그리기
     drawSquare();
 
-    // 경로 확인 및 출력
-    if (isPointOnPath(squareX - 7, squareY - 2) ||
-        isPointOnPath(squareX + 7, squareY - 2) ||
-        isPointOnPath(squareX + 7, squareY + 2) ||
-        isPointOnPath(squareX - 7, squareY + 2)) {
+    // 작은 사각형의 각 꼭짓점이 경로 위에 있는지 확인 및 출력
+    if (isSquareOnPath(squareX, squareY, pathCoordinates1, sizeof(pathCoordinates1) / sizeof(pathCoordinates1[0])) ||
+        isSquareOnPath(squareX, squareY, pathCoordinates2, sizeof(pathCoordinates2) / sizeof(pathCoordinates2[0])) ||
+        isSquareOnPath(squareX, squareY, pathCoordinates3, sizeof(pathCoordinates3) / sizeof(pathCoordinates3[0])) ||
+        isSquareOnPath(squareX, squareY, pathCoordinates4, sizeof(pathCoordinates4) / sizeof(pathCoordinates4[0]))) {
         // 경로 위에 있음을 출력
         glColor3f(1.0, 0.0, 0.0); // 빨간색
         drawText("On Path", -80, -90);
+        a = 1;
     }
+    else {
+        a = -1;
+    }
+    int updatedScore = current_score(); // 현재 점수 계산
 
     glutSwapBuffers();
 }
@@ -193,12 +189,12 @@ int main(int argc, char** argv) {
 
     init();
     glutDisplayFunc(display);
+    current_score(); // 초기 점수 계산
     glutKeyboardFunc(keyboard);
     glutMainLoop();
 
     return 0;
 }
-
 
 
 --------------------------------------------------------------------------
