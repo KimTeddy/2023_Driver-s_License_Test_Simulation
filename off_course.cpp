@@ -66,8 +66,8 @@ void drawSquare() { // 작은 사각형 그리기
     glEnd();
 }
 
+// 경로의 좌표 범위 확인
 bool isPointOnPath(int x, int y, const int pathCoordinates[][2], int pathSize) {
-    // 경로의 좌표 범위 확인
     for (int i = 0; i < pathSize - 1; ++i) {
         int x1 = pathCoordinates[i][0];
         int y1 = pathCoordinates[i][1];
@@ -97,6 +97,18 @@ bool isPointOnPath(int x, int y, const int pathCoordinates[][2], int pathSize) {
     return false;
 }
 
+// 작은 사각형의 각 꼭짓점이 경로 위에 있는지 확인하는 함수
+bool isSquareOnPath(int x, int y, const int pathCoordinates[][2], int pathSize) {
+    // 작은 사각형의 각 꼭짓점에 대해 확인
+    if (isPointOnPath(x - 7, y - 2, pathCoordinates, pathSize) ||
+        isPointOnPath(x + 7, y - 2, pathCoordinates, pathSize) ||
+        isPointOnPath(x + 7, y + 2, pathCoordinates, pathSize) ||
+        isPointOnPath(x - 7, y + 2, pathCoordinates, pathSize)) {
+        return true;
+    }
+
+    return false;
+}
 
 void drawText(const char* text, int x, int y) {
     glRasterPos2i(x, y);
@@ -111,17 +123,15 @@ void display() {
     // 작은 사각형과 네 개의 경로 그리기
     drawSquare();
 
-    // 경로 확인 및 출력
- // 경로 확인 및 출력
-    if (isPointOnPath(squareX - 7, squareY - 2, pathCoordinates1, sizeof(pathCoordinates1) / sizeof(pathCoordinates1[0])) ||
-        isPointOnPath(squareX + 7, squareY - 2, pathCoordinates2, sizeof(pathCoordinates2) / sizeof(pathCoordinates2[0])) ||
-        isPointOnPath(squareX + 7, squareY + 2, pathCoordinates3, sizeof(pathCoordinates3) / sizeof(pathCoordinates3[0])) ||
-        isPointOnPath(squareX - 7, squareY + 2, pathCoordinates4, sizeof(pathCoordinates4) / sizeof(pathCoordinates4[0]))) {
+    // 작은 사각형의 각 꼭짓점이 경로 위에 있는지 확인 및 출력
+    if (isSquareOnPath(squareX, squareY, pathCoordinates1, sizeof(pathCoordinates1) / sizeof(pathCoordinates1[0])) ||
+        isSquareOnPath(squareX, squareY, pathCoordinates2, sizeof(pathCoordinates2) / sizeof(pathCoordinates2[0])) ||
+        isSquareOnPath(squareX, squareY, pathCoordinates3, sizeof(pathCoordinates3) / sizeof(pathCoordinates3[0])) ||
+        isSquareOnPath(squareX, squareY, pathCoordinates4, sizeof(pathCoordinates4) / sizeof(pathCoordinates4[0]))) {
         // 경로 위에 있음을 출력
         glColor3f(1.0, 0.0, 0.0); // 빨간색
         drawText("On Path", -80, -90);
     }
-
 
     glutSwapBuffers();
 }
