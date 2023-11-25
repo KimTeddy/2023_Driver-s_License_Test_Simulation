@@ -26,6 +26,10 @@ int pathCoordinates3[][2] = {
 int pathCoordinates4[][2] = {
     {9, -43}, {9, -9}, {73, -9}, {73, -43}
 };
+//다선 번째 경로 좌표
+int pathCoordinates5[][2] = {
+    {-76, -43},{-73, -9}, {-9, -9}, {-9, -43}
+};
 
 void drawSquare() { // 작은 사각형 그리기
     glBegin(GL_QUADS);
@@ -65,6 +69,14 @@ void drawSquare() { // 작은 사각형 그리기
     glColor3f(1.0, 1.0, 1.0); // 흰색 선
     for (int i = 0; i < sizeof(pathCoordinates4) / sizeof(pathCoordinates4[0]); ++i) {
         glVertex2i(pathCoordinates4[i][0], pathCoordinates4[i][1]);
+    }
+    glEnd();
+
+    // 다섯 번째 경로 그리기
+    glBegin(GL_LINE_LOOP);
+    glColor3f(1.0, 1.0, 1.0); // 흰색 선
+    for (int i = 0; i < sizeof(pathCoordinates5) / sizeof(pathCoordinates5[0]); ++i) {
+        glVertex2i(pathCoordinates5[i][0], pathCoordinates5[i][1]);
     }
     glEnd();
 }
