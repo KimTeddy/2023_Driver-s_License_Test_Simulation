@@ -1,3 +1,50 @@
+#include <GL/glut.h>
+
+int squareX = 0; // 작은 사각형의 초기 x 좌표
+int squareY = 50; // 작은 사각형의 초기 y 좌표
+
+void drawSquare() {
+    glBegin(GL_QUADS);
+    glColor3f(1.0, 1.0, 1.0); // 흰색 사각형
+    glVertex2i(squareX - 7, squareY - 2);
+    glVertex2i(squareX + 7, squareY - 2);
+    glVertex2i(squareX + 7, squareY + 2);
+    glVertex2i(squareX - 7, squareY + 2);
+    glEnd();
+}
+
+void display() {
+    glClear(GL_COLOR_BUFFER_BIT);
+
+    // 작은 사각형 그리기
+    drawSquare();
+
+    glutSwapBuffers();
+}
+
+void init() {
+    glClearColor(0.0, 0.0, 0.0, 0.0); // 배경색을 검은색으로 지정
+    glMatrixMode(GL_PROJECTION);
+    gluOrtho2D(-100, 100, -100, 100); // 좌표 시스템을 적절하게 설정
+}
+
+int main(int argc, char** argv) {
+    glutInit(&argc, argv);
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
+    glutInitWindowSize(500, 500);
+    glutInitWindowPosition(100, 100);
+    glutCreateWindow("cha gun cha gun hae bo ja");
+
+    init();
+    glutDisplayFunc(display);
+    glutMainLoop();
+
+    return 0;
+}
+
+
+
+--------------------------------------------------------------------------
 //임시로 만든 -- 줄에 닿으면 -5반환
 /*
 백색줄 --------------------------------------------------------
