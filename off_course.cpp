@@ -39,6 +39,7 @@ int lineCoordinates[][5][2] = {
 bool touchingLoop = false;
 
 void drawSquare() {
+
     glBegin(GL_QUADS);
     glColor3f(1.0, 1.0, 1.0); // 흰색 사각형
     glVertex2i(squareX - 7, squareY - 2);
@@ -134,27 +135,27 @@ void timer(int value) {
 }
 
 void keyboard(unsigned char key, int x, int y) {
-    // 키보드 입력에 따라 작은 사각형을 움직임
     switch (key) {
     case 'w':
-        squareY += 5; // 위로 이동
+        squareY += 5; // Move up
         break;
     case 's':
-        squareY -= 5; // 아래로 이동
+        squareY -= 5; // Move down
         break;
     case 'a':
-        squareX -= 5; // 왼쪽으로 이동
-        rotationAngle -= 10.0;
+        // Rotate counterclockwise (left) around the center
+
+        glRotatef(-10.0, squareX, squareY, 0.0);
+ 
         break;
     case 'd':
-        squareX += 5; // 오른쪽으로 이동
-        glTranslatef(squareX + squareSize / 2, squareY + squareSize / 2, 0.0);
-        glRotatef(-10.0, 0.0, 0.0, 1.0);
-        glTranslatef(-squareX - squareSize / 2, -squareY - squareSize / 2, 0.0);
+        // Rotate clockwise (right) around the center
+        glTranslatef(squareX, squareY, 0.0);
+        glRotatef(10.0, 0.0, 0.0, 0.0);
+        glTranslatef(-squareX, -squareY, 0.0);
         break;
     }
 
-    // 작은 사각형이 루프 선에 닿으면 -5 출력
     checkIntersection();
 }
 
