@@ -3,7 +3,15 @@
 int squareX = 0; // 작은 사각형의 초기 x 좌표
 int squareY = 50; // 작은 사각형의 초기 y 좌표
 
-void drawSquare() {
+bool isPointOnPath(int x, int y) {
+    // 경로의 좌표 범위 확인
+    if ((x >= -20 && x <= 20) && (y == -20)) {
+        return true;
+    }
+    return false;
+}
+
+void drawSquare() { // 작은 사각형 그리기
     glBegin(GL_QUADS);
     glColor3f(1.0, 1.0, 1.0); // 흰색 사각형
     glVertex2i(squareX - 7, squareY - 2);
@@ -11,15 +19,58 @@ void drawSquare() {
     glVertex2i(squareX + 7, squareY + 2);
     glVertex2i(squareX - 7, squareY + 2);
     glEnd();
+
+    // {-20, -20}에서 {20, -20}을 잇는 선 그리기
+    glBegin(GL_LINES);
+    glVertex2i(-20, -20);
+    glVertex2i(20, -20);
+    glEnd();
+}
+
+void drawText(const char* text, int x, int y) {
+    glRasterPos2i(x, y);
+    for (const char* c = text; *c != '\0'; ++c) {
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, *c);
+    }
 }
 
 void display() {
     glClear(GL_COLOR_BUFFER_BIT);
 
-    // 작은 사각형 그리기
+    // 작은 사각형과 선 그리기
     drawSquare();
 
+    // 경로 확인 및 출력
+    if (isPointOnPath(squareX - 7, squareY - 2) ||
+        isPointOnPath(squareX + 7, squareY - 2) ||
+        isPointOnPath(squareX + 7, squareY + 2) ||
+        isPointOnPath(squareX - 7, squareY + 2)) {
+        // 경로 위에 있음을 출력
+        glColor3f(1.0, 0.0, 0.0); // 빨간색
+        drawText("On Path", -80, -90);
+    }
+
     glutSwapBuffers();
+}
+
+void keyboard(unsigned char key, int x, int y) {
+    // 키보드 입력에 따라 작은 사각형을 움직임
+    switch (key) {
+    case 'w':
+        squareY += 5; // 위로 이동
+        break;
+    case 's':
+        squareY -= 5; // 아래로 이동
+        break;
+    case 'a':
+        squareX -= 5; // 왼쪽으로 이동
+        break;
+    case 'd':
+        squareX += 5; // 오른쪽으로 이동
+        break;
+    }
+
+    glutPostRedisplay(); // 다시 그리기 요청
 }
 
 void init() {
@@ -37,11 +88,11 @@ int main(int argc, char** argv) {
 
     init();
     glutDisplayFunc(display);
+    glutKeyboardFunc(keyboard);
     glutMainLoop();
 
     return 0;
 }
-
 
 
 --------------------------------------------------------------------------
