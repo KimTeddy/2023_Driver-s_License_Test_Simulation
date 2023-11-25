@@ -21,7 +21,10 @@
 //그 2차원 배열 -> 라인 만들 곳! (경로)
  #include <GL/glut.h>
 #include <iostream>
-
+int squareX = 0; // 작은 사각형의 초기 x 좌표
+int squareY = 50; // 작은 사각형의 초기 y 좌표
+int squareSize = 10; // 작은 사각형의 크기
+bool touchingLoop = false;
 // 5개의 루프 선분의 좌표
 int lineCoordinates[][5][2] = {
     {{-97, -61}, {-97,55}, {91, 55}, {91, -61}},
@@ -31,7 +34,7 @@ int lineCoordinates[][5][2] = {
     {{-73, -43}, {-73, -9}, {-9, -9}, {-9, -43}}
 };
 
-bool touchingLoop = false;
+
 
 void drawSquare() {
     glBegin(GL_QUADS);
