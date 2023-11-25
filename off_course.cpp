@@ -1,22 +1,29 @@
-#include <algorithm> 
+#include <algorithm>
 #include <GL/glut.h>
-#define _CRT_SECURE_NO_WARNINGS
 
 int squareX = 0; // 작은 사각형의 초기 x 좌표
-int squareY = 90; // 작은 사각형의 초기 y 좌표
-void drawText_s(const char* text, int x, int y);
+int squareY = 50; // 작은 사각형의 초기 y 좌표
 
-// 새로운 경로 좌표
-int pathCoordinates[][2] = {
-    {-97, -61}, {-97, 55}, {91, 55}, {91, -61},
+// 첫 번째 경로 좌표
+int pathCoordinates1[][2] = {
+    {-97, -61}, {-97, 55}, {91, 55}, {91, -61}
+};
+
+// 두 번째 경로 좌표
+int pathCoordinates2[][2] = {
     {-73, 9}, {-73, 36}, {-9, 36}, {-9, 9}
 };
-void drawText_s(const char* text, int x, int y) {
-    glRasterPos2i(x, y);
-    for (const char* c = text; *c != '\0'; ++c) {
-        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, *c);
-    }
-}
+
+// 세 번째 경로 좌표
+int pathCoordinates3[][2] = {
+    {9, 9}, {9, 36}, {73, 36}, {73, 9}
+};
+
+// 네 번째 경로 좌표
+int pathCoordinates4[][2] = {
+    {9, -43}, {9, -9}, {73, -9}, {73, -43}
+};
+
 void drawSquare() { // 작은 사각형 그리기
     glBegin(GL_QUADS);
     glColor3f(1.0, 1.0, 1.0); // 흰색 사각형
@@ -26,28 +33,48 @@ void drawSquare() { // 작은 사각형 그리기
     glVertex2i(squareX - 7, squareY + 2);
     glEnd();
 
-
-
-    // 새로운 경로 그리기
+    // 첫 번째 경로 그리기
     glBegin(GL_LINE_LOOP);
     glColor3f(1.0, 1.0, 1.0); // 흰색 선
-    for (int i = 0; i < sizeof(pathCoordinates) / sizeof(pathCoordinates[0]); ++i) {
-        glVertex2i(pathCoordinates[i][0], pathCoordinates[i][1]);
-        char coordinateString[10];
-        sprintf_s(coordinateString, "(%d, %d)", pathCoordinates[i][0], pathCoordinates[i][1]);
-        drawText_s(coordinateString, pathCoordinates[i][0], pathCoordinates[i][1]);
+    for (int i = 0; i < sizeof(pathCoordinates1) / sizeof(pathCoordinates1[0]); ++i) {
+        glVertex2i(pathCoordinates1[i][0], pathCoordinates1[i][1]);
+    }
+    glEnd();
+
+    // 두 번째 경로 그리기
+    glBegin(GL_LINE_LOOP);
+    glColor3f(1.0, 1.0, 1.0); // 흰색 선
+    for (int i = 0; i < sizeof(pathCoordinates2) / sizeof(pathCoordinates2[0]); ++i) {
+        glVertex2i(pathCoordinates2[i][0], pathCoordinates2[i][1]);
+    }
+    glEnd();
+
+    // 세 번째 경로 그리기
+    glBegin(GL_LINE_LOOP);
+    glColor3f(1.0, 1.0, 1.0); // 흰색 선
+    for (int i = 0; i < sizeof(pathCoordinates3) / sizeof(pathCoordinates3[0]); ++i) {
+        glVertex2i(pathCoordinates3[i][0], pathCoordinates3[i][1]);
+    }
+    glEnd();
+
+    // 네 번째 경로 그리기
+    glBegin(GL_LINE_LOOP);
+    glColor3f(1.0, 1.0, 1.0); // 흰색 선
+    for (int i = 0; i < sizeof(pathCoordinates4) / sizeof(pathCoordinates4[0]); ++i) {
+        glVertex2i(pathCoordinates4[i][0], pathCoordinates4[i][1]);
     }
     glEnd();
 }
 
-
 bool isPointOnPath(int x, int y) {
-    // 경로의 좌표 범위 확인
-    for (int i = 0; i < sizeof(pathCoordinates) / sizeof(pathCoordinates[0]) - 1; ++i) {
-        int x1 = pathCoordinates[i][0];
-        int y1 = pathCoordinates[i][1];
-        int x2 = pathCoordinates[i + 1][0];
-        int y2 = pathCoordinates[i + 1][1];
+    // 모든 경로의 좌표 범위 확인
+
+    // 첫 번째 경로 확인
+    for (int i = 0; i < sizeof(pathCoordinates1) / sizeof(pathCoordinates1[0]) - 1; ++i) {
+        int x1 = pathCoordinates1[i][0];
+        int y1 = pathCoordinates1[i][1];
+        int x2 = pathCoordinates1[i + 1][0];
+        int y2 = pathCoordinates1[i + 1][1];
 
         // 현재 점이 선분 위에 있는지 확인
         if ((y - y1) * (x2 - x1) == (y2 - y1) * (x - x1) &&
@@ -56,24 +83,66 @@ bool isPointOnPath(int x, int y) {
             return true;
         }
     }
-    int lastX1 = pathCoordinates[sizeof(pathCoordinates) / sizeof(pathCoordinates[0]) - 1][0];
-    int lastY1 = pathCoordinates[sizeof(pathCoordinates) / sizeof(pathCoordinates[0]) - 1][1];
-    int lastX2 = pathCoordinates[0][0];
-    int lastY2 = pathCoordinates[0][1];
 
-    if ((y - lastY1) * (lastX2 - lastX1) == (lastY2 - lastY1) * (x - lastX1) &&
-        x >= std::min(lastX1, lastX2) && x <= std::max(lastX1, lastX2) &&
-        y >= std::min(lastY1, lastY2) && y <= std::max(lastY1, lastY2)) {
-        return true;
+    // 두 번째 경로 확인
+    for (int i = 0; i < sizeof(pathCoordinates2) / sizeof(pathCoordinates2[0]) - 1; ++i) {
+        int x1 = pathCoordinates2[i][0];
+        int y1 = pathCoordinates2[i][1];
+        int x2 = pathCoordinates2[i + 1][0];
+        int y2 = pathCoordinates2[i + 1][1];
+
+        // 현재 점이 선분 위에 있는지 확인
+        if ((y - y1) * (x2 - x1) == (y2 - y1) * (x - x1) &&
+            x >= std::min(x1, x2) && x <= std::max(x1, x2) &&
+            y >= std::min(y1, y2) && y <= std::max(y1, y2)) {
+            return true;
+        }
     }
+
+    // 세 번째 경로 확인
+    for (int i = 0; i < sizeof(pathCoordinates3) / sizeof(pathCoordinates3[0]) - 1; ++i) {
+        int x1 = pathCoordinates3[i][0];
+        int y1 = pathCoordinates3[i][1];
+        int x2 = pathCoordinates3[i + 1][0];
+        int y2 = pathCoordinates3[i + 1][1];
+
+        // 현재 점이 선분 위에 있는지 확인
+        if ((y - y1) * (x2 - x1) == (y2 - y1) * (x - x1) &&
+            x >= std::min(x1, x2) && x <= std::max(x1, x2) &&
+            y >= std::min(y1, y2) && y <= std::max(y1, y2)) {
+            return true;
+        }
+    }
+
+    // 네 번째 경로 확인
+    for (int i = 0; i < sizeof(pathCoordinates4) / sizeof(pathCoordinates4[0]) - 1; ++i) {
+        int x1 = pathCoordinates4[i][0];
+        int y1 = pathCoordinates4[i][1];
+        int x2 = pathCoordinates4[i + 1][0];
+        int y2 = pathCoordinates4[i + 1][1];
+
+        // 현재 점이 선분 위에 있는지 확인
+        if ((y - y1) * (x2 - x1) == (y2 - y1) * (x - x1) &&
+            x >= std::min(x1, x2) && x <= std::max(x1, x2) &&
+            y >= std::min(y1, y2) && y <= std::max(y1, y2)) {
+            return true;
+        }
+    }
+
     return false;
 }
 
+void drawText(const char* text, int x, int y) {
+    glRasterPos2i(x, y);
+    for (const char* c = text; *c != '\0'; ++c) {
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, *c);
+    }
+}
 
 void display() {
     glClear(GL_COLOR_BUFFER_BIT);
 
-    // 작은 사각형과 경로 그리기
+    // 작은 사각형과 네 개의 경로 그리기
     drawSquare();
 
     // 경로 확인 및 출력
@@ -83,7 +152,7 @@ void display() {
         isPointOnPath(squareX - 7, squareY + 2)) {
         // 경로 위에 있음을 출력
         glColor3f(1.0, 0.0, 0.0); // 빨간색
-        drawText_s("On Path", 0, 0);
+        drawText("On Path", -80, -90);
     }
 
     glutSwapBuffers();
@@ -112,13 +181,13 @@ void keyboard(unsigned char key, int x, int y) {
 void init() {
     glClearColor(0.0, 0.0, 0.0, 0.0); // 배경색을 검은색으로 지정
     glMatrixMode(GL_PROJECTION);
-    gluOrtho2D(-150, 150, -150, 150); // 좌표 시스템을 적절하게 설정
+    gluOrtho2D(-100, 100, -100, 100); // 좌표 시스템을 적절하게 설정
 }
 
 int main(int argc, char** argv) {
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
-    glutInitWindowSize(700, 700);
+    glutInitWindowSize(500, 500);
     glutInitWindowPosition(100, 100);
     glutCreateWindow("cha gun cha gun hae bo ja");
 
