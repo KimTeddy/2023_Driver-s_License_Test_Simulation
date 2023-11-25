@@ -66,15 +66,13 @@ void drawSquare() { // 작은 사각형 그리기
     glEnd();
 }
 
-bool isPointOnPath(int x, int y) {
-    // 모든 경로의 좌표 범위 확인
-
-    // 첫 번째 경로 확인
-    for (int i = 0; i < sizeof(pathCoordinates1) / sizeof(pathCoordinates1[0]) - 1; ++i) {
-        int x1 = pathCoordinates1[i][0];
-        int y1 = pathCoordinates1[i][1];
-        int x2 = pathCoordinates1[i + 1][0];
-        int y2 = pathCoordinates1[i + 1][1];
+bool isPointOnPath(int x, int y, const int pathCoordinates[][2], int pathSize) {
+    // 경로의 좌표 범위 확인
+    for (int i = 0; i < pathSize - 1; ++i) {
+        int x1 = pathCoordinates[i][0];
+        int y1 = pathCoordinates[i][1];
+        int x2 = pathCoordinates[i + 1][0];
+        int y2 = pathCoordinates[i + 1][1];
 
         // 현재 점이 선분 위에 있는지 확인
         if ((y - y1) * (x2 - x1) == (y2 - y1) * (x - x1) &&
@@ -84,53 +82,21 @@ bool isPointOnPath(int x, int y) {
         }
     }
 
-    // 두 번째 경로 확인
-    for (int i = 0; i < sizeof(pathCoordinates2) / sizeof(pathCoordinates2[0]) - 1; ++i) {
-        int x1 = pathCoordinates2[i][0];
-        int y1 = pathCoordinates2[i][1];
-        int x2 = pathCoordinates2[i + 1][0];
-        int y2 = pathCoordinates2[i + 1][1];
+    // 마지막 선분 확인
+    int lastX1 = pathCoordinates[pathSize - 1][0];
+    int lastY1 = pathCoordinates[pathSize - 1][1];
+    int lastX2 = pathCoordinates[0][0];
+    int lastY2 = pathCoordinates[0][1];
 
-        // 현재 점이 선분 위에 있는지 확인
-        if ((y - y1) * (x2 - x1) == (y2 - y1) * (x - x1) &&
-            x >= std::min(x1, x2) && x <= std::max(x1, x2) &&
-            y >= std::min(y1, y2) && y <= std::max(y1, y2)) {
-            return true;
-        }
-    }
-
-    // 세 번째 경로 확인
-    for (int i = 0; i < sizeof(pathCoordinates3) / sizeof(pathCoordinates3[0]) - 1; ++i) {
-        int x1 = pathCoordinates3[i][0];
-        int y1 = pathCoordinates3[i][1];
-        int x2 = pathCoordinates3[i + 1][0];
-        int y2 = pathCoordinates3[i + 1][1];
-
-        // 현재 점이 선분 위에 있는지 확인
-        if ((y - y1) * (x2 - x1) == (y2 - y1) * (x - x1) &&
-            x >= std::min(x1, x2) && x <= std::max(x1, x2) &&
-            y >= std::min(y1, y2) && y <= std::max(y1, y2)) {
-            return true;
-        }
-    }
-
-    // 네 번째 경로 확인
-    for (int i = 0; i < sizeof(pathCoordinates4) / sizeof(pathCoordinates4[0]) - 1; ++i) {
-        int x1 = pathCoordinates4[i][0];
-        int y1 = pathCoordinates4[i][1];
-        int x2 = pathCoordinates4[i + 1][0];
-        int y2 = pathCoordinates4[i + 1][1];
-
-        // 현재 점이 선분 위에 있는지 확인
-        if ((y - y1) * (x2 - x1) == (y2 - y1) * (x - x1) &&
-            x >= std::min(x1, x2) && x <= std::max(x1, x2) &&
-            y >= std::min(y1, y2) && y <= std::max(y1, y2)) {
-            return true;
-        }
+    if ((y - lastY1) * (lastX2 - lastX1) == (lastY2 - lastY1) * (x - lastX1) &&
+        x >= std::min(lastX1, lastX2) && x <= std::max(lastX1, lastX2) &&
+        y >= std::min(lastY1, lastY2) && y <= std::max(lastY1, lastY2)) {
+        return true;
     }
 
     return false;
 }
+
 
 void drawText(const char* text, int x, int y) {
     glRasterPos2i(x, y);
@@ -146,14 +112,16 @@ void display() {
     drawSquare();
 
     // 경로 확인 및 출력
-    if (isPointOnPath(squareX - 7, squareY - 2) ||
-        isPointOnPath(squareX + 7, squareY - 2) ||
-        isPointOnPath(squareX + 7, squareY + 2) ||
-        isPointOnPath(squareX - 7, squareY + 2)) {
+ // 경로 확인 및 출력
+    if (isPointOnPath(squareX - 7, squareY - 2, pathCoordinates1, sizeof(pathCoordinates1) / sizeof(pathCoordinates1[0])) ||
+        isPointOnPath(squareX + 7, squareY - 2, pathCoordinates2, sizeof(pathCoordinates2) / sizeof(pathCoordinates2[0])) ||
+        isPointOnPath(squareX + 7, squareY + 2, pathCoordinates3, sizeof(pathCoordinates3) / sizeof(pathCoordinates3[0])) ||
+        isPointOnPath(squareX - 7, squareY + 2, pathCoordinates4, sizeof(pathCoordinates4) / sizeof(pathCoordinates4[0]))) {
         // 경로 위에 있음을 출력
         glColor3f(1.0, 0.0, 0.0); // 빨간색
         drawText("On Path", -80, -90);
     }
+
 
     glutSwapBuffers();
 }
@@ -198,6 +166,8 @@ int main(int argc, char** argv) {
 
     return 0;
 }
+
+
 
 
 
