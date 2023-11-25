@@ -1,15 +1,22 @@
 #include <algorithm> 
 #include <GL/glut.h>
+#define _CRT_SECURE_NO_WARNINGS
 
 int squareX = 0; // 작은 사각형의 초기 x 좌표
-int squareY = 50; // 작은 사각형의 초기 y 좌표
+int squareY = 90; // 작은 사각형의 초기 y 좌표
+void drawText_s(const char* text, int x, int y);
 
 // 새로운 경로 좌표
 int pathCoordinates[][2] = {
     {-97, -61}, {-97, 55}, {91, 55}, {91, -61},
     {-73, 9}, {-73, 36}, {-9, 36}, {-9, 9}
 };
-
+void drawText_s(const char* text, int x, int y) {
+    glRasterPos2i(x, y);
+    for (const char* c = text; *c != '\0'; ++c) {
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, *c);
+    }
+}
 void drawSquare() { // 작은 사각형 그리기
     glBegin(GL_QUADS);
     glColor3f(1.0, 1.0, 1.0); // 흰색 사각형
@@ -19,14 +26,20 @@ void drawSquare() { // 작은 사각형 그리기
     glVertex2i(squareX - 7, squareY + 2);
     glEnd();
 
+
+
     // 새로운 경로 그리기
     glBegin(GL_LINE_LOOP);
     glColor3f(1.0, 1.0, 1.0); // 흰색 선
     for (int i = 0; i < sizeof(pathCoordinates) / sizeof(pathCoordinates[0]); ++i) {
         glVertex2i(pathCoordinates[i][0], pathCoordinates[i][1]);
+        char coordinateString[10];
+        sprintf_s(coordinateString, "(%d, %d)", pathCoordinates[i][0], pathCoordinates[i][1]);
+        drawText_s(coordinateString, pathCoordinates[i][0], pathCoordinates[i][1]);
     }
     glEnd();
 }
+
 
 bool isPointOnPath(int x, int y) {
     // 경로의 좌표 범위 확인
@@ -56,12 +69,6 @@ bool isPointOnPath(int x, int y) {
     return false;
 }
 
-void drawText(const char* text, int x, int y) {
-    glRasterPos2i(x, y);
-    for (const char* c = text; *c != '\0'; ++c) {
-        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, *c);
-    }
-}
 
 void display() {
     glClear(GL_COLOR_BUFFER_BIT);
@@ -76,7 +83,7 @@ void display() {
         isPointOnPath(squareX - 7, squareY + 2)) {
         // 경로 위에 있음을 출력
         glColor3f(1.0, 0.0, 0.0); // 빨간색
-        drawText("On Path", -80, -90);
+        drawText_s("On Path", 0, 0);
     }
 
     glutSwapBuffers();
@@ -105,13 +112,13 @@ void keyboard(unsigned char key, int x, int y) {
 void init() {
     glClearColor(0.0, 0.0, 0.0, 0.0); // 배경색을 검은색으로 지정
     glMatrixMode(GL_PROJECTION);
-    gluOrtho2D(-100, 100, -100, 100); // 좌표 시스템을 적절하게 설정
+    gluOrtho2D(-150, 150, -150, 150); // 좌표 시스템을 적절하게 설정
 }
 
 int main(int argc, char** argv) {
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
-    glutInitWindowSize(500, 500);
+    glutInitWindowSize(700, 700);
     glutInitWindowPosition(100, 100);
     glutCreateWindow("cha gun cha gun hae bo ja");
 
@@ -122,6 +129,7 @@ int main(int argc, char** argv) {
 
     return 0;
 }
+
 
 
 
