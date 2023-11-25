@@ -19,12 +19,14 @@
 {0, 9}, {0, 36}
 */
 //그 2차원 배열 -> 라인 만들 곳! (경로)
- #include <GL/glut.h>
+#include <GL/glut.h>
 #include <iostream>
+
 int squareX = 0; // 작은 사각형의 초기 x 좌표
 int squareY = 50; // 작은 사각형의 초기 y 좌표
 int squareSize = 10; // 작은 사각형의 크기
-bool touchingLoop = false;
+float rotationAngle = 0.0;
+
 // 5개의 루프 선분의 좌표
 int lineCoordinates[][5][2] = {
     {{-97, -61}, {-97,55}, {91, 55}, {91, -61}},
@@ -34,7 +36,7 @@ int lineCoordinates[][5][2] = {
     {{-73, -43}, {-73, -9}, {-9, -9}, {-9, -43}}
 };
 
-
+bool touchingLoop = false;
 
 void drawSquare() {
     glBegin(GL_QUADS);
@@ -51,7 +53,7 @@ void drawLoopLines() {
         glBegin(GL_LINE_LOOP);
         glColor3f(1.0, 1.0, 1.0); // 흰색 루프 선
 
-        for (int j = 0; j < 4 ; ++j) {
+        for (int j = 0; j < 4; ++j) {
             glVertex2i(lineCoordinates[i][j][0], lineCoordinates[i][j][1]);
         }
         glEnd();
@@ -142,9 +144,13 @@ void keyboard(unsigned char key, int x, int y) {
         break;
     case 'a':
         squareX -= 5; // 왼쪽으로 이동
+        rotationAngle -= 10.0;
         break;
     case 'd':
         squareX += 5; // 오른쪽으로 이동
+        glTranslatef(squareX + squareSize / 2, squareY + squareSize / 2, 0.0);
+        glRotatef(-10.0, 0.0, 0.0, 1.0);
+        glTranslatef(-squareX - squareSize / 2, -squareY - squareSize / 2, 0.0);
         break;
     }
 
