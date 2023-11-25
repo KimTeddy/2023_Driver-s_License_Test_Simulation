@@ -42,6 +42,16 @@ bool isPointOnPath(int x, int y) {
             return true;
         }
     }
+    int lastX1 = pathCoordinates[sizeof(pathCoordinates) / sizeof(pathCoordinates[0]) - 1][0];
+    int lastY1 = pathCoordinates[sizeof(pathCoordinates) / sizeof(pathCoordinates[0]) - 1][1];
+    int lastX2 = pathCoordinates[0][0];
+    int lastY2 = pathCoordinates[0][1];
+
+    if ((y - lastY1) * (lastX2 - lastX1) == (lastY2 - lastY1) * (x - lastX1) &&
+        x >= std::min(lastX1, lastX2) && x <= std::max(lastX1, lastX2) &&
+        y >= std::min(lastY1, lastY2) && y <= std::max(lastY1, lastY2)) {
+        return true;
+    }
     return false;
 }
 
