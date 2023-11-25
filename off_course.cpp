@@ -1,15 +1,13 @@
+#include <algorithm> 
 #include <GL/glut.h>
 
 int squareX = 0; // 작은 사각형의 초기 x 좌표
 int squareY = 50; // 작은 사각형의 초기 y 좌표
 
-bool isPointOnPath(int x, int y) {
-    // 경로의 좌표 범위 확인
-    if ((x >= -20 && x <= 20) && (y == -20)) {
-        return true;
-    }
-    return false;
-}
+// 새로운 경로 좌표
+int pathCoordinates[][2] = {
+    {-97, -61}, {-97, 55}, {91, 55}, {91, -61}
+};
 
 void drawSquare() { // 작은 사각형 그리기
     glBegin(GL_QUADS);
@@ -20,11 +18,31 @@ void drawSquare() { // 작은 사각형 그리기
     glVertex2i(squareX - 7, squareY + 2);
     glEnd();
 
-    // {-20, -20}에서 {20, -20}을 잇는 선 그리기
-    glBegin(GL_LINES);
-    glVertex2i(-20, -20);
-    glVertex2i(20, -20);
+    // 새로운 경로 그리기
+    glBegin(GL_LINE_LOOP);
+    glColor3f(1.0, 1.0, 1.0); // 흰색 선
+    for (int i = 0; i < sizeof(pathCoordinates) / sizeof(pathCoordinates[0]); ++i) {
+        glVertex2i(pathCoordinates[i][0], pathCoordinates[i][1]);
+    }
     glEnd();
+}
+
+bool isPointOnPath(int x, int y) {
+    // 경로의 좌표 범위 확인
+    for (int i = 0; i < sizeof(pathCoordinates) / sizeof(pathCoordinates[0]) - 1; ++i) {
+        int x1 = pathCoordinates[i][0];
+        int y1 = pathCoordinates[i][1];
+        int x2 = pathCoordinates[i + 1][0];
+        int y2 = pathCoordinates[i + 1][1];
+
+        // 현재 점이 선분 위에 있는지 확인
+        if ((y - y1) * (x2 - x1) == (y2 - y1) * (x - x1) &&
+            x >= std::min(x1, x2) && x <= std::max(x1, x2) &&
+            y >= std::min(y1, y2) && y <= std::max(y1, y2)) {
+            return true;
+        }
+    }
+    return false;
 }
 
 void drawText(const char* text, int x, int y) {
@@ -37,7 +55,7 @@ void drawText(const char* text, int x, int y) {
 void display() {
     glClear(GL_COLOR_BUFFER_BIT);
 
-    // 작은 사각형과 선 그리기
+    // 작은 사각형과 경로 그리기
     drawSquare();
 
     // 경로 확인 및 출력
@@ -57,16 +75,16 @@ void keyboard(unsigned char key, int x, int y) {
     // 키보드 입력에 따라 작은 사각형을 움직임
     switch (key) {
     case 'w':
-        squareY += 5; // 위로 이동
+        squareY += 1; // 위로 이동
         break;
     case 's':
-        squareY -= 5; // 아래로 이동
+        squareY -= 1; // 아래로 이동
         break;
     case 'a':
-        squareX -= 5; // 왼쪽으로 이동
+        squareX -= 1; // 왼쪽으로 이동
         break;
     case 'd':
-        squareX += 5; // 오른쪽으로 이동
+        squareX += 1; // 오른쪽으로 이동
         break;
     }
 
@@ -93,6 +111,7 @@ int main(int argc, char** argv) {
 
     return 0;
 }
+
 
 
 --------------------------------------------------------------------------
