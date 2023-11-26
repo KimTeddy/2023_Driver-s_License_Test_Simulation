@@ -34,23 +34,7 @@ int whiteLines[][2][2] = {
     {-9, -17, 0, -17},     // 5번 줄
     {73,9,91,9}
 };
-int yellowPath1[][2] = {
-    {-87, 9}, {-87, 45}, {82, 45}, {82, 9}
-};
-int yellowline2[][2] = {
-    {-15, 0}, {-87, 0}, {-87, -52},{0, -52}, {0, -9}
-};
 
-int yellowline3[][2] = {
-    {0, -52},  {82, -52}, {82, -9}
-};
-
-int yellowline4[][2] = {
-    {0, 9}, {0, 36}
-};
-int yellowline5[][2] = {
-    {9, 0}, {67, 0}
-};
 
 void drawSquare() {
 
@@ -114,46 +98,6 @@ void drawSquare() {
     }
     glEnd();
 
-    glBegin(GL_LINE_STRIP);  // GL_LINE_STRIP은 선을 연결하여 그리는 모드
-    glColor3f(1.0, 1.0, 0.0); // 노란색으로 설정
-    glLineWidth(2);
-    for (int i = 0; i < sizeof(yellowPath1) / sizeof(yellowPath1[0]); ++i) {
-        glVertex2i(yellowPath1[i][0], yellowPath1[i][1]);
-    }
-    glEnd();
-
-    glBegin(GL_LINE_STRIP);
-    glColor3f(1.0, 1.0, 0.0);
-    glLineWidth(2);
-    for (int i = 0; i < sizeof(yellowline2) / sizeof(yellowline2[0]); ++i) {
-        glVertex2i(yellowline2[i][0], yellowline2[i][1]);
-    }
-    glEnd();
-
-    glBegin(GL_LINE_STRIP);
-    glColor3f(1.0, 1.0, 0.0);
-    glLineWidth(2);
-    for (int i = 0; i < sizeof(yellowline3) / sizeof(yellowline3[0]); ++i) {
-        glVertex2i(yellowline3[i][0], yellowline3[i][1]);
-    }
-    glEnd();
-
-    glBegin(GL_LINE_STRIP);
-    glColor3f(1.0, 1.0, 0.0);
-    glLineWidth(2);
-    for (int i = 0; i < sizeof(yellowline4) / sizeof(yellowline4[0]); ++i) {
-        glVertex2i(yellowline4[i][0], yellowline4[i][1]);
-    }
-    glEnd();
-
-    glBegin(GL_LINE_STRIP);
-    glColor3f(1.0, 1.0, 0.0);
-    glLineWidth(2);
-    for (int i = 0; i < sizeof(yellowline5) / sizeof(yellowline5[0]); ++i) {
-        glVertex2i(yellowline5[i][0], yellowline5[i][1]);
-    }
-    glEnd();
-
 }
 
 bool isPointOnPath(int x, int y, const int pathCoordinates[][2], int pathSize) {
@@ -202,15 +146,6 @@ void drawText(const char* text, int x, int y) {
     }
 }
 
-int current_score() {
-    if (a > 0) {
-        return b;
-    }
-    else {
-        b -= 5;
-        return b;
-    }
-}
 
 void display() {
     glClear(GL_COLOR_BUFFER_BIT);
@@ -223,12 +158,9 @@ void display() {
         isSquareOnPath(squareX, squareY, pathCoordinates5, sizeof(pathCoordinates5) / sizeof(pathCoordinates5[0]))) {
         glColor3f(1.0, 0.0, 0.0);
         drawText("On Path", -80, -90);
-        a = 1;
+
     }
-    else {
-        a = -1;
-    }
-    int updatedScore = current_score();
+
     glutSwapBuffers();
 }
 
@@ -266,7 +198,6 @@ int main(int argc, char** argv) {
 
     init();
     glutDisplayFunc(display);
-    current_score();
     glutKeyboardFunc(keyboard);
     glutMainLoop();
 
