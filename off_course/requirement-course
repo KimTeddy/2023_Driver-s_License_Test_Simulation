@@ -1,0 +1,17 @@
+int rqLines1[][4] = {
+    {-97, 26, -73, 26},   // 1번 줄
+    {-19, 0, -19, 9},     // 2번 줄
+    {67, 0, 67, 9},       // 3번 줄
+    {9, 0, 9, -9},        // 4번 줄
+    {-9, -17, 0, -17},     // 5번 줄
+    {73,9,91, 9} 
+};
+    glClear(GL_COLOR_BUFFER_BIT);
+    glColor3f(1.0, 1.0, 1.0);  // 흰색설정
+    glLineWidth(2.0);         // 두께 2 설정
+    glBegin(GL_LINES);
+    for (int i = 0; i < 6; ++i) {
+        glVertex2f(rqLines1[i][0], rqLines1[i][1]);
+        glVertex2f(rqLines1[i][2], rqLines1[i][3]);
+    }
+glEnd();
