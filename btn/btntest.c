@@ -44,4 +44,5 @@ int main()
     }   //While End
     close(fp);
     buttonExit();
+    MODULE_LICENSE("GPL");
 }
