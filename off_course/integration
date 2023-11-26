@@ -10,7 +10,7 @@ int squareVertices[4][2] = {
     {squareX - 5, squareY + 2}
 };
 
-// 첫 번째 경로 좌표
+// 하얀 경로 좌표(바퀴가 닿으면 -5출력)
 int whitepath1[][4] = {
     {-97, -61, -97, 55},
 {-97, 55 , 91, 55},
@@ -33,6 +33,7 @@ int whitepath1[][4] = {
  {-9, -9, -9, -43},
     {-76, -43, -9, -43}
 };
+//주황 경로 좌표(바퀴가 닿으면 -5출력)
 int lines[][4] = {
     {-87, 9, -87, 45},   // 1. {-87, 9}와 {-87, 45}를 이은 선
     {-87, 45, 82, 45},   // 2. {-87, 45}와 {82, 45}를 이은 선
@@ -45,7 +46,14 @@ int lines[][4] = {
     {0, -52, 0, -12},   // 9. {0, -52}와 {0, -12}를 이은 선
     {7, 0, 67, 0}       // 10. {7, 0}와 {67, 0}를 이은 선
 };
-
+int rqLines1[][4] = {
+    {-97, 26, -73, 26},   // 1번 줄
+    {-19, 0, -19, 9},     // 2번 줄
+    {67, 0, 67, 9},       // 3번 줄
+    {9, 0, 9, -9},        // 4번 줄
+    {-9, -17, 0, -17},     // 5번 줄
+    {73,9,91, 9}
+};
 ////////////////////////////////////////////////////////////////
 
 bool isPointOnLine(float x, float y, float x1, float y1, float x2, float y2) {
@@ -102,18 +110,21 @@ void updateSquareVertices() {
 // 선분 (x1, y1) - (x2, y2) 위에 점 (x, y)가 있는지 확인
 
 void display() {
-
+    //
     glClear(GL_COLOR_BUFFER_BIT);
     glColor3f(1.0, 1.0, 1.0);  // 흰색설정
     glLineWidth(2.0);         // 두께 2 설정
-
     glBegin(GL_LINES);
     for (int i = 0; i < 20; ++i) {
         glVertex2f(whitepath1[i][0], whitepath1[i][1]);
         glVertex2f(whitepath1[i][2], whitepath1[i][3]);
     }
+    for (int i = 0; i < 6; ++i) {
+        glVertex2f(rqLines1[i][0], rqLines1[i][1]);
+        glVertex2f(rqLines1[i][2], rqLines1[i][3]);
+    }
     glEnd();
-
+    //
     glColor3f(1.0, 1.0, 0.0);  // 노란색 설정
     glLineWidth(2.0);         // 두께 2 설정
 
@@ -124,14 +135,14 @@ void display() {
     }
     glEnd();
 
-
+    //
     glColor3f(0.0, 1.0, 0.0);  // 초록색 설정
     glBegin(GL_QUADS);
     for (int i = 0; i < 4; ++i) {
         glVertex2f(squareVertices[i][0], squareVertices[i][1]);
     }
     glEnd();
-
+    //
     if (isRectangleOnLines()) {
         std::cout << "-5" << std::endl;
     }
