@@ -174,7 +174,7 @@ void keyboard(unsigned char key, int x, int y) {
 }
 
 void init() {
-    glClearColor(0.0, 0.0, 0.0, 0.0); // 배경색을 검은색으로 지정
+    glClearColor(0.5, 0.5, 0.5, 0.0); // 배경색을 검은색으로 지정
     gluOrtho2D(-100, 100, -100, 100); // 좌표 시스템을 적절하게 설정
 }
 
