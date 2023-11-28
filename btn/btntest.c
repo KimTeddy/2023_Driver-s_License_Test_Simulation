@@ -7,8 +7,8 @@ int main()
     int readSize, inputIndex;
     struct input_event1 stEvent;
     char inputDevPath[200] = {0, };
-    
-  ` buttonInit();
+
+    buttonInit();
 
     while(1)
     {
