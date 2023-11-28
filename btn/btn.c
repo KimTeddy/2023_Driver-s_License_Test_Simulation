@@ -82,11 +82,11 @@ void *buttonThFunc(void *arg)
         B.keyInput = C.code;
         B.pressed = C.value;
         B.type = C.type;
-        
+        msgsnd(msgID, &B, sizeof(B) - sizeof(long int), 0);
             continue;
         }
         //printf("thread success3\n");
-        msgsnd(msgID, &B, sizeof(B) - sizeof(long int), 0);
+        
         
     }
     close(fd);
