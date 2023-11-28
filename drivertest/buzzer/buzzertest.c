@@ -54,6 +54,9 @@ int main(int argc, char **argv)
         buzzerPlaySong(NOTE_C6);
         usleep(10000);
         buzzerStopSong();
+        
+        buzzerTone(NOTE_B6, 100);
+        buzzerTone(NOTE_E7, 200);
     }
     else
     {

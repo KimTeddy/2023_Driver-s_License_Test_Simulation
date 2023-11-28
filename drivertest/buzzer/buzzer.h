@@ -10,5 +10,5 @@ int buzzerInit(void);
 int buzzerPlaySong(int scale);
 int buzzerStopSong(void);
 int buzzerExit(void);
-
+void buzzerTone(int scale, int time);
 #endif

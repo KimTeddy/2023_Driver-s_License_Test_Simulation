@@ -89,3 +89,9 @@ int buzzerExit(void)
     buzzerEnable(0);
     return 0;
 };
+
+void buzzerTone(int scale, int time){
+    buzzerPlaySong(int scale);
+    usleep(time*1000);
+    buzzerStopSong();
+}
