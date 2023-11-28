@@ -29,6 +29,8 @@
 #define CMD_TEST_GPIO_HIGH 0x30
 #define CMD_TEST_GPIO_LOW 0x31
 
+//이것저것 강의자료에 있는 것들 define해주기
+
 #include <string.h>
 #include <stdio.h>
 #include <unistd.h>
