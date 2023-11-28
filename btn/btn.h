@@ -14,6 +14,8 @@
 #include <stdint.h>
 #include <sys/time.h>
 #include <linux/module.h>
+#include <linux/kernel.h>
+#include <linux/fs.h>
 
 #define INPUT_DEVICE_LIST "/dev/input/event"
 #define PROBE_FILE "/proc/bus/input/devices"
@@ -25,7 +27,7 @@ struct BUTTON_MSG_T
     long int messageNum;
     int keyInput;
     int pressed;
-    unsigned short type
+    unsigned short type;
 };
 struct input_event1{
     struct timeval time;
