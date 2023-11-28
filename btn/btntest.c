@@ -40,7 +40,7 @@ int main()
         else 
         ;  //doNothing
     }   //While End
-    close(fp);
+    //close(fp);
     buttonExit();
 
 }
