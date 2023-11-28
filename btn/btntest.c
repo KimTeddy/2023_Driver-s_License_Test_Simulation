@@ -25,7 +25,7 @@ int main()
         if(B.type == EV_KEY)
         {
             printf("EV_KEY(");
-            switch(B.type)
+            switch(B.keyInput)
             {
                 case KEY_VOLUMEUP : printf("Volume up key):"); break;
                 case KEY_HOME : printf("Home key):"); break;
