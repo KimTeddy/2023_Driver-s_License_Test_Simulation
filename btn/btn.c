@@ -77,7 +77,7 @@ void *buttonThFunc(void *arg)
         // printf("thread success2\n");
         if(readSize != sizeof(C))
         {
-            prinf("ERR\n");
+            printf("ERR\n");
             sleep(5);
             continue;
         }
