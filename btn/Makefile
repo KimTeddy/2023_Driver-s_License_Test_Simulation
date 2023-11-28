@@ -1,5 +1,5 @@
 all: btntest.c libMyPeri.a
-	arm-linux-gnueabi-gcc -o btntest btntest.c -l MyPeri -L.
+	arm-linux-gnueabi-gcc -o btntest btntest.c -l MyPeri -L. -lpthread
 
 libMyPeri.a : btn.o 
 	arm-linux-gnueabi-ar rc libMyPeri.a btn.o
