@@ -77,17 +77,17 @@ void *buttonThFunc(void *arg)
         // printf("thread success2\n");
         if(readSize != sizeof(C))   //오류 발생 부분
         {
-            //printf("ERR\n");
-            //sleep(5);
-        B.keyInput = C.code;
-        B.pressed = C.value;
-        B.type = C.type;
-        msgsnd(msgID, &B, sizeof(B) - sizeof(long int), 0);
+            printf("ERR\n");
+            sleep(5);
+
             continue;
         }
         //printf("thread success3\n");
         
-        
+         B.keyInput = C.code;
+        B.pressed = C.value;
+        B.type = C.type;
+        msgsnd(msgID, &B, sizeof(B) - sizeof(long int), 0);
     }
     close(fd);
 }
