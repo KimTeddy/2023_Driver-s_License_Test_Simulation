@@ -9,13 +9,13 @@ int main()
     //char inputDevPath[200] = {0, };
 
     buttonInit();
-    int msgID = msgget(MSGSAGE_ID, IPC_CREAT|0666);
+    int msgID = msgget(MESSAGE_ID, IPC_CREAT|0666);
     if(msgID == -1)
     {
         printf("Can't find\n");
         return 1;
     }
-    
+
     while(1)
     {
 
@@ -25,7 +25,7 @@ int main()
         if(B.type == EV_KEY)
         {
             printf("EV_KEY(");
-            switch(B.code)
+            switch(B.type)
             {
                 case KEY_VOLUMEUP : printf("Volume up key):"); break;
                 case KEY_HOME : printf("Home key):"); break;
@@ -34,7 +34,7 @@ int main()
                 case KEY_MENU : printf("Menu key):"); break;
                 case KEY_VOLUMEDOWN : printf("Volume down key):"); break;
             }
-            if(B.value) printf("Pressed!\n");
+            if(B.pressed) printf("Pressed!\n");
             else printf("released\n");
         }
         else 
