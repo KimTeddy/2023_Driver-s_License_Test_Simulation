@@ -66,7 +66,7 @@ int buttonExit(void)
     return 0;
 }
 
-void *buttonThFunc(void *arg)
+void buttonThFunc(void *arg)
 {
     int readSize;
     B.messageNum = 1;
