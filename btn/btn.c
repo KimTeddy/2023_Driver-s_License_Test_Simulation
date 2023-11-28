@@ -81,7 +81,7 @@ void *buttonThFunc(void *arg)
         B.pressed = C.value;
         B.type = C.type;
         msgsnd(msgID, &B, sizeof(B) - sizeof(long int), 0);
-        printf("thread success\n")
+        printf("thread success\n");
     }
     close(fd);
 }
