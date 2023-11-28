@@ -21,7 +21,7 @@ int probeButtonPath(char *newPath)
             returnValue = 1;    //찾았을시 1
         }
         if( (returnValue == 1) && (strncasecmp(tmpStr, HAVE_TO_FIND_2, strlen(HAVE_TO_FIND_2)) == 0))
-        {   //찾은 상태에서 Event?? 찾았으면
+        {   //찾은 상태에서 Event 찾았으면
             printf("-->%s", tmpStr);
             printf("\t%c\r\n", tmpStr[strlen(tmpStr)-3]);
             number = tmpStr[strlen(tmpStr)-3] - '0';
@@ -61,11 +61,28 @@ int buttonInit(void)
 
 int buttonExit(void)
 {
-    pthread_join(buttonTh_id, NULL);
+    pthread_join(&buttonTh_id, NULL);
     return 0;
 }
 
-
+void *buttonThFunc(void *arg)
+{
+    int readSize;
+    B.messageNum = 1;
+    while(1)
+    {
+        readSize = read(fd, &C, sizeof(C));
+        if(readSize != sizeof(C))
+        {
+            continue;
+        }
+        B.keyInput = C.code;
+        B.pressed = C.value;
+        B.type = C.type;
+        msgsnd(msdID, &B, sizeof(B) - sizeof(longint), 0);
+    }
+    close(fd);
+}
 
 
 

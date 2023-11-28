@@ -2,24 +2,19 @@
 
 int main()
 {
-    buttonInit();
-    int fp;
-    int readSize, inputIndex;
-    struct input_event1 stEvent;
-    char inputDevPath[200] = {0, };
+    //buttonInit();
+   // int fp;
+    //int readSize, inputIndex;
+   // struct input_event stEvent;
+    //char inputDevPath[200] = {0, };
 
     buttonInit();
-
+    
     while(1)
     {
-        readSize = read(fp, &stEvent, sizeof(stEvent));
-        if(readSize != sizeof(stEvent))
-        {
-            continue;
-        }
 
-        //int retmsg = 0;
-        //retmsg = msgrcv(msgID, &B, sizeof(B) - sizeof(long int), 0, 0);
+        int retmsg = 0;
+        retmsg = msgrcv(msgID, &B, sizeof(B) - sizeof(long int), 0, 0);
 
         if(stEvent.type == EV_KEY)
         {

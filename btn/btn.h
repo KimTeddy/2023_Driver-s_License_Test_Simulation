@@ -29,18 +29,12 @@ struct BUTTON_MSG_T
     int pressed;
     unsigned short type;
 };
-struct input_event1{
-    struct timeval time;
-    uint16_t type;
-    uint16_t code;
-    int32_t value;
-};
 
-
+struct input_event C;
 struct BUTTON_MSG_T B;
 
 int buttonInit(void);
 int buttonExit(void);
-//void *buttonThFunc(void *arg);
+void *buttonThFunc(void *arg);
 int probeButtonPath(char *newpath);
 #endif
