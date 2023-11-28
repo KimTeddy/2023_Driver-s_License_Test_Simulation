@@ -20,7 +20,7 @@ int main()
     {
 
         int retmsg = 0;
-        retmsg = msgrcv(msgID, &B, sizeof(B) - sizeof(long int), 0, 0);
+        retmsg = msgrcv(msgID, &B, sizeof(B)-sizeof(long int), 0, 0);
 
         if(B.type == EV_KEY)
         {
