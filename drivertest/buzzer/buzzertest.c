@@ -43,11 +43,16 @@ int main(int argc, char **argv)
     {
         buzzerStopSong();
     }
-    else if(freIndex == -1){
-        buzzerPlaySong(NOTE_C5); usleep(10000);
-        buzzerPlaySong(NOTE_E5); usleep(10000);
-        buzzerPlaySong(NOTE_G5); usleep(10000);
-        buzzerPlaySong(NOTE_C6); usleep(10000);
+    else if (freIndex == -1)
+    {
+        buzzerPlaySong(NOTE_C5);
+        usleep(10000);
+        buzzerPlaySong(NOTE_E5);
+        usleep(10000);
+        buzzerPlaySong(NOTE_G5);
+        usleep(10000);
+        buzzerPlaySong(NOTE_C6);
+        usleep(10000);
         buzzerStopSong();
     }
     else

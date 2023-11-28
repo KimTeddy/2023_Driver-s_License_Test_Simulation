@@ -12,9 +12,6 @@
 #define BUZZER_ENABLE_NAME "enable"
 #define BUZZER_FREQUENCY_NAME "frequency"
 
-char FrequencyPath[200];
-char EnablePath[200];
-int fdFre, fdEna;
 char gBuzzerBaseSysDir[128]; /// sys/bus/platform/devices/peribuzzer.XX 가 결정됨
 
 int findBuzzerSysPath()

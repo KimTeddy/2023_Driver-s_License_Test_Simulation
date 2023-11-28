@@ -1,9 +1,10 @@
 #ifndef _BUZZER_H_
 #define _BUZZER_H_
 #include "buzzer_pitch.h"
-#define MAX_SCALE_STEP 8
 
-const int musicScale[MAX_SCALE_STEP];
+int findBuzzerSysPath();
+void buzzerEnable(int bEnable);
+void setFrequency(int frequency);
 
 int buzzerInit(void);
 int buzzerPlaySong(int scale);
