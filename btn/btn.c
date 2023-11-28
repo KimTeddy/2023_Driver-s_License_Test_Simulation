@@ -70,6 +70,7 @@ void *buttonThFunc(void *arg)
 {
     int readSize;
     B.messageNum = 1;
+    printf("thread success\n");
     while(1)
     {
         readSize = read(fd, &C, sizeof(C));
@@ -81,7 +82,7 @@ void *buttonThFunc(void *arg)
         B.pressed = C.value;
         B.type = C.type;
         msgsnd(msgID, &B, sizeof(B) - sizeof(long int), 0);
-        printf("thread success\n");
+        
     }
     close(fd);
 }
