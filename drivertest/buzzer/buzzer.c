@@ -90,8 +90,14 @@ int buzzerExit(void)
     return 0;
 };
 
-void buzzerTone(int scale, int time){
-    buzzerPlaySong(int scale);
-    usleep(time*1000);
+void buzzerTone(int scale, unsigned int milliseconds){
+if(scale!=0){
+    buzzerPlaySong(scale);
+}
+    delay_ms(milliseconds);
     buzzerStopSong();
+}
+
+void delay_ms(unsigned int milliseconds) {
+    usleep(milliseconds * 1000);  // 밀리초를 마이크로초로 변환
 }

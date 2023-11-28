@@ -33,18 +33,11 @@ int main(int argc, char **argv)
     }
     freIndex = atoi(argv[1]);
     printf("freIndex :%d \n", freIndex);
-    if (freIndex > 0)
-    {
-        printf(" <buzzerNo> over range \n");
-        doHelp();
-        return 1;
-    }
-    if (freIndex == 0) // disable
-    {
-        buzzerStopSong();
-    }
-    else if (freIndex == -1)
-    {
+switch(freIndex){
+    case 0:
+        buzzerStopSong();break;
+    case -1:
+    
         buzzerPlaySong(NOTE_C5);
         usleep(10000);
         buzzerPlaySong(NOTE_E5);
@@ -54,13 +47,33 @@ int main(int argc, char **argv)
         buzzerPlaySong(NOTE_C6);
         usleep(10000);
         buzzerStopSong();
-        
-        buzzerTone(NOTE_B6, 100);
-        buzzerTone(NOTE_E7, 200);
-    }
-    else
-    {
+break;
+        case 1:
+for(int i=0;i<8;i++){
+        buzzerTone(NOTE_C5, 50);
+        buzzerTone(NOTE_E5, 50);
+        buzzerTone(NOTE_A5, 100);
+}
+for(int i=0;i<3;i++){
+        buzzerTone(NOTE_B4, 50);
+        buzzerTone(NOTE_E5, 50);
+        buzzerTone(NOTE_A5, 100);
+}
+for(int i=0;i<5;i++){
+        buzzerTone(NOTE_B4, 50);
+        buzzerTone(NOTE_E5, 50);
+        buzzerTone(NOTE_G5, 100);
+}
         buzzerStopSong();
+break;
+case 2:
+    buzzerPlaySong(NOTE_C6);
+    delay_ms(500);
+        buzzerStopSong();
+    
+default:
+        buzzerStopSong();
+break;
     }
     return 0;
 }

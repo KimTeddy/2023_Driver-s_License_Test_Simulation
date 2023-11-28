@@ -58,7 +58,7 @@
 #define NOTE_GS5 831
 #define NOTE_A5 880
 #define NOTE_AS5 932
-#define NOTE_B5 988
+#define NOTE_B5 988//여기까지 작동함
 #define NOTE_C6 1047
 #define NOTE_CS6 1109
 #define NOTE_D6 1175
