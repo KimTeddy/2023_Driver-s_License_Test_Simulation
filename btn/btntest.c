@@ -7,12 +7,8 @@ int main()
     int readSize, inputIndex;
     struct input_event1 stEvent;
     char inputDevPath[200] = {0, };
-    if(probeButtonPath(inputDevPath) == 0)
-    {
-        printf("ERROR\n");
-        return 0;
-    }
-    
+  ` buttonInit();
+
     while(1)
     {
         readSize = read(fp, &stEvent, sizeof(stEvent));
