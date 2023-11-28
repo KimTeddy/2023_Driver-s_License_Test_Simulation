@@ -61,7 +61,7 @@ int buttonInit(void)
 
 int buttonExit(void)
 {
-    pthread_join(&buttonTh_id, NULL);
+    pthread_join(buttonTh_id, NULL);
     return 0;
 }
 
@@ -79,7 +79,7 @@ void *buttonThFunc(void *arg)
         B.keyInput = C.code;
         B.pressed = C.value;
         B.type = C.type;
-        msgsnd(msdID, &B, sizeof(B) - sizeof(longint), 0);
+        msgsnd(msgID, &B, sizeof(B) - sizeof(long int), 0);
     }
     close(fd);
 }
