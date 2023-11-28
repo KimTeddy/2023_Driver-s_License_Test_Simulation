@@ -35,6 +35,6 @@ struct BUTTON_MSG_T B;
 
 int buttonInit(void);
 int buttonExit(void);
-void *buttonThFunc(void *arg);
+void buttonThFunc(void *arg);
 int probeButtonPath(char *newpath);
 #endif
