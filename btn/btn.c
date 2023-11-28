@@ -74,12 +74,12 @@ void *buttonThFunc(void *arg)
     while(1)
     {
         readSize = read(fd, &C, sizeof(C));
-        printf("thread success2\n");
+       // printf("thread success2\n");
         //if(readSize != sizeof(C))
         //{
         //    continue;
         //}
-        printf("thread success3\n");
+        //printf("thread success3\n");
         B.keyInput = C.code;
         B.pressed = C.value;
         B.type = C.type;
