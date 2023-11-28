@@ -49,7 +49,8 @@ int buttonInit(void)
         return 0;
     }
         
-    fd = open(buttonPath, O_RDONLY);
+    fd = open(buttonPath, O_RDONLY);    
+    //buttonPath -> 200바이트의 버퍼
     msgID = msgget(MESSAGE_ID, IPC_CREAT|0666);
     if(msgID == -1)
     {
@@ -75,6 +76,8 @@ void *buttonThFunc(void *arg)
     {
         readSize = read(fd, &C, sizeof(C));
         // printf("thread success2\n");
+        printf("read size : %d\n", readSize);
+        printf("C size : %d\n", sizeof(C));
         if(readSize != sizeof(C))   //오류 발생 부분
         {
             printf("ERR\n");
@@ -84,7 +87,7 @@ void *buttonThFunc(void *arg)
         }
         //printf("thread success3\n");
         
-         B.keyInput = C.code;
+        B.keyInput = C.code;
         B.pressed = C.value;
         B.type = C.type;
         msgsnd(msgID, &B, sizeof(B) - sizeof(long int), 0);
