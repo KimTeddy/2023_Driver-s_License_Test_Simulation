@@ -12,7 +12,7 @@ int main()
         printf("ERROR\n");
         return 0;
     }
- 
+    
     while(1)
     {
         readSize = read(fp, &stEvent, sizeof(stEvent));
