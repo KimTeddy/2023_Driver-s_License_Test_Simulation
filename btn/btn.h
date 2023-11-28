@@ -13,6 +13,7 @@
 #include <unistd.h>
 #include <stdint.h>
 #include <sys/time.h>
+#include <linux/module.h>
 
 #define INPUT_DEVICE_LIST "/dev/input/event"
 #define PROBE_FILE "/proc/bus/input/devices"
