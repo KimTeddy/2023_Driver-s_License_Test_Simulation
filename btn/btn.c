@@ -78,7 +78,20 @@ void *buttonThFunc(void *arg)
         // printf("thread success2\n");
         printf("read size : %d\n", readSize);
         printf("C size : %d\n", sizeof(C));
-        if(readSize != sizeof(C))   //오류 발생 부분
+        
+    /*
+    struct input_event C;
+    struct input_event
+    {
+        struct timeval time;
+        _u16 type;
+        _u16 code;
+        _s32 value;
+    };
+    */
+    //if문 조건을 sizeof(struct input_event)
+    //readSize != sizeof(C)
+        if(readSize != sizeof(struct input_event))   //오류 발생 부분
         {
             printf("ERR\n");
             sleep(5);

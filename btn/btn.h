@@ -40,7 +40,6 @@ struct input_event C;
         _s32 value;
     };
 
-
 */
 
 struct BUTTON_MSG_T B;
