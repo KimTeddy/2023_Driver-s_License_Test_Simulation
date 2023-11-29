@@ -43,12 +43,14 @@ int buttonInit(void)
     printf("HI\n");
     if(probeButtonPath(buttonPath) == 0)
     {
+        //event를 못 찾았다면 에러 문구 출력.
         printf("Error\n");
         printf("Do insmod \n");
         return 0;
     }
         
     fd = open(buttonPath, O_RDONLY);    
+    //찾았으면 오픈
     //buttonPath -> 200바이트의 버퍼
     msgID = msgget(MESSAGE_ID, IPC_CREAT|0666);
     if(msgID == -1)
@@ -88,7 +90,7 @@ void *buttonThFunc(void *arg)
         _s32 value;
     };
     */
-    //if문 조건을 sizeof(struct input_event)
+    //if문 조건을 sizeof(struct input_event) ? -> 똑같음
     //readSize != sizeof(C)
         if(readSize != sizeof(C))   //오류 발생 부분
         {
