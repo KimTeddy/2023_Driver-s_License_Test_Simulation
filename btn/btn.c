@@ -91,9 +91,11 @@ void *buttonThFunc(void *arg)
     */
     //if문 조건을 sizeof(struct input_event)
     //readSize != sizeof(C)
-        if(readSize != sizeof(struct input_event))   //오류 발생 부분
+        if(readSize != sizeof(C))   //오류 발생 부분
         {
             printf("ERR\n");
+            printf("C Size = %d\n", sizeof(C));
+            printf("readSize = %d\n", readSize);
             sleep(5);
 
             continue;
