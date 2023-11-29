@@ -22,15 +22,27 @@
 #define MESSAGE_ID 1122
 
 
-struct BUTTON_MSG_T
+typedef struct 
 {
     long int messageNum;
     int keyInput;
     int pressed;
     unsigned short type;
-};
+} BUTTON_MSG_T;
 
 struct input_event C;
+/*
+    struct input_event
+    {
+        struct timeval time;
+        _u16 type;
+        _u16 code;
+        _s32 value;
+    };
+
+
+*/
+
 struct BUTTON_MSG_T B;
 
 int buttonInit(void);
