@@ -9,8 +9,7 @@ int probeButtonPath(char *newPath)
     int returnValue = 0; //button의 event# 찾았는지? 
     int number = 0;     //찾았다면 여기에 입력
     FILE *fp = fopen(PROBE_FILE, "rt"); //파일 오픈
-#define HAVE_TO_FIND_1 "N: Name=\"ecube-button\"\n"
-#define HAVE_TO_FIND_2 "H: Handlers=kbd event"
+
     while(!feof(fp))    //파일 끝까지 읽어들이고
     {
         char tmpStr[200];   //최대 200자 읽을 수 있게 버퍼 설정
@@ -93,6 +92,7 @@ void *buttonThFunc(void *arg)
     //readSize != sizeof(C)
         if(readSize != sizeof(C))   //오류 발생 부분
         {
+            //readSize와 C의 크기가 다르면 뭔가 오류임.
             printf("ERR\n");
             printf("C Size = %d\n", sizeof(C));
             printf("readSize = %d\n", readSize);
