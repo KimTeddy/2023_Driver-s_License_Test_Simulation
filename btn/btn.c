@@ -96,7 +96,7 @@ void *buttonThFunc(void *arg)
         {
             //readSize와 C의 크기가 다르면 뭔가 오류임.
             printf("ERR\n");
-            printf("C Size = %d\n", sizeof(C));
+            printf("C Size = %zu\n", sizeof(C)); //sizeof
             printf("readSize = %d\n", readSize);
             sleep(5);
 
