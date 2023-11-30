@@ -1,5 +1,6 @@
 all: colorledtest.c libMyPeri.a
 	arm-linux-gnueabi-ar -rcs libMyPeri.a colorled.o
+	arm-linux-gnueabi-ranlib libMyPeri.a
 	arm-linux-gnueabi-gcc -o colorledtest colorledtest.c -l MyPeri -L.
 
 libMyPeri.a : colorled.o
