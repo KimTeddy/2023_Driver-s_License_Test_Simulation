@@ -15,14 +15,15 @@ int main(int argc, char *argv[])
     }
     printf("inputDevPath: %s\r\n", inputDevPath);
     fp = open(inputDevPath, O_RDONLY);
+    
     while(1)
     {
         readSize = read(fp, &stEvent, sizeof(stEvent));
         if(readSize != sizeof(stEvent))
         {
             printf("if ERR\n");
-            printf("readSize : %d", readSize);
-            printf("sizeof stEvent : %d", sizeof(stEvent));
+            printf("readSize : %d\n", readSize);
+            printf("sizeof stEvent : %d\n", sizeof(stEvent));
             sleep(5);
             continue;
         }
