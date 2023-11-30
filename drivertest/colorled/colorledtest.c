@@ -2,15 +2,16 @@
 
 int main(int argc, char *argv[])
 {
-    //if(argc != 4)
-   // {
-   //     printf("ERR\r\n");
-  //      printf("colorledtest RED GREEN BLUE\r\n");
-  //      printf("ex) ./colorledtest 0~100 0~100 0~100\r\n");
+    /*if(argc != 4)
+    {
+        printf("ERR\r\n");
+       printf("colorledtest RED GREEN BLUE\r\n");
+       printf("ex) ./colorledtest 0~100 0~100 0~100\r\n");
 
-  //      return 0;
-  //  }
-    pwmLedInit();
+        return 0;
+    }
+     
+    */pwmLedInit();
     
     //pwmSetPercent(atoi(argv[1]), 0);
      
