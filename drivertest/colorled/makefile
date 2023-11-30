@@ -1,5 +1,6 @@
 all : colorledtest.c libMyPeri.a
 	arm-linux-gnueabi-gcc -o colorledtest colorledtest.c -l MyPeri -L.
+	scp ./btntest ecube@192.168.97.99:~/
 
 libMyPeri.a : colorled.o
 	arm-linux-gnueabi-ar rc libMyPeri.a colorled.o
