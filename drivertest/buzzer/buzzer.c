@@ -91,7 +91,7 @@ int buzzerExit(void)
 };
 
 void buzzerTone(int scale, unsigned int milliseconds){
-if(scale!=0){
+if(scale!=0) {
     buzzerPlaySong(scale);
 }
     delay_ms(milliseconds);

@@ -19,7 +19,14 @@ void doHelp(void)
     printf("buzzertest <buzzerNo> [buzzerpitch]\n");
 
     printf("ModeNo: \n");
-    printf("very fase do-mi-sol-do(-1), RAP music(1), play note for 500ms(2), siren(3)\n");
+    printf("-1: very fase do-mi-sol\n");
+    printf(" 1: RAP music\n");
+    printf(" 2: play note for 500ms\n");
+    printf(" 3: siren\n");
+    printf(" 4: start sound\n");
+    printf(" 5: 1 turn end\n");
+    printf(" 6: wheel on the line\n");
+    printf(" 7: accident sound\n");
     printf("stop music(0)\n");
 
     printf("buzzer pitch: \n");
@@ -50,8 +57,6 @@ int main(int argc, char **argv)
         buzzerPlaySong(NOTE_E5);
         usleep(10000);
         buzzerPlaySong(NOTE_G5);
-        usleep(10000);
-        buzzerPlaySong(NOTE_C6);
         usleep(10000);
         buzzerStopSong();
         break;
@@ -105,7 +110,7 @@ int main(int argc, char **argv)
         buzzerTone(NOTE_A5, 1000);
         buzzerStopSong();
         break;
-    case 5://1 turn end
+    case 5: // 1 turn end
         buzzerTone(NOTE_E4, 100);
         buzzerTone(NOTE_G4, 100);
         buzzerTone(NOTE_E5, 100);
@@ -113,12 +118,20 @@ int main(int argc, char **argv)
         buzzerTone(NOTE_E5, 100);
         buzzerTone(NOTE_G5, 100);
         buzzerStopSong();
-    break;
-    case 6://wheel on the line
+        break;
+    case 6: // wheel on the line
         buzzerTone(NOTE_E3, 500);
         buzzerStopSong();
-    break;
-    case 7://accident sound
+        break;
+    case 7: // accident sound
+        buzzerTone(NOTE_B5, 50);
+        buzzerTone(0, 50);
+        buzzerTone(NOTE_B5, 50);
+        buzzerTone(0, 50);
+        buzzerTone(NOTE_B5, 50);
+        buzzerTone(0, 50);
+        buzzerTone(NOTE_B5, 50);
+        buzzerTone(0, 50);
         buzzerTone(NOTE_B5, 50);
         buzzerTone(0, 50);
         buzzerTone(NOTE_B5, 50);
@@ -132,7 +145,7 @@ int main(int argc, char **argv)
         buzzerTone(NOTE_B5, 50);
         buzzerTone(0, 50);
         buzzerStopSong();
-    break;
+        break;
     default:
         buzzerStopSong();
         break;
