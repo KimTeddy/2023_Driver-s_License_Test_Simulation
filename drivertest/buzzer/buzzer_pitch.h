@@ -25,8 +25,8 @@
 #define NOTE_B2 123
 #define NOTE_C3 131
 #define NOTE_CS3 139
-#define NOTE_D3 147
-#define NOTE_DS3 156
+#define NOTE_D3 147//키트에서 가능한 가장 낮은 음
+#define NOTE_DS3 156//키트에서 가능한 가장 낮은 음
 #define NOTE_E3 165
 #define NOTE_F3 175
 #define NOTE_FS3 185
@@ -59,7 +59,7 @@
 #define NOTE_A5 880
 #define NOTE_AS5 932
 #define NOTE_B5 988//여기까지 작동함
-#define NOTE_C6 1047
+#define NOTE_C6 1047//여기부터 키트 버저 작동 X
 #define NOTE_CS6 1109
 #define NOTE_D6 1175
 #define NOTE_DS6 1245
