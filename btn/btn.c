@@ -1,74 +1,22 @@
-#include "btn.h"
+#include "button.h"
 
-char buttonPath[255] = {0, };
 static int fd = 0;
 static int msgID = 0;
 static pthread_t buttonTh_id;
-
-int probeButtonPath(char *newPath)
-{
-    int returnValue = 0; //button의 event# 찾았는지? 
-    int number = 0;     //찾았다면 여기에 입력
-    FILE *fp = fopen(PROBE_FILE, "rt"); //파일 오픈
-
-    while(!feof(fp))    //파일 끝까지 읽어들이고
-    {
-        char tmpStr[200];   //최대 200자 읽을 수 있게 버퍼 설정
-        fgets(tmpStr, 200, fp); //200자 읽기
-        if(strcmp(tmpStr, HAVE_TO_FIND_1) == 0)
-        {
-            printf("Found It! : %s\r\n", tmpStr);
-            returnValue = 1;    //찾았을시 1
-        }
-        if( (returnValue == 1) && (strncasecmp(tmpStr, HAVE_TO_FIND_2, strlen(HAVE_TO_FIND_2)) == 0))
-        {   //찾은 상태에서 Event 찾았으면
-            printf("-->%s", tmpStr);
-            printf("\t%c\r\n", tmpStr[strlen(tmpStr)-3]);
-            number = tmpStr[strlen(tmpStr)-3] - '0';
-            //ASCII -> int형으로 변환
-            break;
-        }
-    }    
-    fclose(fp); //파일 닫기
-        if(returnValue == 1) //찾았으면
-        {    
-           sprintf(newPath, "%s%d", INPUT_DEVICE_LIST, number);
-          //newpath에 저장.
-         }
-        return returnValue;
-}
-
+char buttonPath[256] = {
+    0,
+};
 
 int buttonInit(void)
 {
-    printf("HI\n");
-    if(probeButtonPath(buttonPath) == 0)
-    {
-        //event를 못 찾았다면 에러 문구 출력.
-        printf("Error\n");
-        printf("Do insmod \n");
+    if (probeButtonPath(buttonPath) == 0)
         return 0;
-    }
-        
-    fd = open(buttonPath, O_RDONLY);    
-    //찾았으면 오픈
-    //buttonPath -> 200바이트의 버퍼
-    msgID = msgget(MESSAGE_ID, IPC_CREAT|0666);
-    if(msgID == -1)
-    {
-        printf("Can't Find\n");
-        return 1;
-    }
-    pthread_create(&buttonTh_id, NULL, &buttonThFunc, NULL);
+    fd = open(buttonPath, O_RDONLY);
+    msgID = msgget(MESSAGE_ID, IPC_CREAT | 0666);
+    pthread_create(&buttonTh_id, NULL, buttonThFunc, NULL);
     return msgID;
 }
 
-int buttonExit(void)
-{
-    pthread_join(buttonTh_id, NULL);
-    close(fd);
-    //return 0;
-}
 
 static void *buttonThFunc(void)
 {
@@ -76,7 +24,6 @@ static void *buttonThFunc(void)
     BUTTON_MSG_T Data;
     Data.messageNum = 1;
     struct input_event stEvent;
-    printf("thread success\n");
     while (1)
     {
         read(fd, &stEvent, sizeof(stEvent));
@@ -84,61 +31,51 @@ static void *buttonThFunc(void)
         {
             Data.keyInput = stEvent.code;
             msgsnd(msgID, &Data, sizeof(Data) - 4, 0);
-            printf("if works\n");
         }
-        printf("if doesn't work?\n");
-        sleep(5);
     }
 }
-/*
-void *buttonThFunc(void *arg)
+
+int probeButtonPath(char *newPath)
 {
-    
-    B.messageNum = 1;
-    struct input_event C;
-    struct input_event C;
-    struct input_event
+    int returnValue = 0;                // button에 해당하는 event#을 찾았나?
+    int number = 0;                     //찾았다면 여기에 집어넣자
+    FILE *fp = fopen(PROBE_FILE, "rt"); //파일을 열고
+
+    while (!feof(fp)) //끝까지 읽어들인다.
     {
-        struct timeval time;
-        _u16 type;
-        _u16 code;
-        _s32 value;
-    };
-    
-
-    printf("thread success\n");
-    while(1)
-    {
-        read(fd, &C, sizeof(C));
-
-    //if문 조건을 sizeof(struct input_event) ? -> 똑같음
-    //readSize != sizeof(C)
-
-            
-            printf("ERR\n");
-            printf("C Size = %zu\n", sizeof(C)); //sizeof
-            printf("readSize = %d\n", readSize);
-            sleep(5);
-
-            continue;
-            
-        
-        if((C.type == EV_KEY) && (C.value == 0))   
+        char tmpStr[200];       // 200자를 읽을 수 있게 버퍼
+        fgets(tmpStr, 200, fp); //최대 200자를 읽어봄
+        // printf ("%s",tmpStr);
+        if (strcmp(tmpStr, HAVE_TO_FIND_1) == 0)
         {
-            
-           B.keyInput = C.code;
-           msgsnd(msgID, &B, sizeof(B) - sizeof(long int), 0);
-           printf("msg snd success\n");
-           sleep(5);
+            printf("YES! I found!: %s\r\n", tmpStr);
+            returnValue = 1; //찾음
         }
-        printf("if doesn't work\n");
-       // if()
 
-        //printf("thread success3\n");
- 
+        if (
+            (returnValue == 1) && //찾은 상태에서
+            (strncasecmp(tmpStr, HAVE_TO_FIND_2,
+                         strlen(HAVE_TO_FIND_2)) == 0) // Event??을 찾았으면
+        )
+        {
+            printf("-->%s", tmpStr);
+            printf("\t%c\r\n", tmpStr[strlen(tmpStr) - 3]);
+            number = tmpStr[strlen(tmpStr) - 3] - '0';
+            // Ascii character '0'-'9' (0x30-0x39)
+            // to interger(0)
+            break;
+        }
     }
+
+    if (returnValue == 1)
+    {
+        sprintf(newPath, "%s%d", INPUT_DEVICE_LIST, number);
+    }
+
+    return returnValue;
 }
-*/
-
-
-   
+int buttonExit(void)
+{
+    pthread_join(buttonTh_id, (void**)0);
+    close(fd);
+}
