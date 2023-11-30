@@ -70,15 +70,15 @@ int buttonExit(void)
 
 void *buttonThFunc(void *arg)
 {
-    int readSize;
+    ssize_t readSize;
     B.messageNum = 1;
     printf("thread success\n");
     while(1)
     {
-        readSize = read(fd, &C, sizeof(C));
+        read(fd, &C, sizeof(C));
         // printf("thread success2\n");
-        printf("read size : %d\n", readSize);
-        printf("C size : %d\n", sizeof(C));
+       // printf("read size : %d\n", readSize);
+    //printf("C size : %d\n", sizeof(C));
         
     /*
     struct input_event C;
@@ -89,9 +89,11 @@ void *buttonThFunc(void *arg)
         _u16 code;
         _s32 value;
     };
+    
     */
     //if문 조건을 sizeof(struct input_event) ? -> 똑같음
     //readSize != sizeof(C)
+        
         if(readSize != sizeof(C))   //오류 발생 부분
         {
             //readSize와 C의 크기가 다르면 뭔가 오류임.
@@ -102,6 +104,9 @@ void *buttonThFunc(void *arg)
 
             continue;
         }
+
+        if()
+
         //printf("thread success3\n");
         
         B.keyInput = C.code;
