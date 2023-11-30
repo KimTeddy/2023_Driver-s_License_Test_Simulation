@@ -11,7 +11,8 @@ int main(int argc, char *argv[])
         return 0;
     }
      
-    */pwmLedInit();
+    */
+    pwmLedInit();
     
     //pwmSetPercent(atoi(argv[1]), 0);
      
