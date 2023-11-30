@@ -43,7 +43,7 @@ struct BUTTON_MSG_T
 
 */
 
-
+struct BUTTON_MSG_T B;
 
 int buttonInit(void);
 int buttonExit(void);

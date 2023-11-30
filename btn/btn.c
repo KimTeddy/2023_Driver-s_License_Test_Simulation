@@ -71,7 +71,7 @@ int buttonExit(void)
 
 void *buttonThFunc(void *arg)
 {
-    struct BUTTON_MSG_T B;
+    
     B.messageNum = 1;
     struct input_event C;
     /*
