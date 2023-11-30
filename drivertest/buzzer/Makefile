@@ -1,5 +1,5 @@
 all: buzzertest.elf
-	scp ./buzzertest.elf ecube@192.168.97.99:~/teddy/
+	scp ./buzzertest.elf ecube@192.168.97.19:~/teddy/test/
 	echo "		6) send complete"
 
 buzzertest.elf: libMyPeri.a buzzertest.o

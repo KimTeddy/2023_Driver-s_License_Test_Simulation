@@ -19,6 +19,7 @@ void doHelp(void)
     printf("buzzertest <buzzerNo> [buzzerpitch]\n");
 
     printf("ModeNo: \n");
+    printf(" 0: stop music\n");
     printf("-1: very fase do-mi-sol\n");
     printf(" 1: RAP music\n");
     printf(" 2: play note for 500ms\n");
@@ -27,7 +28,6 @@ void doHelp(void)
     printf(" 5: 1 turn end\n");
     printf(" 6: wheel on the line\n");
     printf(" 7: accident sound\n");
-    printf("stop music(0)\n");
 
     printf("buzzer pitch: \n");
     printf("ex) 262 = middle do\n");
