@@ -110,7 +110,7 @@ void *buttonThFunc(void *arg)
            printf("msg snd success\n");
            sleep(5);
         }
-
+        printf("if doesn't work\n");
        // if()
 
         //printf("thread success3\n");
