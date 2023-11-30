@@ -30,7 +30,7 @@ void doHelp(void)
     printf("stop music(0)\n");
 
     printf("buzzer pitch: \n");
-    printf("ex) NOTE_C4 = middle do\n");
+    printf("ex) 262 = middle do\n");
 }
 
 int main(int argc, char **argv)
