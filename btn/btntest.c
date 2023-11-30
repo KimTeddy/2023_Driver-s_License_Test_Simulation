@@ -21,6 +21,8 @@ int main(int argc, char *argv[])
         if(readSize != sizeof(stEvent))
         {
             printf("if ERR\n");
+            printf("readSize : %d", readSize);
+            printf("sizeof stEvent : %d", sizeof(stEvent));
             sleep(5);
             continue;
         }
