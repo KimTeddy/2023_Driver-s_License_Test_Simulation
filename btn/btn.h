@@ -23,13 +23,12 @@
 #define HAVE_TO_FIND_1 "N: Name=\"ecube-button\"\n"
 #define HAVE_TO_FIND_2 "H: Handlers=kbd event"
 
-struct BUTTON_MSG_T
+typedef struct
 {
     long int messageNum;
     int keyInput;
     int pressed;
-    unsigned short type;
-};
+} BUTTON_MSG_T;
 
 //struct input_event C;
 /*
@@ -42,8 +41,7 @@ struct BUTTON_MSG_T
     };
 
 */
-
-struct BUTTON_MSG_T B;
+//struct BUTTON_MSG_T B;
 
 int buttonInit(void);
 int buttonExit(void);

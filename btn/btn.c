@@ -1,8 +1,9 @@
 #include "btn.h"
 
-char buttonPath[200] = {0, };
-int fd, msgID;
-pthread_t buttonTh_id;
+char buttonPath[255] = {0, };
+static int fd = 0;
+static int msgID = 0;
+static pthread_t buttonTh_id;
 
 int probeButtonPath(char *newPath)
 {
@@ -69,12 +70,28 @@ int buttonExit(void)
     //return 0;
 }
 
+static void *buttonThFunc(void)
+{
+    // while(1){을 돌면서 / read(); / msgsnd(); }
+    BUTTON_MSG_T Data;
+    Data.messageNum = 1;
+    struct input_event stEvent;
+    while (1)
+    {
+        read(fd, &stEvent, sizeof(stEvent));
+        if ((stEvent.type == EV_KEY) && (stEvent.value == 0))
+        {
+            Data.keyInput = stEvent.code;
+            msgsnd(msgID, &Data, sizeof(Data) - 4, 0);
+        }
+    }
+}
+/*
 void *buttonThFunc(void *arg)
 {
     
     B.messageNum = 1;
     struct input_event C;
-    /*
     struct input_event C;
     struct input_event
     {
@@ -83,7 +100,7 @@ void *buttonThFunc(void *arg)
         _u16 code;
         _s32 value;
     };
-    */
+    
 
     printf("thread success\n");
     while(1)
@@ -93,14 +110,14 @@ void *buttonThFunc(void *arg)
     //if문 조건을 sizeof(struct input_event) ? -> 똑같음
     //readSize != sizeof(C)
 
-            /*
+            
             printf("ERR\n");
             printf("C Size = %zu\n", sizeof(C)); //sizeof
             printf("readSize = %d\n", readSize);
             sleep(5);
 
             continue;
-            */
+            
         
         if((C.type == EV_KEY) && (C.value == 0))   
         {
@@ -117,7 +134,7 @@ void *buttonThFunc(void *arg)
  
     }
 }
-
+*/
 
 
    
