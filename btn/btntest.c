@@ -26,7 +26,7 @@ int main()
         if(stEvent.type == EV_KEY)
         {
             printf("EV_KEY(");
-            switch(stEvent.keyInput)
+            switch(stEvent.code)
             {
                 case KEY_VOLUMEUP : printf("Volume up key):"); break;
                 case KEY_HOME : printf("Home key):"); break;
@@ -35,7 +35,7 @@ int main()
                 case KEY_MENU : printf("Menu key):"); break;
                 case KEY_VOLUMEDOWN : printf("Volume down key):"); break;
             }
-            if(stEvent.pressed) printf("Pressed!\n");
+            if(stEvent.value) printf("Pressed!\n");
             else printf("released\n");
         }
         else 
