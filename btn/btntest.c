@@ -9,6 +9,7 @@ int main()
     //char inputDevPath[200] = {0, };
 
     buttonInit();
+    struct input_event stEvent;
     int msgID = msgget(MESSAGE_ID, IPC_CREAT|0666);
     if(msgID == -1)
     {
