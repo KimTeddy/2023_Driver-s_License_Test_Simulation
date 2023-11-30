@@ -31,7 +31,7 @@ struct BUTTON_MSG_T
     unsigned short type;
 };
 
-struct input_event C;
+//struct input_event C;
 /*
     struct input_event
     {
@@ -43,7 +43,7 @@ struct input_event C;
 
 */
 
-struct BUTTON_MSG_T B;
+
 
 int buttonInit(void);
 int buttonExit(void);

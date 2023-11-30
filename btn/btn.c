@@ -59,27 +59,21 @@ int buttonInit(void)
         return 1;
     }
     pthread_create(&buttonTh_id, NULL, &buttonThFunc, NULL);
-    return 1;
+    return msgID;
 }
 
 int buttonExit(void)
 {
     pthread_join(buttonTh_id, NULL);
-    return 0;
+    close(fd);
+    //return 0;
 }
 
 void *buttonThFunc(void *arg)
 {
-    ssize_t readSize;
+    BUTTON_MSG_T B;
     B.messageNum = 1;
-    printf("thread success\n");
-    while(1)
-    {
-        read(fd, &C, sizeof(C));
-        // printf("thread success2\n");
-       // printf("read size : %d\n", readSize);
-    //printf("C size : %d\n", sizeof(C));
-        
+    struct input_event C;
     /*
     struct input_event C;
     struct input_event
@@ -89,32 +83,36 @@ void *buttonThFunc(void *arg)
         _u16 code;
         _s32 value;
     };
-    
     */
+
+    printf("thread success\n");
+    while(1)
+    {
+        read(fd, &C, sizeof(C));
+
     //if문 조건을 sizeof(struct input_event) ? -> 똑같음
     //readSize != sizeof(C)
-        
-        if(readSize != sizeof(C))   //오류 발생 부분
-        {
-            //readSize와 C의 크기가 다르면 뭔가 오류임.
+
+            /*
             printf("ERR\n");
             printf("C Size = %zu\n", sizeof(C)); //sizeof
             printf("readSize = %d\n", readSize);
             sleep(5);
 
             continue;
+            */
+        
+        if((C.type == EV_KEY) && (C.value == 0))   
+        {
+           B.keyInput = C.code;
+           msgsnd(msgID, &B, sizeof(B) - sizeof(long int), 0);
         }
 
        // if()
 
         //printf("thread success3\n");
-        
-        B.keyInput = C.code;
-        B.pressed = C.value;
-        B.type = C.type;
-        msgsnd(msgID, &B, sizeof(B) - sizeof(long int), 0);
+ 
     }
-    close(fd);
 }
 
 
