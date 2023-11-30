@@ -104,8 +104,11 @@ void *buttonThFunc(void *arg)
         
         if((C.type == EV_KEY) && (C.value == 0))   
         {
+            
            B.keyInput = C.code;
            msgsnd(msgID, &B, sizeof(B) - sizeof(long int), 0);
+           printf("msg snd success\n");
+           sleep(5);
         }
 
        // if()
