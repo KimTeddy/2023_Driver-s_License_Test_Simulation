@@ -21,7 +21,8 @@
 #define PWM_COLOR_R 0
 #define PWM_COLOR_G 1
 #define PWM_COLOR_B 2
-#define PWM_PERIOD_NS 100000 //ns. = 0.1ms = 10khz
+//#define PWM_PERIOD_NS 100000 //ns. = 0.1ms = 10khz
+
 int pwmActiveAll(void)
 {
 int fd = 0;

@@ -27,4 +27,4 @@ int pwmSetPercent(int percent, int ledColor);
 int pwmStartAll(void);
 int pwmLedInit(void);
 
-#endif _COLORLED_H_
+#endif 
