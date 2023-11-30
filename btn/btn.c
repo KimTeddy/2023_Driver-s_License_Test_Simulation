@@ -76,6 +76,7 @@ static void *buttonThFunc(void)
     BUTTON_MSG_T Data;
     Data.messageNum = 1;
     struct input_event stEvent;
+    printf("thread success\n");
     while (1)
     {
         read(fd, &stEvent, sizeof(stEvent));
@@ -83,7 +84,10 @@ static void *buttonThFunc(void)
         {
             Data.keyInput = stEvent.code;
             msgsnd(msgID, &Data, sizeof(Data) - 4, 0);
+            printf("if works\n");
         }
+        printf("if doesn't work?\n");
+        sleep(5);
     }
 }
 /*
