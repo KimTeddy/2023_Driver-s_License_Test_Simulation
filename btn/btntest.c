@@ -20,12 +20,12 @@ int main()
     {
 
         int retmsg = 0;
-        retmsg = msgrcv(msgID, &stEvent, sizeof(stEven)-sizeof(long int), 0, 0);
+        retmsg = msgrcv(msgID, &stEvent, sizeof(stEvent)-sizeof(long int), 0, 0);
 
-        if(stEven.type == EV_KEY)
+        if(stEvent.type == EV_KEY)
         {
             printf("EV_KEY(");
-            switch(stEven.keyInput)
+            switch(stEvent.keyInput)
             {
                 case KEY_VOLUMEUP : printf("Volume up key):"); break;
                 case KEY_HOME : printf("Home key):"); break;
@@ -34,7 +34,7 @@ int main()
                 case KEY_MENU : printf("Menu key):"); break;
                 case KEY_VOLUMEDOWN : printf("Volume down key):"); break;
             }
-            if(stEven.pressed) printf("Pressed!\n");
+            if(stEvent.pressed) printf("Pressed!\n");
             else printf("released\n");
         }
         else 
