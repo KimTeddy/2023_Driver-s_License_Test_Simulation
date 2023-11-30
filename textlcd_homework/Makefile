@@ -1,14 +1,25 @@
-//Makefile
-all: textlcdtest.c libMyPeri.a
-	arm-linux-gnueabi-gcc -o textlcdtest textlcdtest.c -l MyPeri -L.
-	scp ./btntest ecube@192.168.97.99:~/
+all: textlcdtest.elf
+	scp ./textlcdtest.elf ecube@192.168.97.99:~/teddy/
+	echo "		6) send complete"
 
-libMyPeri.a : lcdtext.o
+textlcdtest.elf: libMyPeri.a textlcdtest.o
+	arm-linux-gnueabi-gcc textlcdtest.o -l MyPeri -L. -o textlcdtest.elf
+	echo "		5) textlcdtest.elf"
+
+textlcdtest.o: textlcdtest.c
+	arm-linux-gnueabi-gcc -c -o textlcdtest.o textlcdtest.c
+	echo "		4) textlcdtest.o"
+
+libMyPeri.a: lcdtext.o
 	arm-linux-gnueabi-ar rc libMyPeri.a lcdtext.o
+	echo "		3) libMyPeri.a"
 
-lcdtext.o: lcdtext.h lcdtext.c
-	arm-linux-gnueabi-gcc -c lcdtext.c -o lcdtext.o
+lcdtext.o: lcdtext.c lcdtext.h
+	arm-linux-gnueabi-gcc --static -c -o lcdtext.o lcdtext.c
+	echo "		2) lcdtext.o"
 
 clear : 
 	rm *.o
 	rm libMyPeri.a
+	echo "		1) make start"
+	make
