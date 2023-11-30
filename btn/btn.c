@@ -105,7 +105,7 @@ void *buttonThFunc(void *arg)
             continue;
         }
 
-        if()
+       // if()
 
         //printf("thread success3\n");
         
