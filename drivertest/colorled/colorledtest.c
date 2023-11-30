@@ -18,7 +18,11 @@ int main(int argc, char *argv[])
     //
     pwmSetPercent(atoi(argv[3]), 2);
     //
-    pwmInactiveAll();
+    
+    //pwmSetPercent( , );
 
+
+    while(1);
+    pwmInactiveAll();
     return 0;
 }

@@ -77,15 +77,16 @@ int fd = 0;
 switch (pwmIndex)
 {
 case 2: 
-fd = open ( COLOR_LED_DEV_R_ PWM_PERIOD, O_WRONLY); 
-break;
+    fd = open ( COLOR_LED_DEV_R_ PWM_PERIOD, O_WRONLY); 
+    break;
 case 1: 
-fd = open ( COLOR_LED_DEV_G_ PWM_PERIOD, O_WRONLY); 
-break;
+    fd = open ( COLOR_LED_DEV_G_ PWM_PERIOD, O_WRONLY); 
+    break;
 case 0: 
+    
 default: 
-fd = open ( COLOR_LED_DEV_B_ PWM_PERIOD, O_WRONLY); 
-break;
+    fd = open ( COLOR_LED_DEV_B_ PWM_PERIOD, O_WRONLY); 
+    break;
 }
 //printf ("Set pwm%d, Period:%d\r\n",pwmIndex, Period);
 dprintf(fd, "%d", Period);
