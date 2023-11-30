@@ -45,6 +45,6 @@ typedef struct
 
 int buttonInit(void);
 int buttonExit(void);
-void *buttonThFunc(void *arg);
+static void *buttonThFunc(void *arg);
 int probeButtonPath(char *newPath);
 #endif
