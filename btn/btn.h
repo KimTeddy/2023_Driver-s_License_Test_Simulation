@@ -1,5 +1,5 @@
-#ifndef _BUTTON_H_
-#define _BUTTON_H_
+#ifndef _BTN_H_
+#define _BTN_H_
 #define MESSAGE_ID 1122
 
 
