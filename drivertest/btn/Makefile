@@ -1,6 +1,5 @@
 all: btntest.c libMyPeri.a
 	arm-linux-gnueabi-gcc -o btntest btntest.c -l MyPeri -L. -lpthread
-	scp ./btntest ecube@192.168.97.99:~/
 
 libMyPeri.a : btn.o 
 	arm-linux-gnueabi-ar rc libMyPeri.a btn.o
