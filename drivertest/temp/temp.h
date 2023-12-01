@@ -1,5 +1,5 @@
-#ifndef _TEMPERATURE_H_
-#define _TEMPERATURE_H_
+#ifndef _TEMP_H_
+#define _TEMP_H_
 
 #include <stdint.h>
 #include <string.h>
