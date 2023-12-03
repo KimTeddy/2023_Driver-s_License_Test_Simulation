@@ -1,39 +1,45 @@
-// textlcdtest.c
 #include "lcdtext.h"
 
 int lcd_fd;
 int main() {
-    // LCD 장치 파일 열기
-    lcd_fd = open("/dev/peritextlcd", O_RDWR);
-    if (lcd_fd == -1) {
-        perror("Error opening LCD device");
-        return 1;
-    }
-    char str1[NUM_COLS + 1];
-    char str2[NUM_COLS + 1];
-    int lineFlag;
+
+int ledtextinit();
+
+    char str[NUM_ROWS][NUM_COLS];
+    char str1[NUM_ROWS][NUM_COLS];
+    char str2[NUM_ROWS][NUM_COLS];
+
 
     // 사용자로부터 입력 받기
     printf("Enter line number (1 or 2) and 'text' : ");
-    scanf("%d ", &lineFlag);  // 숫자 입력
-    fgets(lineFlag == 1 ? str1 : str2, sizeof(str1), stdin);
+	scanf("%d %d", &lineFlag,&str );  // 숫자 입력
 
-    // 문자열에서 개행 문자 제거
-    size_t len1 = strlen(str1);
-    if (len1 > 0 && str1[len1 - 1] == '\n') {
-        str1[len1 - 1] = '\0';
-    }
 
-    size_t len2 = strlen(str2);
-    if (len2 > 0 && str2[len2 - 1] == '\n') {
-        str2[len2 - 1] = '\0';
+	char* output = str;  // 출력용 포인터를 입력과 같이 시작하게 함
+
+	size_t len = strlen(str);
+    if (len > 0 && str[len - 1] == '\n') {
+        str[len - 1] = '\0';
     }
+    // 입력 문자열을 순회하면서 따옴표를 제거
+    while (*str) {
+        if (*str != '\'') {
+            *output = *str;  // 따옴표가 아닌 경우에만 복사
+            output++;
+        }
+        str++;
+    }
+    *output = '\0';
     
+	if(lineFlag == 1) {
+		str1=output;
+	}
+	else if(lineFlag == 2) {
+		str2=output;
+	}
       // lcdtextwrite 함수 호출
     lcdtextwrite(str1, str2, lineFlag);
-
-    // LCD 장치 파일 닫기
-    close(lcd_fd);
-
+    
+	int lcdtextexit();
     return 0;
 }
