@@ -1,3 +1,6 @@
+
+//lcdtext.h
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -18,6 +21,7 @@
 #define NUM_COLS 16
 
 void lcdtextwrite(const char *str1, const char *str2, int lineFlag);
-
+int lcdtextexit(void);
+int ledtextinit(void);
 
 #endif
