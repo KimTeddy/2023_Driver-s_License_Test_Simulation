@@ -1,6 +1,7 @@
 #include "lcdtext.h"
-    char textlcd[NUM_ROWS][NUM_COLS] = {};
-	int len;
+
+char textlcd[NUM_ROWS][NUM_COLS] = {};
+int len;
 
 int ledtextinit(void){
 	   lcd_fd = open("/dev/peritextlcd", O_RDWR);
