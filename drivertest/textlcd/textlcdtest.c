@@ -1,9 +1,10 @@
 #include "lcdtext.h"
 
 int lcd_fd;
+int lineFlag;
 int main() {
 
-int ledtextinit();
+ledtextinit();
 
     char str[NUM_ROWS][NUM_COLS];
     char str1[NUM_ROWS][NUM_COLS];
@@ -13,18 +14,23 @@ int ledtextinit();
     // 사용자로부터 입력 받기
     printf("Enter line number (1 or 2) and 'text' : ");
 	scanf("%d", &lineFlag);  // 숫자 입력
-	fgets(str[0], sizeof(str[0]), stdin);
-	if(lineFlag ==NULL){ printf("숫자를 입력하세요");exit(1);}
-	if(str[0]=='\0'){printf("문자열을 입력하세요"); exit(1);}
+   
+	if (lineFlag != 1 && lineFlag != 2) {
+        printf("Choose 1 or 2\n");
+        exit(1);
+    }
+	fgets(str, sizeof(str), stdin);
 
-	char* output = str;  // 출력용 포인터를 입력과 같이 시작하게 함
+	if(str[0]=='\0'){printf("문자열을 입력하세요"); exit(1);}
 
 	size_t len = strlen(str); //개행문자 제거
     if (len > 0 && str[len - 1] == '\n') {
         str[len - 1] = '\0';
     }
     // 입력 문자열을 순회하면서 따옴표를 제거
-    while (*str) {
+   
+char *output = str;  // 출력용 포인터를 입력과 같이 시작하게 함
+	 while (*str) {
         if (*str != '\'') {
             *output = *str;  // 따옴표가 아닌 경우에만 복사
             output++;
@@ -42,6 +48,6 @@ int ledtextinit();
       // lcdtextwrite 함수 호출
     lcdtextwrite(str1, str2, lineFlag);
     
-	int lcdtextexit();
+lcdtextexit();
     return 0;
 }
