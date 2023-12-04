@@ -2,6 +2,7 @@
 
 char textlcd[NUM_ROWS][NUM_COLS] = {};
 int len;
+int lineFlag;
 
 int ledtextinit(void){
 	   lcd_fd = open("/dev/peritextlcd", O_RDWR);
