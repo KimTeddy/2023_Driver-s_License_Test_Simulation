@@ -29,15 +29,18 @@ ledtextinit();
     }
     // 입력 문자열을 순회하면서 따옴표를 제거
    
-char *output = str;  // 출력용 포인터를 입력과 같이 시작하게 함
-	 while (*str) {
-        if (*str != '\'') {
-            *output = *str;  // 따옴표가 아닌 경우에만 복사
-            output++;
+    char output[sizeof(str)];  // output 배열은 충분한 크기로 선언
+    char *output_ptr = output;
+    char *str_ptr = str;
+
+    while (*str_ptr) {
+        if (*str_ptr != '\'') {
+            *output_ptr = *str_ptr;
+            output_ptr++;
         }
-        str++;
+        str_ptr++;
     }
-    *output = '\0';
+    *output_ptr = '\0';
     
 	if(lineFlag == 1) {
 		strcpy(str1, output);;
