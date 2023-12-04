@@ -13,7 +13,7 @@ int ledtextinit();
     // 사용자로부터 입력 받기
     printf("Enter line number (1 or 2) and 'text' : ");
 	scanf("%d", &lineFlag);  // 숫자 입력
-	gets(str);
+	fgets(str[0], sizeof(str[0]), stdin);
 	if(lineFlag ==NULL){ printf("숫자를 입력하세요");exit(1);}
 	if(str[0]=='\0'){printf("문자열을 입력하세요"); exit(1);}
 
@@ -34,10 +34,10 @@ int ledtextinit();
     *output = '\0';
     
 	if(lineFlag == 1) {
-		str1=output;
+		strcpy(str1, output);;
 	}
 	else if(lineFlag == 2) {
-		str2=output;
+		strcpy(str2, output);;
 	}
       // lcdtextwrite 함수 호출
     lcdtextwrite(str1, str2, lineFlag);
