@@ -12,12 +12,14 @@ int ledtextinit();
 
     // 사용자로부터 입력 받기
     printf("Enter line number (1 or 2) and 'text' : ");
-	scanf("%d %d", &lineFlag,&str );  // 숫자 입력
-
+	scanf("%d", &lineFlag);  // 숫자 입력
+	gets(str);
+	if(lineFlag ==NULL){ printf("숫자를 입력하세요");exit(1);}
+	if(str[0]=='\0'){printf("문자열을 입력하세요"); exit(1);}
 
 	char* output = str;  // 출력용 포인터를 입력과 같이 시작하게 함
 
-	size_t len = strlen(str);
+	size_t len = strlen(str); //개행문자 제거
     if (len > 0 && str[len - 1] == '\n') {
         str[len - 1] = '\0';
     }
