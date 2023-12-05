@@ -55,6 +55,7 @@ int probeButtonPath(char *newPath)
     
     while (!feof(fp)) //끝까지 읽어들인다.
     {
+        printf("HI7\n");
         char tmpStr[2000];       // 2000자를 읽을 수 있게 버퍼
         fgets(tmpStr, 2000, fp); //최대 2000자를 읽어봄
         // printf ("%s",tmpStr);
