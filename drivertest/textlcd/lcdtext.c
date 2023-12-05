@@ -2,8 +2,6 @@
 #include "textlcddrv.h"
 
 int fd;
-stTextLCD stlcd;
-unsigned int linenum = 0;
 
 int lcdtextwrite(const char* str1, const char* str2, int lineFlag)
 {
