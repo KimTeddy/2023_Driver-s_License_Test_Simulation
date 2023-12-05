@@ -18,7 +18,7 @@ ledtextinit();
         printf("Choose 1 or 2\n");
         exit(1);
     }
-	fgets(str, sizeof(str), stdin);
+	gets(str);
 
 	if(str[0]=='\0'){printf("문자열을 입력하세요"); exit(1);}
 
