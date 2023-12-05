@@ -23,6 +23,7 @@ char buttonPath[256] = {0, };
 
 int buttonInit(void)
 {
+    printf("HI3\n");
     if (probeButtonPath(buttonPath) == 0)
         {
             printf("ERR?\n");
