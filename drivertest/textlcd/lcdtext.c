@@ -10,8 +10,7 @@ int lcdtextwrite(const char* str1, const char* str2, int lineFlag)
                 perror("driver (//dev//peritextlcd) open error.\n");
                 return 1;
         }
-        str1 = stlcd.TextData[0];
-        str2 = stlcd.TextData[1];
+
         if (lineFlag == 1) {
                 write(fd, str1, sizeof(stTextLCD));
         }
