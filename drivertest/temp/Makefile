@@ -1,6 +1,6 @@
 all : temp.c libMyPeri.a
 	arm-linux-gnueabi-gcc -o temptest temptest.c -l MyPeri -L.
-	scp ./temptest ecube@192.168.97.99:~/
+	scp ./temptest ecube@192.168.254.99:~/
 
 libMyPeri.a : temp.o
 	arm-linux-gnueabi-ar rc libMyPeri.a temp.o

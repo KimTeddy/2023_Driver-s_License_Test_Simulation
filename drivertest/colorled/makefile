@@ -1,6 +1,6 @@
 all : colorledtest.c libMyPeri.a
 	arm-linux-gnueabi-gcc -o colorledtest colorledtest.c -l MyPeri -L.
-	scp ./colorledtest ecube@192.168.97.99:~/
+	scp ./colorledtest ecube@192.168.254.99:~/
 
 libMyPeri.a : colorled.o
 	arm-linux-gnueabi-ar rc libMyPeri.a colorled.o
