@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <fcntl.h>
 #include <unistd.h>
+#include "accelMagGyro.h"
 
 #define ACCELPATH "/sys/class/misc/FreescaleAccelerometer/"
 #define MAGNEPATH "/sys/class/misc/FreescaleMagnetometer/"
@@ -18,7 +19,6 @@ void getAccel(int accel[]){
 
     fp = fopen(ACCELPATH "data", "rt");
     fscanf(fp, "%d, %d, %d", &accel[0], &accel[1], &accel[2]);
-    printf("I read Accel %d, %d, %d\r\n", accel[0], accel[1], accel[2]);
     fclose(fp);
 }
 
@@ -30,7 +30,6 @@ void getMagnet(int magnet[]){
 
     fp = fopen(MAGNEPATH "data", "rt");
     fscanf(fp, "%d, %d, %d", &magnet[0], &magnet[1], &magnet[2]);
-    printf("I read Magneto %d, %d, %d\r\n", magnet[0], magnet[1], magnet[2]);
     fclose(fp);
 }
 
@@ -42,6 +41,5 @@ void getGyro(int gyro[]){
 
     fp = fopen(GYROPATH "data", "rt");
     fscanf(fp, "%d, %d, %d", &gyro[0], &gyro[1], &gyro[2]);
-    printf("I read Gyroscope %d, %d, %d\r\n", gyro[0], gyro[1], gyro[2]);
     fclose(fp);
 }

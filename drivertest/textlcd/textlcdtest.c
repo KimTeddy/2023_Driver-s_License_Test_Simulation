@@ -1,56 +1,38 @@
 #include "lcdtext.h"
 #include "textlcddrv.h"
-int lineFlag;
-int main()
+
+unsigned int linenum = 0;
+stTextLCD stlcd; // stTextLCD 구조체를 가지고 드라이버와 인터페이스
+int fd;
+int len;
+const char* str1;
+const char* str2;
+
+int main(int argc , char **argv)
 {
-    ledtextinit();
-
-    char str[NUM_ROWS][NUM_COLS];
-    char str1[NUM_ROWS][NUM_COLS];
-    char str2[NUM_ROWS][NUM_COLS];
-
-    // 사용자로부터 입력 받기
-    printf("Enter line number (1 or 2) and 'text' : ");
-    scanf("%d", &lineFlag); // 숫자 입력
-
-    if (lineFlag != 1 && lineFlag != 2)
-    {
-        printf("Choose 1 or 2\n");
-        exit(1);
-    }
-    gets(str);
-
-    if (str[0] == '\0')
-    {
-        printf("문자열을 입력하세요");
-        exit(1);
-    }
-
-    // 입력 문자열을 순회하면서 따옴표를 제거
-    char output[sizeof(str)];
-    int i = 0, c = 0; // 따옴표 제거
-    for (; i < strlen(str); i++)
-    {
-        // if (isalnum(str[i]))  // msg 문자(a-z, A-Z, 0-9)를 제외한 모든것 제거하고 싶은 경우 사용
-        if (str[i] != '\'') // msg 에서 따옴표 제외하는것이 목적일 경우
-        {
-            output[c] = str[i];
-            c++;
-        }
-    }
-    output[c] = '\0';
-
-    if (lineFlag == 1)
-    {
-        strcpy(str1, output);
-    }
-    else if (lineFlag == 2)
-    {
-        strcpy(str2, output);
-    }
-    // lcdtextwrite 함수 호출
-    lcdtextwrite(str1, str2, lineFlag);
-
-    lcdtextexit();
-    return 0;
+memset(&stlcd,0,sizeof(stTextLCD)); // 구조체 초기화
+if (argc < 3 ) { // line 정보와 쓸 정보를 확인
+perror(" Args number is less than 2\n");
+return 1;
 }
+linenum = strtol(argv[1],NULL,10);
+printf("linenum :%d\n", linenum);
+if ( linenum == 1)
+stlcd.cmdData = CMD_DATA_WRITE_LINE_1;
+else if ( linenum == 2)
+stlcd.cmdData = CMD_DATA_WRITE_LINE_2;
+else {
+printf("linenum : %d wrong . range (1 ~ 2)\n", linenum);
+return 1; }
+len = strlen(argv[2]);
+if ( len > COLUMN_NUM)
+memcpy(stlcd.TextData[stlcd.cmdData - 1], argv[2], COLUMN_NUM);
+else
+memcpy(stlcd.TextData[stlcd.cmdData - 1], argv[2], len);
+stlcd.cmd = CMD_WRITE_STRING;
+        str1 = stlcd.TextData[0];
+        str2 = stlcd.TextData[1];
+
+lcdtextwrite(stlcd.TextData[0], stlcd.TextData[1], linenum);
+}
+
