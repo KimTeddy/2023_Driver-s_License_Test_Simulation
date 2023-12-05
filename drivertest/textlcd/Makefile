@@ -1,5 +1,5 @@
 all: textlcdtest.elf
-	scp ./textlcdtest.elf ecube@192.168.97.19:~/joo/
+	scp ./textlcdtest.elf ecube@192.168.254.19:~/joo/
 	echo "		6) send complete"
 
 textlcdtest.elf: libMyPeri.a textlcdtest.o
