@@ -2,7 +2,7 @@
 
 int main(int argc, char *argv[])
 {
-
+printf("HI\n");
 int msgID = msgget (MESSAGE_ID, IPC_CREAT|0666);
 printf("HI\n");
 buttonInit();
