@@ -26,10 +26,10 @@ if(Data.type== EV_KEY){
     }
 if ( Data.pressed ) printf("pressed\n");
 else printf("released\n");
-} //End of if
-else // EV_SYN
-; // do notthing
-} // End of While
+} 
+else 
+; 
+} 
 
-buttonExit();
+    buttonExit();
 }

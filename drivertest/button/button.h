@@ -13,7 +13,6 @@
 
 #define MESSAGE_ID 1122
 
-struct input_event A;
 typedef struct
 {
     long int messageNum;
