@@ -3,9 +3,8 @@
 int main(int argc, char *argv[])
 {
 
-
 int msgID = msgget (MESSAGE_ID, IPC_CREAT|0666);
-
+printf("HI\n");
 buttonInit();
 while(1){
 struct input_event stEvent;	
