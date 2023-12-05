@@ -9,7 +9,7 @@ int msgID = msgget (MESSAGE_ID, IPC_CREAT|0666);
 while(1){
 //struct input_event stEvent;	
 int returnValue = 0;
-returnValue = msgrcv(msgID, &stEvent, sizeof(Data) - sizeof(long int), 0, 0);
+returnValue = msgrcv(msgID, &Data, sizeof(Data) - sizeof(long int), 0, 0);
 		
 if(Data.type== EV_KEY){
 printf("EV_KEY(");
