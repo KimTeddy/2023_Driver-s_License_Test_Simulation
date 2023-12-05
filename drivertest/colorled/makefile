@@ -1,13 +1,25 @@
-all : colorledtest.c libMyPeri.a
-	arm-linux-gnueabi-gcc -o colorledtest colorledtest.c -l MyPeri -L.
-	scp ./colorledtest ecube@192.168.254.99:~/
+all: colorledtest.elf
+	scp ./colorledtest.elf ecube@192.168.254.99:~/
+	echo "		6) send complete"
 
-libMyPeri.a : colorled.o
+colorledtest.elf: libMyPeri.a colorledtest.o
+	arm-linux-gnueabi-gcc colorledtest.o -l MyPeri -L. -o colorledtest.elf
+	echo "		5) colorledtest.elf"
+
+buzzertest.o: colorledtest.c colorled.h
+	arm-linux-gnueabi-gcc -c -o colorledtest.o colorledtest.c
+	echo "		4) colorledtest.o"
+
+libMyPeri.a: colorled.o
 	arm-linux-gnueabi-ar rc libMyPeri.a colorled.o
+	echo "		3) libMyPeri.a"
 
-colorled.o : colorled.h colorled.c
-	arm-linux-gnueabi-gcc -c colorled.c -o colorled.o	
+buzzer.o: colorled.c colorled.h
+	arm-linux-gnueabi-gcc --static -c -o colorled.o colorled.c
+	echo "		2) colorled.o"
 
-clear :
+clear : 
 	rm *.o
-	rm libMyPeri.a	
+	rm libMyPeri.a
+	echo "		1) make start"
+	make
