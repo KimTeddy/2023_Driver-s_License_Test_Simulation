@@ -1,6 +1,7 @@
 #include "lcdtext.h"
 
 char textlcd[NUM_ROWS][NUM_COLS] = {};
+int lcd_fd;
 int len;
 int lineFlag;
 
@@ -23,14 +24,17 @@ void lcdtextwrite(const char *str1, const char *str2, int lineFlag) {
 		textlcd[0][len] = '\0';
 	}
         textlcd[1][0] = '\0';
-    } else if (lineFlag == 2) {
+    } 
+    else if (lineFlag == 2) {
         len = strlen(str2);
     	if(len>NUM_COLS)
         memcpy(textlcd[1],str2,NUM_COLS);
         else
 	{ memcpy(textlcd[1],str2,len);
          textlcd[1][len] = '\0'; // Null-terminate the string}
-    } else {
+    } 
+    }
+else {
         printf("choose 1 or 2\n");
         return;
     }
