@@ -2,8 +2,8 @@ all: colorledtest.elf
 	scp ./colorledtest.elf ecube@192.168.254.99:~/
 	echo "		6) send complete"
 
-colorledtest.elf: libMyPeri.a colorledtest.o
-	arm-linux-gnueabi-gcc colorledtest.o -l MyPeri -L. -o colorledtest.elf
+colorledtest.elf: libMyPeri.a colorled.o
+	arm-linux-gnueabi-gcc colorled.o -l MyPeri -L. -o colorledtest.elf
 	echo "		5) colorledtest.elf"
 
 buzzertest.o: colorledtest.c colorled.h
