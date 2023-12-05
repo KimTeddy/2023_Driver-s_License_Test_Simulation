@@ -8,7 +8,7 @@
 #include <sys/ioctl.h> // for ioctl
 #include <sys/msg.h>
 #include <pthread.h>
-#include "btn.h"
+#include "button.h"
 
 static int fd = 0;
 static int msgID = 0;

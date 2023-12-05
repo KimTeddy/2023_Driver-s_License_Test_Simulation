@@ -1,5 +1,5 @@
-#ifndef _BTN_H_
-#define _BTN_H_
+#ifndef _BUTTON_H_
+#define _BUTTON_H_
 
 #include <stdio.h>
 #include <stdlib.h>
