@@ -6,6 +6,7 @@ printf("HI\n");
 int msgID = msgget (MESSAGE_ID, IPC_CREAT|0666);
 printf("HI\n");
 buttonInit();
+printf("Bye\n");
 while(1){
 struct input_event stEvent;	
 int returnValue = 0;
