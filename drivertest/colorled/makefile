@@ -7,8 +7,8 @@ colorledtest.elf: libMyPeri.a colorledtest.o
 	echo "		5) colorledtest.elf"
 
 buzzertest.o: colorledtest.c colorled.h
-	arm-linux-gnueabi-gcc -c -o colorledtest.o colorledtest.c
-	echo "		4) colorledtest.o"
+	arm-linux-gnueabi-gcc -c -o colorled.o colorledtest.c
+	echo "		4) colorled.o"
 
 libMyPeri.a: colorled.o
 	arm-linux-gnueabi-ar rc libMyPeri.a colorled.o
