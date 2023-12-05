@@ -1,6 +1,4 @@
 
-//lcdtext.h
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -20,8 +18,6 @@
 #define NUM_ROWS 2
 #define NUM_COLS 16
 
-void lcdtextwrite(const char *str1, const char *str2, int lineFlag);
-int lcdtextexit(void);
-int ledtextinit(void);
-
+int lcdtextwrite(const char* str1, const char* str2, int lineFlag);
+int textlcd_display(int argc, char** argv);
 #endif
