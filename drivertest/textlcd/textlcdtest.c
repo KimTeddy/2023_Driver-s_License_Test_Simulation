@@ -23,25 +23,25 @@ ledtextinit();
 	if(str[0]=='\0'){printf("문자열을 입력하세요"); exit(1);}
 
     // 입력 문자열을 순회하면서 따옴표를 제거
-	
-int i = 0, c = 0; // 쌍따옴표 제거
+	 char output[sizeof(str)];  
+int i = 0, c = 0; // 따옴표 제거
 for(; i < strlen(str); i++)
 {
     //if (isalnum(str[i]))  // msg 문자(a-z, A-Z, 0-9)를 제외한 모든것 제거하고 싶은 경우 사용
-    if (str[i] != '\'')             // msg 에서 쌍따옴표 제외하는것이 목적일 경우
+    if (str[i] != '\'')             // msg 에서 따옴표 제외하는것이 목적일 경우
     {
-        msgN[c] = str[i];
+        output[c] = str[i];
         c++;
     }
 }
-msgN[c] = '\0';
+output[c] = '\0';
 
 
 	if(lineFlag == 1) {
-		strcpy(str1, str);
+		strcpy(str1, output);
 	}
 	else if(lineFlag == 2) {
-		strcpy(str2, str);
+		strcpy(str2, output);
 	}
       // lcdtextwrite 함수 호출
     lcdtextwrite(str1, str2, lineFlag);
