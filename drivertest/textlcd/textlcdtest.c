@@ -1,5 +1,5 @@
 #include "lcdtext.h"
-
+#include "textlcddrv.h"
 int lineFlag;
 int main() {
 
