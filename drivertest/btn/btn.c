@@ -30,9 +30,11 @@ int buttonInit(void)
             return 0;
         }
         //return 0;
+        printf("HI4\n");
     fd = open(buttonPath, O_RDONLY);
     msgID = msgget(MESSAGE_ID, IPC_CREAT | 0666);
     pthread_create(&buttonTh_id, NULL, buttonThFunc, NULL);
+    printf("HI5\n");
     return 1;
 }
 
@@ -49,7 +51,7 @@ int probeButtonPath(char *newPath)
     int returnValue = 0;                // button에 해당하는 event#을 찾았나?
     int number = 0;                     //찾았다면 여기에 집어넣자
     FILE *fp = fopen("PROBE_FILE", "rt"); //파일을 열고
-
+    
     while (!feof(fp)) //끝까지 읽어들인다.
     {
         char tmpStr[2000];       // 2000자를 읽을 수 있게 버퍼
