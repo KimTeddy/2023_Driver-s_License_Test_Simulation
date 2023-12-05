@@ -64,7 +64,7 @@ int probeButtonPath(char *newPath)
             printf("YES! I found!: %s\r\n", tmpStr);
             returnValue = 1; //찾음
         }
-
+        printf("HI8\n");
         if (
             (returnValue == 1) && //찾은 상태에서
             (strncasecmp(tmpStr, HAVE_TO_FIND_2,
