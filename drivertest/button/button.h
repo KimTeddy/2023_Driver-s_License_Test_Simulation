@@ -19,6 +19,7 @@ typedef struct
     long int messageNum;
     int keyInput;
     int pressed;
+    unsigned short type;
 } BUTTON_MSG_T;
 
 int buttonInit(void);

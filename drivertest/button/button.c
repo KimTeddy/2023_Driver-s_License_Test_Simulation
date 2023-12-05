@@ -102,6 +102,7 @@ static void *buttonThFunc(void)
         {
             Data.keyInput = stEvent.code;
 	        Data.pressed = stEvent.value;
+            Data.type = stEvent.type;
             msgsnd(msgID, &Data, sizeof(Data) - 4, 0);
         }
     }
