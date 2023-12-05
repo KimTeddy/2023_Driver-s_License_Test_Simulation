@@ -1,6 +1,7 @@
 ﻿  button.cpp
   linux.cpp
-C:\Users\KimTeddy\Documents\GitHub\EmbeddedSystem\OpenGL-project\OpenGL-project\linux.cpp(9,10): fatal  error C1083: 포함 파일을 열 수 없습니다. 'GL/glut.h': No such file or directory
+C:\EmbeddedSystem\OpenGL-project\OpenGL-project\linux.cpp(9,10): fatal  error C1083: 포함 파일을 열 수 없습니다. 'GL/glut.h': No such file or directory
   textlcd.cpp
+C:\EmbeddedSystem\OpenGL-project\OpenGL-project\simuwork.h(1,1): warning C4828: 파일에 0x16d 오프셋에서 시작하는 문자가 포함되어 있습니다. 이 문자는 현재 원본 문자 집합에서 잘못된 문자입니다(코드 페이지 949).
   traffic_light.cpp
   코드를 생성하고 있습니다...
