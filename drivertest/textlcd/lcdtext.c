@@ -1,50 +1,53 @@
 #include "lcdtext.h"
+#include "textlcddrv.h"
 
-char textlcd[NUM_ROWS][NUM_COLS] = {};
-int lcd_fd;
-int len;
-int lineFlag;
+int fd;
+stTextLCD stlcd;
+unsigned int linenum = 0;
 
-int ledtextinit(void){
-	   lcd_fd = open("/dev/peritextlcd", O_RDWR);
-    if (lcd_fd == -1) {
-        perror("Error opening LCD device");
-        return 1;
-    }
-}
-
-void lcdtextwrite(const char *str1, const char *str2, int lineFlag) {		
-    // 전달된 문자열을 textlcd 배열에 복사
-    if (lineFlag == 1) {
-    	len = strlen(str1);
-    	if(len>NUM_COLS)
-        memcpy(textlcd[0],str1,NUM_COLS);
-        else{
-        memcpy(textlcd[0],str1,len);
-		textlcd[0][len] = '\0';
+int textlcd_display(int argc, char** argv)
+{
+	int len;
+	memset(&stlcd, 0, sizeof(stTextLCD)); // 구조체 초기화
+	if (argc < 3) { // line 정보와 쓸 정보를 확인
+		perror(" Args number is less than 2\n");
+		doHelp();
+		return 1;
 	}
-        textlcd[1][0] = '\0';
-    } 
-    else if (lineFlag == 2) {
-        len = strlen(str2);
-    	if(len>NUM_COLS)
-        memcpy(textlcd[1],str2,NUM_COLS);
-        else
-	{ memcpy(textlcd[1],str2,len);
-         textlcd[1][len] = '\0'; // Null-terminate the string}
-    } 
-    }
-else {
-        printf("choose 1 or 2\n");
-        return;
-    }
-            // LCD 장치 파일 닫기
+	linenum = strtol(argv[1], NULL, 10);
+	printf("linenum :%d\n", linenum);
+	if (linenum == 1)
+		stlcd.cmdData = CMD_DATA_WRITE_LINE_1;
+	else if (linenum == 2)
+		stlcd.cmdData = CMD_DATA_WRITE_LINE_2;
+	else {
+		printf("linenum : %d wrong . range (1 ~ 2)\n", linenum);
+		return 1;
+	}
+	len = strlen(argv[2]);
+	if (len > COLUMN_NUM)
+		memcpy(stlcd.TextData[stlcd.cmdData - 1], argv[2], COLUMN_NUM);
+	else
+		memcpy(stlcd.TextData[stlcd.cmdData - 1], argv[2], len);
+	stlcd.cmd = CMD_WRITE_STRING;
+	return 0;
 }
-int lcdtextexit(void){
-	 textlcd[0][0] = '\0';
-    textlcd[1][0] = '\0';
-	len=0;
-	lineFlag=0;
-	close(lcd_fd);
+
+int lcdtextwrite(const char* str1, const char* str2, int lineFlag)
+{
+	fd = open("/dev/peritextlcd", O_RDWR); // open driver
+	if (fd < 0) {
+		perror("driver (//dev//peritextlcd) open error.\n");
+		return 1;
+	}
+	str1 = stlcd.TextData[0];
+	str2 = stlcd.TextData[1];
+	if (lineFlag == 1) {
+		write(fd, str1, sizeof(stTextLCD));
+	}
+	else if (lineFlag == 2){
+		write(fd, str2, sizeof(stTextLCD));
+	}
+	close(fd);
 	return 0;
 }
