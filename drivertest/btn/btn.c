@@ -51,7 +51,7 @@ int probeButtonPath(char *newPath)
     printf("HI6\n");
     int returnValue = 0;                // button에 해당하는 event#을 찾았나?
     int number = 0;                     //찾았다면 여기에 집어넣자
-    FILE *fp = fopen("PROBE_FILE", "rt"); //파일을 열고
+    FILE *fp = fopen(PROBE_FILE, "rt"); //파일을 열고
     printf("HI9\n");
     while (!feof(fp)) //끝까지 읽어들인다.
     {
