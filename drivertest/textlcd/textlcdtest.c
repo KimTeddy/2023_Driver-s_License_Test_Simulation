@@ -1,6 +1,5 @@
 #include "lcdtext.h"
 
-int lcd_fd;
 int lineFlag;
 int main() {
 
