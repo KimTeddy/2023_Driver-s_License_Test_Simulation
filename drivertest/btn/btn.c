@@ -24,7 +24,11 @@ char buttonPath[256] = {0, };
 int buttonInit(void)
 {
     if (probeButtonPath(buttonPath) == 0)
-        return 0;
+        {
+            printf("ERR?\n");
+            return 0;
+        }
+        //return 0;
     fd = open(buttonPath, O_RDONLY);
     msgID = msgget(MESSAGE_ID, IPC_CREAT | 0666);
     pthread_create(&buttonTh_id, NULL, buttonThFunc, NULL);
