@@ -5,6 +5,8 @@ unsigned int linenum = 0;
 stTextLCD stlcd; // stTextLCD 구조체를 가지고 드라이버와 인터페이스
 int fd;
 int len;
+const char* str1;
+const char* str2;
 
 int main(int argc , char **argv)
 {
@@ -28,6 +30,8 @@ memcpy(stlcd.TextData[stlcd.cmdData - 1], argv[2], COLUMN_NUM);
 else
 memcpy(stlcd.TextData[stlcd.cmdData - 1], argv[2], len);
 stlcd.cmd = CMD_WRITE_STRING;
+        str1 = stlcd.TextData[0];
+        str2 = stlcd.TextData[1];
 
 lcdtextwrite(stlcd.TextData[0], stlcd.TextData[1], linenum);
 }
