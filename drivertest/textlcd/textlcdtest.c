@@ -23,15 +23,19 @@ ledtextinit();
 	if(str[0]=='\0'){printf("문자열을 입력하세요"); exit(1);}
 
     // 입력 문자열을 순회하면서 따옴표를 제거
-   
-    for (; str!= '\0'; str++)//종료 문자를 만날 때까지 반복
-	    { 
-	    if(str == '\'')//( ' )와 같은 문자일 때 
-	{ 
-	strcpy(str, str + 1);
-	str--; 
-	}
+	
+int i = 0, c = 0; // 쌍따옴표 제거
+for(; i < strlen(str); i++)
+{
+    //if (isalnum(str[i]))  // msg 문자(a-z, A-Z, 0-9)를 제외한 모든것 제거하고 싶은 경우 사용
+    if (str[i] != '\'')             // msg 에서 쌍따옴표 제외하는것이 목적일 경우
+    {
+        msgN[c] = str[i];
+        c++;
+    }
 }
+msgN[c] = '\0';
+
 
 	if(lineFlag == 1) {
 		strcpy(str1, str);
