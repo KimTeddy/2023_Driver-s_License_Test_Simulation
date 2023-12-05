@@ -3,7 +3,7 @@ all: btntest.elf
 	echo "		6) send complete"
 
 btntest.elf: libMyPeri.a btntest.o
-	arm-linux-gnueabi-gcc btntest.o -l MyPeri -L. -o btntest.elf
+	arm-linux-gnueabi-gcc btntest.o -l MyPeri -L. -o btntest.elf -lpthread
 	echo "		5) btntest.elf"
 
 btntest.o: btntest.c btn.h
