@@ -98,8 +98,9 @@ static void *buttonThFunc(void)
     while (1)
     {
         read(fd, &stEvent, sizeof(stEvent));
-        if ((stEvent.type == EV_KEY) && (stEvent.value == 0))
+        if ((stEvent.type == EV_KEY))
         {
+            // && (stEvent.value == 0)
             Data.keyInput = stEvent.code;
 	        Data.pressed = stEvent.value;
             Data.type = stEvent.type;
