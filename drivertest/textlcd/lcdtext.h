@@ -9,15 +9,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#ifndef _TEXTLCD_H_
-#define _TEXTLCD_H_
+#ifndef _LCDTEXT_H_
+#define _LCDTEXT_H_
 #define CMD_WRITE_STRING 0x20
-#define CMD_DATA_WRITE_BOTH_LINE 0
-#define CMD_WRITE_STRING 0x20
-#define CMD_DATA_WRITE_BOTH_LINE 0
-#define NUM_ROWS 2
-#define NUM_COLS 16
 
-int lcdtextwrite(const char* str1, const char* str2, int lineFlag);
+void lcdtextwrite(const char *str1, const char *str2, int lineFlag);
+void txtlcd_Init(void);
+void txtlcd_Exit(void);
 
-#endif
+#endif //  __TEXTLCD_DRV_H__
+

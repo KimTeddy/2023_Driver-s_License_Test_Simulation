@@ -2,37 +2,45 @@
 #include "textlcddrv.h"
 
 unsigned int linenum = 0;
-stTextLCD stlcd; // stTextLCD 구조체를 가지고 드라이버와 인터페이스
+stTextLCD st; // stTextLCD 구조체를 가지고 드라이버와 인터페이스
 int fd;
-int len;
-const char* str1;
-const char* str2;
+char str[LINE_NUM][COLUMN_NUM];
+char str_mid1[LINE_NUM][COLUMN_NUM+4];
+char str_mid2[LINE_NUM][COLUMN_NUM+4];
+char str1[LINE_NUM][COLUMN_NUM];
+char str2[LINE_NUM][COLUMN_NUM];
+int i = 0, c = 0;
 
-int main(int argc , char **argv)
+int main()
 {
-memset(&stlcd,0,sizeof(stTextLCD)); // 구조체 초기화
-if (argc < 3 ) { // line 정보와 쓸 정보를 확인
-perror(" Args number is less than 2\n");
-return 1;
+ txtlcd_Init();
+ printf("textlcdtest ");
+ scanf("%d",&lineFlag);
+ if(lineFlag==1){ 
+        fgets(str_mid1, sizeof(str_mid1), stdin);
+        for(; i < strlen(str_mid1); i++)
+        {
+          if (str_mid1[i] != '\'')
+                {
+                        str1[c] = str_mid1[i];
+                        c++;
+                }
+        }
+        str1[c]='\0'; 
+        str2[0]='\0';
+        }
+ else if(lineFlag==2){ 
+        fgets(str_mid2, sizeof(str_mid2), stdin);
+                for(; i < strlen(str_mid2); i++)
+        {
+          if (str_mid2[i] != '\'')
+                {
+                        str1[c] = str_mid2[i];
+                        c++;
+                }
+        }
+        str2[c] = '\0'; 
+        }
+lcdtextwrite(str1, str2, lineFlag);
+txtlcd_Exit();
 }
-linenum = strtol(argv[1],NULL,10);
-printf("linenum :%d\n", linenum);
-if ( linenum == 1)
-stlcd.cmdData = CMD_DATA_WRITE_LINE_1;
-else if ( linenum == 2)
-stlcd.cmdData = CMD_DATA_WRITE_LINE_2;
-else {
-printf("linenum : %d wrong . range (1 ~ 2)\n", linenum);
-return 1; }
-len = strlen(argv[2]);
-if ( len > COLUMN_NUM)
-memcpy(stlcd.TextData[stlcd.cmdData - 1], argv[2], COLUMN_NUM);
-else
-memcpy(stlcd.TextData[stlcd.cmdData - 1], argv[2], len);
-stlcd.cmd = CMD_WRITE_STRING;
-        str1 = stlcd.TextData[0];
-        str2 = stlcd.TextData[1];
-
-lcdtextwrite(stlcd.TextData[0], stlcd.TextData[1], linenum);
-}
-
