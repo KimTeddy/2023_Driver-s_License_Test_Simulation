@@ -1,5 +1,5 @@
 #include "textlcd.h"
-
+#include "lcdtext.h"
 #include "simuwork.h"
 /*
 #define CRS_MAIN 0  //¸ÞÀÎ ¸Þ´º ´Ü°Ô
@@ -21,15 +21,15 @@ void crs_lcd()	//ÇÔ¼ö ÀÌ¸§ ¼öÁ¤ÇÊ¿äÇÏ¸é ÇÏ¼¼¿ä.
 			//MAIN¿¡¼­´Â LCD À­´Ü¿¡´Â "PRESS START" Ãâ·Â, 
 			//¾Æ·§ºÎºÐÀº ³×¸ð 0°³
 		}
-		else if (CRS_START)	//½ÃÀÛ ¹öÆ°ÀÌ ´­¸®°í ~¼³¸í ºÎºÐ~
+		else if (CRS_START)	//?œìž‘ ë²„íŠ¼???Œë¦¬ê³?~?¤ëª… ë¶€ë¶?
 		{
 			//STARTºÎºÐ¿¡¼­´Â À­´Ü¿¡ "" Ãâ·Â,
-			//¾Æ·§ºÎºÐ ³×¸ð 0°³
+
 		}
 		else if (CRS_BASIC)
 		{
 			//À­´Ü¿¡ "CAR COMPONENT"
-			// ³×¸ð 2°³
+
 		}
 		else if (CRS_UP)
 		{
@@ -39,27 +39,22 @@ void crs_lcd()	//ÇÔ¼ö ÀÌ¸§ ¼öÁ¤ÇÊ¿äÇÏ¸é ÇÏ¼¼¿ä.
 		else if (CRS_JUNCTION)
 		{
 			// "JUNCTION"
-			// ³×¸ð 6°³
 		}
 		else if (CRS_PARKING)
 		{
 			// "PARKING"
-			// ³×¸ð 8°³
 		}
 		else if (CRS_EMERGENCY)
 		{
 			// "EMERGENCY"
-			// ³×¸ð 10°³
 		}
 		else if (CRS_ACCEL)
 		{
 			// "ACCELERATE"
-			// ³×¸ð 12°³
 		}
 		else if (CRS_END)
 		{
 			// "END"
-			// ³×¸ð 16°³
 		}
 	}
 
