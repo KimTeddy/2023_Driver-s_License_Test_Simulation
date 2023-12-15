@@ -23,59 +23,60 @@ void crs_lcd()	//함수 이름 수정필요하면 하세요.
 	{
 		if (CRS_MAIN)
 		{
-			lcdtextwrite( "PRESS START", , 1);
-			lcdtextwrite( "PRESS START", "0xff", 2);
+		  	 lcdtextwrite( "PRESS START", "CAR S", 1);
+ 			 lcdtextwrite( "PRESS START", "CAR S", 2);
 			//MAIN에서는 LCD 윗단에는 "PRESS START" 출력, 
-			//아랫부분은 네모 0개
+			
 		}
 		else if (CRS_START)	//시작 버튼이 눌리고 ~설명 부분~
 		{
-			lcdtextwrite( "BEGIN", , 1);
-			lcdtextwrite( , , 2);
+			lcdtextwrite( "BEGIN         ", "CAR SI", 1);
+  			lcdtextwrite( "BEGIN         ", "CAR SI", 2);
 			//START부분에서는 윗단에 "" 출력,
-			//아랫부분 네모 0개
+			
 		}
 		else if (CRS_BASIC)
 		{
-			lcdtextwrite( "CAR COMPONENT", , 1);
+			lcdtextwrite( "CAR COMPONENT", "CAR SIM", 1);
+  			lcdtextwrite( "CAR COMPONENT", "CAR SIM", 2);
 			//윗단에 "CAR COMPONENT"
-			// 네모 2개
+			
 		}
 		else if (CRS_UP)
 		{
-			lcdtextwrite( "UP HILL", , 1);
+			lcdtextwrite( "UP HILL        ", "CAR SIMU", 1);
+  			lcdtextwrite( "UP HILL        ", "CAR SIMU", 2);
 			// 윗단에 "UP HILL" 
-			// 네모 4개
 		}
 		else if (CRS_JUNCTION)
 		{
-			lcdtextwrite( "JUNCION", , 1);
+			lcdtextwrite( "JUNCTION   ", "CAR SIMUL", 1);
+  			lcdtextwrite( "JUNCTION   ", "CAR SIMUL", 2);
 			// "JUNCTION"
-			// 네모 6개
 		}
 		else if (CRS_PARKING)
 		{
-			lcdtextwrite( "PARKING", , 1);
+			lcdtextwrite( "PARKING         ", "CAR SIMULA", 1);
+  			lcdtextwrite( "PARKING         ", "CAR SIMULA", 2);
 			// "PARKING"
-			// 네모 8개
 		}
 		else if (CRS_EMERGENCY)
 		{
-			lcdtextwrite( "EMERGENCY", , 1);
+			lcdtextwrite( "EMERGENCY         ", "CAR SIMULAT", 1);
+  			lcdtextwrite( "EMERGENCY         ", "CAR SIMULAT", 2);
 			// "EMERGENCY"
-			// 네모 10개
 		}
 		else if (CRS_ACCEL)
 		{
-			lcdtextwrite( "ACCELERATE", , 1);
+			lcdtextwrite( "ACCELATE         ", "CAR SIMULATO", 1);
+  			lcdtextwrite( "ACCELATE         ", "CAR SIMULATO", 2);
 			// "ACCELERATE"
-			// 네모 12개
 		}
 		else if (CRS_END)
 		{
-			lcdtextwrite( "END", , 1);
+			lcdtextwrite( "END                  ", "CAR SIMULATOR", 1);
+  			lcdtextwrite( "END                  ", "CAR SIMULATOR", 2);
 			// "END"
-			// 네모 16개
 		}
 	}
 
