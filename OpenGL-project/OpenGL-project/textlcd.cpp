@@ -30,7 +30,7 @@ void crs_lcd()	//함수 이름 수정필요하면 하세요.
 		}
 		else if (CRS_START)	//시작 버튼이 눌리고 ~설명 부분~
 		{
-			lcdtextwrite( "", , 1);
+			lcdtextwrite( "BEGIN", , 1);
 			lcdtextwrite( , , 2);
 			//START부분에서는 윗단에 "" 출력,
 			//아랫부분 네모 0개
@@ -61,7 +61,7 @@ void crs_lcd()	//함수 이름 수정필요하면 하세요.
 		}
 		else if (CRS_EMERGENCY)
 		{
-			lcdtextwrite( "CRS_EMERGENCY", , 1);
+			lcdtextwrite( "EMERGENCY", , 1);
 			// "EMERGENCY"
 			// 네모 10개
 		}
