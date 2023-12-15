@@ -24,6 +24,7 @@ void crs_lcd()	//함수 이름 수정필요하면 하세요.
 		if (CRS_MAIN)
 		{
 			lcdtextwrite( "PRESS START", , 1);
+			lcdtextwrite( "PRESS START", "0xff", 2);
 			//MAIN에서는 LCD 윗단에는 "PRESS START" 출력, 
 			//아랫부분은 네모 0개
 		}

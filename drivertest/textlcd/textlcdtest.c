@@ -41,6 +41,8 @@ int main()
         }
         str2[c] = '\0'; 
         }
-lcdtextwrite(str1, str2, lineFlag);
+//lcdtextwrite(str1, str2, lineFlag);
+lcdtextwrite( "PRESS START", , 1);
+lcdtextwrite( "PRESS START", "0xff", 2);
 txtlcd_Exit();
 }
