@@ -7,7 +7,7 @@ int main(){
   txtlcd_Init();
   lcdtextwrite( "PRESS START", "0xff", 1);
   sleep(1);
-  lcdtextwrite( "PRESS START", "0xff", 2);
+  lcdtextwrite( "PRESS START", 0xff, 2);
  // txtlcd_off();
  // txtlcd_Init();
  // sleep(1);
