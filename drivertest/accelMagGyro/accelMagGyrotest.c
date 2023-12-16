@@ -9,7 +9,7 @@ const double RADIAN_TO_DEGREE = 180 / 3;
 
 int16_t AcX, AcY, AcZ, GyX, GyY, GyZ;
 double angle_x, angle_y, angle_z;
-int angle[3];
+double angle[3];
 
 void calcAngle() // 각도 계산
 {
