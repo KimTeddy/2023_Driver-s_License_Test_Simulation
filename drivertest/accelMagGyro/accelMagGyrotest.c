@@ -14,6 +14,10 @@ int angle[3];
 void loop() // 각도 계산
 {
     getAccel(angle);
+    AcX = angle[0] << 8 | accel[0];
+    AcY = angle[1] << 8 | accel[1];
+    AcZ = angle[2] << 8 | accel[2];
+    
     angle[1] = atan(-AcX / sqrt( pow( AcY, 2) + pow( AcZ, 2)));
     angle[1] *= RADIAN_TO_DEGREE;
     angle[0] = atan( AcY/ sqrt( pow(AcX, 2) + pow(AcZ, 2)));
