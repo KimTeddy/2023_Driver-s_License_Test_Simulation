@@ -3,7 +3,7 @@ all: accelMagGyrotest.elf
 	echo "		6) send complete"
 
 accelMagGyrotest.elf: libMyPeri.a accelMagGyrotest.o
-	arm-linux-gnueabi-gcc accelMagGyrotest.o -l MyPeri -L. -o accelMagGyrotest.elf
+	arm-linux-gnueabi-gcc accelMagGyrotest.o -l MyPeri -L. -o accelMagGyrotest.elf -lm
 	echo "		5) accelMagGyrotest.elf"
 
 accelMagGyrotest.o: accelMagGyrotest.c
