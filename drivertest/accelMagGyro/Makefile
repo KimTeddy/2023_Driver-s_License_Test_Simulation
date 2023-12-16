@@ -7,7 +7,7 @@ accelMagGyrotest.elf: libMyPeri.a accelMagGyrotest.o
 	echo "		5) accelMagGyrotest.elf"
 
 accelMagGyrotest.o: accelMagGyrotest.c
-	arm-linux-gnueabi-gcc -c -o accelMagGyrotest.o accelMagGyrotest.c
+	arm-linux-gnueabi-gcc -c -o accelMagGyrotest.o accelMagGyrotest.c -lm
 	echo "		4) accelMagGyrotest.o"
 
 libMyPeri.a: accelMagGyro.o
