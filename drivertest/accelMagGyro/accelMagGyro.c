@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <fcntl.h>
 #include <unistd.h>
+#include <math.h>
 #include "accelMagGyro.h"
 
 #define ACCELPATH "/sys/class/misc/FreescaleAccelerometer/"
@@ -10,6 +11,7 @@
 
 int fd = 0;
 FILE *fp = NULL;
+
 
 void getAccel(int accel[]){
     // Accelerometer
@@ -43,3 +45,4 @@ void getGyro(int gyro[]){
     fscanf(fp, "%d, %d, %d", &gyro[0], &gyro[1], &gyro[2]);
     fclose(fp);
 }
+
