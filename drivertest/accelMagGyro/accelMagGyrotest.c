@@ -52,7 +52,7 @@ int main(void)
         printf("I read Magneto %d, %d, %d\r\n", magnet[0], magnet[1], magnet[2]);
         printf("I read Gyroscope %d, %d, %d\r\n", gyro[0], gyro[1], gyro[2]);
         calcAngle();
-        printf("Angle : %d %d \n", angle[0], angle[1]);
+        printf("Angle : %f %f \n", angle[0], angle[1]);
         printf("\n\n");
         
         sleep(4);
