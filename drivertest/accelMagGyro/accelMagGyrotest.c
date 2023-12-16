@@ -57,6 +57,7 @@ int main(void)
             
             // ~ 차 방향을 오른쪽으로 바꾸는 코드 ~
             printf(" Turn Right \n");
+            sleep(1);
             
         }
         else if(second_accel[0] - first_accel[0] > 5000)
@@ -64,27 +65,32 @@ int main(void)
 
             // ~ 차 방향을 왼쪽으로 바꾸는 코드 ~
             printf(" Turn Left \n");
+            sleep(1);
         }
-        else if( second_accel[2] - first_accel[2] > 5000 )
+        else if( first_accel[2] - second_accel[2] > 5000 )
         { // 뒤로 기울인 경우
 
             // ~ 차 속도를 감소하는 코드?
             printf(" Slow Down \n");
-            if( second_accel[2] - first_accel[2] > 8000 )
+            sleep(1);
+            if( first_accel[2] - second_accel[2] > 10000 )
             { // 뒤로 기울인 각도가 큰 경우 (돌발에서 급 브레이크 밟은 경우)
                 // ~ 차 멈추는 코드 ~
                 printf(" Stop \n");
+                sleep(1);
             }
         }
-        else if( first_accel[2] - second_accel[2] > 5000 )
+        else if( second_accel[2] - first_accel[2] > 5000 )
         { // 앞으로 기울인 경우
 
             // ~차가 앞으로 진행하는 코드 ~
             printf(" Speed Up \n");
-            if( first_accel[2] - second_accel[2] > 8000 )
+            sleep(1);
+            if( second_accel[2] - first_accel[2] > 10000 )
             { // 앞으로 많이 기울인 경우 (가속 구간에서 가속)
                 // ~ 차 속도를 빠르게 ~
                 printf(" Speed UpUp \n");
+                sleep(1);
             }
         }
         usleep(1);
