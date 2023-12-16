@@ -14,12 +14,18 @@ int angle[3];
 void loop() // 각도 계산
 {
     getAccel(angle);
-    AcX = angle[0] << 8 | angle[0];
-    AcY = angle[1] << 8 | angle[1];
-    AcZ = angle[2] << 8 | angle[2];
+
+    AcX = angle[0];
+    AcY = angle[1];
+    AcZ = angle[2];
+
+    //AcX = angle[0] << 8 | angle[0];
+    //AcY = angle[1] << 8 | angle[1];
+    //AcZ = angle[2] << 8 | angle[2];
     
     printf("Accel : %d %d %d \n", angle[0], angle[1], angle[2]);
     printf("Accel : %d %d %d \n", AcX, AcY, AcZ);
+
     angle[1] = atan(-AcX / sqrt( pow(AcY, 2) + pow(AcZ, 2) ));
     angle[1] *= RADIAN_TO_DEGREE;
     angle[0] = atan(AcY/ sqrt( pow(AcX, 2) + pow(AcZ, 2) ));
