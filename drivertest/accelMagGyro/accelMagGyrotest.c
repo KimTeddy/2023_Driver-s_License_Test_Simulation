@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <math.h>
+#include <stdint.h>
 #include "accelMagGyro.h"
 
 const double RADIAN_TO_DEGREE = 180 / 3.14159;
