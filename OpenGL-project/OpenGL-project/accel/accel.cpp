@@ -21,30 +21,30 @@ void accel_calc()
         sleep(1);
         getAccel(second_accel);
         
-        if( first_accel[0] - second_accel[0] > 0)
-        { //왼쪽으로 기운 경우
+        if( first_accel[0] - second_accel[0] > 5000 ) 
+        { //왼쪽으로 기운 경우 차이가 5000이상 나면 
             
             // ~ 차 방향을 왼쪽으로 바꾸는 코드 ~
         }
-        else if( )
-        { //오른쪽으로 기운 경우
+        else if(second_accel[0] - first_accel[0] > 5000)
+        { //오른쪽으로 기운 경우 [차이가 5000이상 나면]
 
             // ~ 차 방향을 오른쪽으로 바꾸는 코드 ~
         }
-        else if()
+        else if( second_accel[1] - first_accel[1] > 5000 )
         { // 뒤로 기울인 경우
 
-            // ~ 차 속도를 감소하는 코드
-            if()
+            // ~ 차 속도를 감소하는 코드?
+            if( second_accel[1] - first_accel[1] > 8000 )
             { // 뒤로 기울인 각도가 큰 경우 (돌발에서 급 브레이크 밟은 경우)
                 // ~ 차 멈추는 코드 ~
             }
         }
-        else if()
+        else if( first_accel[1] - second_accel[1] > 5000 )
         { // 앞으로 기울인 경우
 
             // ~차가 앞으로 진행하는 코드 ~
-            if()
+            if( first_accel[1] - second_accel[1] > 8000 )
             { // 앞으로 많이 기울인 경우 (가속 구간에서 가속)
                 // ~ 차 속도를 빠르게 ~
             }
