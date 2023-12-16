@@ -13,7 +13,7 @@ int fd = 0;
 FILE *fp = NULL;
 
 
-void getAccel(double accel[]){
+void getAccel(int accel[]){
     // Accelerometer
     fd = open(ACCELPATH "enable", O_WRONLY);
     dprintf(fd, "1");
