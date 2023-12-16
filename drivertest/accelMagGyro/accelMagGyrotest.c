@@ -67,7 +67,7 @@ int main(void)
             printf(" Turn Left \n");
             sleep(1);
         }
-        else if( first_accel[2] - second_accel[2] > 3000 )
+        else if( first_accel[2] - second_accel[2] > 4000 && first_accel[2] - second_accel[2] < 8000 )
         { // 뒤로 기울인 경우
 
             // ~ 차 속도를 감소하는 코드?
@@ -81,8 +81,8 @@ int main(void)
                 printf(" Stop \n");
                 sleep(1);
             }
-
-        else if( second_accel[2] - first_accel[2] > 3000 )
+        
+        else if( second_accel[2] - first_accel[2] > 4000 && second_accel[2] - first_accel[2] < 8000)
         { // 앞으로 기울인 경우
 
             // ~차가 앞으로 진행하는 코드 ~
