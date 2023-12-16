@@ -15,6 +15,8 @@ int main(void)
         printf("I read Accel %d, %d, %d\r\n", accel[0], accel[1], accel[2]);
         printf("I read Magneto %d, %d, %d\r\n", magnet[0], magnet[1], magnet[2]);
         printf("I read Gyroscope %d, %d, %d\r\n", gyro[0], gyro[1], gyro[2]);
+        printf("\n\n");
+
         sleep(4);
     }
     return 0;
