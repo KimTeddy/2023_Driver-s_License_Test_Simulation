@@ -11,6 +11,9 @@
 int fd = 0;
 FILE *fp = NULL;
 
+
+
+
 void getAccel(int accel[]){
     // Accelerometer
     fd = open(ACCELPATH "enable", O_WRONLY);
@@ -43,3 +46,4 @@ void getGyro(int gyro[]){
     fscanf(fp, "%d, %d, %d", &gyro[0], &gyro[1], &gyro[2]);
     fclose(fp);
 }
+
