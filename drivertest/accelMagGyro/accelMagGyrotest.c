@@ -11,7 +11,7 @@ int16_t AcX, AcY, AcZ, GyX, GyY, GyZ;
 double angle_x, angle_y, angle_z;
 int angle[3];
 
-void loop() // 각도 계산
+void calcAngle() // 각도 계산
 {
     getAccel(angle);
 
@@ -51,8 +51,9 @@ int main(void)
         printf("I read Accel %d, %d, %d\r\n", accel[0], accel[1], accel[2]);
         printf("I read Magneto %d, %d, %d\r\n", magnet[0], magnet[1], magnet[2]);
         printf("I read Gyroscope %d, %d, %d\r\n", gyro[0], gyro[1], gyro[2]);
+        calcAngle();
+        printf("Angle : %d %d \n", angle[0], angle[1]);
         printf("\n\n");
-        loop();
         
         sleep(4);
     }
