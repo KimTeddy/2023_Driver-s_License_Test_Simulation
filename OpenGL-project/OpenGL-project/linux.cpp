@@ -38,12 +38,13 @@ float view_rotate[16] = { 1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1 };
 
 //이게 전부 자동차 관련
 float dspeed, speed;
-float dxcar = 0, dycar = 0, xcar = 0, ycar = 0;//이동
-float rcar;//로테이션
+float dxcar = 0, dycar = 0, xcar = 0, ycar = 0;//자동차 이동/위치
+int rcar;//로테이션
 bool acceration = false;
 
 void perspective(GLdouble fovy, GLdouble zfar);
 void changeSize(int w, int h);
+bool isRectangleOnLines();
 
 void perspective(GLdouble fovy = 75.0, GLdouble zfar = 500.0) {
     glViewport(0, 0, Width, Height);
@@ -67,6 +68,12 @@ void changeSize(int w, int h) {
 }
 void idle() {
     //acceration = false;
+    if (isRectangleOnLines()) {
+        cout << "-5" << endl;
+    }
+    else {
+        //std::cout << "0" << std::endl;
+    }
 }
 void Timer(int val) {
     if(acceration == true)
@@ -75,11 +82,148 @@ void Timer(int val) {
         else speed = 0;
         dspeed += speed;
     }
-
+    idle();
     glutPostRedisplay();
     glutTimerFunc(1, Timer, 0);
 }
+int squareVertices[4][2] = {
+    {xcar - 5, ycar - 2},
+    {xcar + 5, ycar - 2},
+    {xcar + 5, ycar + 2},
+    {xcar - 5, ycar + 2}
+};
 
+// 하얀 경로 좌표(바퀴가 닿으면 -5출력)
+int whitepath1[][4] = {
+    {-97, -61, -97, 55},
+    {-97, 55 , 91, 55},
+    {91, 55, 91, -61},
+    {91, -61,-97, -61},
+    {-76, 9 , -76, 36},
+    {-76, 36, -9, 36},
+    {-9, 36, -9, 9},
+    {-76, 9,-9, 9},
+    {9, 9, 9, 36} ,
+    {9, 36, 73, 36},
+    {73, 36, 73, 9},
+    {9, 9 , 73, 9},
+    {9, -43, 9, -9},
+    {9, -9, 73, -9},
+    {73, -9, 73, -43},
+    {9, -43, 73, -43},
+    {-76, -43, -76, -9},
+    {-76, -9, -9, -9},
+    {-9, -9, -9, -43},
+    {-76, -43, -9, -43}
+};
+//주황 경로 좌표(바퀴가 닿으면 -5출력)
+int lines[][4] = {
+    {-87, 9, -87, 45},   // 1. {-87, 9}와 {-87, 45}를 이은 선
+    {-87, 45, 82, 45},   // 2. {-87, 45}와 {82, 45}를 이은 선
+    {82, 45, 82, 9},    // 3. {82, 45}와 {82, 9}를 이은 선
+    {0, 9, 0, 36},      // 4. {0, 9}와 {0, 36}를 이은 선
+    {-17, 0, -87, 0},   // 5. {0, 9}와 {0, 36}를 이은 선
+    {-87, 0, -87, -52}, // 6. {-87, 0}와 {-87, -52}를 이은 선
+    {-87, -52, 82, -52},// 7. {-87, -52}와 {82, -52}를 이은 선
+    {82, -52, 82, -9},  // 8. {82, -52}와 {82, -9}를 이은 선
+    {0, -52, 0, -12},   // 9. {0, -52}와 {0, -12}를 이은 선
+    {7, 0, 67, 0}       // 10. {7, 0}와 {67, 0}를 이은 선
+};
+int rqLines1[][4] = {
+    {-97, 26, -73, 26},   // 1번 줄
+    {-19, 0, -19, 9},     // 2번 줄
+    {67, 0, 67, 9},       // 3번 줄
+    {9, 0, 9, -9},        // 4번 줄
+    {-9, -17, 0, -17},     // 5번 줄
+    {73, 9, 91, 9}
+};
+////////////////////////////////////////////////////////////////
+bool isPointOnLine(float x, float y, float x1, float y1, float x2, float y2) {
+    // 선분 (x1, y1) - (x2, y2) 위에 점 (x, y)가 있는지 확인
+    float minX = std::min(x1, x2);
+    float maxX = std::max(x1, x2);
+    float minY = std::min(y1, y2);
+    float maxY = std::max(y1, y2);
+
+    return (x >= minX && x <= maxX && y >= minY && y <= maxY);
+}
+bool isPointOnPath(int x, int y, int x1, int y1, int x2, int y2) {
+    int minX = std::min(x1, x2);
+    int maxX = std::max(x1, x2);
+    int minY = std::min(y1, y2);
+    int maxY = std::max(y1, y2);
+
+    return (x >= minX && x <= maxX && y >= minY && y <= maxY);
+}
+///////////////////////////////////////////////////////
+bool isRectangleOnLines() {
+    // 사각형의 네 꼭짓점이 선 위에 있는지 확인
+    for (int i = 0; i < 20; ++i) {
+        for (int j = 0; j < 4; ++j) {
+            if (isPointOnPath(squareVertices[j][0], squareVertices[j][1],
+                whitepath1[i][0], whitepath1[i][1], whitepath1[i][2], whitepath1[i][3])) {
+                return true; // 사각형의 꼭짓점이 선 위에 있다면 true 반환
+            }
+        }
+    }
+    for (int k = 0; k < 10; ++k) {
+        for (int t = 0; t < 4; ++t) {
+            if (isPointOnLine(squareVertices[t][0], squareVertices[t][1],
+                lines[k][0], lines[k][1], lines[k][2], lines[k][3])) {
+                return true; // 사각형의 꼭짓점이 선 위에 있다면 true 반환
+            }
+        }
+    }
+    return false; // 사각형의 꼭짓점이 선 위에 없다면 false 반환
+}
+void updateSquareVertices() {
+    // Update squareVertices based on the current square position
+    squareVertices[0][0] = xcar - 5;
+    squareVertices[0][1] = ycar - 2;
+    squareVertices[1][0] = xcar + 5;
+    squareVertices[1][1] = ycar - 2;
+    squareVertices[2][0] = xcar + 5;
+    squareVertices[2][1] = ycar + 2;
+    squareVertices[3][0] = xcar - 5;
+    squareVertices[3][1] = ycar + 2;
+}// 선분 (x1, y1) - (x2, y2) 위에 점 (x, y)가 있는지 확인
+
+void display_lines(int line_width = 5.0) {
+    //
+    glColor3f(1.0, 1.0, 1.0);  // 흰색설정
+    glLineWidth(line_width);         // 두께 2 설정
+    glBegin(GL_LINES);
+    for (int i = 0; i < 20; ++i) {
+        glVertex3f(whitepath1[i][0], 0.1, whitepath1[i][1]);
+        glVertex3f(whitepath1[i][2], 0.1, whitepath1[i][3]);
+    }
+    for (int i = 0; i < 6; ++i) {
+        glVertex3f(rqLines1[i][0], 0.1, rqLines1[i][1]);
+        glVertex3f(rqLines1[i][2], 0.1, rqLines1[i][3]);
+    }
+    glEnd();
+    //
+    glColor3f(1.0, 1.0, 0.0);  // 노란색 설정
+    glLineWidth(line_width);         // 두께 2 설정
+
+    glBegin(GL_LINES);
+    for (int i = 0; i < 10; ++i) {
+        glVertex3f(lines[i][0], 0.1, lines[i][1]);
+        glVertex3f(lines[i][2], 0.1, lines[i][3]);
+    }
+    glEnd();
+
+    //
+    glColor3f(0.0, 1.0, 0.0);  // 초록색 설정
+    glBegin(GL_QUADS);
+    for (int i = 0; i < 4; ++i) {
+        glVertex3f(squareVertices[i][0], 0.1, squareVertices[i][1]);
+    }
+    glEnd();
+    //
+
+    glFlush();
+}
 void drawingCar() {//자동차 모델링, 이동, 회전
     // 차 앞위 부분
     glColor3f(1.0, 1.0, 1.0);
@@ -499,13 +643,14 @@ void keyboard(unsigned char key, int x, int y) {
         dycar = speed * sin((180-rcar) * PI / 180.0); ycar += dycar;
         break;
     case 's': break;
-    case 'a': rcar += 3; printf("r=%f\n", rcar); break;
-    case 'd': rcar -= 3; printf("r=%f\n", rcar); break;
+    case 'a': rcar += 3; printf("r=%d\n", rcar); break;
+    case 'd': rcar -= 3; printf("r=%d\n", rcar); break;
     }
+    if (rcar >= 360 || rcar <= -360) rcar = 0;
     glutPostRedisplay();
 }
 
-void drawingCar_test() {//테스트용 자동차 모델링, 이동, 회전
+void drawingCar_ok(float car_size) {//테스트용 자동차 모델링, 이동, 회전
     glPushMatrix();
     glTranslatef(xcar, 1, ycar);//자동차 이동
     glRotatef(rcar, 0.0f, 1.0f, 0.0f);//자동차 회전
@@ -515,16 +660,21 @@ void drawingCar_test() {//테스트용 자동차 모델링, 이동, 회전
     //    glVertex3f(0.0, 0.0, 0.0);  glVertex3f(-10.0, 0.0, 0.0); /* Z axis  */
     //glEnd();
     glRotatef(180, 0.0f, 1.0f, 0.0f);//자동차 회전
+    glScalef(car_size, car_size, car_size);
     drawingCar();
     //glutWireCube(5.0);
     glPopMatrix();
 }
-void drawScene() {//그릴 물체 전체
+
+void drawScene(float car_size = 0.4, int line_width = 5) {//그릴 물체만
+    glPushMatrix();
+        display_lines(line_width);
+    glPopMatrix();
 // 평면 그리기
     glPushMatrix();
         glColor3f(0.5, 0.5, 0.5);
         glTranslatef(0.0, -0.5, 0.0);
-        glScalef(100.0, 1.0, 60.0);
+        glScalef(200.0, 1.0, 130.0);
         glutSolidCube(1.0);
         
         glPushMatrix();
@@ -534,7 +684,7 @@ void drawScene() {//그릴 물체 전체
         glPopMatrix();
     glPopMatrix();
 
-    drawingCar_test();
+    drawingCar_ok(car_size);
     //drawingCar();
 
     //glColor3f(1.0, 0.0, 0.6);
@@ -619,8 +769,8 @@ void disp() {
 
         glPopMatrix();
     }
-    else
-    {
+    else//시뮬 진행중
+    {//-------------------------전체 화면--------------------------------------
         perspective();
         glClearColor(.9f, .9f, .9f, 1.0f);//배경색
         glLoadIdentity();
@@ -628,7 +778,9 @@ void disp() {
         glViewport(0, 0, Width, Height);
 
         glPushMatrix();
-        gluLookAt(0.0, 30.0, 60.0, 0.0, -1.0, 0.0, 0.0, 1.0, 0.0);//카메라 위치/바라보는 초점 위치/카메라 기울임
+        gluLookAt(  xcar -  10 * cos((180 - rcar) * PI / 180.0), 20, ycar - 10 * sin((180 - rcar) * PI / 180.0), 
+                    xcar + 10 * cos((180 - rcar) * PI / 180.0), 0.1, ycar + 10 * sin((180 - rcar) * PI / 180.0), 
+                    0.0, 1.0, 0.0);//카메라 위치/바라보는 초점 위치/카메라 기울임
 
         glPushMatrix();
 
@@ -640,14 +792,15 @@ void disp() {
         glPopMatrix();
         glPopMatrix();
 
-        //---------------------------------------------------------------
-
+        //-----------------------오른쪽 위 화면----------------------------
         glViewport(Width * 3 / 5, Height * 3 / 5, Width * 2 / 5, Height * 2 / 5);
         //glViewport(0, Height / 2, Width/3, Height/2);
         glPushMatrix();
-        gluLookAt(0.0, 60.0, 10.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0);
-
-        drawScene();
+        gluLookAt(0.0, 90.0, 5.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0);
+        glDisable(GLUT_DEPTH);
+        glClear(GL_DEPTH_BUFFER_BIT);
+        drawScene(1.5, 2);
+        glEnable(GLUT_DEPTH);
         glPopMatrix();
     }
     glutSwapBuffers();
@@ -667,7 +820,6 @@ void mouse(int button, int state, int x, int y)
     }
     glutPostRedisplay();
 }
-
 
 void motion(int x, int y)
 {
@@ -698,7 +850,6 @@ void* sevenseg(void) {
         }
     }
 }
-
 /* 7 seg decoder 만들때 참고.
 14,11,10,6,8,7 => 선택 자리수만 LOW, 외에는 HIGH => 3자리만 사용할것이기에 14,11,10 HIGH고정, 6,8,7번갈아가며 LOW 입력.
 - 표시: 5번핀 high, 1,2,3,4,9,12,13번핀 low
@@ -742,9 +893,9 @@ int main(int argc, char** argv) {
     glutTimerFunc(1, Timer, 0);
     glutKeyboardFunc(keyboard);
     glutMouseFunc(mouse);
-    glutMotionFunc(motion);
+    //glutMotionFunc(motion);
     glutIdleFunc(idle);
     glutMainLoop();
 
-    return 1;
+    return 0;
 }
