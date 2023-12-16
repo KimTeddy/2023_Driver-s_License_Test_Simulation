@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <fcntl.h>
 #include <unistd.h>
+#include <math.h>
 #include "accelMagGyro.h"
 
 #define ACCELPATH "/sys/class/misc/FreescaleAccelerometer/"
@@ -10,8 +11,6 @@
 
 int fd = 0;
 FILE *fp = NULL;
-
-
 
 
 void getAccel(int accel[]){
