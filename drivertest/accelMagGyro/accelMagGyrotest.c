@@ -9,7 +9,7 @@ const double RADIAN_TO_DEGREE = 180 / 3.14159;
 
 int16_t AcX, AcY, AcZ, GyX, GyY, GyZ;
 double angle_x, angle_y, angle_z;
-int angle[3];
+double angle[3];
 
 void loop() // 각도 계산
 {
@@ -18,12 +18,12 @@ void loop() // 각도 계산
     AcY = angle[1] << 8 | angle[1];
     AcZ = angle[2] << 8 | angle[2];
     
-    printf("Accel : %d %d %d \n", angle[0], angle[1], angle[2]);
+    printf("Accel : %2f %2f %2f \n", angle[0], angle[1], angle[2]);
     angle[1] = atan(-AcX / sqrt( pow( AcY, 2) + pow( AcZ, 2)));
     angle[1] *= RADIAN_TO_DEGREE;
     angle[0] = atan( AcY/ sqrt( pow(AcX, 2) + pow(AcZ, 2)));
     angle[0] *= RADIAN_TO_DEGREE; 
-    printf("\nAngle x : %d , Angle y :%d \n", angle[0], angle[1]);
+    printf("\nAngle x : %3f , Angle y :%3f \n", angle[0], angle[1]);
 }
 
 
