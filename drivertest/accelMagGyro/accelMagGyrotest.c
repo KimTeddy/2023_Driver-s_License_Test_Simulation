@@ -5,7 +5,7 @@
 #include <math.h>
 #include "accelMagGyro.h"
 
-const double RADIAN_TO_DEGREE = 180 / 3;
+const double RADIAN_TO_DEGREE = 180.0 / 3.141592;
 
 int16_t AcX, AcY, AcZ, GyX, GyY, GyZ;
 double angle_x, angle_y, angle_z;
