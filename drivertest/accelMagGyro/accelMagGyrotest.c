@@ -27,8 +27,10 @@ void loop() // 각도 계산
     printf("Accel : %d %d %d \n", AcX, AcY, AcZ);
 
     angle[1] = atan(-AcX / sqrt( pow(AcY, 2) + pow(AcZ, 2) ));
+    printf("\nAngle x : %d , Angle y :%d \n", angle[0], angle[1]);
     angle[1] *= RADIAN_TO_DEGREE;
     angle[0] = atan(AcY/ sqrt( pow(AcX, 2) + pow(AcZ, 2) ));
+    printf("\nAngle x : %d , Angle y :%d \n", angle[0], angle[1]);
     angle[0] *= RADIAN_TO_DEGREE; 
     printf("\nAngle x : %d , Angle y :%d \n", angle[0], angle[1]);
 }
