@@ -51,36 +51,37 @@ int main(void)
     {
         
         getAccel(second_accel);
-        printf("Set Changing Value\n");
+       // printf("Set Changing Value\n");
         if( first_accel[0] - second_accel[0] > 5000 ) 
         { //왼쪽으로 기운 경우 차이가 5000이상 나면 
             
-            // ~ 차 방향을 왼쪽으로 바꾸는 코드 ~
-            printf(" Turn Left \n");
+            // ~ 차 방향을 오른쪽으로 바꾸는 코드 ~
+            printf(" Turn Right \n");
+            
         }
         else if(second_accel[0] - first_accel[0] > 5000)
         { //오른쪽으로 기운 경우 [차이가 5000이상 나면]
 
-            // ~ 차 방향을 오른쪽으로 바꾸는 코드 ~
-            printf(" Turn Right \n");
+            // ~ 차 방향을 왼쪽으로 바꾸는 코드 ~
+            printf(" Turn Left \n");
         }
-        else if( second_accel[1] - first_accel[1] > 5000 )
+        else if( second_accel[2] - first_accel[2] > 5000 )
         { // 뒤로 기울인 경우
 
             // ~ 차 속도를 감소하는 코드?
             printf(" Slow Down \n");
-            if( second_accel[1] - first_accel[1] > 8000 )
+            if( second_accel[2] - first_accel[2] > 8000 )
             { // 뒤로 기울인 각도가 큰 경우 (돌발에서 급 브레이크 밟은 경우)
                 // ~ 차 멈추는 코드 ~
                 printf(" Stop \n");
             }
         }
-        else if( first_accel[1] - second_accel[1] > 5000 )
+        else if( first_accel[2] - second_accel[2] > 5000 )
         { // 앞으로 기울인 경우
 
             // ~차가 앞으로 진행하는 코드 ~
             printf(" Speed Up \n");
-            if( first_accel[1] - second_accel[1] > 8000 )
+            if( first_accel[2] - second_accel[2] > 8000 )
             { // 앞으로 많이 기울인 경우 (가속 구간에서 가속)
                 // ~ 차 속도를 빠르게 ~
                 printf(" Speed UpUp \n");
