@@ -47,16 +47,5 @@ int main() {
         }
     }
 
-    // Add the rest of your program logic here.
-
     return 0;
-}
-
-}
-
-if (trafLightState == 1) {
-    if (-9 <= x && x <= 9 && -9 <= y && y <= 9 && speed == 0 && time >= 40) {
-        printf("실격");
-        return -100;
-    }
 }
