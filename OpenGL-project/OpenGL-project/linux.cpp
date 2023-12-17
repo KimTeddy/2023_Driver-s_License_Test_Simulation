@@ -8,6 +8,11 @@
 #else//윈도우전용
 #include <GL/glut.h>
 #include <iostream>
+/*
+#include "winnt.h"
+#include "windef.h"
+#include "Esent.h"
+#include "wingdi.h"*/
 using namespace std;
 #endif
 
@@ -30,7 +35,7 @@ int safetybelt = 0, sidebrake = 0, leftlight = 0, rightlight = 0, emerlight = 0;
 int fnddat; // FND(7segment) 데이터 변수
 
 //이거 신경 안 써도 됨
-int Width, Height;
+const int Width=1024, Height=600;
 int mouse_x = 0;//마지막으로 클릭한 위치
 int mouse_y = 0;
 int rotationX = 0, rotationY = 0;
@@ -45,6 +50,35 @@ bool acceration = false;
 void perspective(GLdouble fovy, GLdouble zfar);
 void changeSize(int w, int h);
 bool isRectangleOnLines();
+
+
+
+
+void screen_dump()
+{
+    //W: window with H: window height
+    char pixel_data[Width * Height * 300];
+    glReadPixels(0, 0, Width, Height, GL_BGR_EXT, GL_UNSIGNED_BYTE, pixel_data);
+
+    BITMAPFILEHEADER bf;
+    BITMAPINFOHEADER bi;
+    char buff[256];
+    char filename[256] = "filename.bmp";
+    FILE* out = fopen(filename, "wb");
+    char* data = pixel_data;
+    memset(&bf, 0, sizeof(bf));
+    memset(&bi, 0, sizeof(bi));
+    bf.bfType = 'MB';  bf.bfSize = sizeof(bf) + sizeof(bi) + Width * Height * 3;
+    bf.bfOffBits = sizeof(bf) + sizeof(bi);
+    bi.biSize = sizeof(bi);
+    bi.biWidth = Width;  bi.biHeight = Height;
+    bi.biPlanes = 1;  bi.biBitCount = 24;
+    bi.biSizeImage = Width * Height * 3;
+    fwrite(&bf, sizeof(bf), 1, out);
+    fwrite(&bi, sizeof(bi), 1, out);
+    fwrite(data, sizeof(unsigned char), Height * Width * 3, out);
+    fclose(out);
+}
 
 void perspective(GLdouble fovy = 75.0, GLdouble zfar = 500.0) {
     glViewport(0, 0, Width, Height);
@@ -642,7 +676,7 @@ void keyboard(unsigned char key, int x, int y) {
         dxcar = speed * cos((180-rcar) * PI / 180.0); xcar += dxcar;
         dycar = speed * sin((180-rcar) * PI / 180.0); ycar += dycar;
         break;
-    case 's': break;
+    case 's':  break;
     case 'a': rcar += 3; printf("r=%d\n", rcar); break;
     case 'd': rcar -= 3; printf("r=%d\n", rcar); break;
     }
@@ -804,6 +838,12 @@ void disp() {
         glPopMatrix();
     }
     glutSwapBuffers();
+
+
+
+
+
+
 }
 
 void mouse(int button, int state, int x, int y)
@@ -883,7 +923,7 @@ int main(int argc, char** argv) {
       lightDiffuse[0],  lightDiffuse[1],
       lightDiffuse[2],  lightDiffuse[3] };
     glLightfv(GL_LIGHT0, GL_DIFFUSE, v);*/
-    glutInitWindowSize(1024, 768);
+    glutInitWindowSize(Width, Height);
     glutInitWindowPosition(0, 0);
     glutCreateWindow("Embedded system");
     glEnable(GL_DEPTH_TEST);
