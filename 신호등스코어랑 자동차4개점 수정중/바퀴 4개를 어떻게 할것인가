@@ -2,9 +2,11 @@
 #include <cmath>
 #include <stdio.h>
 
+#define PI 3.14159265358979323846
+
 float xcar = 0.0, ycar = 0.0; // 중심점
-float rcar = 0.0; // 회전 각도
-float speed = 1.0; // 이동 속도
+float rcar = 0.0;             // 회전 각도
+float speed = 1.0;            // 이동 속도
 float xcar_A = xcar - 5, ycar_A = ycar - 2; // A점
 float xcar_B = xcar - 5, ycar_B = ycar + 2; // B점
 float xcar_C = xcar + 5, ycar_C = ycar + 2; // C점
@@ -54,16 +56,17 @@ void drawCarPoints() {
     glVertex3f(xcar_D, 1.0, ycar_D);
     glEnd();
 }
+
 void drawCar() {
     glPushMatrix();
     glTranslatef(xcar, 1.0, ycar);
     glRotatef(rcar, 0.0, 1.0, 0.0); // 회전 적용
     drawCarPoints();
     // 차의 네 점을 이어주는 빨간색 두꺼운 선 그리기
-    drawThickRedLine(xcar_A,  0, ycar_A - 2, xcar_B, 0, ycar_B + 2, 5.0);  // A to B
-    drawThickRedLine(xcar_B,  0, ycar_B + 2, xcar_C, 0, ycar_C + 2, 5.0);  // B to C
-    drawThickRedLine(xcar_C,  0, ycar_C + 2, xcar_D, 0, ycar_D - 2, 5.0);  // C to D
-    drawThickRedLine(xcar_D,  0, ycar_D - 2, xcar_A, 0, ycar_A - 2, 5.0);  // D to A
+    drawThickRedLine(xcar_A, 0, ycar_A - 2, xcar_B, 0, ycar_B + 2, 5.0);  // A to B
+    drawThickRedLine(xcar_B, 0, ycar_B + 2, xcar_C, 0, ycar_C + 2, 5.0);  // B to C
+    drawThickRedLine(xcar_C, 0, ycar_C + 2, xcar_D, 0, ycar_D - 2, 5.0);  // C to D
+    drawThickRedLine(xcar_D, 0, ycar_D - 2, xcar_A, 0, ycar_A - 2, 5.0);  // D to A
 
     glPopMatrix();
 }
@@ -87,6 +90,8 @@ void reshape(int w, int h) {
 }
 
 void keyboard(unsigned char key, int x, int y) {
+    float dxcar, dycar; // 이동 거리
+
     switch (key) {
     case 'a':
         rcar += 3.0;
@@ -96,7 +101,16 @@ void keyboard(unsigned char key, int x, int y) {
         rcar -= 3.0;
         printf("rcar=%f\n", rcar);
         break;
+    case 'w':
+        // 'w' 키를 누르면 현재 방향으로 앞으로 이동
+        speed = 1;
+        dxcar = speed * cos((180 - rcar) * PI / 180.0);
+        dycar = speed * sin((180 - rcar) * PI / 180.0);
+        xcar += dxcar;
+        ycar += dycar;
+        break;
     }
+
     glutPostRedisplay();
 }
 
@@ -105,7 +119,7 @@ int main(int argc, char** argv) {
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
     glutInitWindowSize(1024, 768);
     glutInitWindowPosition(0, 0);
-    glutCreateWindow("Rotating Car");
+    glutCreateWindow("Rotating and Moving Car");
     glEnable(GL_DEPTH_TEST);
     glutDisplayFunc(display);
     glutReshapeFunc(reshape);
