@@ -5,7 +5,7 @@
 #include <sys/wait.h>
 #include <pthread.h>
 #include <sys/shm.h>
-#include "/libfbdev/libfbdev.h"
+//#include "/libfbdev/libfbdev.h"
 #else//윈도우전용
 #define _CRT_SECURE_NO_WARNINGS
 #include <GL/glut.h>
@@ -22,10 +22,10 @@
 #include <math.h>
 #include "simuwork.h"
 
-#include "libbmp/bitmapFileHeader.h"
+//#include "libbmp/bitmapFileHeader.h"
 
-#include <iostream>
-using namespace std;
+//#include <iostream>
+//using namespace std;
 
 
 
@@ -185,7 +185,7 @@ void changeSize(int w, int h) {
 void idle() {
     //acceration = false;
     if (isRectangleOnLines()) {
-        cout << "-5" << endl;
+        //cout << "-5" << endl;
     }
     else {
         //std::cout << "0" << std::endl;
@@ -949,7 +949,7 @@ void mouse(int button, int state, int x, int y)
 {
     if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
     {
-        cout << x << ", " << y << endl;
+        //cout << x << ", " << y << endl;
         mouse_x = x;
         mouse_y = y;
         simuwork++;
