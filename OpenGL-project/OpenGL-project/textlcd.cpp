@@ -1,3 +1,4 @@
+#ifdef __LINUX
 #include "textlcd.h"
 #include "lcdtext.h"
 #include "simuwork.h"
@@ -82,3 +83,5 @@ void crs_lcd()	//함수 이름 수정필요하면 하세요.
 
 	txtlcd_Exit();	//게임 종료시 txtlcd도 꺼지도록 설정?
 }
+
+#endif
