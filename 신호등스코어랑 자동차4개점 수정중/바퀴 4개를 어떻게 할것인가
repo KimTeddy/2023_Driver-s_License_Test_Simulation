@@ -4,13 +4,13 @@
 
 #define PI 3.14159265358979323846
 
-float xcar = 0.0, ycar = 0.0; // 중심점
+float  xcar = 0.0, ycar = 0.0; // 중심점
 float rcar = 0.0;             // 회전 각도
 float speed = 1.0;            // 이동 속도
-float xcar_A = xcar - 5, ycar_A = ycar - 2; // A점
-float xcar_B = xcar - 5, ycar_B = ycar + 2; // B점
-float xcar_C = xcar + 5, ycar_C = ycar + 2; // C점
-float xcar_D = xcar + 5, ycar_D = ycar - 2; // D점
+float  xcar_A = xcar - 5, ycar_A = ycar - 2; // A점
+float  xcar_B = xcar - 5, ycar_B = ycar + 2; // B점
+float  xcar_C = xcar + 5, ycar_C = ycar + 2; // C점
+float  xcar_D = xcar + 5, ycar_D = ycar - 2; // D점
 
 void drawThickRedLine(float x1, float y1, float z1, float x2, float y2, float z2, float thickness) {
     glEnable(GL_LINE_SMOOTH);  // 선을 부드럽게 표시하도록 설정
@@ -73,7 +73,6 @@ void drawCar() {
 
 void display() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
     glLoadIdentity();
     gluLookAt(0.0, 60.0, 60.0, 0.0, -1.0, 0.0, 0.0, 1.0, 0.0);
     drawCar();
@@ -108,9 +107,21 @@ void keyboard(unsigned char key, int x, int y) {
         dycar = speed * sin((180 - rcar) * PI / 180.0);
         xcar += dxcar;
         ycar += dycar;
+        //
+        xcar_A += dxcar;
+        ycar_A += dycar;
+        //       
+        xcar_B += dxcar;
+        ycar_B += dycar;
+        //      
+        xcar_C += dxcar;
+        ycar_C += dycar;
+        //
+        xcar_D += dxcar;
+        ycar_D += dycar;
         break;
     }
-
+    if (rcar >= 360 || rcar <= -360) rcar = 0;
     glutPostRedisplay();
 }
 
