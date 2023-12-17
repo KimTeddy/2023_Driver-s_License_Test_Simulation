@@ -6,6 +6,6 @@ linux.out: linux.cpp
 	#ssh ecube@192.168.0.170 ~/teddy/linux.out
 	#ssh ecube@192.168.218.19 ~/teddy/linux.out
 clear:
-	scp kimteddy@192.168.218.61:/home/kimteddy/EmbeddedSystem/OpenGL-project/OpenGL-project/Makefile ~/teddy
-	scp kimteddy@192.168.218.61:/home/kimteddy/EmbeddedSystem/OpenGL-project/OpenGL-project/linux.cpp ~/teddy
+	#scp kimteddy@192.168.218.61:/home/kimteddy/EmbeddedSystem/OpenGL-project/OpenGL-project/Makefile ~/teddy
+	#scp kimteddy@192.168.218.61:/home/kimteddy/EmbeddedSystem/OpenGL-project/OpenGL-project/linux.cpp ~/teddy
 	make
