@@ -5,15 +5,15 @@
 #include <sys/wait.h>
 #include <pthread.h>
 #include <sys/shm.h>
+#include "/libfbdev/libfbdev.h"
 #else//윈도우전용
+#define _CRT_SECURE_NO_WARNINGS
 #include <GL/glut.h>
-#include <iostream>
-/*
-#include "winnt.h"
-#include "windef.h"
-#include "Esent.h"
-#include "wingdi.h"*/
-using namespace std;
+//#include "winnt.h"
+//#include <windef.h>
+//#include "Esent.h"
+//#include "wingdi.h"
+//#include <windows.h>
 #endif
 
 //공통
@@ -21,6 +21,13 @@ using namespace std;
 #include <stdlib.h>
 #include <math.h>
 #include "simuwork.h"
+
+#include "libbmp/bitmapFileHeader.h"
+
+#include <iostream>
+using namespace std;
+
+
 
 #ifdef __LINUX//리눅스 전용 코딩
 pthread_t thread_object_1; //스레드 1 for rgb led
@@ -35,7 +42,8 @@ int safetybelt = 0, sidebrake = 0, leftlight = 0, rightlight = 0, emerlight = 0;
 int fnddat; // FND(7segment) 데이터 변수
 
 //이거 신경 안 써도 됨
-const int Width=1024, Height=600;
+const int Wid=1024, Hei=600;
+int Width = 1024, Height = 600;
 int mouse_x = 0;//마지막으로 클릭한 위치
 int mouse_y = 0;
 int rotationX = 0, rotationY = 0;
@@ -53,32 +61,106 @@ bool isRectangleOnLines();
 
 
 
+char pixel_data[Wid * Hei * 3];
 
-void screen_dump()
-{
-    //W: window with H: window height
-    char pixel_data[Width * Height * 300];
-    glReadPixels(0, 0, Width, Height, GL_BGR_EXT, GL_UNSIGNED_BYTE, pixel_data);
-
-    BITMAPFILEHEADER bf;
-    BITMAPINFOHEADER bi;
-    char buff[256];
-    char filename[256] = "filename.bmp";
-    FILE* out = fopen(filename, "wb");
-    char* data = pixel_data;
-    memset(&bf, 0, sizeof(bf));
-    memset(&bi, 0, sizeof(bi));
-    bf.bfType = 'MB';  bf.bfSize = sizeof(bf) + sizeof(bi) + Width * Height * 3;
-    bf.bfOffBits = sizeof(bf) + sizeof(bi);
-    bi.biSize = sizeof(bi);
-    bi.biWidth = Width;  bi.biHeight = Height;
-    bi.biPlanes = 1;  bi.biBitCount = 24;
-    bi.biSizeImage = Width * Height * 3;
-    fwrite(&bf, sizeof(bf), 1, out);
-    fwrite(&bi, sizeof(bi), 1, out);
-    fwrite(data, sizeof(unsigned char), Height * Width * 3, out);
-    fclose(out);
-}
+//void screen_dump()
+//{
+//    //W: window with H: window height
+//    glReadPixels(0, 0, Width, Height, GL_BGR_EXT, GL_UNSIGNED_BYTE, pixel_data);
+//
+//    BITMAPFILEHEADER bf;
+//    BITMAPINFOHEADER bi;
+//
+//    char filename[50] = "filename.bmp";
+//    FILE* out = fopen(filename, "wb");
+//    char* data = pixel_data;
+//    memset(&bf, 0, sizeof(bf));
+//    memset(&bi, 0, sizeof(bi));
+//    bf.bfType = 'BM';
+//    bf.bfSize = sizeof(bf) + sizeof(bi) + Width * Height * 3;
+//    bf.bfOffBits = sizeof(bf) + sizeof(bi);
+//    bi.biSize = sizeof(bi);
+//    bi.biWidth = Width;
+//    bi.biHeight = Height;
+//    bi.biPlanes = 1;  
+//    bi.biBitCount = 24;
+//    bi.biSizeImage = Width * Height * 3;
+//    fwrite(&bf, sizeof(bf), 1, out);
+//    fwrite(&bi, sizeof(bi), 1, out);
+//    fwrite(data, sizeof(unsigned char), Height * Width * 3, out);
+//    fclose(out);
+//}
+//
+//void ScreenCapture(const char* strFilePath)
+//{
+//    //비트맵 파일 처리를 위한 헤더 구조체
+//    BITMAPFILEHEADER	BMFH;
+//    BITMAPINFOHEADER	BMIH;
+//
+//    int nWidth = 0;
+//    int nHeight = 0;
+//    unsigned long dwQuadrupleWidth = 0;		//LJH 추가, 가로 사이즈가 4의 배수가 아니라면 4의 배수로 만들어서 저장
+//
+//    GLbyte* pPixelData = NULL;				//front buffer의 픽셀 값들을 얻어 오기 위한 버퍼의 포인터
+//
+//    nWidth = 1024;		//(나의 경우)리눅스에서의 경우 해상도 고정이므로 그 값을 입력
+//    nHeight = 600;
+//
+//    //4의 배수인지 아닌지 확인해서 4의 배수가 아니라면 4의 배수로 맞춰준다.
+//    dwQuadrupleWidth = (nWidth % 4) ? ((nWidth)+(4 - (nWidth % 4))) : (nWidth);
+//
+//    //비트맵 파일 헤더 처리
+//    BMFH.bfType = 0x4D42;		//B(42)와 M(4D)에 해당하는 ASCII 값을 넣어준다.
+//    //바이트 단위로 전체파일 크기
+//    BMFH.bfSize = sizeof(BITMAPFILEHEADER) + sizeof(BITMAPINFOHEADER) + (dwQuadrupleWidth * 3 * nHeight);
+//    //영상 데이터 위치까지의 거리
+//    BMFH.bfOffBits = sizeof(BITMAPFILEHEADER) + sizeof(BITMAPINFOHEADER);
+//
+//    //비트맵 인포 헤더 처리
+//    BMIH.biSize = sizeof(BITMAPINFOHEADER);		//이 구조체의 크기
+//    BMIH.biWidth = nWidth;							//픽셀 단위로 영상의 폭
+//    BMIH.biHeight = nHeight;							//영상의 높이
+//    BMIH.biPlanes = 1;								//비트 플레인 수(항상 1)
+//    BMIH.biBitCount = 24;								//픽셀당 비트수(컬러, 흑백 구별)
+//    BMIH.biCompression = 0;							//압축 유무
+//    BMIH.biSizeImage = dwQuadrupleWidth * 3 * nHeight;	//영상의 크기
+//    BMIH.biXPelsPerMeter = 0;								//가로 해상도
+//    BMIH.biYPelsPerMeter = 0;								//세로 해상도
+//    BMIH.biClrUsed = 0;								//실제 사용 색상수
+//    BMIH.biClrImportant = 0;								//중요한 색상 인덱스
+//
+//    pPixelData = new GLbyte[dwQuadrupleWidth * 3 * nHeight];	//LJH 수정
+//
+//    //프런트 버퍼로 부터 픽셀 정보들을 얻어온다.
+//    glReadPixels(
+//        0, 0,					//캡처할 영역의 좌측상단 좌표
+//        nWidth, nHeight,		//캡처할 영역의 크기
+//        GL_BGR_EXT,					//캡처한 이미지의 픽셀 포맷
+//        GL_UNSIGNED_BYTE,		//캡처한 이미지의 데이터 포맷
+//        pPixelData				//캡처한 이미지의 정보를 담아둘 버퍼 포인터
+//    );
+//
+//    {//저장 부분
+//        FILE* outFile = fopen(strFilePath, "wb");
+//        if (outFile == NULL)
+//        {
+//            //에러 처리
+//            printf( "에러" );
+//            //fclose( outFile );
+//        }
+//
+//        fwrite(&BMFH, sizeof(char), sizeof(BITMAPFILEHEADER), outFile);			//파일 헤더 쓰기
+//        fwrite(&BMIH, sizeof(char), sizeof(BITMAPINFOHEADER), outFile);			//인포 헤더 쓰기
+//        fwrite(pPixelData, sizeof(unsigned char), BMIH.biSizeImage, outFile);	//glReadPixels로 읽은 데이터 쓰기
+//
+//        fclose(outFile);	//파일 닫기
+//    }
+//
+//    if (pPixelData != NULL)
+//    {
+//        delete [] pPixelData;
+//    }
+//}
 
 void perspective(GLdouble fovy = 75.0, GLdouble zfar = 500.0) {
     glViewport(0, 0, Width, Height);
@@ -174,18 +256,18 @@ int rqLines1[][4] = {
 ////////////////////////////////////////////////////////////////
 bool isPointOnLine(float x, float y, float x1, float y1, float x2, float y2) {
     // 선분 (x1, y1) - (x2, y2) 위에 점 (x, y)가 있는지 확인
-    float minX = std::min(x1, x2);
-    float maxX = std::max(x1, x2);
-    float minY = std::min(y1, y2);
-    float maxY = std::max(y1, y2);
+    float minX = min(x1, x2);
+    float maxX = max(x1, x2);
+    float minY = min(y1, y2);
+    float maxY = max(y1, y2);
 
     return (x >= minX && x <= maxX && y >= minY && y <= maxY);
 }
 bool isPointOnPath(int x, int y, int x1, int y1, int x2, int y2) {
-    int minX = std::min(x1, x2);
-    int maxX = std::max(x1, x2);
-    int minY = std::min(y1, y2);
-    int maxY = std::max(y1, y2);
+    int minX = min(x1, x2);
+    int maxX = max(x1, x2);
+    int minY = min(y1, y2);
+    int maxY = max(y1, y2);
 
     return (x >= minX && x <= maxX && y >= minY && y <= maxY);
 }
@@ -676,7 +758,10 @@ void keyboard(unsigned char key, int x, int y) {
         dxcar = speed * cos((180-rcar) * PI / 180.0); xcar += dxcar;
         dycar = speed * sin((180-rcar) * PI / 180.0); ycar += dycar;
         break;
-    case 's':  break;
+    case 's':
+        //screen_dump();
+        //ScreenCapture("strFilePath.bmp"); 
+        break;
     case 'a': rcar += 3; printf("r=%d\n", rcar); break;
     case 'd': rcar -= 3; printf("r=%d\n", rcar); break;
     }
@@ -782,7 +867,8 @@ void main_menu() {
 }
 
 void disp() {
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT);
+    glClear(GL_DEPTH_BUFFER_BIT);
     glMatrixMode(GL_MODELVIEW);
     if (simuwork == CRS_MAIN)
     {
@@ -812,9 +898,9 @@ void disp() {
         glViewport(0, 0, Width, Height);
 
         glPushMatrix();
-        gluLookAt(  xcar -  10 * cos((180 - rcar) * PI / 180.0), 20, ycar - 10 * sin((180 - rcar) * PI / 180.0), 
-                    xcar + 10 * cos((180 - rcar) * PI / 180.0), 0.1, ycar + 10 * sin((180 - rcar) * PI / 180.0), 
-                    0.0, 1.0, 0.0);//카메라 위치/바라보는 초점 위치/카메라 기울임
+        gluLookAt(xcar - 10 * cos((180 - rcar) * PI / 180.0), 20, ycar - 10 * sin((180 - rcar) * PI / 180.0),
+            xcar + 10 * cos((180 - rcar) * PI / 180.0), 0.1, ycar + 10 * sin((180 - rcar) * PI / 180.0),
+            0.0, 1.0, 0.0);//카메라 위치/바라보는 초점 위치/카메라 기울임
 
         glPushMatrix();
 
@@ -836,14 +922,27 @@ void disp() {
         drawScene(1.5, 2);
         glEnable(GLUT_DEPTH);
         glPopMatrix();
+        //ScreenCapture("strFilePath.bmp");
+        //Sleep(100);
+        //screen_dump();
+        //exit(0);
+#ifdef __LINUX//리눅스 전용 코딩
+        unsigned long dwQuadrupleWidth = 0;		//LJH 추가, 가로 사이즈가 4의 배수가 아니라면 4의 배수로 만들어서 저장
+        GLbyte* pPixelData = NULL;				//front buffer의 픽셀 값들을 얻어 오기 위한 버퍼의 포인터
+        //4의 배수인지 아닌지 확인해서 4의 배수가 아니라면 4의 배수로 맞춰준다.
+        dwQuadrupleWidth = (Width % 4) ? ((Width)+(4 - (Width % 4))) : (Width);
+        pPixelData = new GLbyte[dwQuadrupleWidth * 3 * Height];	//LJH 수정
+        glReadPixels(0, 0, Width, Height, GL_BGR_EXT, GL_UNSIGNED_BYTE, pPixelData);
+
+        fb_write_reverse(pPixelData, cols, rows);
+        if (pPixelData != NULL)
+        {
+            delete[] pPixelData;
+        }
+#endif
     }
+    //screen_dump();
     glutSwapBuffers();
-
-
-
-
-
-
 }
 
 void mouse(int button, int state, int x, int y)
@@ -918,7 +1017,8 @@ int main(int argc, char** argv) {
 
 #endif
     glutInit(&argc, argv);
-    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
+    glutInitDisplayMode(GLUT_RGB | GLUT_DEPTH);
+    glutInitDisplayMode(GLUT_DOUBLE);
     /*float v[] = {
       lightDiffuse[0],  lightDiffuse[1],
       lightDiffuse[2],  lightDiffuse[3] };
