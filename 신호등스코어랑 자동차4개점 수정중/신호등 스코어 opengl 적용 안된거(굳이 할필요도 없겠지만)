@@ -20,17 +20,38 @@ int rqLines1[][4] = {
 
 신호등 작동 : 초록 13초, 주황 3초, 빨간 6초, 주황 3초, 초록 13초.. 반복
 */
-if (trafLightState == 3) { // 빨간불일때
-    if ((-9 <= y && y <= 0) && (xcar_A <= 9 && xcar_A >= -9)) {
-        printf("실격");
-        return -100;
-    } else if ((-9 <= xcar_A && xcar_A <= 0) && (-9 <= ycar_A && ycar_A <= 9)) {
-        printf("실격");
-        return -100;
-    } else if ((-9 <= ycar_A && ycar_A <= 0) && (-9 <= xcar_A && xcar_A <= 9)) {
-        printf("실격");
-        return -100;
+#include <iostream>
+
+// Assuming xcar_A, ycar_A, x, y, speed, and time are declared somewhere in your code.
+
+int main() {
+    // Assuming trafLightState is declared and initialized somewhere in your code.
+
+    if (trafLightState == 3) { // 빨간불일때
+        if ((-9 <= y && y <= 0) && (xcar_A <= 9 && xcar_A >= -9)) {
+            std::cout << "실격" << std::endl;
+            return -100;
+        } else if ((-9 <= xcar_A && xcar_A <= 0) && (-9 <= ycar_A && ycar_A <= 9)) {
+            std::cout << "실격" << std::endl;
+            return -100;
+        } else if ((-9 <= ycar_A && ycar_A <= 0) && (-9 <= xcar_A && xcar_A <= 9)) {
+            std::cout << "실격" << std::endl;
+            return -100;
+        }
     }
+
+    if (trafLightState == 1) {
+        if (-9 <= x && x <= 9 && -9 <= y && y <= 9 && speed == 0 && time >= 40) {
+            std::cout << "실격" << std::endl;
+            return -100;
+        }
+    }
+
+    // Add the rest of your program logic here.
+
+    return 0;
+}
+
 }
 
 if (trafLightState == 1) {
