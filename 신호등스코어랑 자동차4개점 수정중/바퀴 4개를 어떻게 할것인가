@@ -1,6 +1,23 @@
 #include <GL/glut.h>
 
 float xcar = 0.0, ycar = 0.0;
+float xcar_A = xcar - 5, ycar_A = ycar - 2;
+float xcar_B = xcar - 5, ycar_B = ycar + 2;
+float xcar_C = xcar + 5, ycar_C = ycar + 2;
+float xcar_D = xcar + 5, ycar_D = ycar - 2;
+
+void drawThickRedLine(float x1, float y1, float z1, float x2, float y2, float z2, float thickness) {
+    glEnable(GL_LINE_SMOOTH);  // 선을 부드럽게 표시하도록 설정
+    glLineWidth(thickness);    // 선의 두께 설정
+    glColor3f(1.0f, 0.0f, 0.0f);  // 빨간 색상으로 설정
+
+    // 두꺼운 빨간 선 그리기
+    glBegin(GL_LINES);
+    glVertex3f(x1, y1, z1);
+    glVertex3f(x2, y1, z2);
+    glEnd();
+}
+
 
 void drawCarPoints() {
     // Draw Point 1
@@ -13,25 +30,25 @@ void drawCarPoints() {
     // Draw Point 2
     glColor3f(0.0, 1.0, 0.0);
     glBegin(GL_POINTS);
-    glVertex3f(xcar - 5.0, 1.0, ycar - 2.0);
+    glVertex3f(xcar_A, 1.0, ycar_A);
     glEnd();
 
     // Draw Point 3
     glColor3f(0.0, 0.0, 1.0);
     glBegin(GL_POINTS);
-    glVertex3f(xcar - 5.0, 1.0, ycar + 2.0);
+    glVertex3f(xcar_B, 1.0, ycar_B);
     glEnd();
 
     // Draw Point 4
     glColor3f(1.0, 1.0, 0.0);
     glBegin(GL_POINTS);
-    glVertex3f(xcar + 5.0, 1.0, ycar + 2.0);
+    glVertex3f(xcar_C, 1.0, ycar_C);
     glEnd();
 
     // Draw Point 5
     glColor3f(1.0, 0.0, 1.0);
     glBegin(GL_POINTS);
-    glVertex3f(xcar + 5.0, 1.0, ycar - 2.0);
+    glVertex3f(xcar_D, 1.0, ycar_D);
     glEnd();
 }
 
@@ -54,10 +71,15 @@ void display() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glLoadIdentity();
-    gluLookAt(0.0, 30.0, 60.0, 0.0, -1.0, 0.0, 0.0, 1.0, 0.0);
+    gluLookAt(0.0, 60.0, 60.0, 0.0, -1.0, 0.0, 0.0, 1.0, 0.0);
     drawCarPoints();
-    drawGround();
+    // Draw red lines connecting points A, B, C, D
+    drawThickRedLine(xcar_A, 1.0, ycar_A, xcar_B, 1.0, ycar_B, 2.0);  // A to B
+    drawThickRedLine(xcar_B, 1.0, ycar_B, xcar_C, 1.0, ycar_C, 2.0);  // B to C
+    drawThickRedLine(xcar_C, 1.0, ycar_C, xcar_D, 1.0, ycar_D, 2.0);  // C to D
+    drawThickRedLine(xcar_D, 1.0, ycar_D, xcar_A, 1.0, ycar_A, 2.0);  // D to A
 
+    drawGround();
     glutSwapBuffers();
 }
 
