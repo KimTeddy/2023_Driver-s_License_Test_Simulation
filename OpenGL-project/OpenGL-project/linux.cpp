@@ -5,6 +5,8 @@
 #include <sys/wait.h>
 #include <pthread.h>
 #include <sys/shm.h>
+#define min(a,b)            (((a) < (b)) ? (a) : (b))
+#define max(a,b)            (((a) > (b)) ? (a) : (b))
 //#include "/libfbdev/libfbdev.h"
 #else//윈도우전용
 #define _CRT_SECURE_NO_WARNINGS
@@ -253,6 +255,7 @@ int rqLines1[][4] = {
     {-9, -17, 0, -17},     // 5번 줄
     {73, 9, 91, 9}
 };
+
 ////////////////////////////////////////////////////////////////
 bool isPointOnLine(float x, float y, float x1, float y1, float x2, float y2) {
     // 선분 (x1, y1) - (x2, y2) 위에 점 (x, y)가 있는지 확인
