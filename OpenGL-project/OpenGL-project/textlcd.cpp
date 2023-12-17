@@ -29,7 +29,7 @@ void crs_lcd()	//함수 이름 수정필요하면 하세요.
 			//MAIN에서는 LCD 윗단에는 "PRESS START" 출력, 
 			
 		}
-		else if (CRS_START)	//?쒖옉 踰꾪듉???뚮━怨?~?ㅻ챸 遺遺?
+		else if (CRS_START)	
 		{
 			lcdtextwrite( "BEGIN         ", "CAR SI", 1);
   			lcdtextwrite( "BEGIN         ", "CAR SI", 2);
