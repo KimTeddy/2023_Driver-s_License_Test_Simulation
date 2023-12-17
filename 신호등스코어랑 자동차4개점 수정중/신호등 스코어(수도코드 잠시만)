@@ -1,0 +1,137 @@
+/*
+int rqLines1[][4] = {
+    {-19, 0, -19, 9},     // 2번 줄
+    {67, 0, 67, 9},       // 3번 줄
+    {19, 0, 19, -9},        // 4번 줄
+};
+->(-19,0)점과 (-19,0)을 잇는 선, 등등
+교차선 4각형 -9<=x<=9, -9<=y<=9
+그럼 언제 아웃이 될 조
+3번 -> ((앞바퀴가 (x<=19)&(-9<=x))||(뒷바퀴가 (-9<=x)))&&(-9<=y<=0)
+
+2번 -> ((앞바퀴가 (y>=-17)&(9>=y))||(뒷바퀴가 (9>=y)))&&(-9<=x<=0)
+
+1번 -> ((앞바퀴가 (x>=-19)&(9>=x))||(뒷바퀴가 (-9<=x)))&&(-9<=y<=0)
+
+만약 빨간 불일때 바퀴 맨앞에가 해당 선 안에 있으면 그대로 통과,
+아니면(바퀴중 그 무엇이라도 교차선 내에 있으면 )실격
+
+파란불일때 -> 선 주변( 10정도)에 40초 이상 멈춰있거나 속력 
+
+신호등 작동 : 초록 13초, 주황 3초, 빨간 6초, 주황 3초, 초록 13초.. 반복
+*/
+
+#include <GL/glut.h>
+#include <cstdlib>
+#include <ctime>
+
+int rqLines1[][4] = {
+    {-19, 0, -19, 9},  // 2번 줄
+    {67, 0, 67, 9},    // 3번 줄
+    {19, 0, 19, -9}    // 4번 줄
+};
+
+float carFrontX, carFrontY;  // 차량의 전면 좌표
+float carRearX, carRearY;    // 차량의 후면 좌표
+float carSpeed = 0.1f;       // 차량 속도
+
+int trafLightState = 1;      // 신호등 상태: 초록불(1), 주황불(2), 빨간불(3)
+
+// 시간 측정을 위한 변수들
+int currentTime = 0;
+int previousTime = 0;
+
+// 차량이 교차로 내에 있는지 여부를 판별하는 함수
+bool isInsideIntersection() {
+    return (carFrontX >= -9 && carFrontX <= 9 && carFrontY >= -9 && carFrontY <= 9);
+}
+
+// 차량이 아웃되었는지 여부를 판별하는 함수
+bool isCarOut() {
+    // 3번 줄
+    bool condition1 = (((carFrontX <= 19 && carFrontX >= -9) || (carRearX >= -9)) && (carFrontY >= -9 && carFrontY <= 0)) && (trafLightState == 3);
+    // 2번 줄
+    bool condition2 = (((carFrontY >= -17 && carFrontY <= 9) || (carRearY <= 9)) && (carFrontX >= -9 && carFrontX <= 0)) && (trafLightState == 3);
+    // 1번 줄
+    bool condition3 = (((carFrontX >= -19 && carFrontX <= 9) || (carRearX <= 9)) && (carFrontY >= -9 && carFrontY <= 0)) && (trafLightState == 3);
+    // 파란불일 때
+    bool condition4 = (trafLightState == 1) && (carFrontX >= -19 && carFrontX <= 9 && carFrontY >= -9 && carFrontY <= 9 && currentTime - previousTime >= 40);
+
+    return condition1 || condition2 || condition3 || condition4;
+}
+
+// 화면 그리기 함수
+void display() {
+    glClear(GL_COLOR_BUFFER_BIT);
+    glColor3f(0.0f, 0.0f, 0.0f);
+
+    // 교차로 그리기
+    glBegin(GL_LINES);
+    for (int i = 0; i < 3; ++i) {
+        glVertex2i(rqLines1[i][0], rqLines1[i][1]);
+        glVertex2i(rqLines1[i][2], rqLines1[i][3]);
+    }
+    glEnd();
+
+    // 차량 그리기
+    glColor3f(1.0f, 0.0f, 0.0f);  // 빨간색
+    glBegin(GL_POLYGON);
+    glVertex2f(carFrontX, carFrontY);
+    glVertex2f(carFrontX + 4.0f, carFrontY + 1.0f);
+    glVertex2f(carRearX + 4.0f, carRearY - 1.0f);
+    glVertex2f(carRearX, carRearY);
+    glEnd();
+
+    // 화면에 표시할 텍스트
+    const char *displayText = isCarOut() ? "Wasted" : "";
+    glColor3f(1.0f, 0.0f, 0.0f);  // 빨간색
+    glRasterPos2f(-5, -12);  // 텍스트 위치
+    glutBitmapString(GLUT_BITMAP_HELVETICA_18, (const unsigned char *)displayText);
+
+    glutSwapBuffers();
+}
+
+// 시간 업데이트 함수
+void update(int value) {
+    // 시간 측정
+    currentTime = glutGet(GLUT_ELAPSED_TIME) / 1000;
+
+    // 차량 속도만큼 좌표 업데이트
+    carFrontX += carSpeed;
+    carRearX += carSpeed;
+
+    // 신호등 상태 업데이트
+    if (currentTime - previousTime >= 13) {
+        trafLightState = (trafLightState % 3) + 1;
+        previousTime = currentTime;
+    }
+
+    // 교차로를 나가거나 충돌 여부 체크
+    if (isCarOut() || isInsideIntersection()) {
+        glutPostRedisplay();  // 화면 갱신 요청
+        return;
+    }
+
+    glutTimerFunc(16, update, 0);  // 60 FPS로 업데이트
+}
+
+// 초기화 함수
+void init() {
+    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+    gluOrtho2D(-30.0, 30.0, -15.0, 15.0);
+}
+
+int main(int argc, char **argv) {
+    glutInit(&argc, argv);
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
+    glutInitWindowSize(800, 600);
+    glutCreateWindow("Traffic Simulation");
+
+    init();
+
+    glutDisplayFunc(display);
+    glutTimerFunc(0, update, 0);
+
+    glutMainLoop();
+    return 0;
+}
