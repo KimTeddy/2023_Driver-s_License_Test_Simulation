@@ -1,0 +1,10 @@
+키트에 복사후 
+chmod +x autowifi.sh
+1회 필요.
+
+vi혹은 텍스트에디터로 열어서 '"  "' 안의 내용 수정해서 사용.
+현재 1이 들어간 부분에는 sudo wpa_cli list_network 결과에서 나오는 개수 +1 넣어야함
+
+이후 ./autowifi.sh 로 사용 
+
+
