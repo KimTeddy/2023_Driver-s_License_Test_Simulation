@@ -12,6 +12,7 @@
 */
 void accel()
 {
+    int moving, moving_l, moving_r;
     int first_accel[3];
     int second_accel[3];
     // CRS로 값 받을 수 있으면 아래 두 문장 지우기, if문 아래 3문장 살리기
@@ -48,9 +49,11 @@ void accel()
                 //rcar += 3; printf("r=%d\n", rcar); break;  왼쪽으로 기울이고 있는 동안 왼쪽으로 이동하도록
                 //왼쪽이 +3
                 printf("  Handle Turn Left \n");
+                moving_l = 1;
                 sleep(1);
             
             }
+
             else if(second_accel[0] - first_accel[0] > 5000)
             { //오른쪽으로 기운 경우 [차이가 5000이상 나면]
 
@@ -58,8 +61,18 @@ void accel()
                 //오른쪽이 -3
                 // rcar -= 3; printf("r=%d\n", rcar); break; // 오른쪽으로 기울이고 있는 동안 오른쪽으로 이동하도록
                 printf(" Handle Turn Right \n");
+                moving_r = 1;
                 sleep(1);
             }
+
+            else if( !(first_accel[0] - second_accel[0] > 5000) || !(second_accel[0] - first_accel[0] > 5000))
+            {
+              // 핸들이 정위치면 moving_l,r을 0으로 설정.
+                moving_l = 0;
+                moving_r = 0;    
+
+            }
+
             else if( first_accel[2] - second_accel[2] > 4000 && first_accel[2] - second_accel[2] < 8000 )
             { // 뒤로 기울인 경우
 
@@ -67,18 +80,22 @@ void accel()
                 printf(" Slow Down \n");
                 sleep(1);
             }
+
             else if( first_accel[2] - second_accel[2] > 8000 )
                 { // 뒤로 기울인 각도가 큰 경우 (돌발에서 급 브레이크 밟은 경우)
                     // ~ 차 멈추는 코드 ~
                     printf(" Stop \n");
+                    moving -= 3;
                     sleep(1);
                 }
         
             else if( second_accel[2] - first_accel[2] > 4000 && second_accel[2] - first_accel[2] < 8000)
-            {// 앞으로만 기울인 경우
+            {// 앞으로만 기울인 경우 [  가속도 센서의 z값이 바뀜  ]
 
                 // ~차가 앞으로 진행하는 코드 ~
             
+                moving = 1;
+
                 /*speed = 1;  //조금만 기울인 경우 speed = 1;
                 dxcar = speed * cos((180-rcar) * PI / 180.0); xcar += dxcar;
                 dycar = speed * sin((180-rcar) * PI / 180.0); ycar += dycar;
@@ -87,9 +104,12 @@ void accel()
                 printf(" Car Moving Forward \n");
                 sleep(1);
             }
+
             else if( second_accel[2] - first_accel[2] > 8000 )
                 { // 앞으로 많이 기울인 경우 (가속 구간에서 가속)
                     // ~ 차 속도를 빠르게 ~
+
+                    moving += 2;   
                     /*
                     speed = 2;  //많이 기울인 경우 speed = 2로 설정하여 가속
                     dxcar = speed * cos((180-rcar) * PI / 180.0); xcar += dxcar;
@@ -99,21 +119,23 @@ void accel()
                     printf(" Car Accelation! \n");
                     sleep(1);
                 }
+/*
             else if(first_accel[0] - second_accel[0] > 5000 && second_accel[2] - first_accel[2] > 4000 && second_accel[2] - first_accel[2] < 8000) 
             { 
                 printf(" Going Left! \n");
                 sleep(1);
                 //앞으로 기울인 상태에서 왼쪽으로 기울이면 악셀 + 핸들 왼쪽을 돌리면 옆으로 같이 진행하도록
                 
-                /*
+                
                 rcar += 3;
                 speed = 1;  //조금만 기울인 경우 speed = 1;
                 dxcar = speed * cos((180-rcar) * PI / 180.0); xcar += dxcar;
                 dycar = speed * sin((180-rcar) * PI / 180.0); ycar += dycar;
                 break;
-                */
+                
 
             }
+
             else if(second_accel[0] - first_accel[0] > 5000 && second_accel[2] - first_accel[2] > 4000 && second_accel[2] - first_accel[2] < 8000) 
             { 
                 printf(" Going Right! \n");
@@ -126,9 +148,10 @@ void accel()
                 dxcar = speed * cos((180-rcar) * PI / 180.0); xcar += dxcar;
                 dycar = speed * sin((180-rcar) * PI / 180.0); ycar += dycar;
                 break;
-                */
+                
 
             }
+*/
             usleep(1);
         }
     }
