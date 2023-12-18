@@ -6,4 +6,3 @@ test.o: test.c
 
 clear : 
 	rm *.o
-	rm libMyPeri.a
