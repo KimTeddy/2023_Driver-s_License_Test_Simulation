@@ -7,18 +7,28 @@
 #include <time.h>
 #include <sys/shm.h>
 #include "button.h"
+#include <linux/spi/spidev.h>
+#include <stdint.h>
+#include <string.h>
+#include <linux/input.h>
+#include <sys/msg.h>
+#include <sys/ioctl.h>
+#include <fcntl.h>
+#include <linux/fb.h>
 
 pthread_t thread_object_1; //스레드 1 for rgb led
 pthread_t thread_object_2; //스레드 2 for btn and led
 pthread_t thread_object_2x; //스레드 2x for led blink
 //pthread_t thread_object_3; //스레드 3 for 7segment
 pthread_t thread_object_4; //스레드 4 for echo state(imsi)
+pthread_t thread_object_5; //스레드 5 for lcd bitmap output
+
 
 //pthread_mutex_t lock1; // for traflight
 //pthread_mutex_t lock2; // for  btnstate
 
 int scBTN_Start=0, scBTN_Manual=0, scBTN_Leaderbd=0; // 스크린터치로 인식할 시작/코스설명/리더보드 버튼 변수
-int page; // 코스 설명 이미지 페이지 카운팅
+int maunalpage=0; // 코스 설명 이미지 페이지 카운팅
 int testStart=0, mainScreen=0;
 
 // LCD에 구간 표시하기 위한 트리거 신호들
@@ -51,6 +61,8 @@ int gear=0; //기어 판별위한 변수 (0중립1전진2후진)
 int uphillcnt,emergencycnt,junctioncnt,parkingcnt  //구간별 제한시간 판별 위한 변수
 int uphillstop,uphillside1,uphillside2,uphillgo,emergency1,emergency2,junctionpass,sidebreakcheck,sidebreakcheck2,accelcheck,accelsuccess,finalcheck,finalsuccess; //구간내 항목 성공여부 판별 변수
 int carspeed, carspeedmax; //차의 현재 속도와 기록된 최고속도 변수
+
+int showstate=0; //스크린에 표시할 이미지 state 변수. 0 = 메인스크린, 1 = 메뉴얼, 2 = 리더보드, 3 = 게임진행
 
 
 void* trafLight(void) {
@@ -176,6 +188,7 @@ if((Data.type== EV_KEY) & (Data.pressed)){
     ledLibExit();
     }
 
+
 void* ledblinks(void) {
     buzzerInit();
     while(1) {
@@ -292,6 +305,97 @@ void* sevenseg(void) {
 9 표시: 2,3,4,5,9,12,13번핀 high, 1번핀 low
 */
 
+void* ScreenOutput(void) {
+    int screen_width;
+    int screen_height;
+    int bits_per_pixel;
+    int line_length;
+    int cols = 0, rows = 0;
+	char *data;
+    char bmpfile[200];
+    int nums=0;
+    int testingnow=1;
+	//FrameBuffer init
+    if ( fb_init(&screen_width, &screen_height, &bits_per_pixel, &line_length) < 0 )
+	{
+		printf ("FrameBuffer Init Failed\r\n");
+		return 0;
+	}
+        switch (showstate)
+        {
+        case 0: {
+            fb_clear();
+            //FileRead
+            if (read_bmp("mainscreen.bmp", &data, &cols, &rows) < 0) {  //mainscreen.bmp 출력
+		        printf ("File open failed\r\n");
+		        return 0;
+                }
+	        //FileWrite
+	        fb_write(data, cols,rows); 
+	        close_bmp();
+        }
+            break;
+        case 1: {
+            fb_clear();
+            while(메뉴얼 표시상태) {
+            usleep(1000000); //1초 대기
+            strcpy(bmpfile, "manual");
+            snprintf(bmpfile, sizeof(bmpfile), "%d", maunalpage);  // maunalpage 변수로 페이지 확인
+            strcat(bmpfile, ".bmp");
+            //FileRead
+            if (read_bmp(bmpfile, &data, &cols, &rows) < 0) {  //manual숫자.bmp 출력
+		        printf ("File open failed\r\n");
+		        return 0;
+                }
+	        //FileWrite
+	        fb_write(data, cols,rows); 
+	        close_bmp();      
+            }      
+        }
+
+        case 2: {
+            fb_clear();
+            while(리더보드 표시상태) {    //리더보드 어떻게 만들지.... 점수 기록되면 도트 찍히게 해야하나?
+            usleep(1000000); //1초 대기
+            strcpy(bmpfile, "leaderboard");
+            snprintf(bmpfile, sizeof(bmpfile), "%d", leaderboard);  // leaderboard 변수로 페이지 확인
+            strcat(bmpfile, ".bmp");
+            //FileRead
+            if (read_bmp(bmpfile, &data, &cols, &rows) < 0) {  //leaderboard숫자.bmp 출력
+		        printf ("File open failed\r\n");
+		        return 0;
+                }
+	        //FileWrite
+	        fb_write(data, cols,rows); 
+	        close_bmp();      
+            }
+        }
+
+        case 3: {
+            fb_clear();
+            while(simuwork==1) {    //게임 진행중일 때
+            usleep(500000); //0.5초 대기
+            strcpy(bmpfile, "");
+            snprintf(bmpfile, sizeof(bmpfile), "%d", nums);  // nums변수로 현재 프레임확인
+            strcat(bmpfile, ".bmp");
+            //FileRead
+            if (read_bmp(bmpfile, &data, &cols, &rows) < 0) {  //숫자.bmp 출력
+		        printf ("File open failed\r\n");
+		        return 0;
+                }
+	        //FileWrite
+	        fb_write(data, cols,rows); 
+	        close_bmp();      
+            }
+        }
+
+
+        default:
+            break;
+        }
+
+}
+
 
 int main(void) {
 simuwork = 1;
@@ -302,20 +406,26 @@ int shmID = shmget((key_t)7777,sizeof(int), IPC_CREAT|0666); //공유메모리 �
     }
     trafLightState = (int*)shmat(shmID, (void*)NULL, 0); // 공유메모리에 접근이 가능하도록 공유메모리 주소값으로 포인터 초기화
 
-
-
-
 pthread_create(&thread_object_1, NULL, trafLight, NULL);
 pthread_create(&thread_object_2, NULL, btncheck, NULL);
 pthread_create(&thread_object_2x, NULL, ledblinks, NULL);
 pthread_create(&thread_object_4, NULL, trafLightss, NULL);
+pthread_create(&thread_object_5, NULL, ScreenOutput, NULL);
 //pthread_create(&thread_object_3, NULL, sevenseg, NULL);
+
+showMainScreen();
+
+
+
+
+
 
 pthread_join(thread_object_1, NULL);
 pthread_join(thread_object_2, NULL);
 pthread_join(thread_object_2x, NULL);
 //pthread_join(thread_object_3, NULL);
 pthread_join(thread_object_4, NULL);
+pthread_join(thread_object_5, NULL);
  //shmdt(trafLightState); // 공유메모리 연결 해제
 
   //  return 0; // 프로그램 종료
@@ -323,7 +433,7 @@ pthread_join(thread_object_4, NULL);
 }
 
 void showMainScreen() {
-    //메인 화면 출력. 디자인 구상 UI idea에 구상 올려둠 / 버튼 표시로 버튼을 누르면 위의 변수 바뀜.
+    showstate = 0;//메인 화면 출력. 디자인 구상 UI idea에 구상 올려둠 / 버튼 표시로 버튼을 누르면 위의 변수 바뀜.
     while(1) {
     if(scBTN_Start) driveTest();
     else if(scBTN_Manual) showManual();
@@ -331,14 +441,16 @@ void showMainScreen() {
     }
 }
 
-
-void driveTest () { //시험 코스 진행할 것 작성
+void driveTest () { //시험 코스 진행할 것 작성   while문으로 구간 판별후 반복조건문 탈출하게 작성해야함.
+maunalpage = 0; // 메뉴얼 시작은 선택페이지로.
+showstate = 1; //화면에 메뉴얼 출력. 메뉴얼 0페이지는 시험 시작전 코스설명 yes no 선택페이지로. 1페이지부터 코스설명.
 int next=1; // teststart = 1, mainmenu = 2 : default teststart
 //시험을 시작하기에 앞서 코스 설명을 진행하겠습니다. (스킵 여부 물어서 스킵 가능하게.)
 if(manualSkip==0) next=showManual();
 //화면의 시작하기를 누를경우(testStart)
 if(next==1) {
     scBTN_Start = 0;
+    showstate = 3; //화면에 운전이미지 표시 시작.0번은 시작위치.
     next=0;
     //돌발 및 기본조작 랜덤설정
     srand((unsigned int)time(NULL));
@@ -350,7 +462,7 @@ if(next==1) {
     crs_basic = 1; //기본조작평가 트리거
     printf("기본조작평가를 시작합니다.\n");
     switch(randtest) {
-    0:  //전진기어 좌측방향지시등 체크
+    case 0:  //전진기어 좌측방향지시등 체크
     {
         printf("기어조작테스트: 3초 안에 기어를 중립에서 전진기어로 바꾸십시오\n");
         sleep(3);
@@ -376,7 +488,7 @@ if(next==1) {
         }
     }
     break;
-    1: //후진기어 좌측방향지시등 체크
+    case 1: //후진기어 좌측방향지시등 체크
     {
         printf("기어조작테스트: 3초 안에 기어를 중립에서 후진기어로 바꾸십시오\n");
         sleep(3);
@@ -402,7 +514,7 @@ if(next==1) {
         }
     }
     break;
-    2: //전진기어 우측방향지시등 체크
+    case 2: //전진기어 우측방향지시등 체크
     {
         printf("기어조작테스트: 3초 안에 기어를 중립에서 전진기어로 바꾸십시오\n");
         sleep(3);
@@ -428,7 +540,7 @@ if(next==1) {
         }
     }
     break;
-    3: //후진기어 우측방향지시등 체크
+    case 3: //후진기어 우측방향지시등 체크
     {
         printf("기어조작테스트: 3초 안에 기어를 중립에서 후진기어로 바꾸십시오\n");
         sleep(3);
@@ -772,13 +884,14 @@ if(next==1) {
 else if(next==2) return;
 }
 
-
 int showManual () { //코스 설명 작성
 scBTN_Manual=0;
+maunalpage = 1;
+showstate = 1;
  // 코스 설명 구간별로 이미지로 작성해서 띄우면 좋을것 같다고 생각.
  // 구간별 점수 및 전역 감점및 실격 요소, 제한시간 등 안내. 이미지 수동으로 넘기는 방식으로.
  while(testStart!=1 | mainScreen!=1) { // 마지막페이지에서 메인화면 혹은 시험 시작을 선택할 때 까지 대기.
- if(page==마지막페이지) {
+ if(maunalpage==마지막페이지) {
     
  if(scBTN_Start) // 시험시작으로 코스설명에 진입했을경우 testStart(시작하기)버튼과 mainScreen(메인화면) 버튼 표시
  else  //메인화면에서 설명보기로 진입했을경우 mainScreen(메인화면) 버튼 표시
@@ -789,9 +902,8 @@ scBTN_Manual=0;
 else if(mainScreen) return 2; //메인화면 선택시 2(mainmenu) 리턴.
 }
 
-
-
 void showLeaderBoard () { //리더보드 내용 작성
+showstate = 2;
 //디자인 구상 UI idea에 구상 올려둠
     while(mainscreen!=1) {}
     return;
