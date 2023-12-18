@@ -153,6 +153,7 @@ void accel()
             }
 */
             usleep(1);
+            //만약 moving 변수에 따라서 usleep 시간 달라지는거면 여 아래에 추가하자.
         }
     }
 
