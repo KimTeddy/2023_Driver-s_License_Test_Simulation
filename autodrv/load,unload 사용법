@@ -1,3 +1,5 @@
+-❯ scp ./loaddrv.sh ecube@192.168.207.19:~/
+
 키트에 복사후 
 chmod +x loaddrv.sh
 chmod +x unloaddrv.sh 

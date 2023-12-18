@@ -48,7 +48,7 @@ int main(void)
     getAccel(first_accel);
 
     while(1) //game이 끝날 때 까지 second_accel값 받아서 기울기 계산
-    {
+    {        // 나중에 1 대신 트리거 변수로 바꾸기.
         
         getAccel(second_accel);
        // printf("Set Changing Value\n");

@@ -10,7 +10,9 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include "fnd.h"
-
+#define MODE_STATIC_DIS 's'
+#define MODE_TIME_DIS 't'
+#define MODE_COUNT_DIS 'c'
 
 typedef struct FNDWriteDataForm_tag 
 {

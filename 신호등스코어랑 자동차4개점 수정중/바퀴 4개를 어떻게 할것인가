@@ -1,0 +1,137 @@
+#include <GL/glut.h>
+#include <cmath>
+#include <stdio.h>
+#define PI 3.14159265358979323846
+float xcar = 0.0, ycar = 0.0; // 중심점
+float rcar = 0.0; // 회전 각도
+float speed = 1.0; // 이동 속도
+float xcar_A = xcar - 5, ycar_A = ycar - 2; // A점
+float xcar_B = xcar - 5, ycar_B = ycar + 2; // B점
+float xcar_C = xcar + 5, ycar_C = ycar + 2; // C점
+float xcar_D = xcar + 5, ycar_D = ycar - 2; // D점
+
+void drawThickRedLine(float x1, float y1, float z1, float x2, float y2, float z2, float thickness) {
+    glEnable(GL_LINE_SMOOTH);  // 선을 부드럽게 표시하도록 설정
+    glLineWidth(thickness);    // 선의 두께 설정
+    glColor3f(1.0f, 0.0f, 0.0f);  // 빨간 색상으로 설정
+
+    // 두꺼운 빨간 선 그리기
+    glBegin(GL_LINES);
+    glVertex3f(x1, y1, z1);
+    glVertex3f(x2, y2, z2);
+    glEnd();
+}
+
+void drawCarPoints() {
+    // Draw Point 1
+    glPointSize(10.0f);
+    glColor3f(1.0, 0.0, 0.0);
+    glBegin(GL_POINTS);
+    glVertex3f(xcar, 1.0, ycar);
+    glEnd();
+
+    // Draw Point 2
+    glColor3f(0.0, 1.0, 0.0);
+    glBegin(GL_POINTS);
+    glVertex3f(xcar_A, 1.0, ycar_A);
+    glEnd();
+
+    // Draw Point 3
+    glColor3f(0.0, 0.0, 1.0);
+    glBegin(GL_POINTS);
+    glVertex3f(xcar_B, 1.0, ycar_B);
+    glEnd();
+
+    // Draw Point 4
+    glColor3f(1.0, 1.0, 0.0);
+    glBegin(GL_POINTS);
+    glVertex3f(xcar_C, 1.0, ycar_C);
+    glEnd();
+
+    // Draw Point 5
+    glColor3f(1.0, 0.0, 1.0);
+    glBegin(GL_POINTS);
+    glVertex3f(xcar_D, 1.0, ycar_D);
+    glEnd();
+}
+void drawCar() {
+    glPushMatrix();
+    glTranslatef(xcar, 1.0, ycar);
+    glRotatef(rcar, 0.0, 1.0, 0.0); // 회전 적용
+
+    float xcar_A_rotated = xcar_A - xcar, ycar_A_rotated = ycar_A - ycar;
+    float xcar_B_rotated = xcar_B - xcar, ycar_B_rotated = ycar_B - ycar;
+    float xcar_C_rotated = xcar_C - xcar, ycar_C_rotated = ycar_C - ycar;
+    float xcar_D_rotated = xcar_D - xcar, ycar_D_rotated = ycar_D - ycar;
+
+    // 차의 네 점을 이어주는 빨간색 두꺼운 선 그리기
+    drawThickRedLine(xcar_A_rotated, 0, ycar_A_rotated - 2, xcar_B_rotated, 0, ycar_B_rotated + 2, 5.0);  // A to B
+    drawThickRedLine(xcar_B_rotated, 0, ycar_B_rotated + 2, xcar_C_rotated, 0, ycar_C_rotated + 2, 5.0);  // B to C
+    drawThickRedLine(xcar_C_rotated, 0, ycar_C_rotated + 2, xcar_D_rotated, 0, ycar_D_rotated - 2, 5.0);  // C to D
+    drawThickRedLine(xcar_D_rotated, 0, ycar_D_rotated - 2, xcar_A_rotated, 0, ycar_A_rotated - 2, 5.0);  // D to A
+
+    drawCarPoints();  // 차의 네 개의 점 그리기
+
+    glPopMatrix();
+}
+
+void display() {
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    glLoadIdentity();
+    gluLookAt(0.0, 60.0, 60.0, 0.0, -1.0, 0.0, 0.0, 1.0, 0.0);
+    drawCar();
+    glutSwapBuffers();
+}
+
+void reshape(int w, int h) {
+    glViewport(0, 0, w, h);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluPerspective(45.0, (float)w / (float)h, 1.0, 100.0);
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+}
+
+void keyboard(unsigned char key, int x, int y) {
+    float dxcar, dycar;
+    switch (key) {
+    case 'a':
+        rcar += 3.0;
+        printf("rcar=%f\n", rcar);
+        break;
+    case 'd':
+        rcar -= 3.0;
+        printf("rcar=%f\n", rcar);
+        break;
+
+    case 'w':
+        // 'w' 키를 누르면 현재 방향으로 앞으로 이동
+        speed = 1;
+        dxcar = speed * cos((180 - rcar) * PI / 180.0);
+        dycar = speed * sin((180 - rcar) * PI / 180.0);
+        xcar += dxcar;
+        ycar += dycar;
+
+        xcar_A = xcar - 5; ycar_A = ycar - 2;
+        xcar_B = xcar - 5; ycar_B = ycar + 2;
+        xcar_C = xcar + 5; ycar_C = ycar + 2;
+        xcar_D = xcar + 5; ycar_D = ycar - 2;
+    }
+    if (rcar >= 360 || rcar <= -360) rcar = 0;
+    glutPostRedisplay();
+}
+
+int main(int argc, char** argv) {
+    glutInit(&argc, argv);
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
+    glutInitWindowSize(1024, 768);
+    glutInitWindowPosition(0, 0);
+    glutCreateWindow("Rotating Car");
+    glEnable(GL_DEPTH_TEST);
+    glutDisplayFunc(display);
+    glutReshapeFunc(reshape);
+    glutKeyboardFunc(keyboard);  // 키보드 입력 처리
+    glutMainLoop();
+    return 0;
+}

@@ -1,0 +1,51 @@
+/*
+int rqLines1[][4] = {
+    {-19, 0, -19, 9},     // 2번 줄
+    {67, 0, 67, 9},       // 3번 줄
+    {19, 0, 19, -9},        // 4번 줄
+};
+->(-19,0)점과 (-19,0)을 잇는 선, 등등
+교차선 4각형 -9<=x<=9, -9<=y<=9
+그럼 언제 아웃이 될 조
+3번 -> ((앞바퀴가 (x<=19)&(-9<=x))||(뒷바퀴가 (-9<=x)))&&(-9<=y<=0)
+
+2번 -> ((앞바퀴가 (y>=-17)&(9>=y))||(뒷바퀴가 (9>=y)))&&(-9<=x<=0)
+
+1번 -> ((앞바퀴가 (x>=-19)&(9>=x))||(뒷바퀴가 (-9<=x)))&&(-9<=y<=0)
+
+만약 빨간 불일때 바퀴 맨앞에가 해당 선 안에 있으면 그대로 통과,
+아니면(바퀴중 그 무엇이라도 교차선 내에 있으면 )실격
+
+파란불일때 -> 선 주변( 10정도)에 40초 이상 멈춰있거나 속력 
+
+신호등 작동 : 초록 13초, 주황 3초, 빨간 6초, 주황 3초, 초록 13초.. 반복
+*/
+#include <iostream>
+
+// Assuming xcar_A, ycar_A, x, y, speed, and time are declared somewhere in your code.
+
+int main() {
+    // Assuming trafLightState is declared and initialized somewhere in your code.
+
+    if (trafLightState == 3) { // 빨간불일때
+        if ((-9 <= y && y <= 0) && (xcar_A <= 9 && xcar_A >= -9)) {
+            std::cout << "실격" << std::endl;
+            return -100;
+        } else if ((-9 <= xcar_A && xcar_A <= 0) && (-9 <= ycar_A && ycar_A <= 9)) {
+            std::cout << "실격" << std::endl;
+            return -100;
+        } else if ((-9 <= ycar_A && ycar_A <= 0) && (-9 <= xcar_A && xcar_A <= 9)) {
+            std::cout << "실격" << std::endl;
+            return -100;
+        }
+    }
+
+    if (trafLightState == 1) {
+        if (-9 <= x && x <= 9 && -9 <= y && y <= 9 && speed == 0 && time >= 40) {
+            std::cout << "실격" << std::endl;
+            return -100;
+        }
+    }
+
+    return 0;
+}
