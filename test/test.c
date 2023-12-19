@@ -15,6 +15,7 @@
 #include <sys/ioctl.h>
 #include <fcntl.h>
 #include <linux/fb.h>
+#include <sys/kd.h>
 
 pthread_t thread_object_1; //스레드 1 for rgb led
 pthread_t thread_object_2; //스레드 2 for btn and led
@@ -22,7 +23,7 @@ pthread_t thread_object_2x; //스레드 2x for led blink
 //pthread_t thread_object_3; //스레드 3 for 7segment
 pthread_t thread_object_4; //스레드 4 for echo state(imsi)
 pthread_t thread_object_5; //스레드 5 for lcd bitmap output
-
+pthread_t thread_object_6; //스레드 5 for lcd overlay output
 
 //pthread_mutex_t lock1; // for traflight
 //pthread_mutex_t lock2; // for  btnstate
@@ -121,12 +122,12 @@ void* btncheck(void) { //btn and leds
         int msgID = msgget (MESSAGE_ID, IPC_CREAT|0666);
 
 
-while(simuwork==1)
-{
+    while(simuwork==1)
+    {
     int returnValue = 0;
     returnValue = msgrcv(msgID, &Data, sizeof(Data) - sizeof(long int), 0, 0);
 		
-if((Data.type== EV_KEY) & (Data.pressed)){
+    if((Data.type== EV_KEY) & (Data.pressed)){
     switch(Data.keyInput)
     {
         case KEY_HOME: if(safetybelt==0) {
@@ -182,11 +183,11 @@ if((Data.type== EV_KEY) & (Data.pressed)){
         break;
     }
 
-} 
-} 
+    } 
+    } 
     buttonExit();
     ledLibExit();
-    }
+}
 
 
 void* ledblinks(void) {
@@ -314,13 +315,18 @@ void* ScreenOutput(void) {
 	char *data;
     char bmpfile[200];
     int nums=0;
-    int testingnow=1;
+    //remove cursor
+    in conFD = open ("/dev/tty0", O_RDWR);
+    ioctl(conFD, KDSETMODE, KD_GRAPHICS);
+    close(conFD);
+    
 	//FrameBuffer init
     if ( fb_init(&screen_width, &screen_height, &bits_per_pixel, &line_length) < 0 )
 	{
 		printf ("FrameBuffer Init Failed\r\n");
 		return 0;
 	}
+    while(1) {
         switch (showstate)
         {
         case 0: {
@@ -374,7 +380,7 @@ void* ScreenOutput(void) {
         case 3: {
             fb_clear();
             while(simuwork==1) {    //게임 진행중일 때
-            usleep(500000); //0.5초 대기
+            usleep(100000); //0.1초 대기 10fps
             strcpy(bmpfile, "");
             snprintf(bmpfile, sizeof(bmpfile), "%d", nums);  // nums변수로 현재 프레임확인
             strcat(bmpfile, ".bmp");
@@ -393,44 +399,85 @@ void* ScreenOutput(void) {
         default:
             break;
         }
-
-}
-
-
-int main(void) {
-simuwork = 1;
-int shmID = shmget((key_t)7777,sizeof(int), IPC_CREAT|0666); //공유메모리 생성 요청, 이미 존재한다면 식별자 반환
-    if (shmID==-1) {
-        printf("\x1b[31mShared Memory Creating Failed!\x1b[0m\r\n"); // 생성 실패시 알림
-        return 1;
     }
-    trafLightState = (int*)shmat(shmID, (void*)NULL, 0); // 공유메모리에 접근이 가능하도록 공유메모리 주소값으로 포인터 초기화
-
-pthread_create(&thread_object_1, NULL, trafLight, NULL);
-pthread_create(&thread_object_2, NULL, btncheck, NULL);
-pthread_create(&thread_object_2x, NULL, ledblinks, NULL);
-pthread_create(&thread_object_4, NULL, trafLightss, NULL);
-pthread_create(&thread_object_5, NULL, ScreenOutput, NULL);
-//pthread_create(&thread_object_3, NULL, sevenseg, NULL);
-
-showMainScreen();
-
-
-
-
-
-
-pthread_join(thread_object_1, NULL);
-pthread_join(thread_object_2, NULL);
-pthread_join(thread_object_2x, NULL);
-//pthread_join(thread_object_3, NULL);
-pthread_join(thread_object_4, NULL);
-pthread_join(thread_object_5, NULL);
- //shmdt(trafLightState); // 공유메모리 연결 해제
-
-  //  return 0; // 프로그램 종료
 
 }
+
+void* ScreenOverlay(void) {
+    int screen_width2;
+    int screen_height2;
+    int bits_per_pixel2;
+    int line_length2;
+    int cols2 = 0, rows2 = 0;
+	char *data2;
+    char bmpfile2[200];
+    int nums2=0;
+ 
+    
+	//FrameBuffer init
+    if ( fb_init2(&screen_width2, &screen_height2, &bits_per_pixel2, &line_length2) < 0 )
+	{
+		printf ("FrameBuffer0 Init Failed\r\n");
+		return 0;
+	}
+    
+		fb_clear2(0,0,1024,600);
+        
+    while(1) {
+        switch (showstate)
+        {
+        case 0: {
+            fb_clear2();
+            strcpy(bmpfile2, "overlaymainscreen");
+            strcat(bmpfile2, nums2);
+            strcat(bmpfile2, ".bmp");
+
+
+            //FileRead
+            if (read_bmp(bmpfile2, &data2, &cols2, &rows2) < 0) {
+		        printf ("File open failed\r\n");
+		        return 0;
+	            }
+	        //FileWrite
+	        fb_write2(data2, cols2,rows2,0,0);
+    
+	        close_bmp();        }
+            break;
+        case 1: {
+             fb_clear2();
+            strcpy(bmpfile2, "overlaymanual");
+            strcat(bmpfile2, nums2);
+            strcat(bmpfile2, ".bmp");
+
+
+            //FileRead
+            if (read_bmp(bmpfile2, &data2, &cols2, &rows2) < 0) {
+		        printf ("File open failed\r\n");
+		        return 0;
+	            }
+	        //FileWrite
+	        fb_write2(data2, cols2,rows2,0,0);
+    
+	        close_bmp();        }
+            break;   
+        }
+
+        case 2: {
+           
+        }
+
+        case 3: {
+           
+        }
+
+
+        default:
+            break;
+        }
+}
+
+}
+
 
 void showMainScreen() {
     showstate = 0;//메인 화면 출력. 디자인 구상 UI idea에 구상 올려둠 / 버튼 표시로 버튼을 누르면 위의 변수 바뀜.
@@ -911,3 +958,37 @@ showstate = 2;
 
 void addLeaderBoard () {} //리더보드 편집 함수 작성
 
+int main(void) {
+simuwork = 1;
+int shmID = shmget((key_t)7777,sizeof(int), IPC_CREAT|0666); //공유메모리 생성 요청, 이미 존재한다면 식별자 반환
+    if (shmID==-1) {
+        printf("\x1b[31mShared Memory Creating Failed!\x1b[0m\r\n"); // 생성 실패시 알림
+        return 1;
+    }
+    trafLightState = (int*)shmat(shmID, (void*)NULL, 0); // 공유메모리에 접근이 가능하도록 공유메모리 주소값으로 포인터 초기화
+
+pthread_create(&thread_object_1, NULL, trafLight, NULL);
+pthread_create(&thread_object_2, NULL, btncheck, NULL);
+pthread_create(&thread_object_2x, NULL, ledblinks, NULL);
+pthread_create(&thread_object_4, NULL, trafLightss, NULL);
+pthread_create(&thread_object_5, NULL, ScreenOutput, NULL);
+//pthread_create(&thread_object_3, NULL, sevenseg, NULL);
+
+showMainScreen();
+
+
+
+
+
+
+pthread_join(thread_object_1, NULL);
+pthread_join(thread_object_2, NULL);
+pthread_join(thread_object_2x, NULL);
+//pthread_join(thread_object_3, NULL);
+pthread_join(thread_object_4, NULL);
+pthread_join(thread_object_5, NULL);
+ //shmdt(trafLightState); // 공유메모리 연결 해제
+
+  //  return 0; // 프로그램 종료
+
+}

@@ -7,6 +7,10 @@ int fb_init(int * screen_width, int * screen_height, int * bits_per_pixel, int *
 void fb_close(void);
 void fb_clear(void);
 void fb_write(char *picData, int picWidth, int picHeight);
-void fb_write_reverse(char *picData, int picWidth, int picHeight);
-void fb_doubleBufSwap(void);
+
+int fb_init2(void);
+void fb_close2(void);
+void fb_clear2(int x, int y, int width, int height);
+void fb_write2(char *picData, int picWidth, int picHeight, int frameX, int frameY);
+
 #endif

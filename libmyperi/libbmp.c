@@ -41,6 +41,7 @@ int read_bmp(char *filename, char **data, int *cols, int *rows)
 
     nread   =   fread(&bmpHeader.bfSize, 1, sizeof(BITMAPFILEHEADER), fp);
     size    =   bmpHeader.bfSize - sizeof(BITMAPFILEHEADER);
+    printf ("Malloc required:%d\r\n",size);
     pDib   =   (unsigned char *)malloc(size);      // DIB Header(Image Header)
     fread(pDib, 1, size, fp);
     bmpInfoHeader   =   (BITMAPINFOHEADER *)pDib;
