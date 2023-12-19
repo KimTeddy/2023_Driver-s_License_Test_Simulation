@@ -47,6 +47,7 @@ int main(void)
     int first_accel[3];
     int second_accel[3];
     int moving = 0;
+    
     //전진기어에서는 1씩 증가, 가속에서는 2씩 증가
     //중립에서는 0씩 증가
     int moving_l = 0;
@@ -55,6 +56,10 @@ int main(void)
     //우회전시 1이 되도록
     int break_on = 0;
     //뒤로 기울인 각도 크면 break_on = 1이 되도록
+
+    int moving_f = 0;
+    int moving_b = 0;
+
     printf("Set Default Value\n");
     getAccel(first_accel);
 
@@ -74,6 +79,8 @@ int main(void)
                 //rcar += 3; printf("r=%d\n", rcar); break;  기울이고 있는 이동하도록
                 // +3
                 printf("  Handle Turn Right \n");
+                moving_f = 0;
+                moving_b = 0;
                 moving_r = 1;
                 moving_l = 0;
                 moving += 1;
@@ -91,6 +98,8 @@ int main(void)
                 //
                 // rcar -= 3; printf("r=%d\n", rcar); break; //  기울이고 있는 동안 이동하도록
                 printf(" Handle Turn Left \n");
+                moving_f = 0;
+                moving_b = 0;
                 moving_l = 1;
                 moving_r = 0;
                 moving += 1;
@@ -108,6 +117,8 @@ int main(void)
 
                 // ~ 차 속도를 감소하는 코드?
                 moving -= 1;
+                moving_f = 0;
+                moving_b = 1;
                 printf(" Slow Down \n");
                 printf("Moving : %d  Moving L : %d,  Moving_r : %d\n", moving, moving_l, moving_r);
                 sleep(1);
@@ -164,6 +175,8 @@ int main(void)
                 moving += 1;
                 moving_l = 0;
                 moving_r = 0;
+                moving_f = 1;
+                moving_b = 0;
                 /*speed = 1;  //조금만 기울인 경우 speed = 1;
                 dxcar = speed * cos((180-rcar) * PI / 180.0); xcar += dxcar;
                 dycar = speed * sin((180-rcar) * PI / 180.0); ycar += dycar;
@@ -182,6 +195,8 @@ int main(void)
                     moving += 2;  
                     moving_l = 0;
                     moving_r = 0; 
+                    moving_f = 1;
+                    moving_b = 0;
                     /*
                     speed = 2;  //많이 기울인 경우 speed = 2로 설정하여 가속
                     dxcar = speed * cos((180-rcar) * PI / 180.0); xcar += dxcar;
