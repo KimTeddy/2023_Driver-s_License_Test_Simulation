@@ -770,13 +770,11 @@ void *ScreenOverlay(void)
             close_bmp();
         }
         break;
-        }
-        break;
 
-    default:
-        break;
+        default:
+            break;
+        }
     }
-}
 }
 
 void showMainScreen()
@@ -799,7 +797,7 @@ void driveTest()
     showstate = 1;  // 화면에 메뉴얼 출력. 메뉴얼 0페이지는 시험 시작전 코스설명 yes no 선택페이지로. 1페이지부터 코스설명.
     int next = 1;   // teststart = 1, mainmenu = 2 : default teststart
     // 시험을 시작하기에 앞서 코스 설명을 진행하겠습니다. (스킵 여부 물어서 스킵 가능하게.)
-    if (manualSkip == 0)
+    if (now_level==CRS_MANUAL)
         next = showManual();
     // 화면의 시작하기를 누를경우(testStart)
     if (next == 1)
@@ -811,10 +809,9 @@ void driveTest()
         srand((unsigned int)time(NULL));
         randtest = rand() % 4; // random num 0~3
         // 시험 내용 작성
-        printf("지금부터 운전면허 기능시험을 시작합니다.") // 화면에 띄울 수 있으면 띄우기.
-
+        printf("지금부터 운전면허 기능시험을 시작합니다."); // 화면에 띄울 수 있으면 띄우기.
             // 기본조작시험
-            crs_basic = 1; // 기본조작평가 트리거
+            //crs_basic = 1; // 기본조작평가 트리거
         printf("기본조작평가를 시작합니다.\n");
          //
         switch (randtest)
@@ -934,7 +931,8 @@ void driveTest()
             else if ((rightlight == 0) | (leftlight == 1))
             {
                 pritnf("방향지시등 조작실패. 5점 감점.\n");
-                minuspoint = minuspoint + 5;pthread_join(thread_object_5, NULL);
+                minuspoint = minuspoint + 5;
+                pthread_join(thread_object_5, NULL);
                 sleep(1);
             }
         }
@@ -943,7 +941,7 @@ void driveTest()
             printf("random init failed");
         }
         printf("기본조작테스트가 끝났습니다. 켜있던 방향지시등을 끄고, 좌측 방향지시등을 켠 후 10초내에 출발하십시오.\n");
-        sleep(10) pritnf("출발실패. 5점 감점.\n");
+        sleep(10); pritnf("출발실패. 5점 감점.\n");
         if (startplace)
         {
             pritnf("출발실패. 실격하셨습니다.\n");
