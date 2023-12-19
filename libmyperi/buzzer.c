@@ -6,6 +6,7 @@
 #include <unistd.h>
 #include <dirent.h>
 #include "buzzer.h"
+#include "buzzer_soundeffect_defs.h"
 
 #define BUZZER_BASE_SYS_PATH "/sys/bus/platform/devices/"
 #define BUZZER_FILENAME "peribuzzer"
@@ -90,14 +91,111 @@ int buzzerExit(void)
     return 0;
 };
 
-void buzzerTone(int scale, unsigned int milliseconds){
-if(scale!=0) {
-    buzzerPlaySong(scale);
-}
+void buzzerTone(int scale, unsigned int milliseconds)
+{
+    if (scale != 0)
+    {
+        buzzerPlaySong(scale);
+    }
     delay_ms(milliseconds);
     buzzerStopSong();
 }
 
-void delay_ms(unsigned int milliseconds) {
-    usleep(milliseconds * 1000);  // 밀리초를 마이크로초로 변환
+void delay_ms(unsigned int milliseconds)
+{
+    usleep(milliseconds * 1000); // 밀리초를 마이크로초로 변환
+}
+
+void soundEffect(int soundEF)
+{
+    switch (soundEF)
+    {
+    case SE_MUTE:
+        buzzerStopSong();
+        break;
+
+    case SE_CEG:
+        buzzerPlaySong(NOTE_C5);
+        usleep(10000);
+        buzzerPlaySong(NOTE_E5);
+        usleep(10000);
+        buzzerPlaySong(NOTE_G5);
+        usleep(10000);
+        buzzerStopSong();
+        break;
+
+    case SE_MUSIC: // RAP music
+        for (int i = 0; i < 8; i++)
+        {
+            buzzerTone(NOTE_C5, 50);
+            buzzerTone(NOTE_E5, 50);
+            buzzerTone(NOTE_A5, 300);
+        }
+        for (int i = 0; i < 3; i++)
+        {
+            buzzerTone(NOTE_B4, 50);
+            buzzerTone(NOTE_E5, 50);
+            buzzerTone(NOTE_A5, 300);
+        }
+        for (int i = 0; i < 5; i++)
+        {
+            buzzerTone(NOTE_B4, 50);
+            buzzerTone(NOTE_E5, 50);
+            buzzerTone(NOTE_G5, 300);
+        }
+        buzzerStopSong();
+        break;
+
+//    case SE_PITCH: // play pitch
+//        buzzerPlaySong(frequency);
+//        delay_ms(500);
+//        buzzerStopSong();
+//        break;
+
+    case SE_SIREN: // siren
+        for (int i = NOTE_DS3; i < NOTE_B5; i += 5)
+        {
+            buzzerPlaySong(i);
+        }
+        for (int i = NOTE_B5; i > NOTE_DS3; i -= 5)
+        {
+            buzzerPlaySong(i);
+        }
+        buzzerStopSong();
+        break;
+    case SE_START: // start sound
+        buzzerTone(NOTE_A4, 500);
+        buzzerTone(0, 500);
+        buzzerTone(NOTE_A4, 500);
+        buzzerTone(0, 500);
+        buzzerTone(NOTE_A4, 500);
+        buzzerTone(0, 500);
+        buzzerTone(NOTE_A5, 1000);
+        buzzerStopSong();
+        break;
+    case SE_ENDTURN: // 1 turn end
+        buzzerTone(NOTE_E4, 100);
+        buzzerTone(NOTE_G4, 100);
+        buzzerTone(NOTE_E5, 100);
+        buzzerTone(NOTE_C5, 100);
+        buzzerTone(NOTE_E5, 100);
+        buzzerTone(NOTE_G5, 100);
+        buzzerStopSong();
+        break;
+    case SE_MINUS: // wheel on the line
+        buzzerTone(NOTE_E3, 500);
+        buzzerStopSong();
+        break;
+    case SE_ACCIDENT: // accident sound
+        for (int i = 0; i < 10; i++)
+        {
+            buzzerTone(NOTE_B5, 50);
+            buzzerTone(0, 50);
+        }
+        buzzerStopSong();
+        break;
+    default:
+        buzzerStopSong();
+        break;
+    }
 }
