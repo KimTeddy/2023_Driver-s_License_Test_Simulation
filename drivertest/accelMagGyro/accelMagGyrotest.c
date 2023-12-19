@@ -4,12 +4,14 @@
 #include <unistd.h>
 #include <math.h>
 #include "accelMagGyro.h"
+#define accel_t 500000
 
 const double RADIAN_TO_DEGREE = 180.0 / 3.141592;
 
 int16_t AcX, AcY, AcZ, GyX, GyY, GyZ;
 double angle_x, angle_y, angle_z;
 double angle[3];
+
 
 void calcAngle() // 각도 계산
 {
@@ -45,8 +47,14 @@ int main(void)
     int first_accel[3];
     int second_accel[3];
     int moving = 0;
+    //전진기어에서는 1씩 증가, 가속에서는 2씩 증가
+    //중립에서는 0씩 증가
     int moving_l = 0;
+    //좌회전시 1이 되도록
     int moving_r = 0;
+    //우회전시 1이 되도록
+    int break_on = 0;
+    //뒤로 기울인 각도 크면 break_on = 1이 되도록
     printf("Set Default Value\n");
     getAccel(first_accel);
 
@@ -66,7 +74,7 @@ int main(void)
                 moving_l = 0;
                 moving += 1;
                 printf("Moving : %d  Moving L : %d,  Moving_r : %d\n", moving, moving_l, moving_r);
-                sleep(1);
+                
             
             }
 
@@ -81,16 +89,17 @@ int main(void)
                 moving_r = 0;
                 moving += 1;
                printf("Moving : %d  Moving L : %d,  Moving_r : %d\n", moving, moving_l, moving_r);
-                sleep(1);
+                //sleep(1);
             }
 
             else if( first_accel[2] - second_accel[2] > 4000 && first_accel[2] - second_accel[2] < 8000 )
             { // 뒤로 기울인 경우
 
                 // ~ 차 속도를 감소하는 코드?
+                moving -= 1;
                 printf(" Slow Down \n");
                 printf("Moving : %d  Moving L : %d,  Moving_r : %d\n", moving, moving_l, moving_r);
-                sleep(1);
+                //sleep(1);
             }
 
             else if( first_accel[2] - second_accel[2] > 8000 )
@@ -98,8 +107,10 @@ int main(void)
                     // ~ 차 멈추는 코드 ~
                     printf(" Stop \n");
                     //moving -= 3;
+                    break_on = 1;
+                    //breakon
                     printf("Moving : %d  Moving L : %d,  Moving_r : %d\n", moving, moving_l, moving_r);
-                    sleep(1);
+                   //sleep(1);
             }
         
             else if( second_accel[2] - first_accel[2] > 4000 && second_accel[2] - first_accel[2] < 8000)
@@ -117,7 +128,7 @@ int main(void)
                 */
                 printf(" Car Moving Forward \n");
                 printf("Moving : %d  Moving L : %d,  Moving_r : %d\n", moving, moving_l, moving_r);
-                sleep(1);
+                //sleep(1);
             }
 
             else if( second_accel[2] - first_accel[2] > 8000 )
@@ -135,28 +146,36 @@ int main(void)
                     */
                     printf(" Car Accelation! \n");
                     printf("Moving : %d  Moving L : %d,  Moving_r : %d\n", moving, moving_l, moving_r);
-                    sleep(1);
+                    //sleep(1);
                 }
-                /*
+                
             else if(first_accel[0] - second_accel[0] > 5000 && second_accel[2] - first_accel[2] > 4000 && second_accel[2] - first_accel[2] < 8000) 
             { 
                 printf(" Going Left! \n");
                 sleep(1);
                 //앞으로 기울인 상태에서 왼쪽으로 기울이면 악셀 + 핸들 왼쪽을 돌리면 옆으로 같이 진행하도록
-                
+                moving += 1;
+                moving_l = 1;
+                printf("Moving : %d  Moving L : %d,  Moving_r : %d\n", moving, moving_l, moving_r);
+                // 전진좌 : moving + 1, moving_l = 1
                 /*
                 rcar += 3;
                 speed = 1;  //조금만 기울인 경우 speed = 1;
                 dxcar = speed * cos((180-rcar) * PI / 180.0); xcar += dxcar;
                 dycar = speed * sin((180-rcar) * PI / 180.0); ycar += dycar;
                 break;
-                
+                */
 
             }
             else if(second_accel[0] - first_accel[0] > 5000 && second_accel[2] - first_accel[2] > 4000 && second_accel[2] - first_accel[2] < 8000) 
             { 
                 printf(" Going Right! \n");
                 sleep(1);
+                moving += 1;
+                moving_r = 1;
+                printf("Moving : %d  Moving L : %d,  Moving_r : %d\n", moving, moving_l, moving_r);
+                // 전진우 : moving + 1, moving_r = 1
+
                 //앞으로 기울인 상태에서 오른쪽으로 기울이면 ==> 악셀 + 핸들 오른쪽을 돌리면 옆으로 같이 진행하도록
                 
                 /*
@@ -166,22 +185,44 @@ int main(void)
                 dycar = speed * sin((180-rcar) * PI / 180.0); ycar += dycar;
                 break;
                 */
+            else if (second_accel[0] - first_accel[0] > 5000 && first_accel[2] - second_accel[2] > 4000 && first_accel[2] - second_accel[2] < 8000)
+            //뒤로 기울이고 핸들 왼쪽 기울이면 
+            // 후진좌 : moving +1, moving_l = 1
+            {
+                /* code */
+                moving += 1;
+                moving_l = 1;
+                printf("Reverse Left\n");
+                printf("Moving : %d  Moving L : %d,  Moving_r : %d\n", moving, moving_l, moving_r);
+            }
 
+            else if (first_accel[0] - second_accel[0] > 5000 && first_accel[2] - second_accel[2] > 4000 && first_accel[2] - second_accel[2] < 8000)
+            //뒤로 기울이고 핸들 오른쪽으로 기울이면 
+            // 후진우 : moving +1, moving_r = 1
+            {
+                 /* code */
+                moving += 1;
+                moving_r = 1;
+                printf("Reverse Right\n");
+                printf("Moving : %d  Moving L : %d,  Moving_r : %d\n", moving, moving_l, moving_r);
+            }
+            
             else 
             {
               // 핸들이 정위치면 moving_l,r을 0으로 설정.
+              // moving은 증가안하고 고정.
                 moving_l = 0;
                 moving_r = 0;    
                 //moving -= 1;
                 printf("Middle Stance\n");
                 printf("Moving : %d  Moving L : %d,  Moving_r : %d\n", moving, moving_l, moving_r);
-                sleep(1);
+                //sleep(1);
             }
 
             
 
     }
-            usleep(1);
+            usleep(accel_t);
             
             return 0;
 }
