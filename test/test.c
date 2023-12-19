@@ -84,7 +84,10 @@ int emergency1, emergency2, junctionpass;
 int parkingpass;
 int sidebreakcheck, sidebreakcheck2;
 int accelcheck, accelsuccess, finalcheck, finalsuccess; // 구간내 항목 성공여부 판별 변수
-int carspeed, carspeedmax;                              // 차의 현재 속도와 기록된 최고속도 변수
+int carspeed;                              // 차의 현재 속도
+int alertscreen=0, failscreen=0, dirfail=0, crash=0;
+
+
 
 int showstate = 0; // 스크린에 표시할 이미지 state 변수. 0 = 메인스크린, 1 = 메뉴얼, 2 = 리더보드, 3 = 게임진행
 
