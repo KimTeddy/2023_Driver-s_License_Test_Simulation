@@ -78,7 +78,7 @@ int main(void)
                 sleep(1);
             }
 
-            else if( !(first_accel[0] - second_accel[0] > 5000) || !(second_accel[0] - first_accel[0] > 5000) && ! (second_accel[2] - first_accel[2] > 4000 && second_accel[2] - first_accel[2] < 8000))
+            else if( !(first_accel[0] - second_accel[0] > 5000) && !(second_accel[0] - first_accel[0] > 5000) && ! (second_accel[2] - first_accel[2] > 4000 && second_accel[2] - first_accel[2] < 8000))
             {
               // 핸들이 정위치면 moving_l,r을 0으로 설정.
                 moving_l = 0;
