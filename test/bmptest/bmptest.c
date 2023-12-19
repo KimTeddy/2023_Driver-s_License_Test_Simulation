@@ -75,7 +75,7 @@ int main (void)
         strcpy(bmpfile, "");
 	//Clear FB.
 	//fb_clear();
-    snprintf(bmpfile, sizeof(bmpfile), "%05d", nums);
+    snprintf(bmpfile, sizeof(bmpfile), "%d", nums);
     strcat(bmpfile, ".bmp");
 
 	//FileRead
