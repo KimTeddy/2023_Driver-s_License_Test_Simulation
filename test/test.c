@@ -1172,8 +1172,8 @@ int showManual()
         if (maunalpage == 마지막페이지)
         {
 
-            if (scBTN_Start) // 시험시작으로 코스설명에 진입했을경우 testStart(시작하기)버튼과 mainScreen(메인화면) 버튼 표시
-                else         // 메인화면에서 설명보기로 진입했을경우 mainScreen(메인화면) 버튼 표시
+            if (scBTN_Start) ; // 시험시작으로 코스설명에 진입했을경우 testStart(시작하기)버튼과 mainScreen(메인화면) 버튼 표시
+            else ;           // 메인화면에서 설명보기로 진입했을경우 mainScreen(메인화면) 버튼 표시
         }
     }
     if (testStart)
