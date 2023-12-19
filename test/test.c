@@ -262,14 +262,6 @@ void *AccelWork(void){
 }
 
 
-
-
-
-
-
-
-
-
 void *trafLight(void)
 {
     pwmLedInit();
@@ -803,6 +795,7 @@ void driveTest()
     if (next == 1)
     {
         scBTN_Start = 0;
+        nums=0; // 게임화면 0으로 시작
         showstate = 3; // 화면에 운전이미지 표시 시작.0번은 시작위치.
         next = 0;
         // 돌발 및 기본조작 랜덤설정
@@ -816,7 +809,7 @@ void driveTest()
          //
         switch (randtest)
         {
-        case 0: // 전진기어 좌측방향지시등 체크
+        case 0: // 상향등, 와이퍼 체크
         {
             printf("전조등테스트: 3초 안에 상향등을 켜십시오\n");
             sleep(3);
@@ -838,24 +831,24 @@ void driveTest()
                 pritnf("와이퍼 켜짐 확인.\n");
                 sleep(1);
             }
-            else if ((leftlight == 0) | (rightlight == 1))
+            else if (scBTN_Wiper == 0)
             {
-                pritnf("방향지시등 조작실패. 5점 감점.\n");
+                pritnf("와이퍼 조작실패. 5점 감점.\n");
                 minuspoint = minuspoint + 5;
                 sleep(1);
             }
         }
         break;
-        case 1: // 후진기어 좌측방향지시등 체크
+        case 1: //  하향등, 방향지시등 좌측 체크
         {
-            printf("전조등테스트: 3초 안에 상향등을 켜십시오\n");
+            printf("전조등테스트: 3초 안에 하향등을 켜십시오\n");
             sleep(3);
-            if (scBTN_Lightup == 1)
+            if (scBTN_Lightdown == 1)
             {
-                pritnf("상향등 확인.\n");
+                pritnf("하향등 확인.\n");
                 sleep(1);
             }
-            else if ((scBTN_Lightup == 0) | (scBTN_Lightdown == 1))
+            else if ((scBTN_Lightdown == 0) | (scBTN_Lightup == 1))
             {
                 pritnf("전조등 조작실패. 5점 감점.\n");
                 minuspoint = minuspoint + 5;
@@ -876,31 +869,29 @@ void driveTest()
             }
         }
         break;
-        case 2: // 전진기어 우측방향지시등 체크
+        case 2: // 전진기어 와이퍼 체크
         {
-            printf("전조등테스트: 3초 안에 하향등을 켜십시오\n");
+            printf("기어조작테스트: 3초 안에 기어를 중립에서 전진기어로 바꾸십시오\n");
+        sleep(3);
+        if(gear==1) {
+            pritnf("전진기어 확인.\n");
+            sleep(1);
+        }
+        else if((gear==0)|(gear==2)) { 
+            pritnf("기어 조작실패. 5점 감점.\n");
+            minuspoint=minuspoint+5;
+            sleep(1);
+        }
+            printf("와이퍼조작테스트: 3초 안에 와이퍼를 켜십시오\n");
             sleep(3);
-            if (scBTN_Lightdown == 1)
+            if (scBTN_Wiper == 1)
             {
-                pritnf("하향등 확인.\n");
+                pritnf("와이퍼 켜짐 확인.\n");
                 sleep(1);
             }
-            else if ((scBTN_Lightdown == 0) | (scBTN_Lightup == 1))
+            else if (scBTN_Wiper == 0)
             {
-                pritnf("전조등 조작실패. 5점 감점.\n");
-                minuspoint = minuspoint + 5;
-                sleep(1);
-            }
-            printf("방향지시등조작테스트: 3초 안에 우측 방향지시등을 켜십시오\n");
-            sleep(3);
-            if (rightlight == 1)
-            {
-                pritnf("우측 방향지시등 켜짐 확인.\n");
-                sleep(1);
-            }
-            else if ((rightlight == 0) | (leftlight == 1))
-            {
-                pritnf("방향지시등 조작실패. 5점 감점.\n");
+                pritnf("와이퍼 조작실패. 5점 감점.\n");
                 minuspoint = minuspoint + 5;
                 sleep(1);
             }
@@ -908,19 +899,17 @@ void driveTest()
         break;
         case 3: // 후진기어 우측방향지시등 체크
         {
-            printf("전조등테스트: 3초 안에 하향등을 켜십시오\n");
-            sleep(3);
-            if (scBTN_Lightdown == 1)
-            {
-                pritnf("하향등 확인.\n");
-                sleep(1);
-            }
-            else if ((scBTN_Lightdown == 0) | (scBTN_Lightup == 1))
-            {
-                pritnf("전조등 조작실패. 5점 감점.\n");
-                minuspoint = minuspoint + 5;
-                sleep(1);
-            }
+            printf("기어조작테스트: 3초 안에 기어를 중립에서 후진기어로 바꾸십시오\n");
+        sleep(3);
+        if(gear==2) {
+            pritnf("후진기어 확인.\n");
+            sleep(1);
+        }
+        else if((gear==0)|(gear==1)) { 
+            pritnf("기어 조작실패. 5점 감점.\n");
+            minuspoint=minuspoint+5;
+            sleep(1);
+        }
             printf("방향지시등조작테스트: 3초 안에 우측 방향지시등을 켜십시오\n");
             sleep(3);
             if (rightlight == 1)
@@ -940,24 +929,41 @@ void driveTest()
         default:
             printf("random init failed");
         }
-        printf("기본조작테스트가 끝났습니다. 켜있던 방향지시등을 끄고, 좌측 방향지시등을 켠 후 10초내에 출발하십시오.\n");
-        sleep(10); pritnf("출발실패. 5점 감점.\n");
-        if (startplace)
+        printf("기본조작테스트가 끝났습니다. 좌측 방향지시등을 켠 후 10초내에 출발하십시오.\n");
+        sleep(10);
+        if (nums<=27) // 출발선 이전
         {
             pritnf("출발실패. 실격하셨습니다.\n");
             testfail = 1;
         }
-        now_level = CRS_UPHILL;
-        // crs_basic = 0;
-        // // 경사정차시험
-        // crs_uphill = 1;
+        while(nums<=78) {usleep(1000);}
+       if (nums>=78) now_level = CRS_UPHILL;
         uphillcnt = 0;
-        uphillstop = 0;
-        uphillside1 = 0;
-        uphillside2 = 0;
         printf("경사구간평가를 시작합니다.\n");
         printf("지정된 위치에 정차 후 사이드브레이크를 올린 후, 삑 소리가 나면 사이드브레이크를 내리고 진행하십시오.\n");
-        while (uphillstop == 0)
+        while (1)
+        {
+            if (uphillcnt >= 300 || num>=111)
+            {
+                pritnf("경사구간 실패. 실격하셨습니다.\n");
+                testfail = 1;
+            }
+            usleep(100000);
+            if (num<=110 && num>=102 && sidebrake) break; // 경사구간 선 안에 위치한경우
+            uphillcnt++;
+        }
+        while (1)
+        {
+            if (uphillcnt >= 300 || (num>=111 && sidebrake==0) )
+            {
+                pritnf("경사구간 실패. 실격하셨습니다.\n");
+                testfail = 1;
+            }
+            usleep(100000);
+            if (sidebrake==0) break;
+            uphillcnt++;
+        }
+        while (1)
         {
             if (uphillcnt >= 300)
             {
@@ -965,63 +971,9 @@ void driveTest()
                 testfail = 1;
             }
             usleep(100000);
-            if (stopplace1)
-            {
-                uphillstop = 1;
-            }
-            else
-                uphillstop = 0;
+            if (nums>=115) break;
             uphillcnt++;
         }
-        while (uphillside1 == 0)
-        {
-            if (uphillcnt >= 300)
-            {
-                pritnf("경사구간 실패. 실격하셨습니다.\n");
-                testfail = 1;
-            }
-            usleep(100000);
-            if (sidebrake)
-            {
-                uphillside1 = 1;
-            }
-            else
-                uphillside1 = 0;
-            uphillcnt++;
-        }
-        while (uphillside2 == 0)
-        {
-            if (uphillcnt >= 300)
-            {
-                pritnf("경사구간 실패. 실격하셨습니다.\n");
-                testfail = 1;
-            }
-            usleep(100000);
-            if (sidebrake == 0)
-            {
-                uphillside2 = 1;
-            }
-            else
-                uphillside2 = 0;
-            uphillcnt++;
-        }
-        while (uphillgo == 0)
-        {
-            if (uphillcnt >= 300)
-            {
-                pritnf("경사구간 실패. 실격하셨습니다.\n");
-                testfail = 1;
-            }
-            usleep(100000);
-            if (stopplace1 == 0)
-            {
-                uphillgo = 1;
-            }
-            else
-                uphillgo = 0;
-            uphillcnt++;
-        }
-        // crs_uphill = 0;
 
         // 돌발구간A
         if (randtest == 0)
