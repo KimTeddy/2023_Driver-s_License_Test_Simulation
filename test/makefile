@@ -1,9 +1,9 @@
 all: testing
-	scp ./testing ecube@192.168.207.19:~/teddy/
+	scp ./testing ecube@172.20.10.3:~/testfolder
 	echo "		5) send complete"
 
 testing: test.c libMyPeri.a
-	arm-linux-gnueabi-gcc -o testing test.c -l MyPeri -L. -lpthread
+	arm-linux-gnueabi-gcc -o testing test.c -l MyPeri -L. -lpthread -lm
 	echo "		4) testing OUTPUT"
 
 test.o: test.c
