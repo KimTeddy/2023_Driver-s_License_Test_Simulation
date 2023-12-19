@@ -56,34 +56,34 @@ int main(void)
             getAccel(second_accel);
             // printf("Set Changing Value\n");
             if( first_accel[0] - second_accel[0] > 5000 ) 
-            { //왼쪽으로 기운 경우 차이가 5000이상 나면 
+            { //오른쪽으로 기운 경우 차이가 5000이상 나면 
             
-                // ~ 차 방향을 왼쪽으로 바꾸는 코드 ~//
-                //rcar += 3; printf("r=%d\n", rcar); break;  왼쪽으로 기울이고 있는 동안 왼쪽으로 이동하도록
-                //왼쪽이 +3
-                printf("  Handle Turn Left \n");
-                moving_l = 1;
+                // ~ 차 방향을 오른쪽으로 바꾸는 코드 ~//
+                //rcar += 3; printf("r=%d\n", rcar); break;  기울이고 있는 이동하도록
+                // +3
+                printf("  Handle Turn Right \n");
+                moving_r = 1;
                 sleep(1);
             
             }
 
             else if(second_accel[0] - first_accel[0] > 5000)
-            { //오른쪽으로 기운 경우 [차이가 5000이상 나면]
+            { //왼쪽으로 기운 경우 [차이가 5000이상 나면]
 
-                // ~ 차 방향을 오른쪽으로 바꾸는 코드 ~
-                //오른쪽이 -3
-                // rcar -= 3; printf("r=%d\n", rcar); break; // 오른쪽으로 기울이고 있는 동안 오른쪽으로 이동하도록
-                printf(" Handle Turn Right \n");
-                moving_r = 1;
+                // ~ 차 방향을 바꾸는 코드 ~
+                //
+                // rcar -= 3; printf("r=%d\n", rcar); break; //  기울이고 있는 동안 이동하도록
+                printf(" Handle Turn Left \n");
+                moving_l = 1;
                 sleep(1);
             }
 
-            else if( !(first_accel[0] - second_accel[0] > 5000) || !(second_accel[0] - first_accel[0] > 5000))
+            else if( !(first_accel[0] - second_accel[0] > 5000) || !(second_accel[0] - first_accel[0] > 5000) && ! (second_accel[2] - first_accel[2] > 4000 && second_accel[2] - first_accel[2] < 8000))
             {
               // 핸들이 정위치면 moving_l,r을 0으로 설정.
                 moving_l = 0;
                 moving_r = 0;    
-
+                printf("Middle Stance\n");
             }
 
             else if( first_accel[2] - second_accel[2] > 4000 && first_accel[2] - second_accel[2] < 8000 )

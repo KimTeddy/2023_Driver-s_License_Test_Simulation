@@ -86,7 +86,7 @@ void accel()
                     // ~ 차 멈추는 코드 ~
                     printf(" Stop \n");
                     moving -= 3;
-                    sleep(1);
+                    usleep(1);
                 }
         
             else if( second_accel[2] - first_accel[2] > 4000 && second_accel[2] - first_accel[2] < 8000)
@@ -102,7 +102,7 @@ void accel()
                 break;
                 */
                 printf(" Car Moving Forward \n");
-                sleep(1);
+                usleep(3);
             }
 
             else if( second_accel[2] - first_accel[2] > 8000 )
@@ -117,7 +117,7 @@ void accel()
                     break; 
                     */
                     printf(" Car Accelation! \n");
-                    sleep(1);
+                    usleep(0.5);
                 }
 /*
             else if(first_accel[0] - second_accel[0] > 5000 && second_accel[2] - first_accel[2] > 4000 && second_accel[2] - first_accel[2] < 8000) 
