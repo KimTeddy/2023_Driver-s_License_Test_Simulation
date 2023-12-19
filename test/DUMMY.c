@@ -6,6 +6,7 @@
 #include <pthread.h>
 #include <time.h>
 #include <sys/shm.h>
+#include "button.h"
 #include <linux/spi/spidev.h>
 #include <stdint.h>
 #include <string.h>
@@ -15,10 +16,6 @@
 #include <fcntl.h>
 #include <linux/fb.h>
 #include <sys/kd.h>
-
-#include "button.h"
-#include "now_level_defs.h"
-#include "buzzer_soundeffect_defs.h"
 
 pthread_t thread_object_1;  // 스레드 1 for rgb led
 pthread_t thread_object_2;  // 스레드 2 for btn and led
@@ -35,15 +32,14 @@ int scBTN_Start = 0, scBTN_Manual = 0, scBTN_Leaderbd = 0; // 스크린터치로
 int maunalpage = 0;                                        // 코스 설명 이미지 페이지 카운팅
 int testStart = 0, mainScreen = 0;
 
-int now_level = CRS_MAIN;
 // LCD에 구간 표시하기 위한 트리거 신호들
-// int crs_basic = 0;     // 기본조작평가 트리거 신호
-// int crs_uphill = 0;    // 경사로 구간 트리거
-// int crs_junction = 0;  // 교차로 구간 트리거
-// int crs_parking = 0;   // 주차구간 트리거
-// int crs_emergency = 0; // 돌발구간 트리거
-// int crs_accel = 0;     // 가속구간 트리거
-// int crs_final = 0;     // 종료구간 트리거
+int crs_basic = 0;     // 기본조작평가 트리거 신호
+int crs_uphill = 0;    // 경사로 구간 트리거
+int crs_junction = 0;  // 교차로 구간 트리거
+int crs_parking = 0;   // 주차구간 트리거
+int crs_emergency = 0; // 돌발구간 트리거
+int crs_accel = 0;     // 가속구간 트리거
+int crs_final = 0;     // 종료구간 트리거
 
 // additional part
 int crs_outofcrs = 0; // 구간을 벗어난 경우 트리거 ->
@@ -60,19 +56,13 @@ int ready = 0;
 int ledstat, ledblink1, ledblink2, ledblink3;
 int handleleft, handleright; // 방향지시등 켜있을 시 핸들 좌 우 일정 이상 꺾음 판별 (좌꺾은 후 우로) (우꺾은 후 좌로)
 
-int testfail;
-int startplace, stopplace1;
-
-int randtest = 0;                                     // 시험 랜덤항목 설정을 위한 변수
-int minuspoint = 0;                                   // 시험 감점위한 변수
-int gear = 0;                                         // 기어 판별위한 변수 (0중립1전진2후진)
-int uphillcnt, emergencycnt, junctioncnt, parkingcnt; // 구간별 제한시간 판별 위한 변수
-int uphillstop, uphillside1, uphillside2, uphillgo;
-int emergency1, emergency2, junctionpass;
-int parkingpass;
-int sidebreakcheck, sidebreakcheck2;
-int accelcheck, accelsuccess, finalcheck, finalsuccess; // 구간내 항목 성공여부 판별 변수
-int carspeed, carspeedmax;                              // 차의 현재 속도와 기록된 최고속도 변수
+int randtest = 0;                                    // 시험 랜덤항목 설정을 위한 변수
+int minuspoint = 0;                                  // 시험 감점위한 변수
+int gear = 0;                                        // 기어 판별위한 변수 (0중립1전진2후진)
+int uphillcnt, emergencycnt, junctioncnt, parkingcnt // 구간별 제한시간 판별 위한 변수
+    int uphillstop,
+    uphillside1, uphillside2, uphillgo, emergency1, emergency2, junctionpass, sidebreakcheck, sidebreakcheck2, accelcheck, accelsuccess, finalcheck, finalsuccess; // 구간내 항목 성공여부 판별 변수
+int carspeed, carspeedmax;                                                                                                                                         // 차의 현재 속도와 기록된 최고속도 변수
 
 int showstate = 0; // 스크린에 표시할 이미지 state 변수. 0 = 메인스크린, 1 = 메뉴얼, 2 = 리더보드, 3 = 게임진행
 
@@ -127,6 +117,7 @@ void *trafLight(void)
 void *btncheck(void)
 { // btn and leds
     // reset Button flag state
+
     BUTTON_MSG_T Data;
     buttonInit();
     ledLibInit();
@@ -377,7 +368,7 @@ void *ScreenOutput(void)
     char bmpfile[200];
     int nums = 0;
     // remove cursor
-    int conFD = open("/dev/tty0", O_RDWR);
+    in conFD = open("/dev/tty0", O_RDWR);
     ioctl(conFD, KDSETMODE, KD_GRAPHICS);
     close(conFD);
 
@@ -408,7 +399,7 @@ void *ScreenOutput(void)
         case 1:
         {
             fb_clear();
-            while (now_level == CRS_MANUAL) // 메뉴얼 표시상태
+            while (메뉴얼 표시상태)
             {
                 usleep(1000000); // 1초 대기
                 strcpy(bmpfile, "manual");
@@ -428,23 +419,23 @@ void *ScreenOutput(void)
 
         case 2:
         {
-            // fb_clear();
-            // while (리더보드 표시상태)//리더보드 표시상태
-            // {                    // 리더보드 어떻게 만들지.... 점수 기록되면 도트 찍히게 해야하나?
-            //     usleep(1000000); // 1초 대기
-            //     strcpy(bmpfile, "leaderboard");
-            //     snprintf(bmpfile, sizeof(bmpfile), "%d", leaderboard); // leaderboard 변수로 페이지 확인
-            //     strcat(bmpfile, ".bmp");
-            //     // FileRead
-            //     if (read_bmp(bmpfile, &data, &cols, &rows) < 0)
-            //     { // leaderboard숫자.bmp 출력
-            //         printf("File open failed\r\n");
-            //         return 0;
-            //     }
-            //     // FileWrite
-            //     fb_write(data, cols, rows);
-            //     close_bmp();
-            // }
+            fb_clear();
+            while (리더보드 표시상태)
+            {                    // 리더보드 어떻게 만들지.... 점수 기록되면 도트 찍히게 해야하나?
+                usleep(1000000); // 1초 대기
+                strcpy(bmpfile, "leaderboard");
+                snprintf(bmpfile, sizeof(bmpfile), "%d", leaderboard); // leaderboard 변수로 페이지 확인
+                strcat(bmpfile, ".bmp");
+                // FileRead
+                if (read_bmp(bmpfile, &data, &cols, &rows) < 0)
+                { // leaderboard숫자.bmp 출력
+                    printf("File open failed\r\n");
+                    return 0;
+                }
+                // FileWrite
+                fb_write(data, cols, rows);
+                close_bmp();
+            }
         }
 
         case 3:
@@ -484,6 +475,8 @@ void *ScreenOverlay(void)
     char *data2;
     char bmpfile2[200];
     int nums2 = 0;
+    int nums3 = 0;
+    int nums4 = 0;
 
     // FrameBuffer init
     if (fb_init2(&screen_width2, &screen_height2, &bits_per_pixel2, &line_length2) < 0)
@@ -521,7 +514,7 @@ void *ScreenOverlay(void)
         {
             fb_clear2();
             strcpy(bmpfile2, "overlaymanual");
-            strcat(bmpfile2, nums2);
+            strcat(bmpfile2, nums3);
             strcat(bmpfile2, ".bmp");
 
             // FileRead
@@ -539,16 +532,48 @@ void *ScreenOverlay(void)
 
         case 2:
         {
+            fb_clear2();
+            strcpy(bmpfile2, "overlayleaderboard");
+            strcat(bmpfile2, ".bmp");
+
+            // FileRead
+            if (read_bmp(bmpfile2, &data2, &cols2, &rows2) < 0)
+            {
+                printf("File open failed\r\n");
+                return 0;
+            }
+            // FileWrite
+            fb_write2(data2, cols2, rows2, 0, 0);
+
+            close_bmp();
         }
+        break;
 
         case 3:
         {
-        }
+            strcpy(bmpfile2, "overlaygame");
+            strcat(bmpfile2, nums4);
+            strcat(bmpfile2, ".bmp");
 
-        default:
-            break;
+            // FileRead
+            if (read_bmp(bmpfile2, &data2, &cols2, &rows2) < 0)
+            {
+                printf("File open failed\r\n");
+                return 0;
+            }
+            // FileWrite
+            fb_write2(data2, cols2, rows2, 0, 0);
+
+            close_bmp();
         }
+        break;
+        }
+        break;
+
+    default:
+        break;
     }
+}
 }
 
 void showMainScreen()
@@ -571,7 +596,7 @@ void driveTest()
     showstate = 1;  // 화면에 메뉴얼 출력. 메뉴얼 0페이지는 시험 시작전 코스설명 yes no 선택페이지로. 1페이지부터 코스설명.
     int next = 1;   // teststart = 1, mainmenu = 2 : default teststart
     // 시험을 시작하기에 앞서 코스 설명을 진행하겠습니다. (스킵 여부 물어서 스킵 가능하게.)
-    if (now_level == CRS_MANUAL) // manualSkip == 0 이었음
+    if (manualSkip == 0)
         next = showManual();
     // 화면의 시작하기를 누를경우(testStart)
     if (next == 1)
@@ -583,11 +608,10 @@ void driveTest()
         srand((unsigned int)time(NULL));
         randtest = rand() % 4; // random num 0~3
         // 시험 내용 작성
-        printf("지금부터 운전면허 기능시험을 시작합니다."); // 화면에 띄울 수 있으면 띄우기.
+        printf("지금부터 운전면허 기능시험을 시작합니다.") // 화면에 띄울 수 있으면 띄우기.
 
-        // 기본조작시험
-        // crs_basic = 1; // 기본조작평가 트리거
-        now_level = CRS_BASIC;
+            // 기본조작시험
+            crs_basic = 1; // 기본조작평가 트리거
         printf("기본조작평가를 시작합니다.\n");
         switch (randtest)
         {
@@ -715,17 +739,15 @@ void driveTest()
             printf("random init failed");
         }
         printf("기본조작테스트가 끝났습니다. 켜있던 방향지시등을 끄고, 좌측 방향지시등을 켠 후 10초내에 출발하십시오.\n");
-        sleep(10);
-        pritnf("출발실패. 5점 감점.\n");
+        sleep(10) pritnf("출발실패. 5점 감점.\n");
         if (startplace)
         {
             pritnf("출발실패. 실격하셨습니다.\n");
             testfail = 1;
         }
-        now_level = CRS_UPHILL;
-        // crs_basic = 0;
-        // // 경사정차시험
-        // crs_uphill = 1;
+        crs_basic = 0;
+        // 경사정차시험
+        crs_uphill = 1;
         uphillcnt = 0;
         uphillstop = 0;
         uphillside1 = 0;
@@ -746,7 +768,7 @@ void driveTest()
             }
             else
                 uphillstop = 0;
-            uphillcnt++;
+            uphillcnt++
         }
         while (uphillside1 == 0)
         {
@@ -796,14 +818,13 @@ void driveTest()
                 uphillgo = 0;
             uphillcnt++;
         }
-        // crs_uphill = 0;
+        crs_uphill = 0;
 
         // 돌발구간A
         if (randtest == 0)
         {
-            now_level = CRS_EMERGENCY_A;
             emergencycnt = 0;
-            // crs_emergency = 1;
+            crs_emergency = 1;
             emergency1 = 0;
             emergency2 = 0;
 
@@ -840,12 +861,12 @@ void driveTest()
                     emergency2 = 0;
                 emergencycnt++;
             }
-            // crs_emergency = 0;
+            crs_emergency = 0;
         }
 
         // 교차로구간1
-        now_level = CRS_JUNCTION_1;
-        // crs_junction = 1;
+
+        crs_junction = 1;
         junctioncnt = 0;
         junctionpass = 0;
         printf("교차로구간 평가를 시작합니다.\n");
@@ -857,28 +878,26 @@ void driveTest()
                 testfail = 1;
             }
             usleep(100000);
-            if () // 적색신호등과 차량교차로 내 위치 판별 true
+            if (적색신호등과 차량교차로 내 위치 판별 true)
             {
                 pritnf("신호위반 발생! 실격하셨습니다.\n");
                 testfail = 1;
             }
-            if () // 차량이 교차로지난 위치에 위치함 판별 true
+            if (차량이 교차로지난 위치에 위치함 판별 true)
             {
                 junctionpass = 1;
             }
             else
                 junctioncnt++;
         }
-        // crs_junction = 0;
+        crs_junction = 0;
 
         // 주차구간
-        // crs_parking = 1;
-
-        now_level = CRS_PARKING;
+        crs_parking = 1;
         parkingcnt = 0;
         parkingpass = 0;
         printf("주차구간 평가를 시작합니다.\n");
-        while (parkingpass == 0)
+        while (parkingplace == 0)
         {
             if (parkingcnt >= 300)
             {
@@ -886,12 +905,12 @@ void driveTest()
                 testfail = 1;
             }
             usleep(100000);
-            if () // 차량이 주차칸 위치에 위치함 판별 true
+            if (차량이 주차칸 위치에 위치함 판별 true)
                 parkingpass = 1;
             else
                 parkingcnt++;
         }
-        while (sidebreakcheck == 0)
+        while (sidebreakcheck = 0)
         {
             if (parkingcnt >= 300)
             {
@@ -904,7 +923,7 @@ void driveTest()
             else
                 parkingcnt++;
         }
-        while (sidebreakcheck2 == 0)
+        while (sidebreakcheck2 = 0)
         {
             if (parkingcnt >= 300)
             {
@@ -918,14 +937,13 @@ void driveTest()
                 parkingcnt++;
         }
 
-        // crs_parking = 0;
+        crs_parking = 0;
 
         // 돌발구간B
         if (randtest == 1)
         {
-            now_level = CRS_EMERGENCY_B;
             emergencycnt = 0;
-            // crs_emergency = 1;
+            crs_emergency = 1;
             emergency1 = 0;
             emergency2 = 0;
             // 버저로 돌발 소리 내는 코드 필요
@@ -961,11 +979,10 @@ void driveTest()
                     emergency2 = 0;
                 emergencycnt++;
             }
-            // crs_emergency = 0;
+            crs_emergency = 0;
         }
         // 교차로구간2
-        // crs_junction = 1;
-        now_level = CRS_JUNCTION_2;
+        crs_junction = 1;
         junctioncnt = 0;
         junctionpass = 0;
         printf("교차로구간 평가를 시작합니다.\n");
@@ -977,26 +994,25 @@ void driveTest()
                 testfail = 1;
             }
             usleep(100000);
-            if () // 적색신호등과 차량교차로 내 위치 판별 true
+            if (적색신호등과 차량교차로 내 위치 판별 true)
             {
                 pritnf("신호위반 발생! 실격하셨습니다.\n");
                 testfail = 1;
             }
-            if () // 차량이 교차로지난 위치에 위치함 판별 true
+            if (차량이 교차로지난 위치에 위치함 판별 true)
             {
                 junctionpass = 1;
             }
             else
                 junctioncnt++;
         }
-        // crs_junction = 0;
+        crs_junction = 0;
 
         // 돌발구간C
         if (randtest == 2)
         {
-            now_level = CRS_EMERGENCY_C;
             emergencycnt = 0;
-            // crs_emergency = 1;
+            crs_emergency = 1;
             emergency1 = 0;
             emergency2 = 0;
             // 버저로 돌발 소리 내는 코드 필요
@@ -1032,11 +1048,10 @@ void driveTest()
                     emergency2 = 0;
                 emergencycnt++;
             }
-            // crs_emergency = 0;
+            crs_emergency = 0;
         }
         // 가속구간
-        now_level = CRS_ACCEL;
-        // crs_accel = 1;
+        crs_accel = 1;
         carspeedmax = 0;
         accelcheck = 0;
         accelsuccess = 0;
@@ -1063,14 +1078,13 @@ void driveTest()
             pritnf("가속구간 실패. 10점감점되었습니다.\n");
             minuspoint = minuspoint + 10;
         }
-        // crs_accel = 0;
+        crs_accel = 0;
 
         // 돌발구간D
         if (randtest == 3)
         {
-            now_level = CRS_EMERGENCY_D;
             emergencycnt = 0;
-            // crs_emergency = 1;
+            crs_emergency = 1;
             emergency1 = 0;
             emergency2 = 0;
             // 버저로 돌발 소리 내는 코드 필요
