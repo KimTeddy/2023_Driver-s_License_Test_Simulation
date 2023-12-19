@@ -616,7 +616,6 @@ void driveTest()
         randtest = rand() % 4; // random num 0~3
         // 시험 내용 작성
         printf("지금부터 운전면허 기능시험을 시작합니다."); // 화면에 띄울 수 있으면 띄우기.
-
             // 기본조작시험
             //crs_basic = 1; // 기본조작평가 트리거
         printf("기본조작평가를 시작합니다.\n");
