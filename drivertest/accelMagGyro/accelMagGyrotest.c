@@ -185,6 +185,8 @@ int main(void)
                 dycar = speed * sin((180-rcar) * PI / 180.0); ycar += dycar;
                 break;
                 */
+            }
+            
             else if (second_accel[0] - first_accel[0] > 5000 && first_accel[2] - second_accel[2] > 4000 && first_accel[2] - second_accel[2] < 8000)
             //뒤로 기울이고 핸들 왼쪽 기울이면 
             // 후진좌 : moving +1, moving_l = 1
