@@ -66,7 +66,7 @@ int main(void)
           //  moving_l = 0;
           //  moving_r = 0;
             // printf("Set Changing Value\n");
-            if( first_accel[0] - second_accel[0] > 5000 && !(first_accel[2] - second_accel[2] > 8000) && !(first_accel[2] - second_accel[2] < 8000)) 
+            if( first_accel[0] - second_accel[0] > 5000 && !(first_accel[2] - second_accel[2] > 8000) ) 
             { //오른쪽으로 기운 경우 차이가 5000이상 나면 
               // 그리고 Break_on 정도로 기울이지 않았다면 Handle Turn Right
             
@@ -83,7 +83,7 @@ int main(void)
             
             }
 
-            else if(second_accel[0] - first_accel[0] > 5000 && !(first_accel[2] - second_accel[2] > 8000) && !(first_accel[2] - second_accel[2] < 8000) )
+            else if(second_accel[0] - first_accel[0] > 5000 && !(first_accel[2] - second_accel[2] > 8000) )
             { // 왼쪽으로 기운 경우 [차이가 5000이상 나면] 
               // && 뒤로 기울이지 않았다면 Handle Turn Left 출력
 
@@ -113,6 +113,7 @@ int main(void)
             }
             
             else if( second_accel[0] - first_accel[0] > 5000 && first_accel[2] - second_accel[2] > 4000 && first_accel[2] - second_accel[2] < 8000)
+            //first_accel[2] - second_accel[2] > 4000 && first_accel[2] - second_accel[2] < 8000 -> slow down 구간 키트를 뒤로 적당히 기울인 경우 
             // 뒤로 기울인 경우
             // && 핸들을 왼쪽으로 돌린 경우
             {
@@ -124,6 +125,7 @@ int main(void)
 
             }
             else if( first_accel[0] - second_accel[0] > 5000 && first_accel[2] - second_accel[2] > 4000 && first_accel[2] - second_accel[2] < 8000)
+            //first_accel[2] - second_accel[2] > 4000 && first_accel[2] - second_accel[2] < 8000 -> slow down 구간 키트를 뒤로 적당히 기울인 경우 
             // 뒤로 기울인 경우
             // && 핸들을 오른쪽으로 돌린 경우
             {
