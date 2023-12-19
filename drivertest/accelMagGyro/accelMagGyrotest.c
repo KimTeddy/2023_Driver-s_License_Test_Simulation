@@ -93,7 +93,7 @@ int main(void)
             { // 뒤로 기울인 각도가 큰 경우 (돌발에서 급 브레이크 밟은 경우)
                     // ~ 차 멈추는 코드 ~
                     printf(" Stop \n");
-                    moving -= 3;
+                    //moving -= 3;
                     printf("Moving : %d  Moving L : %d,  Moving_r : %d\n", moving, moving_l, moving_r);
                     sleep(1);
             }
@@ -103,7 +103,7 @@ int main(void)
 
                 // ~차가 앞으로 진행하는 코드 ~
             
-                moving = 1;
+                moving += 1;
 
                 /*speed = 1;  //조금만 기울인 경우 speed = 1;
                 dxcar = speed * cos((180-rcar) * PI / 180.0); xcar += dxcar;
@@ -165,7 +165,7 @@ int main(void)
               // 핸들이 정위치면 moving_l,r을 0으로 설정.
                 moving_l = 0;
                 moving_r = 0;    
-                moving = 0;
+                //moving -= 1;
                 printf("Middle Stance\n");
                 printf("Moving : %d  Moving L : %d,  Moving_r : %d\n", moving, moving_l, moving_r);
                 sleep(1);
