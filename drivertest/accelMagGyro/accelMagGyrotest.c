@@ -63,6 +63,7 @@ int main(void)
                 // +3
                 printf("  Handle Turn Right \n");
                 moving_r = 1;
+                moving_l = 0;
                 moving += 1;
                 printf("Moving : %d  Moving L : %d,  Moving_r : %d\n", moving, moving_l, moving_r);
                 sleep(1);
@@ -77,6 +78,7 @@ int main(void)
                 // rcar -= 3; printf("r=%d\n", rcar); break; //  기울이고 있는 동안 이동하도록
                 printf(" Handle Turn Left \n");
                 moving_l = 1;
+                moving_r = 0;
                 moving += 1;
                printf("Moving : %d  Moving L : %d,  Moving_r : %d\n", moving, moving_l, moving_r);
                 sleep(1);
@@ -106,7 +108,8 @@ int main(void)
                 // ~차가 앞으로 진행하는 코드 ~
             
                 moving += 1;
-
+                moving_l = 0;
+                moving_r = 0;
                 /*speed = 1;  //조금만 기울인 경우 speed = 1;
                 dxcar = speed * cos((180-rcar) * PI / 180.0); xcar += dxcar;
                 dycar = speed * sin((180-rcar) * PI / 180.0); ycar += dycar;
@@ -121,7 +124,9 @@ int main(void)
                 { // 앞으로 많이 기울인 경우 (가속 구간에서 가속)
                     // ~ 차 속도를 빠르게 ~
 
-                    moving += 2;   
+                    moving += 2;  
+                    moving_l = 0;
+                    moving_r = 0; 
                     /*
                     speed = 2;  //많이 기울인 경우 speed = 2로 설정하여 가속
                     dxcar = speed * cos((180-rcar) * PI / 180.0); xcar += dxcar;
