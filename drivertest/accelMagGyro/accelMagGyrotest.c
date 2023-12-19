@@ -63,7 +63,7 @@ int main(void)
                 // +3
                 printf("  Handle Turn Right \n");
                 moving_r = 1;
-                printf("Moving : %d  Moving L : %d,  Moving_r : %d", moving, moving_l, moving_r);
+                printf("Moving : %d  Moving L : %d,  Moving_r : %d\n", moving, moving_l, moving_r);
                 sleep(1);
             
             }
@@ -76,7 +76,7 @@ int main(void)
                 // rcar -= 3; printf("r=%d\n", rcar); break; //  기울이고 있는 동안 이동하도록
                 printf(" Handle Turn Left \n");
                 moving_l = 1;
-                printf("Moving : %d  Moving L : %d,  Moving_r : %d", moving, moving_l, moving_r);
+               printf("Moving : %d  Moving L : %d,  Moving_r : %d\n", moving, moving_l, moving_r);
                 sleep(1);
             }
 
@@ -85,18 +85,18 @@ int main(void)
 
                 // ~ 차 속도를 감소하는 코드?
                 printf(" Slow Down \n");
-                printf("Moving : %d  Moving L : %d,  Moving_r : %d", moving, moving_l, moving_r);
+                printf("Moving : %d  Moving L : %d,  Moving_r : %d\n", moving, moving_l, moving_r);
                 sleep(1);
             }
 
             else if( first_accel[2] - second_accel[2] > 8000 )
-                { // 뒤로 기울인 각도가 큰 경우 (돌발에서 급 브레이크 밟은 경우)
+            { // 뒤로 기울인 각도가 큰 경우 (돌발에서 급 브레이크 밟은 경우)
                     // ~ 차 멈추는 코드 ~
                     printf(" Stop \n");
                     moving -= 3;
-                    printf("Moving : %d  Moving L : %d,  Moving_r : %d", moving, moving_l, moving_r);
+                    printf("Moving : %d  Moving L : %d,  Moving_r : %d\n", moving, moving_l, moving_r);
                     sleep(1);
-                }
+            }
         
             else if( second_accel[2] - first_accel[2] > 4000 && second_accel[2] - first_accel[2] < 8000)
             {// 앞으로만 기울인 경우 [  가속도 센서의 z값이 바뀜  ]
@@ -111,7 +111,7 @@ int main(void)
                 break;
                 */
                 printf(" Car Moving Forward \n");
-                printf("Moving : %d  Moving L : %d,  Moving_r : %d", moving, moving_l, moving_r);
+                printf("Moving : %d  Moving L : %d,  Moving_r : %d\n", moving, moving_l, moving_r);
                 sleep(1);
             }
 
@@ -127,7 +127,7 @@ int main(void)
                     break; 
                     */
                     printf(" Car Accelation! \n");
-                    printf("Moving : %d  Moving L : %d,  Moving_r : %d", moving, moving_l, moving_r);
+                    printf("Moving : %d  Moving L : %d,  Moving_r : %d\n", moving, moving_l, moving_r);
                     sleep(1);
                 }
                 /*
@@ -165,8 +165,9 @@ int main(void)
               // 핸들이 정위치면 moving_l,r을 0으로 설정.
                 moving_l = 0;
                 moving_r = 0;    
+                moving = 0;
                 printf("Middle Stance\n");
-                printf("Moving : %d  Moving L : %d,  Moving_r : %d", moving, moving_l, moving_r);
+                printf("Moving : %d  Moving L : %d,  Moving_r : %d\n", moving, moving_l, moving_r);
                 sleep(1);
             }
 
