@@ -62,6 +62,9 @@ int main(void)
     {        // 나중에 1 대신 트리거 변수로 바꾸기.
         
             getAccel(second_accel);
+            break_on = 0; 
+          //  moving_l = 0;
+          //  moving_r = 0;
             // printf("Set Changing Value\n");
             if( first_accel[0] - second_accel[0] > 5000 ) 
             { //오른쪽으로 기운 경우 차이가 5000이상 나면 
@@ -111,7 +114,10 @@ int main(void)
                     printf(" Stop \n");
                     //moving -= 3;
                     break_on = 1;
+                    moving_l = 0;
+                    moving_r = 0;
                     //breakon
+                    printf("Break On!\n");
                     printf("Moving : %d  Moving L : %d,  Moving_r : %d\n", moving, moving_l, moving_r);
                     sleep(1);
                    //sleep(1);
