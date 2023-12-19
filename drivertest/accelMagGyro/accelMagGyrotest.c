@@ -160,6 +160,7 @@ int main(void)
                 moving_l = 0;
                 moving_r = 0;    
                 printf("Middle Stance\n");
+                sleep(1);
             }
 
             
