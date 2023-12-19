@@ -99,8 +99,10 @@ int main(void)
                 //sleep(1);
             }
 
-            else if( first_accel[2] - second_accel[2] > 4000 && first_accel[2] - second_accel[2] < 8000 )
-            { // 뒤로 기울인 경우
+            else if( first_accel[2] - second_accel[2] > 4000 && first_accel[2] - second_accel[2] < 8000  && !(second_accel[0] - first_accel[0] > 5000) && !(first_accel[0] - second_accel[0] > 5000)) 
+            // 뒤로 기울인 경우
+            // && 키트를 왼쪽, 뒤쪽으로 돌리지 않았으면 Slow Down
+            { 
 
                 // ~ 차 속도를 감소하는 코드?
                 moving -= 1;
@@ -108,6 +110,29 @@ int main(void)
                 printf("Moving : %d  Moving L : %d,  Moving_r : %d\n", moving, moving_l, moving_r);
                 sleep(1);
                 //sleep(1);
+            }
+            
+            else if( second_accel[0] - first_accel[0] > 5000 && first_accel[2] - second_accel[2] > 4000 && first_accel[2] - second_accel[2] < 8000)
+            // 뒤로 기울인 경우
+            // && 핸들을 왼쪽으로 돌린 경우
+            {
+                moving -= 1;
+                moving_l = 1;
+                printf(" Slow Down \n");
+                printf("Moving : %d  Moving L : %d,  Moving_r : %d\n", moving, moving_l, moving_r);
+                sleep(1);
+
+            }
+            else if( first_accel[0] - second_accel[0] > 5000 && first_accel[2] - second_accel[2] > 4000 && first_accel[2] - second_accel[2] < 8000)
+            // 뒤로 기울인 경우
+            // && 핸들을 오른쪽으로 돌린 경우
+            {
+                moving -= 1;
+                moving_r = 1;
+                printf(" Slow Down \n");
+                printf("Moving : %d  Moving L : %d,  Moving_r : %d\n", moving, moving_l, moving_r);
+                sleep(1);
+
             }
 
             else if( first_accel[2] - second_accel[2] > 8000 )
