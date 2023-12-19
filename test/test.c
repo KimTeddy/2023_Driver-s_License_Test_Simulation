@@ -21,7 +21,7 @@
 #include "now_level_defs.h"
 #include "buzzer_soundeffect_defs.h"
 
-#define accel_t 500000
+#define accel_t 100000
 
 const double RADIAN_TO_DEGREE = 180.0 / 3.141592;
 int16_t AcX, AcY, AcZ, GyX, GyY, GyZ;
@@ -37,6 +37,7 @@ pthread_t thread_object_4; // 스레드 4 for echo state(imsi)
 pthread_t thread_object_5; // 스레드 5 for lcd bitmap output
 pthread_t thread_object_6; // 스레드 6 for lcd overlay output
 pthread_t thread_object_7; // 스레드 7 for accel work
+pthread_t thread_object_8; // 스레드 7 for accel connect to num
 
 // pthread_mutex_t lock1; // for traflight
 // pthread_mutex_t lock2; // for  btnstate
@@ -87,7 +88,29 @@ int accelcheck, accelsuccess, finalcheck, finalsuccess; // 구간내 항목 성�
 int carspeed;                              // 차의 현재 속도
 int alertscreen=0, failscreen=0, dirfail=0, crash=0;
 
+int nums = 0;
+int nums2 = 0;
+int nums3 = 0;
+int nums4 = 0;
+int leaderboard=0;
 
+    int accel[3];
+    int magnet[3];
+    int gyro[3];
+    double ang;
+    int first_accel[3];
+    int second_accel[3];
+    int moving = 0;
+    //전진기어에서는 1씩 증가, 가속에서는 2씩 증가
+    //중립에서는 0씩 증가
+    int moving_l = 0;
+    //좌회전시 1이 되도록
+    int moving_r = 0;
+    //우회전시 1이 되도록
+    int break_on = 0;
+    //뒤로 기울인 각도 크면 break_on = 1이 되도록
+
+*trafLightState = 0; // reset RGB LED state
 
 int showstate = 0; // 스크린에 표시할 이미지 state 변수. 0 = 메인스크린, 1 = 메뉴얼, 2 = 리더보드, 3 = 게임진행
 
@@ -116,21 +139,7 @@ void calcAngle() // 각도 계산
 }
 
 void *AccelWork(void){
-   int accel[3];
-    int magnet[3];
-    int gyro[3];
-    double ang;
-    int first_accel[3];
-    int second_accel[3];
-    int moving = 0;
-    //전진기어에서는 1씩 증가, 가속에서는 2씩 증가
-    //중립에서는 0씩 증가
-    int moving_l = 0;
-    //좌회전시 1이 되도록
-    int moving_r = 0;
-    //우회전시 1이 되도록
-    int break_on = 0;
-    //뒤로 기울인 각도 크면 break_on = 1이 되도록
+    
     printf("Set Default Value\n");
     getAccel(first_accel);
 
@@ -154,7 +163,7 @@ void *AccelWork(void){
                 moving_l = 0;
                 moving += 1;
                 printf("Moving : %d  Moving L : %d,  Moving_r : %d\n", moving, moving_l, moving_r);
-                sleep(1);
+                usleep(accel_t);
                 
             
             }
@@ -171,7 +180,7 @@ void *AccelWork(void){
                 moving_r = 0;
                 moving += 1;
                printf("Moving : %d  Moving L : %d,  Moving_r : %d\n", moving, moving_l, moving_r);
-               sleep(1);
+               usleep(accel_t);
                 //sleep(1);
             }
 
@@ -186,7 +195,7 @@ void *AccelWork(void){
                 moving -= 1;
                 printf(" Slow Down \n");
                 printf("Moving : %d  Moving L : %d,  Moving_r : %d\n", moving, moving_l, moving_r);
-                sleep(1);
+                usleep(accel_t);
                 //sleep(1);
             }
             
@@ -200,7 +209,7 @@ void *AccelWork(void){
                 moving_l = 1;
                 printf(" Reverse Left \n");
                 printf("Moving : %d  Moving L : %d,  Moving_r : %d\n", moving, moving_l, moving_r);
-                sleep(1);
+                usleep(accel_t);
 
             }
             else if( first_accel[0] - second_accel[0] > 5000 && first_accel[2] - second_accel[2] > 4000 && first_accel[2] - second_accel[2] < 9000)
@@ -213,7 +222,7 @@ void *AccelWork(void){
                 moving_r = 1;
                 printf(" Reverse Right \n");
                 printf("Moving : %d  Moving L : %d,  Moving_r : %d\n", moving, moving_l, moving_r);
-                sleep(1);
+                usleep(accel_t);
 
             }
 
@@ -228,7 +237,7 @@ void *AccelWork(void){
                     //breakon
                     printf("Break On!\n");
                     printf("Moving : %d  Moving L : %d,  Moving_r : %d\n", moving, moving_l, moving_r);
-                    sleep(1);
+                    usleep(accel_t);
                    //sleep(1);
             }
         
@@ -247,7 +256,7 @@ void *AccelWork(void){
                 */
                 printf(" Car Moving Forward \n");
                 printf("Moving : %d  Moving L : %d,  Moving_r : %d\n", moving, moving_l, moving_r);
-                sleep(1);
+                usleep(accel_t);
                 //sleep(1);
             }
 
@@ -267,18 +276,18 @@ void *AccelWork(void){
                     printf(" Car Accelation! \n");
                     printf("Moving : %d  Moving L : %d,  Moving_r : %d\n", moving, moving_l, moving_r);
                     //sleep(1);
-                    sleep(1);
+                    usleep(accel_t);
                 }
                 
             else if(first_accel[0] - second_accel[0] > 5000 && second_accel[2] - first_accel[2] > 4000 && second_accel[2] - first_accel[2] < 9000) 
             { 
                 printf(" Going Left! \n");
-                sleep(1);
+                usleep(accel_t);
                 //앞으로 기울인 상태에서 왼쪽으로 기울이면 악셀 + 핸들 왼쪽을 돌리면 옆으로 같이 진행하도록
                 moving += 1;
                 moving_l = 1;
                 printf("Moving : %d  Moving L : %d,  Moving_r : %d\n", moving, moving_l, moving_r);
-                sleep(1);
+                usleep(accel_t);
                 // 전진좌 : moving + 1, moving_l = 1
                 /*
                 rcar += 3;
@@ -296,7 +305,7 @@ void *AccelWork(void){
                 moving += 1;
                 moving_r = 1;
                 printf("Moving : %d  Moving L : %d,  Moving_r : %d\n", moving, moving_l, moving_r);
-                sleep(1);
+                usleep(accel_t);
                 // 전진우 : moving + 1, moving_r = 1
 
                 //앞으로 기울인 상태에서 오른쪽으로 기울이면 ==> 악셀 + 핸들 오른쪽을 돌리면 옆으로 같이 진행하도록
@@ -319,7 +328,7 @@ void *AccelWork(void){
                 moving_l = 1;
                 printf("Reverse Left\n");
                 printf("Moving : %d  Moving L : %d,  Moving_r : %d\n", moving, moving_l, moving_r);
-                sleep(1);
+                usleep(accel_t);
             }
 
             else if (first_accel[0] - second_accel[0] > 5000 && first_accel[2] - second_accel[2] > 4000 && first_accel[2] - second_accel[2] < 9000)
@@ -331,7 +340,7 @@ void *AccelWork(void){
                 moving_r = 1;
                 printf("Reverse Right\n");
                 printf("Moving : %d  Moving L : %d,  Moving_r : %d\n", moving, moving_l, moving_r);
-                sleep(1);
+                usleep(accel_t);
             }
             
             else 
@@ -343,7 +352,7 @@ void *AccelWork(void){
                 //moving -= 1;
                 printf("Middle Stance\n");
                 printf("Moving : %d  Moving L : %d,  Moving_r : %d\n", moving, moving_l, moving_r);
-                sleep(1);
+                usleep(accel_t);
                 //sleep(1);
             }
 
@@ -355,6 +364,12 @@ void *AccelWork(void){
             return 0;
 }
 
+void *movecheck(void){
+    while(simuwork==1) {
+        nums = moving;
+    }
+}
+
 
 void *trafLight(void)
 {
@@ -362,7 +377,7 @@ void *trafLight(void)
     pwmSetPercent(0, 0);
     pwmSetPercent(0, 1);
     pwmSetPercent(0, 2);
-    *trafLightState = 0; // reset RGB LED state
+    
     while (1)
     {
         if (simuwork == 1)
@@ -655,7 +670,7 @@ void *ScreenOutput(void)
     int cols = 0, rows = 0;
     char *data;
     char bmpfile[200];
-    int nums = 0;
+    
     // remove cursor
     int conFD = open("/dev/tty0", O_RDWR);
     ioctl(conFD, KDSETMODE, KD_GRAPHICS);
@@ -683,6 +698,7 @@ void *ScreenOutput(void)
             // FileWrite
             fb_write(data, cols, rows);
             close_bmp();
+            usleep(1000000); // 1초 대기
         }
         break;
         case 1:
@@ -709,7 +725,7 @@ void *ScreenOutput(void)
         case 2:
         {
             fb_clear();
-            while (리더보드 표시상태)
+            while (now_level == CRS_MANUAL)
             {                    // 리더보드 어떻게 만들지.... 점수 기록되면 도트 찍히게 해야하나?
                 usleep(1000000); // 1초 대기
                 strcpy(bmpfile, "leaderboard");
@@ -734,7 +750,7 @@ void *ScreenOutput(void)
             {                   // 게임 진행중일 때
                 usleep(100000); // 0.1초 대기 10fps
                 strcpy(bmpfile, "");
-                snprintf(bmpfile, sizeof(bmpfile), "%d", nums); // nums변수로 현재 프레임확인
+                snprintf(bmpfile, sizeof(bmpfile), "%05d", nums); // nums변수로 현재 프레임확인
                 strcat(bmpfile, ".bmp");
                 // FileRead
                 if (read_bmp(bmpfile, &data, &cols, &rows) < 0)
@@ -763,9 +779,7 @@ void *ScreenOverlay(void)
     int cols2 = 0, rows2 = 0;
     char *data2;
     char bmpfile2[200];
-    int nums2 = 0;
-    int nums3 = 0;
-    int nums4 = 0;
+    
 
     // FrameBuffer init
     if (fb_init2(&screen_width2, &screen_height2, &bits_per_pixel2, &line_length2) < 0)
@@ -909,12 +923,12 @@ void driveTest()
             sleep(3);
             if (scBTN_Lightup == 1)
             {
-                pritnf("상향등 확인.\n");
+                printf("상향등 확인.\n");
                 sleep(1);
             }
             else if ((scBTN_Lightup == 0) | (scBTN_Lightdown == 1))
             {
-                pritnf("전조등 조작실패. 5점 감점.\n");
+                printf("전조등 조작실패. 5점 감점.\n");
                 minuspoint = minuspoint + 5;
                 sleep(1);
             }
@@ -922,12 +936,12 @@ void driveTest()
             sleep(3);
             if (scBTN_Wiper == 1)
             {
-                pritnf("와이퍼 켜짐 확인.\n");
+                printf("와이퍼 켜짐 확인.\n");
                 sleep(1);
             }
             else if (scBTN_Wiper == 0)
             {
-                pritnf("와이퍼 조작실패. 5점 감점.\n");
+                printf("와이퍼 조작실패. 5점 감점.\n");
                 minuspoint = minuspoint + 5;
                 sleep(1);
             }
@@ -939,12 +953,12 @@ void driveTest()
             sleep(3);
             if (scBTN_Lightdown == 1)
             {
-                pritnf("하향등 확인.\n");
+                printf("하향등 확인.\n");
                 sleep(1);
             }
             else if ((scBTN_Lightdown == 0) | (scBTN_Lightup == 1))
             {
-                pritnf("전조등 조작실패. 5점 감점.\n");
+                printf("전조등 조작실패. 5점 감점.\n");
                 minuspoint = minuspoint + 5;
                 sleep(1);
             }
@@ -952,12 +966,12 @@ void driveTest()
             sleep(3);
             if (leftlight == 1)
             {
-                pritnf("좌측 방향지시등 켜짐 확인.\n");
+                printf("좌측 방향지시등 켜짐 확인.\n");
                 sleep(1);
             }
             else if ((leftlight == 0) | (rightlight == 1))
             {
-                pritnf("방향지시등 조작실패. 5점 감점.\n");
+                printf("방향지시등 조작실패. 5점 감점.\n");
                 minuspoint = minuspoint + 5;
                 sleep(1);
             }
@@ -968,11 +982,11 @@ void driveTest()
             printf("기어조작테스트: 3초 안에 기어를 중립에서 전진기어로 바꾸십시오\n");
         sleep(3);
         if(gear==1) {
-            pritnf("전진기어 확인.\n");
+            printf("전진기어 확인.\n");
             sleep(1);
         }
         else if((gear==0)|(gear==2)) { 
-            pritnf("기어 조작실패. 5점 감점.\n");
+            printf("기어 조작실패. 5점 감점.\n");
             minuspoint=minuspoint+5;
             sleep(1);
         }
@@ -980,12 +994,12 @@ void driveTest()
             sleep(3);
             if (scBTN_Wiper == 1)
             {
-                pritnf("와이퍼 켜짐 확인.\n");
+                printf("와이퍼 켜짐 확인.\n");
                 sleep(1);
             }
             else if (scBTN_Wiper == 0)
             {
-                pritnf("와이퍼 조작실패. 5점 감점.\n");
+                printf("와이퍼 조작실패. 5점 감점.\n");
                 minuspoint = minuspoint + 5;
                 sleep(1);
             }
@@ -996,11 +1010,11 @@ void driveTest()
             printf("기어조작테스트: 3초 안에 기어를 중립에서 후진기어로 바꾸십시오\n");
         sleep(3);
         if(gear==2) {
-            pritnf("후진기어 확인.\n");
+            printf("후진기어 확인.\n");
             sleep(1);
         }
         else if((gear==0)|(gear==1)) { 
-            pritnf("기어 조작실패. 5점 감점.\n");
+            printf("기어 조작실패. 5점 감점.\n");
             minuspoint=minuspoint+5;
             sleep(1);
         }
@@ -1008,12 +1022,12 @@ void driveTest()
             sleep(3);
             if (rightlight == 1)
             {
-                pritnf("우측 방향지시등 켜짐 확인.\n");
+                printf("우측 방향지시등 켜짐 확인.\n");
                 sleep(1);
             }
             else if ((rightlight == 0) | (leftlight == 1))
             {
-                pritnf("방향지시등 조작실패. 5점 감점.\n");
+                printf("방향지시등 조작실패. 5점 감점.\n");
                 minuspoint = minuspoint + 5;
                 pthread_join(thread_object_5, NULL);
                 sleep(1);
@@ -1027,7 +1041,7 @@ void driveTest()
         sleep(10);
         if (nums<=27) // 출발선 이전
         {
-            pritnf("출발실패. 실격하셨습니다.\n");
+            printf("출발실패. 실격하셨습니다.\n");
             testfail = 1;
             failscreen =1;
         }
@@ -1038,21 +1052,21 @@ void driveTest()
         printf("지정된 위치에 정차 후 사이드브레이크를 올린 후, 삑 소리가 나면 사이드브레이크를 내리고 진행하십시오.\n");
         while (1)
         {
-            if (uphillcnt >= 300 || num>=111)
+            if (uphillcnt >= 300 || nums>=111)
             {
-                pritnf("경사구간 실패. 실격하셨습니다.\n");
+                printf("경사구간 실패. 실격하셨습니다.\n");
                 testfail = 1;
                 failscreen =1;
             }
             usleep(100000);
-            if (num<=110 && num>=102 && sidebrake) break; // 경사구간 선 안에 위치한경우
+            if (nums<=110 && nums>=102 && sidebrake) break; // 경사구간 선 안에 위치한경우
             else uphillcnt++;
         }
         while (1)
         {
-            if (uphillcnt >= 300 || (num>=111 && sidebrake==0) )
+            if (uphillcnt >= 300 || (nums>=111 && sidebrake==0) )
             {
-                pritnf("경사구간 실패. 실격하셨습니다.\n");
+                printf("경사구간 실패. 실격하셨습니다.\n");
                 testfail = 1;
                 failscreen =1;
             }
@@ -1064,7 +1078,7 @@ void driveTest()
         {
             if (uphillcnt >= 300)
             {
-                pritnf("경사구간 실패. 실격하셨습니다.\n");
+                printf("경사구간 실패. 실격하셨습니다.\n");
                 testfail = 1;
                 failscreen =1;
             }
@@ -1109,7 +1123,7 @@ void driveTest()
             {
                 if (emergencycnt >= 100)
                 {
-                    pritnf("돌발구간 실패. 10점감점되었습니다.\n");
+                    printf("돌발구간 실패. 10점감점되었습니다.\n");
                     minuspoint = minuspoint + 10;
                 }
                 usleep(100000);
@@ -1120,7 +1134,7 @@ void driveTest()
             {
                 if (emergencycnt >= 100)
                 {
-                    pritnf("돌발구간 실패. 10점감점되었습니다.\n");
+                    printf("돌발구간 실패. 10점감점되었습니다.\n");
                     minuspoint = minuspoint + 10;
                 }
                 usleep(100000);
@@ -1141,14 +1155,14 @@ void driveTest()
          {
             if (junctioncnt >= 300)
             {
-                pritnf("교차로 30초 이내 통과 실패. 실격하셨습니다.\n");
+                printf("교차로 30초 이내 통과 실패. 실격하셨습니다.\n");
                 testfail = 1;
-                failscreen
+                failscreen=1;
             }
             usleep(100000);
-            if(nums<=346 && nums>=280 && traflight==3) // 적색신호등과 차량교차로 내 위치 판별 true
+            if(nums<=346 && nums>=280 && trafLightState==3) // 적색신호등과 차량교차로 내 위치 판별 true
             {
-                pritnf("신호위반 발생! 실격하셨습니다.\n");
+                printf("신호위반 발생! 실격하셨습니다.\n");
                 testfail = 1;
                 failscreen =1;
             }
@@ -1166,7 +1180,7 @@ void driveTest()
          {
             if (parkingcnt >= 300)
             {
-                pritnf("주차 30초 이내 통과 실패. 실격하셨습니다.\n");
+                printf("주차 30초 이내 통과 실패. 실격하셨습니다.\n");
                 testfail = 1;
                 failscreen =1;
             }
@@ -1175,7 +1189,7 @@ void driveTest()
             usleep(100000);
             if (parkingcnt >= 300)
             {
-                pritnf("주차 30초 이내 통과 실패. 실격하셨습니다.\n");
+                printf("주차 30초 이내 통과 실패. 실격하셨습니다.\n");
                 testfail = 1;
                 failscreen =1;
             }
@@ -1192,7 +1206,7 @@ void driveTest()
             usleep(100000);
             if (parkingcnt >= 300)
             {
-                pritnf("주차 30초 이내 통과 실패. 실격하셨습니다.\n");
+                printf("주차 30초 이내 통과 실패. 실격하셨습니다.\n");
                 testfail = 1;
                 failscreen =1;
             }
@@ -1203,7 +1217,7 @@ void driveTest()
             usleep(100000);
             if (parkingcnt >= 300)
             {
-                pritnf("주차 30초 이내 통과 실패. 실격하셨습니다.\n");
+                printf("주차 30초 이내 통과 실패. 실격하셨습니다.\n");
                 testfail = 1;
                 failscreen =1;
             }
@@ -1219,7 +1233,7 @@ void driveTest()
             usleep(100000);
             if (parkingcnt >= 300)
             {
-                pritnf("주차 30초 이내 통과 실패. 실격하셨습니다.\n");
+                printf("주차 30초 이내 통과 실패. 실격하셨습니다.\n");
                 testfail = 1;
                 failscreen =1;
             }
@@ -1235,12 +1249,12 @@ void driveTest()
             usleep(100000);
             if (parkingcnt >= 300)
             {
-                pritnf("주차 30초 이내 통과 실패. 실격하셨습니다.\n");
+                printf("주차 30초 이내 통과 실패. 실격하셨습니다.\n");
                 testfail = 1;
                 failscreen =1;
             }
             dirfail=0;
-            if(nums<=547 && nums>=531 && ( gear!=2 || moving_b==0)) {
+            if(nums<=547 && nums>=531 && gear!=2) {  //gear!=2를 로 ( gear!=2 || moving_b==0)
                 if(dirfail>=5) {crash=1; testfail =1; }
                 else dirfail++;
             }
@@ -1250,14 +1264,14 @@ void driveTest()
 
          while (1)
          {
-            if (parkingcnt >= 300 || num>=561)
+            if (parkingcnt >= 300 || nums>=561)
             {
-                pritnf("주차 실패. 실격하셨습니다.\n");
+                printf("주차 실패. 실격하셨습니다.\n");
                 testfail = 1;
                 failscreen =1;
             }
             usleep(100000);
-            if (num<=561 && num>=547 && sidebrake) break; // 주차 선 안에 위치한경우
+            if (nums<=561 && nums>=547 && sidebrake) break; // 주차 선 안에 위치한경우
             else parkingcnt++;
          }
 
@@ -1265,7 +1279,7 @@ void driveTest()
             usleep(100000);
             if (parkingcnt >= 300)
             {
-                pritnf("주차 30초 이내 통과 실패. 실격하셨습니다.\n");
+                printf("주차 30초 이내 통과 실패. 실격하셨습니다.\n");
                 testfail = 1;
                 failscreen =1;
             }
@@ -1306,7 +1320,7 @@ void driveTest()
             {
                 if (emergencycnt >= 100)
                 {
-                    pritnf("돌발구간 실패. 10점감점되었습니다.\n");
+                    printf("돌발구간 실패. 10점감점되었습니다.\n");
                     minuspoint = minuspoint + 10;
                 }
                 usleep(100000);
@@ -1317,7 +1331,7 @@ void driveTest()
             {
                 if (emergencycnt >= 100)
                 {
-                    pritnf("돌발구간 실패. 10점감점되었습니다.\n");
+                    printf("돌발구간 실패. 10점감점되었습니다.\n");
                     minuspoint = minuspoint + 10;
                 }
                 usleep(100000);
@@ -1376,17 +1390,17 @@ void driveTest()
          {
             if (junctioncnt >= 300)
             {
-                pritnf("교차로 30초 이내 통과 실패. 실격하셨습니다.\n");
+                printf("교차로 30초 이내 통과 실패. 실격하셨습니다.\n");
                 testfail = 1;
-                failscreen
+                failscreen=1;
             }
             usleep(100000);
 
 
 
-            if(nums<=870 && nums>=840 && (traflight==3 || leftlight==0)) // 적색신호등과 차량교차로 내 위치 판별 true
+            if(nums<=870 && nums>=840 && (trafLightState==3 || leftlight==0)) // 적색신호등과 차량교차로 내 위치 판별 true
             {
-                pritnf("신호위반 발생! 실격하셨습니다.\n");
+                printf("신호위반 발생! 실격하셨습니다.\n");
                 testfail = 1;
                 failscreen =1;
             }
@@ -1414,7 +1428,7 @@ void driveTest()
             {
                 if (emergencycnt >= 100)
                 {
-                    pritnf("돌발구간 실패. 10점감점되었습니다.\n");
+                    printf("돌발구간 실패. 10점감점되었습니다.\n");
                     minuspoint = minuspoint + 10;
                 }
                 usleep(100000);
@@ -1425,7 +1439,7 @@ void driveTest()
             {
                 if (emergencycnt >= 100)
                 {
-                    pritnf("돌발구간 실패. 10점감점되었습니다.\n");
+                    printf("돌발구간 실패. 10점감점되었습니다.\n");
                     minuspoint = minuspoint + 10;
                 }
                 usleep(100000);
@@ -1465,13 +1479,12 @@ void driveTest()
         // 가속구간
         now_level = CRS_ACCEL;
         // crs_accel = 1;
-        carspeedmax = 0;
         accelcheck =0;
         while (1)
         {
-            if (carsspeed == 0)
+            if (carspeed == 0)
             {
-                pritnf("가속구간내 정지. 실격하셨습니다.\n");
+                printf("가속구간내 정지. 실격하셨습니다.\n");
                 testfail = 1;
             }
             if ((carspeed == 2) && nums<=1080 )
@@ -1482,7 +1495,7 @@ void driveTest()
         }
         if (accelcheck <= 5)
         {
-            pritnf("가속구간 실패. 10점감점되었습니다.\n");
+            printf("가속구간 실패. 10점감점되었습니다.\n");
             minuspoint = minuspoint + 10;
         }
         // crs_accel = 0;
@@ -1500,7 +1513,7 @@ void driveTest()
             {
                 if (emergencycnt >= 100)
                 {
-                    pritnf("돌발구간 실패. 10점감점되었습니다.\n");
+                    printf("돌발구간 실패. 10점감점되었습니다.\n");
                     minuspoint = minuspoint + 10;
                 }
                 usleep(100000);
@@ -1511,7 +1524,7 @@ void driveTest()
             {
                 if (emergencycnt >= 100)
                 {
-                    pritnf("돌발구간 실패. 10점감점되었습니다.\n");
+                    printf("돌발구간 실패. 10점감점되었습니다.\n");
                     minuspoint = minuspoint + 10;
                 }
                 usleep(100000);
@@ -1537,17 +1550,17 @@ void driveTest()
 
 
         // 종료구간
-        crs_final = 1;
+
         while (1)
         {
-            if ((nums<=1175 && nums>=1210) & (rightlight))
+            if ((nums<=1175 && nums>=1210) & (rightlight)) {
                 finalsuccess = 1;
-            finalcheck == 1;
-            else if ((finalplace) & (!rightlight)) finalsuccess = 0;
+            finalcheck == 1; }
+            else if ((nums<=1175 && nums>=1210) & (!rightlight)) finalsuccess = 0;
         }
         if (finalsuccess == 0)
         {
-            pritnf("종료구간 방향지시등 조작 실패. 5점감점되었습니다.\n");
+            printf("종료구간 방향지시등 조작 실패. 5점감점되었습니다.\n");
             minuspoint = minuspoint + 5;
         }
     }
@@ -1564,7 +1577,7 @@ int showManual()
     // 구간별 점수 및 전역 감점및 실격 요소, 제한시간 등 안내. 이미지 수동으로 넘기는 방식으로.
     while (testStart != 1 | mainScreen != 1)
     { // 마지막페이지에서 메인화면 혹은 시험 시작을 선택할 때 까지 대기.
-        if (maunalpage == 마지막페이지)
+        if (maunalpage == 9)
         {
 
             if (scBTN_Start) ; // 시험시작으로 코스설명에 진입했을경우 testStart(시작하기)버튼과 mainScreen(메인화면) 버튼 표시
@@ -1581,7 +1594,7 @@ void showLeaderBoard()
 { // 리더보드 내용 작성
     showstate = 2;
     // 디자인 구상 UI idea에 구상 올려둠
-    while (mainscreen != 1)
+    while (1)
     {
     }
     return;
@@ -1605,11 +1618,12 @@ int main(void)
     pthread_create(&thread_object_2x, NULL, ledblinks, NULL);
     pthread_create(&thread_object_4, NULL, trafLightss, NULL);
     pthread_create(&thread_object_5, NULL, ScreenOutput, NULL);
-    pthread_create(&thread_object_6, NULL, ScreenOverlay, NULL);
+    //pthread_create(&thread_object_6, NULL, ScreenOverlay, NULL);
     pthread_create(&thread_object_7, NULL, AccelWork, NULL);
+    pthread_create(&thread_object_8, NULL, movecheck, NULL);
     // pthread_create(&thread_object_3, NULL, sevenseg, NULL);
 
-    showMainScreen();
+    driveTest();
 
     pthread_join(thread_object_1, NULL);
     pthread_join(thread_object_2, NULL);
@@ -1617,8 +1631,9 @@ int main(void)
     // pthread_join(thread_object_3, NULL);
     pthread_join(thread_object_4, NULL);
     pthread_join(thread_object_5, NULL);
-    pthread_join(thread_object_6, NULL);
+    //pthread_join(thread_object_6, NULL);
     pthread_join(thread_object_7, NULL);
+    pthread_join(thread_object_8, NULL);
     // shmdt(trafLightState); // 공유메모리 연결 해제
 
     //  return 0; // 프로그램 종료
