@@ -5,17 +5,6 @@
 #include <sys/wait.h>
 #include <pthread.h>
 #include <sys/shm.h>
-#define min(a,b)            (((a) < (b)) ? (a) : (b))
-#define max(a,b)            (((a) > (b)) ? (a) : (b))
-//#include "/libfbdev/libfbdev.h"
-#else//윈도우전용
-#define _CRT_SECURE_NO_WARNINGS
-#include <GL/glut.h>
-//#include "winnt.h"
-//#include <windef.h>
-//#include "Esent.h"
-//#include "wingdi.h"
-//#include <windows.h>
 #endif
 
 //공통
@@ -24,8 +13,13 @@
 #include <math.h>
 #include "simuwork.h"
 
-//#include "libbmp/bitmapFileHeader.h"
+//#include <EGL/egl.h>
+//#include <GLES2/gl2.h>
+//#include "bitmapFileHeader.h"
+#include "libfbdev.h"
 
+#define min(a,b)            (((a) < (b)) ? (a) : (b))
+#define max(a,b)            (((a) > (b)) ? (a) : (b))
 //#include <iostream>
 //using namespace std;
 
@@ -60,109 +54,6 @@ bool acceration = false;
 void perspective(GLdouble fovy, GLdouble zfar);
 void changeSize(int w, int h);
 bool isRectangleOnLines();
-
-
-
-char pixel_data[Wid * Hei * 3];
-
-//void screen_dump()
-//{
-//    //W: window with H: window height
-//    glReadPixels(0, 0, Width, Height, GL_BGR_EXT, GL_UNSIGNED_BYTE, pixel_data);
-//
-//    BITMAPFILEHEADER bf;
-//    BITMAPINFOHEADER bi;
-//
-//    char filename[50] = "filename.bmp";
-//    FILE* out = fopen(filename, "wb");
-//    char* data = pixel_data;
-//    memset(&bf, 0, sizeof(bf));
-//    memset(&bi, 0, sizeof(bi));
-//    bf.bfType = 'BM';
-//    bf.bfSize = sizeof(bf) + sizeof(bi) + Width * Height * 3;
-//    bf.bfOffBits = sizeof(bf) + sizeof(bi);
-//    bi.biSize = sizeof(bi);
-//    bi.biWidth = Width;
-//    bi.biHeight = Height;
-//    bi.biPlanes = 1;  
-//    bi.biBitCount = 24;
-//    bi.biSizeImage = Width * Height * 3;
-//    fwrite(&bf, sizeof(bf), 1, out);
-//    fwrite(&bi, sizeof(bi), 1, out);
-//    fwrite(data, sizeof(unsigned char), Height * Width * 3, out);
-//    fclose(out);
-//}
-//
-//void ScreenCapture(const char* strFilePath)
-//{
-//    //비트맵 파일 처리를 위한 헤더 구조체
-//    BITMAPFILEHEADER	BMFH;
-//    BITMAPINFOHEADER	BMIH;
-//
-//    int nWidth = 0;
-//    int nHeight = 0;
-//    unsigned long dwQuadrupleWidth = 0;		//LJH 추가, 가로 사이즈가 4의 배수가 아니라면 4의 배수로 만들어서 저장
-//
-//    GLbyte* pPixelData = NULL;				//front buffer의 픽셀 값들을 얻어 오기 위한 버퍼의 포인터
-//
-//    nWidth = 1024;		//(나의 경우)리눅스에서의 경우 해상도 고정이므로 그 값을 입력
-//    nHeight = 600;
-//
-//    //4의 배수인지 아닌지 확인해서 4의 배수가 아니라면 4의 배수로 맞춰준다.
-//    dwQuadrupleWidth = (nWidth % 4) ? ((nWidth)+(4 - (nWidth % 4))) : (nWidth);
-//
-//    //비트맵 파일 헤더 처리
-//    BMFH.bfType = 0x4D42;		//B(42)와 M(4D)에 해당하는 ASCII 값을 넣어준다.
-//    //바이트 단위로 전체파일 크기
-//    BMFH.bfSize = sizeof(BITMAPFILEHEADER) + sizeof(BITMAPINFOHEADER) + (dwQuadrupleWidth * 3 * nHeight);
-//    //영상 데이터 위치까지의 거리
-//    BMFH.bfOffBits = sizeof(BITMAPFILEHEADER) + sizeof(BITMAPINFOHEADER);
-//
-//    //비트맵 인포 헤더 처리
-//    BMIH.biSize = sizeof(BITMAPINFOHEADER);		//이 구조체의 크기
-//    BMIH.biWidth = nWidth;							//픽셀 단위로 영상의 폭
-//    BMIH.biHeight = nHeight;							//영상의 높이
-//    BMIH.biPlanes = 1;								//비트 플레인 수(항상 1)
-//    BMIH.biBitCount = 24;								//픽셀당 비트수(컬러, 흑백 구별)
-//    BMIH.biCompression = 0;							//압축 유무
-//    BMIH.biSizeImage = dwQuadrupleWidth * 3 * nHeight;	//영상의 크기
-//    BMIH.biXPelsPerMeter = 0;								//가로 해상도
-//    BMIH.biYPelsPerMeter = 0;								//세로 해상도
-//    BMIH.biClrUsed = 0;								//실제 사용 색상수
-//    BMIH.biClrImportant = 0;								//중요한 색상 인덱스
-//
-//    pPixelData = new GLbyte[dwQuadrupleWidth * 3 * nHeight];	//LJH 수정
-//
-//    //프런트 버퍼로 부터 픽셀 정보들을 얻어온다.
-//    glReadPixels(
-//        0, 0,					//캡처할 영역의 좌측상단 좌표
-//        nWidth, nHeight,		//캡처할 영역의 크기
-//        GL_BGR_EXT,					//캡처한 이미지의 픽셀 포맷
-//        GL_UNSIGNED_BYTE,		//캡처한 이미지의 데이터 포맷
-//        pPixelData				//캡처한 이미지의 정보를 담아둘 버퍼 포인터
-//    );
-//
-//    {//저장 부분
-//        FILE* outFile = fopen(strFilePath, "wb");
-//        if (outFile == NULL)
-//        {
-//            //에러 처리
-//            printf( "에러" );
-//            //fclose( outFile );
-//        }
-//
-//        fwrite(&BMFH, sizeof(char), sizeof(BITMAPFILEHEADER), outFile);			//파일 헤더 쓰기
-//        fwrite(&BMIH, sizeof(char), sizeof(BITMAPINFOHEADER), outFile);			//인포 헤더 쓰기
-//        fwrite(pPixelData, sizeof(unsigned char), BMIH.biSizeImage, outFile);	//glReadPixels로 읽은 데이터 쓰기
-//
-//        fclose(outFile);	//파일 닫기
-//    }
-//
-//    if (pPixelData != NULL)
-//    {
-//        delete [] pPixelData;
-//    }
-//}
 
 void perspective(GLdouble fovy = 75.0, GLdouble zfar = 500.0) {
     glViewport(0, 0, Width, Height);
@@ -870,8 +761,8 @@ void main_menu() {
 }
 
 void disp() {
-    glClear(GL_COLOR_BUFFER_BIT);
-    glClear(GL_DEPTH_BUFFER_BIT);
+    glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+    //glClear(GL_DEPTH_BUFFER_BIT);
     glMatrixMode(GL_MODELVIEW);
     if (simuwork == CRS_MAIN)
     {
@@ -929,22 +820,21 @@ void disp() {
         //Sleep(100);
         //screen_dump();
         //exit(0);
-#ifdef __LINUX//리눅스 전용 코딩
+
         unsigned long dwQuadrupleWidth = 0;		//LJH 추가, 가로 사이즈가 4의 배수가 아니라면 4의 배수로 만들어서 저장
-        GLbyte* pPixelData = NULL;				//front buffer의 픽셀 값들을 얻어 오기 위한 버퍼의 포인터
+        char* pPixelData = NULL;				//front buffer의 픽셀 값들을 얻어 오기 위한 버퍼의 포인터
         //4의 배수인지 아닌지 확인해서 4의 배수가 아니라면 4의 배수로 맞춰준다.
         dwQuadrupleWidth = (Width % 4) ? ((Width)+(4 - (Width % 4))) : (Width);
-        pPixelData = new GLbyte[dwQuadrupleWidth * 3 * Height];	//LJH 수정
+        pPixelData = new char[dwQuadrupleWidth * 3 * Height];	//LJH 수정
         glReadPixels(0, 0, Width, Height, GL_BGR_EXT, GL_UNSIGNED_BYTE, pPixelData);
 
-        fb_write_reverse(pPixelData, cols, rows);
+        fb_write_reverse(pPixelData, 1024, 600);
         if (pPixelData != NULL)
         {
             delete[] pPixelData;
         }
-#endif
+
     }
-    //screen_dump();
     glutSwapBuffers();
 }
 
@@ -1020,15 +910,11 @@ int main(int argc, char** argv) {
 
 #endif
     glutInit(&argc, argv);
-    glutInitDisplayMode(GLUT_RGB | GLUT_DEPTH);
-    glutInitDisplayMode(GLUT_DOUBLE);
-    /*float v[] = {
-      lightDiffuse[0],  lightDiffuse[1],
-      lightDiffuse[2],  lightDiffuse[3] };
-    glLightfv(GL_LIGHT0, GL_DIFFUSE, v);*/
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
+
     glutInitWindowSize(Width, Height);
     glutInitWindowPosition(0, 0);
-    glutCreateWindow("Embedded system");
+    //glutCreateWindow("Embedded system");
     glEnable(GL_DEPTH_TEST);
     glutDisplayFunc(disp);
     glutReshapeFunc(changeSize);
