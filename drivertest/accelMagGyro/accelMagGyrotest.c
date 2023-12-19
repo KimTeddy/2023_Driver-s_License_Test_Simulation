@@ -162,7 +162,7 @@ int main(void)
                 break;
                 */
 
-            }
+    }
             usleep(1);
             
             return 0;
