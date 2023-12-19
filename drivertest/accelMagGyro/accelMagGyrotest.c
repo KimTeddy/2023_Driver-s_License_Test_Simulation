@@ -66,7 +66,7 @@ int main(void)
           //  moving_l = 0;
           //  moving_r = 0;
             // printf("Set Changing Value\n");
-            if( first_accel[0] - second_accel[0] > 5000 ) 
+            if( first_accel[0] - second_accel[0] > 5000 && !(first_accel[2] - second_accel[2] < 8000) ) 
             { //오른쪽으로 기운 경우 차이가 5000이상 나면 
             
                 // ~ 차 방향을 오른쪽으로 바꾸는 코드 ~//
@@ -82,7 +82,7 @@ int main(void)
             
             }
 
-            else if(second_accel[0] - first_accel[0] > 5000)
+            else if(second_accel[0] - first_accel[0] > 5000 && !(first_accel[2] - second_accel[2] < 8000) )
             { //왼쪽으로 기운 경우 [차이가 5000이상 나면]
 
                 // ~ 차 방향을 바꾸는 코드 ~
