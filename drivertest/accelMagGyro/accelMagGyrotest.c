@@ -74,6 +74,7 @@ int main(void)
                 moving_l = 0;
                 moving += 1;
                 printf("Moving : %d  Moving L : %d,  Moving_r : %d\n", moving, moving_l, moving_r);
+                sleep(1);
                 
             
             }
@@ -89,6 +90,7 @@ int main(void)
                 moving_r = 0;
                 moving += 1;
                printf("Moving : %d  Moving L : %d,  Moving_r : %d\n", moving, moving_l, moving_r);
+               sleep(1);
                 //sleep(1);
             }
 
@@ -99,6 +101,7 @@ int main(void)
                 moving -= 1;
                 printf(" Slow Down \n");
                 printf("Moving : %d  Moving L : %d,  Moving_r : %d\n", moving, moving_l, moving_r);
+                sleep(1);
                 //sleep(1);
             }
 
@@ -110,6 +113,7 @@ int main(void)
                     break_on = 1;
                     //breakon
                     printf("Moving : %d  Moving L : %d,  Moving_r : %d\n", moving, moving_l, moving_r);
+                    sleep(1);
                    //sleep(1);
             }
         
@@ -128,6 +132,7 @@ int main(void)
                 */
                 printf(" Car Moving Forward \n");
                 printf("Moving : %d  Moving L : %d,  Moving_r : %d\n", moving, moving_l, moving_r);
+                sleep(1);
                 //sleep(1);
             }
 
@@ -147,6 +152,7 @@ int main(void)
                     printf(" Car Accelation! \n");
                     printf("Moving : %d  Moving L : %d,  Moving_r : %d\n", moving, moving_l, moving_r);
                     //sleep(1);
+                    sleep(1);
                 }
                 
             else if(first_accel[0] - second_accel[0] > 5000 && second_accel[2] - first_accel[2] > 4000 && second_accel[2] - first_accel[2] < 8000) 
@@ -157,6 +163,7 @@ int main(void)
                 moving += 1;
                 moving_l = 1;
                 printf("Moving : %d  Moving L : %d,  Moving_r : %d\n", moving, moving_l, moving_r);
+                sleep(1);
                 // 전진좌 : moving + 1, moving_l = 1
                 /*
                 rcar += 3;
@@ -170,10 +177,11 @@ int main(void)
             else if(second_accel[0] - first_accel[0] > 5000 && second_accel[2] - first_accel[2] > 4000 && second_accel[2] - first_accel[2] < 8000) 
             { 
                 printf(" Going Right! \n");
-                sleep(1);
+                
                 moving += 1;
                 moving_r = 1;
                 printf("Moving : %d  Moving L : %d,  Moving_r : %d\n", moving, moving_l, moving_r);
+                sleep(1);
                 // 전진우 : moving + 1, moving_r = 1
 
                 //앞으로 기울인 상태에서 오른쪽으로 기울이면 ==> 악셀 + 핸들 오른쪽을 돌리면 옆으로 같이 진행하도록
@@ -186,7 +194,7 @@ int main(void)
                 break;
                 */
             }
-            
+
             else if (second_accel[0] - first_accel[0] > 5000 && first_accel[2] - second_accel[2] > 4000 && first_accel[2] - second_accel[2] < 8000)
             //뒤로 기울이고 핸들 왼쪽 기울이면 
             // 후진좌 : moving +1, moving_l = 1
@@ -196,6 +204,7 @@ int main(void)
                 moving_l = 1;
                 printf("Reverse Left\n");
                 printf("Moving : %d  Moving L : %d,  Moving_r : %d\n", moving, moving_l, moving_r);
+                sleep(1);
             }
 
             else if (first_accel[0] - second_accel[0] > 5000 && first_accel[2] - second_accel[2] > 4000 && first_accel[2] - second_accel[2] < 8000)
@@ -207,6 +216,7 @@ int main(void)
                 moving_r = 1;
                 printf("Reverse Right\n");
                 printf("Moving : %d  Moving L : %d,  Moving_r : %d\n", moving, moving_l, moving_r);
+                sleep(1);
             }
             
             else 
@@ -218,6 +228,7 @@ int main(void)
                 //moving -= 1;
                 printf("Middle Stance\n");
                 printf("Moving : %d  Moving L : %d,  Moving_r : %d\n", moving, moving_l, moving_r);
+                sleep(1);
                 //sleep(1);
             }
 
