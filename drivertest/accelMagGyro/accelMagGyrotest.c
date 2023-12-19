@@ -63,6 +63,7 @@ int main(void)
                 // +3
                 printf("  Handle Turn Right \n");
                 moving_r = 1;
+                printf("Moving : %d  Moving L : %d,  Moving_r : %d", moving, moving_l, moving_r);
                 sleep(1);
             
             }
@@ -75,6 +76,7 @@ int main(void)
                 // rcar -= 3; printf("r=%d\n", rcar); break; //  기울이고 있는 동안 이동하도록
                 printf(" Handle Turn Left \n");
                 moving_l = 1;
+                printf("Moving : %d  Moving L : %d,  Moving_r : %d", moving, moving_l, moving_r);
                 sleep(1);
             }
 
@@ -83,6 +85,7 @@ int main(void)
 
                 // ~ 차 속도를 감소하는 코드?
                 printf(" Slow Down \n");
+                printf("Moving : %d  Moving L : %d,  Moving_r : %d", moving, moving_l, moving_r);
                 sleep(1);
             }
 
@@ -91,6 +94,7 @@ int main(void)
                     // ~ 차 멈추는 코드 ~
                     printf(" Stop \n");
                     moving -= 3;
+                    printf("Moving : %d  Moving L : %d,  Moving_r : %d", moving, moving_l, moving_r);
                     sleep(1);
                 }
         
@@ -107,6 +111,7 @@ int main(void)
                 break;
                 */
                 printf(" Car Moving Forward \n");
+                printf("Moving : %d  Moving L : %d,  Moving_r : %d", moving, moving_l, moving_r);
                 sleep(1);
             }
 
@@ -122,6 +127,7 @@ int main(void)
                     break; 
                     */
                     printf(" Car Accelation! \n");
+                    printf("Moving : %d  Moving L : %d,  Moving_r : %d", moving, moving_l, moving_r);
                     sleep(1);
                 }
                 /*
@@ -160,6 +166,7 @@ int main(void)
                 moving_l = 0;
                 moving_r = 0;    
                 printf("Middle Stance\n");
+                printf("Moving : %d  Moving L : %d,  Moving_r : %d", moving, moving_l, moving_r);
                 sleep(1);
             }
 
