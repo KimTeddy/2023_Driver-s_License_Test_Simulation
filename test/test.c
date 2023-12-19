@@ -17,7 +17,7 @@
 #include <sys/kd.h>
 
 #include "button.h"
-#include "simuwork.h"
+#include "now_level_defs.h"
 #include "buzzer_soundeffect_defs.h"
 
 pthread_t thread_object_1;  // 스레드 1 for rgb led
