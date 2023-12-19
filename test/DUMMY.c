@@ -6,6 +6,7 @@
 #include <pthread.h>
 #include <time.h>
 #include <sys/shm.h>
+#include "button.h"
 #include <linux/spi/spidev.h>
 #include <stdint.h>
 #include <string.h>
@@ -14,10 +15,7 @@
 #include <sys/ioctl.h>
 #include <fcntl.h>
 #include <linux/fb.h>
-
-#include "button.h"
-#include "simuwork.h"
-#include "buzzer_soundeffect_defs.h"
+#include <sys/kd.h>
 
 pthread_t thread_object_1;  // 스레드 1 for rgb led
 pthread_t thread_object_2;  // 스레드 2 for btn and led
@@ -25,6 +23,7 @@ pthread_t thread_object_2x; // 스레드 2x for led blink
 // pthread_t thread_object_3; //스레드 3 for 7segment
 pthread_t thread_object_4; // 스레드 4 for echo state(imsi)
 pthread_t thread_object_5; // 스레드 5 for lcd bitmap output
+pthread_t thread_object_6; // 스레드 5 for lcd overlay output
 
 // pthread_mutex_t lock1; // for traflight
 // pthread_mutex_t lock2; // for  btnstate
@@ -33,16 +32,14 @@ int scBTN_Start = 0, scBTN_Manual = 0, scBTN_Leaderbd = 0; // 스크린터치로
 int maunalpage = 0;                                        // 코스 설명 이미지 페이지 카운팅
 int testStart = 0, mainScreen = 0;
 
-
-int now_level = CRS_MAIN;
 // LCD에 구간 표시하기 위한 트리거 신호들
-// int crs_basic = 0;     // 기본조작평가 트리거 신호
-// int crs_uphill = 0;    // 경사로 구간 트리거
-// int crs_junction = 0;  // 교차로 구간 트리거
-// int crs_parking = 0;   // 주차구간 트리거
-// int crs_emergency = 0; // 돌발구간 트리거
-// int crs_accel = 0;     // 가속구간 트리거
-// int crs_final = 0;     // 종료구간 트리거
+int crs_basic = 0;     // 기본조작평가 트리거 신호
+int crs_uphill = 0;    // 경사로 구간 트리거
+int crs_junction = 0;  // 교차로 구간 트리거
+int crs_parking = 0;   // 주차구간 트리거
+int crs_emergency = 0; // 돌발구간 트리거
+int crs_accel = 0;     // 가속구간 트리거
+int crs_final = 0;     // 종료구간 트리거
 
 // additional part
 int crs_outofcrs = 0; // 구간을 벗어난 경우 트리거 ->
@@ -62,8 +59,9 @@ int handleleft, handleright; // 방향지시등 켜있을 시 핸들 좌 우 일
 int randtest = 0;                                    // 시험 랜덤항목 설정을 위한 변수
 int minuspoint = 0;                                  // 시험 감점위한 변수
 int gear = 0;                                        // 기어 판별위한 변수 (0중립1전진2후진)
-int uphillcnt, emergencycnt, junctioncnt, parkingcnt; // 구간별 제한시간 판별 위한 변수
-int uphillstop, uphillside1, uphillside2, uphillgo, emergency1, emergency2, junctionpass, sidebreakcheck, sidebreakcheck2, accelcheck, accelsuccess, finalcheck, finalsuccess; // 구간내 항목 성공여부 판별 변수
+int uphillcnt, emergencycnt, junctioncnt, parkingcnt // 구간별 제한시간 판별 위한 변수
+    int uphillstop,
+    uphillside1, uphillside2, uphillgo, emergency1, emergency2, junctionpass, sidebreakcheck, sidebreakcheck2, accelcheck, accelsuccess, finalcheck, finalsuccess; // 구간내 항목 성공여부 판별 변수
 int carspeed, carspeedmax;                                                                                                                                         // 차의 현재 속도와 기록된 최고속도 변수
 
 int showstate = 0; // 스크린에 표시할 이미지 state 변수. 0 = 메인스크린, 1 = 메뉴얼, 2 = 리더보드, 3 = 게임진행
@@ -369,41 +367,27 @@ void *ScreenOutput(void)
     char *data;
     char bmpfile[200];
     int nums = 0;
-    int testingnow = 1;
+    // remove cursor
+    in conFD = open("/dev/tty0", O_RDWR);
+    ioctl(conFD, KDSETMODE, KD_GRAPHICS);
+    close(conFD);
+
     // FrameBuffer init
     if (fb_init(&screen_width, &screen_height, &bits_per_pixel, &line_length) < 0)
     {
         printf("FrameBuffer Init Failed\r\n");
         return 0;
     }
-    switch (showstate)
+    while (1)
     {
-    case 0:
-    {
-        fb_clear();
-        // FileRead
-        if (read_bmp("mainscreen.bmp", &data, &cols, &rows) < 0)
-        { // mainscreen.bmp 출력
-            printf("File open failed\r\n");
-            return 0;
-        }
-        // FileWrite
-        fb_write(data, cols, rows);
-        close_bmp();
-    }
-    break;
-    case 1:
-    {
-        fb_clear();
-        while (메뉴얼 표시상태)
+        switch (showstate)
         {
-            usleep(1000000); // 1초 대기
-            strcpy(bmpfile, "manual");
-            snprintf(bmpfile, sizeof(bmpfile), "%d", maunalpage); // maunalpage 변수로 페이지 확인
-            strcat(bmpfile, ".bmp");
+        case 0:
+        {
+            fb_clear();
             // FileRead
-            if (read_bmp(bmpfile, &data, &cols, &rows) < 0)
-            { // manual숫자.bmp 출력
+            if (read_bmp("mainscreen.bmp", &data, &cols, &rows) < 0)
+            { // mainscreen.bmp 출력
                 printf("File open failed\r\n");
                 return 0;
             }
@@ -411,84 +395,185 @@ void *ScreenOutput(void)
             fb_write(data, cols, rows);
             close_bmp();
         }
+        break;
+        case 1:
+        {
+            fb_clear();
+            while (메뉴얼 표시상태)
+            {
+                usleep(1000000); // 1초 대기
+                strcpy(bmpfile, "manual");
+                snprintf(bmpfile, sizeof(bmpfile), "%d", maunalpage); // maunalpage 변수로 페이지 확인
+                strcat(bmpfile, ".bmp");
+                // FileRead
+                if (read_bmp(bmpfile, &data, &cols, &rows) < 0)
+                { // manual숫자.bmp 출력
+                    printf("File open failed\r\n");
+                    return 0;
+                }
+                // FileWrite
+                fb_write(data, cols, rows);
+                close_bmp();
+            }
+        }
+
+        case 2:
+        {
+            fb_clear();
+            while (리더보드 표시상태)
+            {                    // 리더보드 어떻게 만들지.... 점수 기록되면 도트 찍히게 해야하나?
+                usleep(1000000); // 1초 대기
+                strcpy(bmpfile, "leaderboard");
+                snprintf(bmpfile, sizeof(bmpfile), "%d", leaderboard); // leaderboard 변수로 페이지 확인
+                strcat(bmpfile, ".bmp");
+                // FileRead
+                if (read_bmp(bmpfile, &data, &cols, &rows) < 0)
+                { // leaderboard숫자.bmp 출력
+                    printf("File open failed\r\n");
+                    return 0;
+                }
+                // FileWrite
+                fb_write(data, cols, rows);
+                close_bmp();
+            }
+        }
+
+        case 3:
+        {
+            fb_clear();
+            while (simuwork == 1)
+            {                   // 게임 진행중일 때
+                usleep(100000); // 0.1초 대기 10fps
+                strcpy(bmpfile, "");
+                snprintf(bmpfile, sizeof(bmpfile), "%d", nums); // nums변수로 현재 프레임확인
+                strcat(bmpfile, ".bmp");
+                // FileRead
+                if (read_bmp(bmpfile, &data, &cols, &rows) < 0)
+                { // 숫자.bmp 출력
+                    printf("File open failed\r\n");
+                    return 0;
+                }
+                // FileWrite
+                fb_write(data, cols, rows);
+                close_bmp();
+            }
+        }
+
+        default:
+            break;
+        }
+    }
+}
+
+void *ScreenOverlay(void)
+{
+    int screen_width2;
+    int screen_height2;
+    int bits_per_pixel2;
+    int line_length2;
+    int cols2 = 0, rows2 = 0;
+    char *data2;
+    char bmpfile2[200];
+    int nums2 = 0;
+    int nums3 = 0;
+    int nums4 = 0;
+
+    // FrameBuffer init
+    if (fb_init2(&screen_width2, &screen_height2, &bits_per_pixel2, &line_length2) < 0)
+    {
+        printf("FrameBuffer0 Init Failed\r\n");
+        return 0;
     }
 
-    case 2:
-    {
-        fb_clear();
-        while (리더보드 표시상태)
-        {                    // 리더보드 어떻게 만들지.... 점수 기록되면 도트 찍히게 해야하나?
-            usleep(1000000); // 1초 대기
-            strcpy(bmpfile, "leaderboard");
-            snprintf(bmpfile, sizeof(bmpfile), "%d", leaderboard); // leaderboard 변수로 페이지 확인
-            strcat(bmpfile, ".bmp");
-            // FileRead
-            if (read_bmp(bmpfile, &data, &cols, &rows) < 0)
-            { // leaderboard숫자.bmp 출력
-                printf("File open failed\r\n");
-                return 0;
-            }
-            // FileWrite
-            fb_write(data, cols, rows);
-            close_bmp();
-        }
-    }
+    fb_clear2(0, 0, 1024, 600);
 
-    case 3:
+    while (1)
     {
-        fb_clear();
-        while (simuwork == 1)
-        {                   // 게임 진행중일 때
-            usleep(500000); // 0.5초 대기
-            strcpy(bmpfile, "");
-            snprintf(bmpfile, sizeof(bmpfile), "%d", nums); // nums변수로 현재 프레임확인
-            strcat(bmpfile, ".bmp");
+        switch (showstate)
+        {
+        case 0:
+        {
+            fb_clear2();
+            strcpy(bmpfile2, "overlaymainscreen");
+            strcat(bmpfile2, nums2);
+            strcat(bmpfile2, ".bmp");
+
             // FileRead
-            if (read_bmp(bmpfile, &data, &cols, &rows) < 0)
-            { // 숫자.bmp 출력
+            if (read_bmp(bmpfile2, &data2, &cols2, &rows2) < 0)
+            {
                 printf("File open failed\r\n");
                 return 0;
             }
             // FileWrite
-            fb_write(data, cols, rows);
+            fb_write2(data2, cols2, rows2, 0, 0);
+
             close_bmp();
         }
-    }
+        break;
+        case 1:
+        {
+            fb_clear2();
+            strcpy(bmpfile2, "overlaymanual");
+            strcat(bmpfile2, nums3);
+            strcat(bmpfile2, ".bmp");
+
+            // FileRead
+            if (read_bmp(bmpfile2, &data2, &cols2, &rows2) < 0)
+            {
+                printf("File open failed\r\n");
+                return 0;
+            }
+            // FileWrite
+            fb_write2(data2, cols2, rows2, 0, 0);
+
+            close_bmp();
+        }
+        break;
+
+        case 2:
+        {
+            fb_clear2();
+            strcpy(bmpfile2, "overlayleaderboard");
+            strcat(bmpfile2, ".bmp");
+
+            // FileRead
+            if (read_bmp(bmpfile2, &data2, &cols2, &rows2) < 0)
+            {
+                printf("File open failed\r\n");
+                return 0;
+            }
+            // FileWrite
+            fb_write2(data2, cols2, rows2, 0, 0);
+
+            close_bmp();
+        }
+        break;
+
+        case 3:
+        {
+            strcpy(bmpfile2, "overlaygame");
+            strcat(bmpfile2, nums4);
+            strcat(bmpfile2, ".bmp");
+
+            // FileRead
+            if (read_bmp(bmpfile2, &data2, &cols2, &rows2) < 0)
+            {
+                printf("File open failed\r\n");
+                return 0;
+            }
+            // FileWrite
+            fb_write2(data2, cols2, rows2, 0, 0);
+
+            close_bmp();
+        }
+        break;
+        }
+        break;
 
     default:
         break;
     }
 }
-
-int main(void)
-{
-    simuwork = 1;
-    int shmID = shmget((key_t)7777, sizeof(int), IPC_CREAT | 0666); // 공유메모리 생성 요청, 이미 존재한다면 식별자 반환
-    if (shmID == -1)
-    {
-        printf("\x1b[31mShared Memory Creating Failed!\x1b[0m\r\n"); // 생성 실패시 알림
-        return 1;
-    }
-    trafLightState = (int *)shmat(shmID, (void *)NULL, 0); // 공유메모리에 접근이 가능하도록 공유메모리 주소값으로 포인터 초기화
-
-    pthread_create(&thread_object_1, NULL, trafLight, NULL);
-    pthread_create(&thread_object_2, NULL, btncheck, NULL);
-    pthread_create(&thread_object_2x, NULL, ledblinks, NULL);
-    pthread_create(&thread_object_4, NULL, trafLightss, NULL);
-    pthread_create(&thread_object_5, NULL, ScreenOutput, NULL);
-    // pthread_create(&thread_object_3, NULL, sevenseg, NULL);
-
-    showMainScreen();
-
-    pthread_join(thread_object_1, NULL);
-    pthread_join(thread_object_2, NULL);
-    pthread_join(thread_object_2x, NULL);
-    // pthread_join(thread_object_3, NULL);
-    pthread_join(thread_object_4, NULL);
-    pthread_join(thread_object_5, NULL);
-    // shmdt(trafLightState); // 공유메모리 연결 해제
-
-    //  return 0; // 프로그램 종료
 }
 
 void showMainScreen()
@@ -526,8 +611,7 @@ void driveTest()
         printf("지금부터 운전면허 기능시험을 시작합니다.") // 화면에 띄울 수 있으면 띄우기.
 
             // 기본조작시험
-            //crs_basic = 1; // 기본조작평가 트리거
-            now_level=CRS_BASIC;
+            crs_basic = 1; // 기본조작평가 트리거
         printf("기본조작평가를 시작합니다.\n");
         switch (randtest)
         {
@@ -661,16 +745,13 @@ void driveTest()
             pritnf("출발실패. 실격하셨습니다.\n");
             testfail = 1;
         }
-
-
-            now_level=CRS_UPHILL;
-        // crs_basic = 0;
-        // // 경사정차시험
-        // crs_uphill = 1;
-        // uphillcnt = 0;
-        // uphillstop = 0;
-        // uphillside1 = 0;
-        // uphillside2 = 0;
+        crs_basic = 0;
+        // 경사정차시험
+        crs_uphill = 1;
+        uphillcnt = 0;
+        uphillstop = 0;
+        uphillside1 = 0;
+        uphillside2 = 0;
         printf("경사구간평가를 시작합니다.\n");
         printf("지정된 위치에 정차 후 사이드브레이크를 올린 후, 삑 소리가 나면 사이드브레이크를 내리고 진행하십시오.\n");
         while (uphillstop == 0)
@@ -737,14 +818,13 @@ void driveTest()
                 uphillgo = 0;
             uphillcnt++;
         }
-        //crs_uphill = 0;
+        crs_uphill = 0;
 
         // 돌발구간A
         if (randtest == 0)
         {
-            now_level = CRS_EMERGENCY;
             emergencycnt = 0;
-            //crs_emergency = 1;
+            crs_emergency = 1;
             emergency1 = 0;
             emergency2 = 0;
 
@@ -785,8 +865,8 @@ void driveTest()
         }
 
         // 교차로구간1
-        now_level = CRS_JUNCTION_1;
-        //crs_junction = 1;
+
+        crs_junction = 1;
         junctioncnt = 0;
         junctionpass = 0;
         printf("교차로구간 평가를 시작합니다.\n");
@@ -810,12 +890,10 @@ void driveTest()
             else
                 junctioncnt++;
         }
-        //crs_junction = 0;
+        crs_junction = 0;
 
         // 주차구간
-        //crs_parking = 1;
-
-        now_level = CRS_PARKING;
+        crs_parking = 1;
         parkingcnt = 0;
         parkingpass = 0;
         printf("주차구간 평가를 시작합니다.\n");
@@ -1099,3 +1177,34 @@ void showLeaderBoard()
 }
 
 void addLeaderBoard() {} // 리더보드 편집 함수 작성
+
+int main(void)
+{
+    simuwork = 1;
+    int shmID = shmget((key_t)7777, sizeof(int), IPC_CREAT | 0666); // 공유메모리 생성 요청, 이미 존재한다면 식별자 반환
+    if (shmID == -1)
+    {
+        printf("\x1b[31mShared Memory Creating Failed!\x1b[0m\r\n"); // 생성 실패시 알림
+        return 1;
+    }
+    trafLightState = (int *)shmat(shmID, (void *)NULL, 0); // 공유메모리에 접근이 가능하도록 공유메모리 주소값으로 포인터 초기화
+
+    pthread_create(&thread_object_1, NULL, trafLight, NULL);
+    pthread_create(&thread_object_2, NULL, btncheck, NULL);
+    pthread_create(&thread_object_2x, NULL, ledblinks, NULL);
+    pthread_create(&thread_object_4, NULL, trafLightss, NULL);
+    pthread_create(&thread_object_5, NULL, ScreenOutput, NULL);
+    // pthread_create(&thread_object_3, NULL, sevenseg, NULL);
+
+    showMainScreen();
+
+    pthread_join(thread_object_1, NULL);
+    pthread_join(thread_object_2, NULL);
+    pthread_join(thread_object_2x, NULL);
+    // pthread_join(thread_object_3, NULL);
+    pthread_join(thread_object_4, NULL);
+    pthread_join(thread_object_5, NULL);
+    // shmdt(trafLightState); // 공유메모리 연결 해제
+
+    //  return 0; // 프로그램 종료
+}
