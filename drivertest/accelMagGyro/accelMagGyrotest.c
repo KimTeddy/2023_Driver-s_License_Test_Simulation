@@ -78,14 +78,6 @@ int main(void)
                 sleep(1);
             }
 
-            else if( !(first_accel[0] - second_accel[0] > 5000) && !(second_accel[0] - first_accel[0] > 5000) && ! (second_accel[2] - first_accel[2] > 4000 && second_accel[2] - first_accel[2] < 8000))
-            {
-              // 핸들이 정위치면 moving_l,r을 0으로 설정.
-                moving_l = 0;
-                moving_r = 0;    
-                printf("Middle Stance\n");
-            }
-
             else if( first_accel[2] - second_accel[2] > 4000 && first_accel[2] - second_accel[2] < 8000 )
             { // 뒤로 기울인 경우
 
@@ -161,6 +153,16 @@ int main(void)
                 dycar = speed * sin((180-rcar) * PI / 180.0); ycar += dycar;
                 break;
                 */
+
+            else 
+            {
+              // 핸들이 정위치면 moving_l,r을 0으로 설정.
+                moving_l = 0;
+                moving_r = 0;    
+                printf("Middle Stance\n");
+            }
+
+            
 
     }
             usleep(1);
