@@ -119,7 +119,7 @@ int main(void)
             {
                 moving -= 1;
                 moving_l = 1;
-                printf(" Slow Down \n");
+                printf(" Reverse Left \n");
                 printf("Moving : %d  Moving L : %d,  Moving_r : %d\n", moving, moving_l, moving_r);
                 sleep(1);
 
@@ -131,7 +131,7 @@ int main(void)
             {
                 moving -= 1;
                 moving_r = 1;
-                printf(" Slow Down \n");
+                printf(" Reverse Right \n");
                 printf("Moving : %d  Moving L : %d,  Moving_r : %d\n", moving, moving_l, moving_r);
                 sleep(1);
 
