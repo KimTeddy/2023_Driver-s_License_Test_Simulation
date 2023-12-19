@@ -206,7 +206,7 @@ int main(void)
             // 후진좌 : moving +1, moving_l = 1
             {
                 /* code */
-                moving += 1;
+                moving -= 1;
                 moving_l = 1;
                 printf("Reverse Left\n");
                 printf("Moving : %d  Moving L : %d,  Moving_r : %d\n", moving, moving_l, moving_r);
@@ -218,7 +218,7 @@ int main(void)
             // 후진우 : moving +1, moving_r = 1
             {
                  /* code */
-                moving += 1;
+                moving -= 1;
                 moving_r = 1;
                 printf("Reverse Right\n");
                 printf("Moving : %d  Moving L : %d,  Moving_r : %d\n", moving, moving_l, moving_r);
