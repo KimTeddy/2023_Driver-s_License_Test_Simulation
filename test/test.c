@@ -794,15 +794,15 @@ void driveTest()
     // 화면의 시작하기를 누를경우(testStart)
     if (next == 1)
     {
-        scBTN_Start = 0;
-        nums=0; // 게임화면 0으로 시작
+         scBTN_Start = 0;
+         nums=0; // 게임화면 0으로 시작
         showstate = 3; // 화면에 운전이미지 표시 시작.0번은 시작위치.
         next = 0;
         // 돌발 및 기본조작 랜덤설정
         srand((unsigned int)time(NULL));
-        randtest = rand() % 4; // random num 0~3
-        // 시험 내용 작성
-        printf("지금부터 운전면허 기능시험을 시작합니다."); // 화면에 띄울 수 있으면 띄우기.
+         randtest = rand() % 4; // random num 0~3
+         // 시험 내용 작성
+         printf("지금부터 운전면허 기능시험을 시작합니다."); // 화면에 띄울 수 있으면 띄우기.
             // 기본조작시험
             //crs_basic = 1; // 기본조작평가 트리거
         printf("기본조작평가를 시작합니다.\n");
@@ -935,6 +935,7 @@ void driveTest()
         {
             pritnf("출발실패. 실격하셨습니다.\n");
             testfail = 1;
+            failscreen =1;
         }
         while(nums<=78) {usleep(1000);}
        if (nums>=78) now_level = CRS_UPHILL;
@@ -947,10 +948,11 @@ void driveTest()
             {
                 pritnf("경사구간 실패. 실격하셨습니다.\n");
                 testfail = 1;
+                failscreen =1;
             }
             usleep(100000);
             if (num<=110 && num>=102 && sidebrake) break; // 경사구간 선 안에 위치한경우
-            uphillcnt++;
+            else uphillcnt++;
         }
         while (1)
         {
@@ -958,10 +960,11 @@ void driveTest()
             {
                 pritnf("경사구간 실패. 실격하셨습니다.\n");
                 testfail = 1;
+                failscreen =1;
             }
             usleep(100000);
             if (sidebrake==0) break;
-            uphillcnt++;
+            else uphillcnt++;
         }
         while (1)
         {
@@ -969,23 +972,46 @@ void driveTest()
             {
                 pritnf("경사구간 실패. 실격하셨습니다.\n");
                 testfail = 1;
+                failscreen =1;
             }
             usleep(100000);
             if (nums>=115) break;
-            uphillcnt++;
+            else uphillcnt++;
         }
 
-        // 돌발구간A
-        if (randtest == 0)
-        {
+         while(nums<=166) {usleep(1000);}
+
+         while(1) {
+            dirfail=0;
+            if(nums<=186 && nums>=166 && moving_l==0) {
+                if(dirfail>=5) {crash=1; testfail =1; }
+                else dirfail++;
+            }
+            if(nums>=187) break;
+         }
+
+         while(nums<=218) {usleep(1000);}
+
+          while(1) {
+            dirfail=0;
+            if(nums<=237 && nums>=218 && moving_l==0) {
+                if(dirfail>=5) {crash=1; testfail =1; }
+                else dirfail++;
+            }
+            if(nums>=238) break;
+         }
+
+         while(nums<=250) {usleep(1000);}
+
+         // 돌발구간A
+         if (randtest == 0)
+         {
             now_level = CRS_EMERGENCY_A;
             emergencycnt = 0;
-            // crs_emergency = 1;
-            emergency1 = 0;
-            emergency2 = 0;
 
             // 버저로 돌발 소리 내는 코드 필요
-            while (emergency1 == 0)
+            alertscreen=1;
+            while (1)
             {
                 if (emergencycnt >= 100)
                 {
@@ -993,15 +1019,10 @@ void driveTest()
                     minuspoint = minuspoint + 10;
                 }
                 usleep(100000);
-                if (emerlight == 1)
-                {
-                    emergency1 = 1;
-                }
-                else
-                    emergency1 = 0;
-                emergencycnt++;
+                if (emerlight == 1) break;
+                else emergencycnt++;
             }
-            while (emergency2 == 0)
+            while (1)
             {
                 if (emergencycnt >= 100)
                 {
@@ -1009,104 +1030,185 @@ void driveTest()
                     minuspoint = minuspoint + 10;
                 }
                 usleep(100000);
-                if (carspeed == 0)
-                {
-                    emergency2 = 1;
-                }
-                else
-                    emergency2 = 0;
-                emergencycnt++;
+                if (carspeed == 0) break;
+                else emergencycnt++;
             }
-            // crs_emergency = 0;
-        }
+            alertscreen=0;
+         }
 
-        // 교차로구간1
-        now_level = CRS_JUNCTION_1;
-        // crs_junction = 1;
-        junctioncnt = 0;
-        junctionpass = 0;
-        printf("교차로구간 평가를 시작합니다.\n");
-        while (junctionpass == 0)
-        {
+         while(nums<=279) {usleep(1000);}
+
+         // 교차로구간1
+         now_level = CRS_JUNCTION_1;
+         // crs_junction = 1;
+         junctioncnt = 0;
+         printf("교차로구간 평가를 시작합니다.\n");
+         while (1)
+         {
             if (junctioncnt >= 300)
             {
                 pritnf("교차로 30초 이내 통과 실패. 실격하셨습니다.\n");
                 testfail = 1;
+                failscreen
             }
             usleep(100000);
-            if () // 적색신호등과 차량교차로 내 위치 판별 true
+            if(nums<=346 && nums>=280 && traflight==3) // 적색신호등과 차량교차로 내 위치 판별 true
             {
                 pritnf("신호위반 발생! 실격하셨습니다.\n");
                 testfail = 1;
+                failscreen =1;
             }
-            if () // 차량이 교차로지난 위치에 위치함 판별 true
-            {
-                junctionpass = 1;
-            }
+            if (nums>=347) break;// 차량이 교차로지난 위치에 위치함 판별 true
             else
                 junctioncnt++;
-        }
-        // crs_junction = 0;
+         }
+        
+         while(nums<=362) {usleep(1000);}
 
-        // 주차구간
-        // crs_parking = 1;
-
-        now_level = CRS_PARKING;
-        parkingcnt = 0;
-        parkingpass = 0;
-        printf("주차구간 평가를 시작합니다.\n");
-        while (parkingpass == 0)
-        {
+         now_level = CRS_PARKING;
+         parkingcnt = 0;
+         printf("주차구간 평가를 시작합니다.\n");
+         while (1)
+         {
             if (parkingcnt >= 300)
             {
                 pritnf("주차 30초 이내 통과 실패. 실격하셨습니다.\n");
                 testfail = 1;
+                failscreen =1;
             }
+            
+            while(1) {
             usleep(100000);
-            if () // 차량이 주차칸 위치에 위치함 판별 true
-                parkingpass = 1;
-            else
-                parkingcnt++;
-        }
-        while (sidebreakcheck == 0)
-        {
             if (parkingcnt >= 300)
             {
                 pritnf("주차 30초 이내 통과 실패. 실격하셨습니다.\n");
                 testfail = 1;
+                failscreen =1;
             }
+            dirfail=0;
+            if(nums<=426 && nums>=373 && moving_r==0) {
+                if(dirfail>=5) {crash=1; testfail =1; }
+                else dirfail++;
+            }
+            if(nums>=426) break;
+            else parkingcnt++;
+         }
+
+         while(nums<=450) {
             usleep(100000);
-            if (sidebrake)
-                sidebreakcheck = 1;
-            else
-                parkingcnt++;
-        }
-        while (sidebreakcheck2 == 0)
-        {
             if (parkingcnt >= 300)
             {
                 pritnf("주차 30초 이내 통과 실패. 실격하셨습니다.\n");
                 testfail = 1;
+                failscreen =1;
+            }
+            else parkingcnt++;
+            }
+
+        while(1) {
+            usleep(100000);
+            if (parkingcnt >= 300)
+            {
+                pritnf("주차 30초 이내 통과 실패. 실격하셨습니다.\n");
+                testfail = 1;
+                failscreen =1;
+            }
+            dirfail=0;
+            if(nums<=494 && nums>=451 && gear==2) {
+                if(dirfail>=5) {crash=1; testfail =1; }
+                else dirfail++;
+            }
+            if(nums>=494) break;
+            else parkingcnt++;
+         }
+        while(1) {
+            usleep(100000);
+            if (parkingcnt >= 300)
+            {
+                pritnf("주차 30초 이내 통과 실패. 실격하셨습니다.\n");
+                testfail = 1;
+                failscreen =1;
+            }
+            dirfail=0;
+            if(nums<=530 && nums>=495 && ( gear!=2 || moving_l==0 )) {
+                if(dirfail>=5) {crash=1; testfail =1; }
+                else dirfail++;
+            }
+            if(nums>=530) break;
+            else parkingcnt++;
+         }
+         while(1) {
+            usleep(100000);
+            if (parkingcnt >= 300)
+            {
+                pritnf("주차 30초 이내 통과 실패. 실격하셨습니다.\n");
+                testfail = 1;
+                failscreen =1;
+            }
+            dirfail=0;
+            if(nums<=547 && nums>=531 && ( gear!=2 || moving_b==0)) {
+                if(dirfail>=5) {crash=1; testfail =1; }
+                else dirfail++;
+            }
+            if(nums>=547) break;
+            else parkingcnt++;
+         }
+
+         while (1)
+         {
+            if (parkingcnt >= 300 || num>=561)
+            {
+                pritnf("주차 실패. 실격하셨습니다.\n");
+                testfail = 1;
+                failscreen =1;
             }
             usleep(100000);
-            if (sidebrake == 0)
-                sidebreakcheck2 = 1;
-            else
-                parkingcnt++;
-        }
+            if (num<=561 && num>=547 && sidebrake) break; // 주차 선 안에 위치한경우
+            else parkingcnt++;
+         }
 
-        // crs_parking = 0;
+         while(nums<=564) {
+            usleep(100000);
+            if (parkingcnt >= 300)
+            {
+                pritnf("주차 30초 이내 통과 실패. 실격하셨습니다.\n");
+                testfail = 1;
+                failscreen =1;
+            }
+            else parkingcnt++;
+            }
 
-        // 돌발구간B
-        if (randtest == 1)
-        {
+         while(1) {
+            dirfail=0;
+            if(nums<=588 && nums>=565 && moving_r==0) {
+                if(dirfail>=5) {crash=1; testfail =1; }
+                else dirfail++;
+            }
+            if(nums>=588) break;
+         }
+
+         while(nums<=598) {usleep(1000);}
+
+         while(1) {
+            dirfail=0;
+            if(nums<=617 && nums>=599 && moving_r==0) {
+                if(dirfail>=5) {crash=1; testfail =1; }
+                else dirfail++;
+            }
+            if(nums>=617) break;
+         }
+
+         while(nums<=620) {usleep(1000);}
+
+         // 돌발구간B
+         if (randtest == 0)
+         {
             now_level = CRS_EMERGENCY_B;
             emergencycnt = 0;
-            // crs_emergency = 1;
-            emergency1 = 0;
-            emergency2 = 0;
+
             // 버저로 돌발 소리 내는 코드 필요
-            while (emergency1 == 0)
+            alertscreen=1;
+            while (1)
             {
                 if (emergencycnt >= 100)
                 {
@@ -1114,15 +1216,10 @@ void driveTest()
                     minuspoint = minuspoint + 10;
                 }
                 usleep(100000);
-                if (emerlight == 1)
-                {
-                    emergency1 = 1;
-                }
-                else
-                    emergency1 = 0;
-                emergencycnt++;
+                if (emerlight == 1) break;
+                else emergencycnt++;
             }
-            while (emergency2 == 0)
+            while (1)
             {
                 if (emergencycnt >= 100)
                 {
@@ -1130,54 +1227,96 @@ void driveTest()
                     minuspoint = minuspoint + 10;
                 }
                 usleep(100000);
-                if (carspeed == 0)
-                {
-                    emergency2 = 1;
-                }
-                else
-                    emergency2 = 0;
-                emergencycnt++;
+                if (carspeed == 0) break;
+                else emergencycnt++;
             }
+            alertscreen=0;
+         }
+
+         
+         while(nums<=644) {usleep(1000);}
             // crs_emergency = 0;
-        }
+
+
+            while(1) {
+            dirfail=0;
+            if(nums<=664 && nums>=644 && moving_r==0) {
+                if(dirfail>=5) {crash=1; testfail =1; }
+                else dirfail++;
+            }
+            if(nums>=664) break;
+         }
+
+         while(nums<=687) {usleep(1000);}
+
+        while(1) {
+            dirfail=0;
+            if(nums<=707 && nums>=687 && moving_r==0) {
+                if(dirfail>=5) {crash=1; testfail =1; }
+                else dirfail++;
+            }
+            if(nums>=707) break;
+         }
+
+         while(nums<=771) {usleep(1000);}
+
+        while(1) {
+            dirfail=0;
+            if(nums<=787 && nums>=771 && moving_r==0) {
+                if(dirfail>=5) {crash=1; testfail =1; }
+                else dirfail++;
+            }
+            if(nums>=787) break;
+         }
+
+         while(nums<=803) {usleep(1000);}
+        
         // 교차로구간2
-        // crs_junction = 1;
+
+        
         now_level = CRS_JUNCTION_2;
-        junctioncnt = 0;
-        junctionpass = 0;
-        printf("교차로구간 평가를 시작합니다.\n");
-        while (junctionpass == 0)
-        {
+         // crs_junction = 1;
+         junctioncnt = 0;
+         printf("교차로구간 평가를 시작합니다.\n");
+         while (1)
+         {
             if (junctioncnt >= 300)
             {
                 pritnf("교차로 30초 이내 통과 실패. 실격하셨습니다.\n");
                 testfail = 1;
+                failscreen
             }
             usleep(100000);
-            if () // 적색신호등과 차량교차로 내 위치 판별 true
+
+
+
+            if(nums<=870 && nums>=840 && (traflight==3 || leftlight==0)) // 적색신호등과 차량교차로 내 위치 판별 true
             {
                 pritnf("신호위반 발생! 실격하셨습니다.\n");
                 testfail = 1;
+                failscreen =1;
             }
-            if () // 차량이 교차로지난 위치에 위치함 판별 true
-            {
-                junctionpass = 1;
-            }
+            if (nums>=870) break;// 차량이 교차로지난 위치에 위치함 판별 true
             else
                 junctioncnt++;
-        }
+         }
+        
+         while(nums<=875) {usleep(1000);}
+
+
+
         // crs_junction = 0;
 
         // 돌발구간C
-        if (randtest == 2)
+        
+        if (randtest == 0)
         {
             now_level = CRS_EMERGENCY_C;
             emergencycnt = 0;
-            // crs_emergency = 1;
-            emergency1 = 0;
-            emergency2 = 0;
+
             // 버저로 돌발 소리 내는 코드 필요
-            while (emergency1 == 0)
+            alertscreen=1;
+            while (1)
             {
                 if (emergencycnt >= 100)
                 {
@@ -1185,15 +1324,10 @@ void driveTest()
                     minuspoint = minuspoint + 10;
                 }
                 usleep(100000);
-                if (emerlight == 1)
-                {
-                    emergency1 = 1;
-                }
-                else
-                    emergency1 = 0;
-                emergencycnt++;
+                if (emerlight == 1) break;
+                else emergencycnt++;
             }
-            while (emergency2 == 0)
+            while (1)
             {
                 if (emergencycnt >= 100)
                 {
@@ -1201,41 +1335,58 @@ void driveTest()
                     minuspoint = minuspoint + 10;
                 }
                 usleep(100000);
-                if (carspeed == 0)
-                {
-                    emergency2 = 1;
-                }
-                else
-                    emergency2 = 0;
-                emergencycnt++;
+                if (carspeed == 0) break;
+                else emergencycnt++;
             }
+            alertscreen=0;
+        }
+            
             // crs_emergency = 0;
         }
+
+        while(nums<=955) {usleep(1000);}
+
+        while(1) {
+            dirfail=0;
+            if(nums<=979 && nums>=955 && moving_l==0) {
+                if(dirfail>=5) {crash=1; testfail =1; }
+                else dirfail++;
+            }
+            if(nums>=979) break;
+         }
+
+         while(nums<=1008) {usleep(1000);}
+
+        while(1) {
+            dirfail=0;
+            if(nums<=1032 && nums>=1008 && moving_l==0) {
+                if(dirfail>=5) {crash=1; testfail =1; }
+                else dirfail++;
+            }
+            if(nums>=1032) break;
+         }
+
+         while(nums<=1045) {usleep(1000);}
+
         // 가속구간
         now_level = CRS_ACCEL;
         // crs_accel = 1;
         carspeedmax = 0;
-        accelcheck = 0;
-        accelsuccess = 0;
-        while (accelcheck == 0)
+        accelcheck =0;
+        while (1)
         {
             if (carsspeed == 0)
             {
                 pritnf("가속구간내 정지. 실격하셨습니다.\n");
                 testfail = 1;
             }
-            if ((carspeedmax == 50) & (accelfin))
+            if ((carspeed == 2) && nums<=1080 )
             {
-                accelsuccess = 1;
-                accelcheck = 1;
-            } // 가속구간돌입시 0.1초마다 현재 스피드 저장하는 함수필요
-            else if ((carspeedmax <= 49) & (accelfin))
-            {
-                accelsuccess = 0;
-                accelcheck = 1;
-            } // accelfin = 가속구간 종료지점 통과감지
+                accelcheck++;
+            }
+            if(nums>=1080) break;
         }
-        if (accelsuccess == 0)
+        if (accelcheck <= 5)
         {
             pritnf("가속구간 실패. 10점감점되었습니다.\n");
             minuspoint = minuspoint + 10;
@@ -1243,15 +1394,15 @@ void driveTest()
         // crs_accel = 0;
 
         // 돌발구간D
-        if (randtest == 3)
+        
+        if (randtest == 0)
         {
             now_level = CRS_EMERGENCY_D;
             emergencycnt = 0;
-            // crs_emergency = 1;
-            emergency1 = 0;
-            emergency2 = 0;
+
             // 버저로 돌발 소리 내는 코드 필요
-            while (emergency1 == 0)
+            alertscreen=1;
+            while (1)
             {
                 if (emergencycnt >= 100)
                 {
@@ -1259,15 +1410,10 @@ void driveTest()
                     minuspoint = minuspoint + 10;
                 }
                 usleep(100000);
-                if (emerlight == 1)
-                {
-                    emergency1 = 1;
-                }
-                else
-                    emergency1 = 0;
-                emergencycnt++;
+                if (emerlight == 1) break;
+                else emergencycnt++;
             }
-            while (emergency2 == 0)
+            while (1)
             {
                 if (emergencycnt >= 100)
                 {
@@ -1275,27 +1421,35 @@ void driveTest()
                     minuspoint = minuspoint + 10;
                 }
                 usleep(100000);
-                if (carspeed == 0)
-                {
-                    emergency2 = 1;
-                }
-                else
-                    emergency2 = 0;
-                emergencycnt++;
+                if (carspeed == 0) break;
+                else emergencycnt++;
             }
-            crs_emergency = 0;
+            alertscreen=0;
         }
+
+        while(nums<=1100) {usleep(1000);}
+
+
+        while(1) {
+            dirfail=0;
+            if(nums<=1132 && nums>=1108 && moving_l==0) {
+                if(dirfail>=5) {crash=1; testfail =1; }
+                else dirfail++;
+            }
+            if(nums>=1132) break;
+         }
+
+         while(nums<=1154) {usleep(1000);}
+
+
         // 종료구간
         crs_final = 1;
-        finalcheck = 0;
-        finalsuccess = 0;
-        while (finalcheck == 0)
+        while (1)
         {
-            if ((finalplace) & (rightlight))
+            if ((nums<=1175 && nums>=1210) & (rightlight))
                 finalsuccess = 1;
             finalcheck == 1;
             else if ((finalplace) & (!rightlight)) finalsuccess = 0;
-            finalcheck == 1;
         }
         if (finalsuccess == 0)
         {
