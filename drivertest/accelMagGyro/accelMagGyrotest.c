@@ -44,9 +44,9 @@ int main(void)
     double ang;
     int first_accel[3];
     int second_accel[3];
-    int moving;
-    int moving_l;
-    int moving_r;
+    int moving = 0;
+    int moving_l = 0;
+    int moving_r = 0;
     printf("Set Default Value\n");
     getAccel(first_accel);
 
@@ -63,6 +63,7 @@ int main(void)
                 // +3
                 printf("  Handle Turn Right \n");
                 moving_r = 1;
+                moving += 1;
                 printf("Moving : %d  Moving L : %d,  Moving_r : %d\n", moving, moving_l, moving_r);
                 sleep(1);
             
@@ -76,6 +77,7 @@ int main(void)
                 // rcar -= 3; printf("r=%d\n", rcar); break; //  기울이고 있는 동안 이동하도록
                 printf(" Handle Turn Left \n");
                 moving_l = 1;
+                moving += 1;
                printf("Moving : %d  Moving L : %d,  Moving_r : %d\n", moving, moving_l, moving_r);
                 sleep(1);
             }
