@@ -1307,7 +1307,6 @@ void *ScreenOutput(void)
              // 기본조작 진행중일 때
                 usleep(100000); // 0.1초 대기 10fps
                 strcpy(bmpfile, "");
-                nums=0;
                 snprintf(bmpfile, sizeof(bmpfile), "%d", nums); // nums변수로 현재 프레임확인
                 strcat(bmpfile, ".bmp");
                 // FileRead
@@ -1719,8 +1718,10 @@ void driveTest()
         gameoverlaycheck=0;
         if (scBTN_startup == 1) {
                 printf("시동 확인.\n");
+                nums=1;
                 gameoverlaycheck=6;
                 sleep(3);
+                nums=2;
                 gameoverlaycheck=0;
             }
         else { gameoverlaycheck=5; testfail=1;
@@ -1916,7 +1917,8 @@ void driveTest()
             failscreen =1;
         }
         if(nums>=18) break;
-        else {sleep(1); startcnt++;}
+        else {startcnt++;}
+        sleep(1); 
         }
 
         while(nums<=25 && nums>=21) { if (leftlight) {
