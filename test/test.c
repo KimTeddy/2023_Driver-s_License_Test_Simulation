@@ -938,9 +938,7 @@ void *AccelWork(void){
 
 void *movecheck(void){
     while(1) {
-    while(accelen==1) {
         nums = moving+2;
-    }
     }
 }
 
