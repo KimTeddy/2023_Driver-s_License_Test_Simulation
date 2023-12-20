@@ -93,7 +93,7 @@ int nums3 = 0;
 int nums4 = 0;
 int leaderboard=0;
 
-    int accel[3];
+   int accel[3];
     int magnet[3];
     int gyro[3];
     double ang;
@@ -108,6 +108,8 @@ int leaderboard=0;
     //우회전시 1이 되도록
     int break_on = 0;
     //뒤로 기울인 각도 크면 break_on = 1이 되도록
+    int moving_f = 0;
+    int moving_b = 0;
 
 *trafLightState = 0; // reset RGB LED state
 
@@ -275,7 +277,7 @@ void calcAngle() // 각도 계산
     AcX = angle[0];
     AcY = angle[1];
     AcZ = angle[2];
-
+//
     //AcX = angle[0] << 8 | angle[0];
     //AcY = angle[1] << 8 | angle[1];
     //AcZ = angle[2] << 8 | angle[2];
@@ -294,10 +296,10 @@ void calcAngle() // 각도 계산
 
 void *AccelWork(void){
     
-    printf("Set Default Value\n");
+     printf("Set Default Value\n");
     getAccel(first_accel);
 
-    while(1) //game이 끝날 때 까지 second_accel값 받아서 기울기 계산
+   while(1) //game이 끝날 때 까지 second_accel값 받아서 기울기 계산
     {        // 나중에 1 대신 트리거 변수로 바꾸기.
         
             getAccel(second_accel);
@@ -313,12 +315,14 @@ void *AccelWork(void){
                 //rcar += 3; printf("r=%d\n", rcar); break;  기울이고 있는 이동하도록
                 // +3
                 printf("  Handle Turn Right \n");
+                moving_f = 0;
+                moving_b = 0;
                 moving_r = 1;
                 moving_l = 0;
                 moving += 1;
-                printf("Moving : %d  Moving L : %d,  Moving_r : %d\n", moving, moving_l, moving_r);
+                printf("Moving : %d  Moving L : %d,  Moving_r : %d, Moving_f : %d, Moving_b : %d\n", moving, moving_l, moving_r, moving_f, moving_b);
+                //sleep(1);
                 usleep(accel_t);
-                
             
             }
 
@@ -330,12 +334,15 @@ void *AccelWork(void){
                 //
                 // rcar -= 3; printf("r=%d\n", rcar); break; //  기울이고 있는 동안 이동하도록
                 printf(" Handle Turn Left \n");
+                moving_f = 0;
+                moving_b = 0;
                 moving_l = 1;
                 moving_r = 0;
                 moving += 1;
-               printf("Moving : %d  Moving L : %d,  Moving_r : %d\n", moving, moving_l, moving_r);
-               usleep(accel_t);
+               printf("Moving : %d  Moving L : %d,  Moving_r : %d, Moving_f : %d, Moving_b : %d\n", moving, moving_l, moving_r, moving_f, moving_b);
+               //sleep(1);
                 //sleep(1);
+                usleep(accel_t);
             }
 
             else if( first_accel[2] - second_accel[2] > 4000 && first_accel[2] - second_accel[2] < 9000  && !(second_accel[0] - first_accel[0] > 5000) && !(first_accel[0] - second_accel[0] > 5000)) 
@@ -347,10 +354,13 @@ void *AccelWork(void){
 
                 // ~ 차 속도를 감소하는 코드?
                 moving -= 1;
+                moving_f = 0;
+                moving_b = 1;
                 printf(" Slow Down \n");
-                printf("Moving : %d  Moving L : %d,  Moving_r : %d\n", moving, moving_l, moving_r);
-                usleep(accel_t);
+                printf("Moving : %d  Moving L : %d,  Moving_r : %d, Moving_f : %d, Moving_b : %d\n", moving, moving_l, moving_r, moving_f, moving_b);
                 //sleep(1);
+                //sleep(1);
+                usleep(accel_t);
             }
             
             else if( second_accel[0] - first_accel[0] > 5000 && first_accel[2] - second_accel[2] > 4000 && first_accel[2] - second_accel[2] < 9000)
@@ -362,9 +372,9 @@ void *AccelWork(void){
                 moving -= 1;
                 moving_l = 1;
                 printf(" Reverse Left \n");
-                printf("Moving : %d  Moving L : %d,  Moving_r : %d\n", moving, moving_l, moving_r);
+                printf("Moving : %d  Moving L : %d,  Moving_r : %d, Moving_f : %d, Moving_b : %d\n", moving, moving_l, moving_r, moving_f, moving_b);
+                //sleep(1);
                 usleep(accel_t);
-
             }
             else if( first_accel[0] - second_accel[0] > 5000 && first_accel[2] - second_accel[2] > 4000 && first_accel[2] - second_accel[2] < 9000)
             //first_accel[2] - second_accel[2] > 4000 && first_accel[2] - second_accel[2] < 8000 -> slow down 구간 키트를 뒤로 적당히 기울인 경우 
@@ -375,7 +385,8 @@ void *AccelWork(void){
                 moving -= 1;
                 moving_r = 1;
                 printf(" Reverse Right \n");
-                printf("Moving : %d  Moving L : %d,  Moving_r : %d\n", moving, moving_l, moving_r);
+                printf("Moving : %d  Moving L : %d,  Moving_r : %d, Moving_f : %d, Moving_b : %d\n", moving, moving_l, moving_r, moving_f, moving_b);;
+                //sleep(1);
                 usleep(accel_t);
 
             }
@@ -390,8 +401,9 @@ void *AccelWork(void){
                     moving_r = 0;
                     //breakon
                     printf("Break On!\n");
-                    printf("Moving : %d  Moving L : %d,  Moving_r : %d\n", moving, moving_l, moving_r);
+                    printf("Moving : %d  Moving L : %d,  Moving_r : %d, Moving_f : %d, Moving_b : %d\n", moving, moving_l, moving_r, moving_f, moving_b);
                     usleep(accel_t);
+                    //sleep(1);
                    //sleep(1);
             }
         
@@ -403,14 +415,17 @@ void *AccelWork(void){
                 moving += 1;
                 moving_l = 0;
                 moving_r = 0;
+                moving_f = 1;
+                moving_b = 0;
                 /*speed = 1;  //조금만 기울인 경우 speed = 1;
                 dxcar = speed * cos((180-rcar) * PI / 180.0); xcar += dxcar;
                 dycar = speed * sin((180-rcar) * PI / 180.0); ycar += dycar;
                 break;
                 */
                 printf(" Car Moving Forward \n");
-                printf("Moving : %d  Moving L : %d,  Moving_r : %d\n", moving, moving_l, moving_r);
+                printf("Moving : %d  Moving L : %d,  Moving_r : %d, Moving_f : %d, Moving_b : %d\n", moving, moving_l, moving_r, moving_f, moving_b);
                 usleep(accel_t);
+                //sleep(1);
                 //sleep(1);
             }
 
@@ -421,6 +436,8 @@ void *AccelWork(void){
                     moving += 2;  
                     moving_l = 0;
                     moving_r = 0; 
+                    moving_f = 1;
+                    moving_b = 0;
                     /*
                     speed = 2;  //많이 기울인 경우 speed = 2로 설정하여 가속
                     dxcar = speed * cos((180-rcar) * PI / 180.0); xcar += dxcar;
@@ -428,20 +445,22 @@ void *AccelWork(void){
                     break; 
                     */
                     printf(" Car Accelation! \n");
-                    printf("Moving : %d  Moving L : %d,  Moving_r : %d\n", moving, moving_l, moving_r);
-                    //sleep(1);
+                    printf("Moving : %d  Moving L : %d,  Moving_r : %d, Moving_f : %d, Moving_b : %d\n", moving, moving_l, moving_r, moving_f, moving_b);
                     usleep(accel_t);
+                    //sleep(1);
+                    //sleep(1);
                 }
                 
             else if(first_accel[0] - second_accel[0] > 5000 && second_accel[2] - first_accel[2] > 4000 && second_accel[2] - first_accel[2] < 9000) 
             { 
                 printf(" Going Left! \n");
-                usleep(accel_t);
+                sleep(1);
                 //앞으로 기울인 상태에서 왼쪽으로 기울이면 악셀 + 핸들 왼쪽을 돌리면 옆으로 같이 진행하도록
                 moving += 1;
                 moving_l = 1;
-                printf("Moving : %d  Moving L : %d,  Moving_r : %d\n", moving, moving_l, moving_r);
+                printf("Moving : %d  Moving L : %d,  Moving_r : %d, Moving_f : %d, Moving_b : %d\n", moving, moving_l, moving_r, moving_f, moving_b);
                 usleep(accel_t);
+                //sleep(1);
                 // 전진좌 : moving + 1, moving_l = 1
                 /*
                 rcar += 3;
@@ -458,8 +477,9 @@ void *AccelWork(void){
                 
                 moving += 1;
                 moving_r = 1;
-                printf("Moving : %d  Moving L : %d,  Moving_r : %d\n", moving, moving_l, moving_r);
+                printf("Moving : %d  Moving L : %d,  Moving_r : %d, Moving_f : %d, Moving_b : %d\n", moving, moving_l, moving_r, moving_f, moving_b);
                 usleep(accel_t);
+                //sleep(1);
                 // 전진우 : moving + 1, moving_r = 1
 
                 //앞으로 기울인 상태에서 오른쪽으로 기울이면 ==> 악셀 + 핸들 오른쪽을 돌리면 옆으로 같이 진행하도록
@@ -481,7 +501,8 @@ void *AccelWork(void){
                 moving -= 1;
                 moving_l = 1;
                 printf("Reverse Left\n");
-                printf("Moving : %d  Moving L : %d,  Moving_r : %d\n", moving, moving_l, moving_r);
+                printf("Moving : %d  Moving L : %d,  Moving_r : %d, Moving_f : %d, Moving_b : %d\n", moving, moving_l, moving_r, moving_f, moving_b);
+                //sleep(1);
                 usleep(accel_t);
             }
 
@@ -493,7 +514,8 @@ void *AccelWork(void){
                 moving -= 1;
                 moving_r = 1;
                 printf("Reverse Right\n");
-                printf("Moving : %d  Moving L : %d,  Moving_r : %d\n", moving, moving_l, moving_r);
+                printf("Moving : %d  Moving L : %d,  Moving_r : %d, Moving_f : %d, Moving_b : %d\n", moving, moving_l, moving_r, moving_f, moving_b);
+                //sleep(1);
                 usleep(accel_t);
             }
             
@@ -503,11 +525,14 @@ void *AccelWork(void){
               // moving은 증가안하고 고정.
                 moving_l = 0;
                 moving_r = 0;    
+                moving_f = 0;
+                moving_b = 0;
                 //moving -= 1;
                 printf("Middle Stance\n");
-                printf("Moving : %d  Moving L : %d,  Moving_r : %d\n", moving, moving_l, moving_r);
-                usleep(accel_t);
+               printf("Moving : %d  Moving L : %d,  Moving_r : %d, Moving_f : %d, Moving_b : %d\n", moving, moving_l, moving_r, moving_f, moving_b);
                 //sleep(1);
+                //sleep(1);
+                usleep(accel_t);
             }
 
             
@@ -1198,7 +1223,7 @@ void driveTest()
         default:
             printf("random init failed");
         }
-        
+
         pthread_create(&thread_object_7, NULL, AccelWork, NULL);
         pthread_create(&thread_object_8, NULL, movecheck, NULL);
 
