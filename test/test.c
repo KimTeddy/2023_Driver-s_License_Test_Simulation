@@ -247,7 +247,7 @@ void *count(void)
       cnt[1] = 0;
       cnt[2] = 0;
       str1 = "PRESS START";
-    while ( !(CRS_MANUAL) && !(CRS_MAIN) )
+    while (1)
 	  {
       //cnt += 1;
 		  sprintf(str_cnt0, "%d", cnt[0]);
