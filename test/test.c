@@ -61,6 +61,8 @@ pthread_t thread_object_8; // 스레드 8 for accel connect to num
 pthread_t thread_object_9; // 스레드 9 for touchscreen
 pthread_t thread_object_10; // 스레드 10 for buzzerwork
 pthread_t thread_object_11; // 스레드 11 for textlcd
+pthread_t thread_object_12; // 스레드 12 for check
+pthread_t thread_object_13; // 스레드 13 for failstate
 
 int scBTN_Start = 0, scBTN_Manual = 0, scBTN_Leaderbd = 0; // 스크린터치로 인식할 시작/코스설명/리더보드 버튼 변수
 int scBTN_prevpage =0, scBTN_Nextpage = 0, scBTN_gotomain=0, scBTN_gotostart=0; // 메뉴얼 안에서 이전 이후 페이지, 메인이동, 시작이동 버튼변수
@@ -252,36 +254,35 @@ void *txtdisplay(void)
 */
 /*---------------------------------------바이패스--------------------------------------*/
 
-int satetybelt_bypass = 0;
-//int safetybelt = 0;
-//int testfail = 0;
+int safetybelt_bypass = 0;
+int sidebrake_bypass = 0;
+
 void *check(void) {
 while (1) {
-    testfail = 0;
- if(satetybelt_bypass == 0)
+ if(safetybelt_bypass == 0)
  {
-    break;
+    if(safetybelt==0) testfail = 1;
  }
-}
-if (satetybelt_bypass == 0 && safetybelt == 0) {
-    testfail = 1;
+else if(sidebrake_bypass == 0)
+{
+    minuspoint = minuspoint+5;
+    sleep(1);
 }
 
-int sidebrake_bypass = 0;
-//int sidebrake = 1;
-//int minuspoint = 0;
+}
+}
 
-while (sidebrake_bypass == 1) {
-    minuspoint = 0;
-    if (sidebrake_bypass == 0)
-    { 
-        break; 
-    }
+void *failcheck(void) {
+while (1) {
+ if(testfail) {
+    accelen=0;
+    usleep(5);
+    testfail=0;
+ }
+
 }
-if (sidebrake_bypass == 0 && sidebrake == 1) {
-    minuspoint = minuspoint + 5;
 }
-}
+
 /*---------------------------------------바이패스--------------------------------------*/
 void *count(void)
   {
@@ -1717,8 +1718,8 @@ void driveTest()
     showstate = 1;  // 화면에 메뉴얼 출력. 메뉴얼 0페이지는 시험 시작전 코스설명 yes no 선택페이지로. 1페이지부터 코스설명.
     int next = 1;   // teststart = 1, mainmenu = 2 : default teststart
     // 시험을 시작하기에 앞서 코스 설명을 진행하겠습니다. (스킵 여부 물어서 스킵 가능하게.)
-    if (now_level==CRS_MANUAL)
-        next = showManual();
+    //if (now_level==CRS_MANUAL)
+    //    next = showManual();
     // 화면의 시작하기를 누를경우(testStart)
     if (next == 1)
     {
@@ -2006,7 +2007,8 @@ void driveTest()
             printf("출발실패. 실격하셨습니다.\n");
             gameoverlaycheck=29;
             testfail = 1;
-            failscreen =1;
+            gameoverlaycheck=54;
+                sleep(3);
                 return 1;
         }
         if(nums>=18) break;
@@ -2039,7 +2041,8 @@ void driveTest()
                 printf("경사구간 실패. 실격하셨습니다.\n");
                 gameoverlaycheck=34;
                 testfail = 1;
-                failscreen =1;
+                gameoverlaycheck=54;
+                sleep(3);
                 return 1;
             }
             usleep(100000);
@@ -2055,7 +2058,8 @@ void driveTest()
                 printf("경사구간 실패. 실격하셨습니다.\n");
                 gameoverlaycheck=34;
                 testfail = 1;
-                failscreen =1;
+                gameoverlaycheck=54;
+                sleep(3);
                 return 1;
             }
             usleep(100000);
@@ -2069,7 +2073,8 @@ void driveTest()
                 printf("경사구간 실패. 실격하셨습니다.\n");
                 gameoverlaycheck=34;
                 testfail = 1;
-                failscreen =1;
+                gameoverlaycheck=54;
+                sleep(3);
                 return 1;
             }
             usleep(100000);
@@ -2163,7 +2168,8 @@ void driveTest()
                 printf("교차로 30초 이내 통과 실패. 실격하셨습니다.\n");
                 gameoverlaycheck=42;
                 testfail = 1;
-                failscreen=1;
+               gameoverlaycheck=54;
+                sleep(3);
             }
             usleep(100000);
             if(nums<=302 && nums>=273 && trafLightState==3) // 적색신호등과 차량교차로 내 위치 판별 true
@@ -2171,7 +2177,8 @@ void driveTest()
                 printf("신호위반 발생! 실격하셨습니다.\n");
                 gameoverlaycheck=43;
                 testfail = 1;
-                failscreen =1;
+                gameoverlaycheck=54;
+                sleep(3);
                 return 1;
             }
             if (nums>=303) {buzzerPlaySong(740);
@@ -2197,7 +2204,8 @@ void driveTest()
                 printf("주차 30초 이내 통과 실패. 실격하셨습니다.\n");
                 gameoverlaycheck=37;
                 testfail = 1;
-                failscreen =1;
+                gameoverlaycheck=54;
+                sleep(3);
                 return 1;
             }
             
@@ -2208,7 +2216,8 @@ void driveTest()
                 printf("주차 30초 이내 통과 실패. 실격하셨습니다.\n");
                 gameoverlaycheck=37;
                 testfail = 1;
-                failscreen =1;
+                gameoverlaycheck=54;
+                sleep(3);
                 return 1;
             }
             dirfail=0;
@@ -2227,7 +2236,8 @@ void driveTest()
                 printf("주차 30초 이내 통과 실패. 실격하셨습니다.\n");
                 gameoverlaycheck=37;
                 testfail = 1;
-                failscreen =1;
+                gameoverlaycheck=54;
+                sleep(3);
                 return 1;
             }
             else parkingcnt++;
@@ -2240,7 +2250,8 @@ void driveTest()
                 printf("주차 30초 이내 통과 실패. 실격하셨습니다.\n");
                 gameoverlaycheck=37;
                 testfail = 1;
-                failscreen =1;
+                gameoverlaycheck=54;
+                sleep(3);
                 return 1;
             }
             
@@ -2259,7 +2270,8 @@ void driveTest()
                 printf("주차 30초 이내 통과 실패. 실격하셨습니다.\n");
                 gameoverlaycheck=37;
                 testfail = 1;
-                failscreen =1;
+                gameoverlaycheck=54;
+                sleep(3);
                 return 1;
             }
             dirfail=0;
@@ -2278,7 +2290,8 @@ void driveTest()
                 printf("주차 30초 이내 통과 실패. 실격하셨습니다.\n");
                 gameoverlaycheck=37;
                 testfail = 1;
-                failscreen =1;
+                gameoverlaycheck=54;
+                sleep(3);
                 return 1;
             }
             dirfail=0;
@@ -2298,7 +2311,8 @@ void driveTest()
                 printf("주차 실패. 실격하셨습니다.\n");
                 gameoverlaycheck=37;
                 testfail = 1;
-                failscreen =1;
+                gameoverlaycheck=54;
+                sleep(3);
                 return 1;
             }
             usleep(100000);
@@ -2314,7 +2328,8 @@ void driveTest()
                 printf("주차 실패. 실격하셨습니다.\n");
                 gameoverlaycheck=37;
                 testfail = 1;
-                failscreen =1;
+                gameoverlaycheck=54;
+                sleep(3);
                 return 1;
             }
             usleep(100000);
@@ -2444,7 +2459,8 @@ void driveTest()
                 printf("교차로 30초 이내 통과 실패. 실격하셨습니다.\n");
                 gameoverlaycheck=42;
                 testfail = 1;
-                failscreen=1;
+                gameoverlaycheck=54;
+                sleep(3);
             }
             usleep(100000);
 
@@ -2453,7 +2469,8 @@ void driveTest()
                 printf("신호위반 발생! 실격하셨습니다.\n");
                 gameoverlaycheck=43;
                 testfail = 1;
-                failscreen =1;
+                gameoverlaycheck=54;
+                sleep(3);
                 return 1;
             }
 
@@ -2719,7 +2736,8 @@ int main(void)
         return 1;
     }
     trafLightState = (int *)shmat(shmID, (void *)NULL, 0); // 공유메모리에 접근이 가능하도록 공유메모리 주소값으로 포인터 초기화
-
+    pthread_create(&thread_object_12, NULL, check, NULL);
+    pthread_create(&thread_object_13, NULL, failcheck, NULL);
     pthread_create(&thread_object_1, NULL, trafLight, NULL);
     pthread_create(&thread_object_11, NULL, textlcd, NULL);
     pthread_create(&thread_object_2, NULL, btncheck, NULL);
@@ -2746,6 +2764,8 @@ int main(void)
     pthread_join(thread_object_9, NULL);
     pthread_join(thread_object_10, NULL);
    pthread_join(thread_object_11, NULL);
+   pthread_join(thread_object_12, NULL);
+   pthread_join(thread_object_13, NULL);
     // shmdt(trafLightState); // 공유메모리 연결 해제
 
     //  return 0; // 프로그램 종료
