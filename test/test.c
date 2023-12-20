@@ -2593,7 +2593,7 @@ void addLeaderBoard() {} // 리더보드 편집 함수 작성
 
 int main(void)
 {
-    simuwork = 0;
+    simuwork = 1;
     int shmID = shmget((key_t)7777, sizeof(int), IPC_CREAT | 0666); // 공유메모리 생성 요청, 이미 존재한다면 식별자 반환
     if (shmID == -1)
     {
