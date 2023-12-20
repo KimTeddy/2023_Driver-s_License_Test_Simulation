@@ -39,9 +39,6 @@ pthread_t thread_object_6; // 스레드 6 for lcd overlay output
 pthread_t thread_object_7; // 스레드 7 for accel work
 pthread_t thread_object_8; // 스레드 7 for accel connect to num
 
-// pthread_mutex_t lock1; // for traflight
-// pthread_mutex_t lock2; // for  btnstate
-
 int scBTN_Start = 0, scBTN_Manual = 0, scBTN_Leaderbd = 0; // 스크린터치로 인식할 시작/코스설명/리더보드 버튼 변수
 int scBTN_prevpage =0, scBTN_Nextpage = 0, scBTN_gotomain=0, scBTN_gotostart=0; // 메뉴얼 안에서 이전 이후 페이지, 메인이동, 시작이동 버튼변수
 int scBTN_startup=0, scBTN_Wiper = 0, scBTN_Lightup =0, scBTN_Lightdown =0; // 스크린터치 버튼으로 감지할 변수들. (토글작동해야함)
@@ -904,7 +901,8 @@ void driveTest()
     {
          scBTN_Start = 0;
          nums=0; // 게임화면 0으로 시작
-        showstate = 3; // 화면에 운전이미지 표시 시작.0번은 시작위치.
+        showstate = 4; // 화면에 운전이미지 정지 표시 시작.0번은 디폴트. 이미지 00000고정
+
         next = 0;
         // 돌발 및 기본조작 랜덤설정
         srand((unsigned int)time(NULL));
@@ -915,6 +913,12 @@ void driveTest()
             //crs_basic = 1; // 기본조작평가 트리거
         printf("기본조작평가를 시작합니다.\n");
          //
+        printf("먼저, 3초 안에 시동을 켜십시오\n");
+        sleep(3);
+        if (scBTN_startup == 1) {
+                printf("시동 확인.\n");
+                sleep(1);
+            }
         switch (randtest)
         {
         case 0: // 상향등, 와이퍼 체크
@@ -1039,32 +1043,32 @@ void driveTest()
         }
         printf("기본조작테스트가 끝났습니다. 좌측 방향지시등을 켠 후 10초내에 출발하십시오.\n");
         sleep(10);
-        if (nums<=27) // 출발선 이전
+        if (nums<=17) // 출발선 이전
         {
             printf("출발실패. 실격하셨습니다.\n");
             testfail = 1;
             failscreen =1;
         }
-        while(nums<=78) {usleep(1000);}
-       if (nums>=78) now_level = CRS_UPHILL;
+        while(nums<=71) {usleep(1000);}
+       if (nums>=72) now_level = CRS_UPHILL;
         uphillcnt = 0;
         printf("경사구간평가를 시작합니다.\n");
         printf("지정된 위치에 정차 후 사이드브레이크를 올린 후, 삑 소리가 나면 사이드브레이크를 내리고 진행하십시오.\n");
         while (1)
         {
-            if (uphillcnt >= 300 || nums>=111)
+            if (uphillcnt >= 300 || nums>=91)
             {
                 printf("경사구간 실패. 실격하셨습니다.\n");
                 testfail = 1;
                 failscreen =1;
             }
             usleep(100000);
-            if (nums<=110 && nums>=102 && sidebrake) break; // 경사구간 선 안에 위치한경우
+            if (nums<=91 && nums>=77 && sidebrake) break; // 경사구간 선 안에 위치한경우
             else uphillcnt++;
         }
         while (1)
         {
-            if (uphillcnt >= 300 || (nums>=111 && sidebrake==0) )
+            if (uphillcnt >= 300 || (nums>=111 && sidebrake==1) )
             {
                 printf("경사구간 실패. 실격하셨습니다.\n");
                 testfail = 1;
@@ -1083,7 +1087,7 @@ void driveTest()
                 failscreen =1;
             }
             usleep(100000);
-            if (nums>=115) break;
+            if (nums>=97) break;
             else uphillcnt++;
         }
 
