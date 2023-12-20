@@ -37,7 +37,7 @@ int16_t AcX, AcY, AcZ, GyX, GyY, GyZ;
 double angle_x, angle_y, angle_z;
 double angle[3];
 
-  char* str1 = "hello";
+  char* str1 = "hello                           ";
   const char* str2 = "embedded system";
   
   char str_cnt0[10];
@@ -222,6 +222,7 @@ void *txtdisplay(void)
 		else if (now_level == CRS_EMERGENCY_A||now_level == CRS_EMERGENCY_B|| now_level == CRS_EMERGENCY_C||now_level == CRS_EMERGENCY_D)
 		{
             str1 = "EMERGENCY         ";
+         
 		  // 	lcdtextwrite( "EMERGENCY         ", "CAR SIMULAT", 1);
 		   //	lcdtextwrite( "EMERGENCY         ", str_cnt, 2);
   	  		//lcdtextwrite( "EMERGENCY         ", "CAR SIMULAT", 2);
@@ -256,12 +257,12 @@ void *count(void)
           sprintf(str_cnt1, "%d", cnt[1]);
           sprintf(str_cnt2, "%d", cnt[2]);
           sprintf(str_cnt3, "%d", cnt[3]);
-          sprintf(str_cnt, "           %d %d%d",  cnt[2], cnt[1], cnt[0]);
+          sprintf(str_cnt, "           %d:%d%d",  cnt[2], cnt[1], cnt[0]);
 		  usleep(50000);    //테스트용
           //sleep(1);       //시연용
           lcdtextwrite( str1, str_cnt, 1);
 	      lcdtextwrite( str1, str_cnt, 2);
-
+            //sprintf(str1, "%s", "PRESS START");
         
         if (cnt[0] == 9) 
         {
@@ -276,8 +277,9 @@ void *count(void)
             
    	    if (now_level == CRS_MAIN)
 		{
-            str1 = "PRESS START";
-		   //  lcdtextwrite( "PRESS START", "CAR S", 1);
+            //str1 = "PRESS START";
+		   sprintf(str1, "%s", "PRESS START");
+           //  lcdtextwrite( "PRESS START", "CAR S", 1);
 			 //  lcdtextwrite( "PRESS START", str_cnt, 2);
  			  // lcdtextwrite( "PRESS START", "CAR S", 2);
 			  //MAIN에서는 LCD 윗단에는 "PRESS START" 출력, 
@@ -285,8 +287,8 @@ void *count(void)
 	  	}
         else if(now_level == CRS_MANUAL)
         {
-            str1 = "MANUAL        ";
-
+            //str1 = "MANUAL        ";
+            sprintf(str1, "%s", "MANUAL        ");
         }  
 		else if (now_level == CRS_START)	
 		{
