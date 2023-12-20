@@ -47,7 +47,7 @@ double angle[3];
   char str_cnt[100];
 
   int cnt[5] = {0,};
-  pthread_t tid[2];
+pthread_t tid[2];
 
 pthread_t thread_object_1;  // 스레드 1 for rgb led
 pthread_t thread_object_2;  // 스레드 2 for btn and led
@@ -60,6 +60,7 @@ pthread_t thread_object_7; // 스레드 7 for accel work
 pthread_t thread_object_8; // 스레드 8 for accel connect to num
 pthread_t thread_object_9; // 스레드 9 for touchscreen
 pthread_t thread_object_10; // 스레드 10 for buzzerwork
+pthread_t thread_object_11; // 스레드 11 for textlcd
 
 int scBTN_Start = 0, scBTN_Manual = 0, scBTN_Leaderbd = 0; // 스크린터치로 인식할 시작/코스설명/리더보드 버튼 변수
 int scBTN_prevpage =0, scBTN_Nextpage = 0, scBTN_gotomain=0, scBTN_gotostart=0; // 메뉴얼 안에서 이전 이후 페이지, 메인이동, 시작이동 버튼변수
@@ -155,7 +156,7 @@ int showstate = 0; // 스크린에 표시할 이미지 state 변수. 0 = 메인�
 	// 화면에 따라 구간을 구분할 수 있는 트리거를 설정.
 */
 
-void *txtdisplay()
+void *txtdisplay(void)
   {
     while (1)
     {
@@ -186,7 +187,7 @@ void *txtdisplay()
 		  	//윗단에 "CAR COMPONENT"
 		  	// 네모 2개
 		  }
-		  else if (CRS_UP)
+		  else if (CRS_UPHILL)
 		  {
         str1 = "UP HILL        ";   
 		   //	lcdtextwrite( "UP HILL        ", "CAR SIMU", 1);
@@ -194,7 +195,7 @@ void *txtdisplay()
   	  		//lcdtextwrite( "UP HILL        ", "CAR SIMU", 2);
 		  	// 윗단에 "UP HILL" 
 		  }
-		  else if (CRS_JUNCTION)
+		  else if (CRS_JUNCTION_1 || CRS_JUNCTION_2)
 		  {
         str1 = "JUNCTION   ";   
 	  	 //	lcdtextwrite( "JUNCTION   ", "CAR SIMUL", 1);
@@ -210,7 +211,7 @@ void *txtdisplay()
   			//lcdtextwrite( "PARKING         ", "CAR SIMULA", 2);
 			  // "PARKING"
 		  }
-		  else if (CRS_EMERGENCY)
+		  else if (CRS_EMERGENCY_A||CRS_EMERGENCY_B||CRS_EMERGENCY_C||CRS_EMERGENCY_D)
 		  {
         str1 = "EMERGENCY         ";
 		  // 	lcdtextwrite( "EMERGENCY         ", "CAR SIMULAT", 1);
@@ -237,7 +238,7 @@ void *txtdisplay()
     }
   } 
 
-void *count()
+void *count(void)
   {
     while (1)
 	  {
@@ -292,7 +293,7 @@ else
 		  	//윗단에 "CAR COMPONENT"
 		  	// 네모 2개
 		  }
-		  else if (CRS_UP)
+		  else if (CRS_UPHILL)
 		  {
         str1 = "UP HILL        ";   
 		   //	lcdtextwrite( "UP HILL        ", "CAR SIMU", 1);
@@ -300,7 +301,7 @@ else
   	  		//lcdtextwrite( "UP HILL        ", "CAR SIMU", 2);
 		  	// 윗단에 "UP HILL" 
 		  }
-		  else if (CRS_JUNCTION)
+		  else if (CRS_JUNCTION_1||CRS_JUNCTION_2)
 		  {
         str1 = "JUNCTION   ";   
 	  	 //	lcdtextwrite( "JUNCTION   ", "CAR SIMUL", 1);
@@ -316,7 +317,7 @@ else
   			//lcdtextwrite( "PARKING         ", "CAR SIMULA", 2);
 			  // "PARKING"
 		  }
-		  else if (CRS_EMERGENCY)
+		  else if (CRS_EMERGENCY_A||CRS_EMERGENCY_B||CRS_EMERGENCY_C||CRS_EMERGENCY_D)
 		  {
         str1 = "EMERGENCY         ";
 		  // 	lcdtextwrite( "EMERGENCY         ", "CAR SIMULAT", 1);
@@ -344,9 +345,8 @@ else
 }
   
 
-int main()
+void *textlcd()
 {
-  
   txtlcd_Init();
   //BASIC UP JUNCTION PARIKNG EMERGENCY ACCEL END
 
@@ -357,7 +357,6 @@ int main()
   pthread_join (tid[1], NULL);
 
 	return 0;
-
 }
   //9 단계로 나뉨 CAR SIMULATOR
  // txtlcd_off();
@@ -2210,6 +2209,7 @@ int main(void)
     trafLightState = (int *)shmat(shmID, (void *)NULL, 0); // 공유메모리에 접근이 가능하도록 공유메모리 주소값으로 포인터 초기화
 
     pthread_create(&thread_object_1, NULL, trafLight, NULL);
+    pthread_create(&thread_object_11, NULL, textlcd, NULL);
     pthread_create(&thread_object_2, NULL, btncheck, NULL);
     pthread_create(&thread_object_10, NULL, buzzerwork, NULL);
     pthread_create(&thread_object_2x, NULL, ledblinks, NULL);
@@ -2233,6 +2233,7 @@ int main(void)
     pthread_join(thread_object_8, NULL);
    pthread_join(thread_object_9, NULL);
     pthread_join(thread_object_10, NULL);
+    pthread_join(thread_object_11, NULL);
     // shmdt(trafLightState); // 공유메모리 연결 해제
 
     //  return 0; // 프로그램 종료
