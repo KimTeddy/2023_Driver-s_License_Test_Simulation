@@ -912,6 +912,7 @@ void *ScreenOutput(void)
             fb_write(data, cols, rows);
             close_bmp();
             usleep(1000000); // 1초 대기
+            
         }
         break;
         case 1:
