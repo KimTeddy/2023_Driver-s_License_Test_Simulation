@@ -316,7 +316,7 @@ void *count(void)
   	  		//lcdtextwrite( "UP HILL        ", "CAR SIMU", 2);
 		  	// 윗단에 "UP HILL" 
 		}
-		else if (now_level == CRS_JUNCTION_1|| now_level == CRS_JUNCTION_2 )
+		else if (now_level == CRS_JUNCTION_1 || now_level == CRS_JUNCTION_2 )
 		{
             str1 = "JUNCTION   ";   
 	  	 //	lcdtextwrite( "JUNCTION   ", "CAR SIMUL", 1);
@@ -332,7 +332,7 @@ void *count(void)
   			//lcdtextwrite( "PARKING         ", "CAR SIMULA", 2);
 			  // "PARKING"
 		}
-		else if (now_level == CRS_EMERGENCY_A||now_level == CRS_EMERGENCY_B|| now_level == CRS_EMERGENCY_C||now_level == CRS_EMERGENCY_D)
+		else if (now_level == CRS_EMERGENCY_A || now_level == CRS_EMERGENCY_B || now_level == CRS_EMERGENCY_C || now_level == CRS_EMERGENCY_D)
 		{
             str1 = "EMERGENCY         ";
 		  // 	lcdtextwrite( "EMERGENCY         ", "CAR SIMULAT", 1);
