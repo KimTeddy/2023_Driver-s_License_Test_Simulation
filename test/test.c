@@ -158,7 +158,7 @@ int showstate = 0; // 스크린에 표시할 이미지 state 변수. 0 = 메인�
 	// scBTN_startup, Wiper, Lightup, Lightdown 나오는 화면 
 	// 화면에 따라 구간을 구분할 수 있는 트리거를 설정.
 */
-
+/*
 void *txtdisplay(void)
   {
     while (1)
@@ -246,24 +246,13 @@ void *txtdisplay(void)
 	    }
     }
   } 
-
+*/
 void *count(void)
   {
 
     while (1)
 	{
       //cnt += 1;
-		  sprintf(str_cnt0, "%d", cnt[0]);
-          sprintf(str_cnt1, "%d", cnt[1]);
-          sprintf(str_cnt2, "%d", cnt[2]);
-          sprintf(str_cnt3, "%d", cnt[3]);
-          sprintf(str_cnt, "           %d:%d%d",  cnt[2], cnt[1], cnt[0]);
-		  usleep(50000);    //테스트용
-          //sleep(1);       //시연용
-          lcdtextwrite( str1, str_cnt, 1);
-	      lcdtextwrite( str1, str_cnt, 2);
-            //sprintf(str1, "%s", "PRESS START");
-        
         if (cnt[0] == 9) 
         {
             cnt[0] = 0;
@@ -308,6 +297,8 @@ void *count(void)
 		  	//윗단에 "CAR COMPONENT"
 		  	// 네모 2개
 		}
+        //CAR COMPONENT에서 다음으로 안 넘어가고 시간도 멈춤..
+
 		else if (now_level == CRS_UPHILL)
 		{
             str1 = "UP HILL        ";   
@@ -356,6 +347,17 @@ void *count(void)
   	  		//lcdtextwrite( "END                  ", "CAR SIMULATOR", 2);
 		  	// "END"
 	    }
+        sprintf(str_cnt0, "%d", cnt[0]);
+        sprintf(str_cnt1, "%d", cnt[1]);
+        sprintf(str_cnt2, "%d", cnt[2]);
+        sprintf(str_cnt3, "%d", cnt[3]);
+        sprintf(str_cnt, "           %d:%d%d",  cnt[2], cnt[1], cnt[0]);
+		usleep(50000);    //테스트용
+          //sleep(1);       //시연용
+        lcdtextwrite( str1, str_cnt, 1);
+	    lcdtextwrite( str1, str_cnt, 2);
+            //sprintf(str1, "%s", "PRESS START");
+        
     }  
 }
   
@@ -366,10 +368,10 @@ void *textlcd()
   //BASIC UP JUNCTION PARIKNG EMERGENCY ACCEL END
 
   pthread_create(&tid[0], NULL ,&count, NULL);
-  pthread_create(&tid[1], NULL ,&txtdisplay, NULL);
+  //pthread_create(&tid[1], NULL ,&txtdisplay, NULL);
 
   pthread_join (tid[0], NULL);
-  pthread_join (tid[1], NULL);
+  //pthread_join (tid[1], NULL);
 
 	return 0;
 }
@@ -738,6 +740,8 @@ void *AccelWork(void){
                 moving -= 1;
                 moving_f = 0;
                 moving_b = 1;
+                moving_l = 0;
+                moving_r = 0;
                 printf(" Going Back \n");
                 printf("Gear : %d Moving : %d  Moving L : %d,  Moving_r : %d, Moving_f : %d, Moving_b : %d\n", gear,  moving, moving_l, moving_r, moving_f, moving_b);
                 //sleep(1);
@@ -753,6 +757,7 @@ void *AccelWork(void){
             {
                 moving -= 1;
                 moving_l = 1;
+                moving_r = 0;
                 printf(" Reverse Left \n");
                 printf("Gear : %d Moving : %d  Moving L : %d,  Moving_r : %d, Moving_f : %d, Moving_b : %d\n", gear,  moving, moving_l, moving_r, moving_f, moving_b);
                 //sleep(1);
@@ -766,6 +771,7 @@ void *AccelWork(void){
             {
                 moving -= 1;
                 moving_r = 1;
+                moving_l = 0;
                 printf(" Reverse Right \n");
                 printf("Gear : %d Moving : %d  Moving L : %d,  Moving_r : %d, Moving_f : %d, Moving_b : %d\n", gear,  moving, moving_l, moving_r, moving_f, moving_b);
                 //sleep(1);
