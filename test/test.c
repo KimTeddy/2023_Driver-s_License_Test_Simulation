@@ -1723,7 +1723,9 @@ void driveTest()
                 printf("시동 확인.\n");
                 nums=1;
                 gameoverlaycheck=6;
+                buzzerPlaySong(740);
                 sleep(1);
+                buzzerStopSong();
                 nums=2;
                 gameoverlaycheck=49;
                 sleep(2);
@@ -1745,7 +1747,9 @@ void driveTest()
                 sleep(1);
                 printf("상향등 확인.\n");
                 gameoverlaycheck=18;
+                buzzerPlaySong(740);
                 sleep(1);
+                buzzerStopSong();
                 gameoverlaycheck=49;
                 sleep(1);
             }
@@ -1773,7 +1777,9 @@ void driveTest()
                 sleep(1);
                 printf("와이퍼 켜짐 확인.\n");
                 gameoverlaycheck=15;
+                buzzerPlaySong(740);
                 sleep(1);
+                buzzerStopSong();
                 gameoverlaycheck=49;
                 sleep(1);
                 scBTN_Wiper =0;
@@ -1801,7 +1807,9 @@ void driveTest()
                 sleep(1);
                 printf("하향등 확인.\n");
                 gameoverlaycheck=21;
+                buzzerPlaySong(740);
                 sleep(1);
+                buzzerStopSong();
                 gameoverlaycheck=49;
                 sleep(2);
                 scBTN_Lightdown =0;
@@ -1824,7 +1832,9 @@ void driveTest()
             {
                 printf("좌측 방향지시등 켜짐 확인.\n");
                 gameoverlaycheck=24;
+                buzzerPlaySong(740);
                 sleep(1);
+                buzzerStopSong();
                 gameoverlaycheck=49;
                 sleep(1);
             }
@@ -1849,7 +1859,9 @@ void driveTest()
         if(gear==1) {
             printf("전진기어 확인.\n");
             gameoverlaycheck=9;
-            sleep(1);
+            buzzerPlaySong(740);
+                sleep(1);
+                buzzerStopSong();
             gameoverlaycheck=49;
                 sleep(1);
         }
@@ -1876,7 +1888,9 @@ void driveTest()
                 sleep(1);
                 printf("와이퍼 켜짐 확인.\n");
                 gameoverlaycheck=15;
+                buzzerPlaySong(740);
                 sleep(1);
+                buzzerStopSong();
                 gameoverlaycheck=49;
                 sleep(1);
                 scBTN_Wiper = 0;
@@ -1902,7 +1916,9 @@ void driveTest()
         if(gear==2) {
             printf("후진기어 확인.\n");
             gameoverlaycheck=12;
-            sleep(1);
+            buzzerPlaySong(740);
+                sleep(1);
+                buzzerStopSong();
             gameoverlaycheck=49;
                 sleep(1);
         }
@@ -1923,7 +1939,9 @@ void driveTest()
             {
                 printf("우측 방향지시등 켜짐 확인.\n");
                 gameoverlaycheck=27;
+                buzzerPlaySong(740);
                 sleep(1);
+                buzzerStopSong();
                 gameoverlaycheck=49;
                 sleep(2);
             }
@@ -1992,7 +2010,9 @@ void driveTest()
                 failscreen =1;
             }
             usleep(100000);
-            if (nums<=91 && nums>=77 && sidebrake) break; // 경사구간 선 안에 위치한경우
+            if (nums<=91 && nums>=77 && sidebrake) {buzzerPlaySong(740);
+                sleep(1);
+                buzzerStopSong(); break; } // 경사구간 선 안에 위치한경우
             else uphillcnt++;
         }
         while (1)
@@ -2116,7 +2136,9 @@ void driveTest()
                 testfail = 1;
                 failscreen =1;
             }
-            if (nums>=303) break;// 차량이 교차로지난 위치에 위치함 판별 true
+            if (nums>=303) {buzzerPlaySong(740);
+                sleep(1);
+                buzzerStopSong(); break;}// 차량이 교차로지난 위치에 위치함 판별 true
             else
                 junctioncnt++;
          }
@@ -2235,7 +2257,9 @@ void driveTest()
                 failscreen =1;
             }
             usleep(100000);
-            if (nums<=482 && nums>=479 && sidebrake) break; // 주차 선 안에 위치한경우
+            if (nums<=482 && nums>=479 && sidebrake) {buzzerPlaySong(740);
+                sleep(1);
+                buzzerStopSong(); break; } // 주차 선 안에 위치한경우
             else parkingcnt++;
          }
 
@@ -2388,7 +2412,9 @@ void driveTest()
 
             if(nums<=745 && nums>=729 && leftlight==1) junctionpass=1;
 
-            if (nums>=767) break;// 차량이 교차로지난 위치에 위치함 판별 true
+            if (nums>=767) {buzzerPlaySong(740);
+                sleep(1);
+                buzzerStopSong(); break; }// 차량이 교차로지난 위치에 위치함 판별 true
             else
                 junctioncnt++;
          }
