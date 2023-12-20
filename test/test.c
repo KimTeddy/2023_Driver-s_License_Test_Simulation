@@ -89,6 +89,8 @@ int accelcheck, accelsuccess, finalcheck, finalsuccess; // 구간내 항목 성�
 int carspeed;                              // 차의 현재 속도
 int alertscreen=0, failscreen=0, dirfail=0, crash=0;
 int reverseframe=0; //후진판정구간 프레임 진행 정상화 변수
+int startcnt=0;
+int leftlightpass=0;
 
 int nums = 0;
 int nums2 = 0;
@@ -1133,6 +1135,7 @@ void driveTest()
                 printf("시동 확인.\n");
                 sleep(1);
             }
+        else     
         switch (randtest)
         {
         case 0: // 상향등, 와이퍼 체크
@@ -1247,7 +1250,6 @@ void driveTest()
             {
                 printf("방향지시등 조작실패. 5점 감점.\n");
                 minuspoint = minuspoint + 5;
-                pthread_join(thread_object_5, NULL);
                 sleep(1);
             }
         }
@@ -1260,13 +1262,25 @@ void driveTest()
         pthread_create(&thread_object_8, NULL, movecheck, NULL);
 
         printf("기본조작테스트가 끝났습니다. 좌측 방향지시등을 켠 후 10초내에 출발하십시오.\n");
-        sleep(10);
-        if (nums<=17) // 출발선 이전
-        {
+        sleep(1);
+        startcnt=0;
+        while(1) {
+            if(nums<=17 && nums<=20 && leftlight==1) leftlightpass =1;
+            if(nums<=17 && startcnt ==9)  {
             printf("출발실패. 실격하셨습니다.\n");
             testfail = 1;
             failscreen =1;
         }
+        if(nums>=18) break;
+        else {sleep(1); startcnt++;}
+        }
+
+        while(nums<=25 && nums>=21) { if (leftlight) {
+            printf("방향지시등 조작실패. 5점 감점.\n");
+                minuspoint = minuspoint + 5;
+                break;}
+                }
+
         while(nums<=71) {usleep(1000);}
        if (nums>=72) now_level = CRS_UPHILL;
         uphillcnt = 0;
