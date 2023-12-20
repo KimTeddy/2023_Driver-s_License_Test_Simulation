@@ -12,6 +12,12 @@ int main (void)
 	{
 		msgrcv(msgID, &recvMsg, sizeof (recvMsg)-sizeof (long int), 0, 0);
 		//이떄는 터치가 일어나거나 아니면 터리가 끝날때만 여기에 들어옴!
+		switch (recvMsg.keyInput)
+		{
+			case 999:
+				if (recvMsg.pressed == 1)
+				{
+					
 /*
 					if( recvMsg.x>410 && recvMsg.x<545 && recvMsg.y > 40 && recvMsg.y < 540 )
 					//START
@@ -66,19 +72,10 @@ int scBTN_startup=0, scBTN_Wiper = 0, scBTN_Lightup =0, scBTN_Lightdown =0;
 					}
 				}
 */
-
-
-		switch (recvMsg.keyInput)
-		{
-			case 999:
-				if (recvMsg.pressed == 1)
-				{
-
-					
 			break;
-				}
-	
 		}
-
+	
 	}
+
 }
+
