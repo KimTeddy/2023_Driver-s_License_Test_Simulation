@@ -3,7 +3,7 @@ all: textlcdtest.elf
 	echo "		6) send complete"
 
 textlcdtest.elf: libMyPeri.a textlcdtest.o
-	arm-linux-gnueabi-gcc textlcdtest.o -l MyPeri -L. -o textlcdtest.elf
+	arm-linux-gnueabi-gcc textlcdtest.o -l MyPeri -L. -o textlcdtest.elf -lpthread
 	echo "		5) textlcdtest.elf"
 
 textlcdtest.o: textlcdtest.c

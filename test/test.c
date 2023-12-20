@@ -112,6 +112,161 @@ int leaderboard=0;
 
 int showstate = 0; // 스크린에 표시할 이미지 state 변수. 0 = 메인스크린, 1 = 메뉴얼, 2 = 리더보드, 3 = 게임진행
 
+
+void *touchscreen(void)
+{
+    touchInit();
+
+	int first = 0;
+	// scBTN_Start, Manual, Leaderbd 나오는 화면
+	int second = 0;
+	// scBTN_prevpage, Nextpage, gotomain, gotostart 나오는 화면
+	int third = 0;
+	// scBTN_startup, Wiper, Lightup, Lightdown 나오는 화면 
+	// 화면에 따라 구간을 구분할 수 있는 트리거를 설정.
+	
+	int scBTN_Start = 0;
+	int scBTN_Manual = 0;
+	int scBTN_Leaderbd = 0;
+	//first 부분에서 동작하는 변수들
+
+
+	int scBTN_prevpage = 0;
+	int scBTN_Nextpage = 0;
+	int scBTN_gotomain = 0;
+	int scBTN_gotostart = 0;
+	// second 부분에서 동작하는 변수들
+	
+	int scBTN_startup = 0;
+	int scBTN_Wiper = 0;
+	int scBTN_Lightup = 0;
+	int scBTN_Lightdown = 0;
+	//third 부분에서 동작하는 변수들
+
+	int msgID = msgget( MESSAGE_ID, IPC_CREAT|0666);
+	BUTTON_MSG_T recvMsg;
+	while (1)
+	{
+		msgrcv(msgID, &recvMsg, sizeof (recvMsg)-sizeof (long int), 0, 0);
+		//이떄는 터치가 일어나거나 아니면 터리가 끝날때만 여기에 들어옴!
+
+		switch (recvMsg.keyInput)
+		{
+			case 999:
+				if (recvMsg.pressed == 1)
+				{
+					if(first)
+					{
+						if( recvMsg.x>410 && recvMsg.x<545 && recvMsg.y > 40 && recvMsg.y < 540 )
+						// START버튼 눌리면 start = 1로 설정
+						{
+							scBTN_Start = 1;
+							printf("START\r\n");
+						}
+						else if(recvMsg.x>600 && recvMsg.x<720 && recvMsg.y > 40 && recvMsg.y < 540)
+						//Manual 버튼 터치되면 Manual = 1로 설정
+						{
+							scBTN_Manual = 1;
+							printf("MANUAL\r\n");
+						}
+						else if(recvMsg.x>770 && recvMsg.x<900 && recvMsg.y > 40 && recvMsg.y < 540)
+						//Leader Board 버튼 터치되면 Leaderbd = 1로 설정
+						{
+							scBTN_Leaderbd = 1;
+							printf("LEADER BOARD\r\n");
+						}
+					}
+
+				
+					else if(second)
+					{
+						if(recvMsg.x > 670 && recvMsg.x < 750 && recvMsg.y > 50 && recvMsg.y < 530)
+						{
+							//Test start 버튼의 영역이 터치가 되면 Start = 1로 설정해주기
+							scBTN_gotostart= 1;
+							printf("Test Start\r\n");
+							
+						}
+						else if(recvMsg.x > 787 && recvMsg.x < 846 && recvMsg.y > 400 && recvMsg.y < 530)
+						{
+							// MAIN SCREEN 버튼 영역 터치 디면 gotomain = 1로 설정
+							scBTN_gotomain = 1;
+							printf("Main Screen\r\n");
+						}
+						else if(recvMsg.x > 920 && recvMsg.x < 985 && recvMsg.y > 410 && recvMsg.y < 550)
+						{
+							//prev 화살표 버튼 눌리면 prevpage 1로 설정.
+							scBTN_prevpage = 1;
+							printf("Prev Page\r\n");
+						}
+						else if (recvMsg.x > 925 && recvMsg.x < 985 && recvMsg.y > 10 && recvMsg.y < 150)
+						{
+							//next 버튼 영역 터치되면 nextpage = 1로 설정
+							scBTN_Nextpage = 1;
+							printf("Next Page\r\n");
+						}
+						
+
+					}
+					else if(third)
+					{
+						if(recvMsg.x > 915 && recvMsg.x < 955 && recvMsg.y > 70 && recvMsg.y < 130)
+						{
+							//start_up 버튼의 영역이 터치가 되면 start_up = 1로 설정해주기
+							scBTN_startup= 1;
+							printf("Engine Start\r\n");
+							
+						}
+						else if(recvMsg.x > 785 && recvMsg.x < 840 && recvMsg.y > 30 && recvMsg.y < 180)
+						{
+							// wiper 버튼 영역 터치 디면 wiper = 1로 설정
+							scBTN_Wiper = ~scBTN_Wiper;
+							if(scBTN_Wiper)
+							{
+								printf("Wiper on\r\n");
+							}
+							else 
+							{
+								printf("Wiper off\r\n");
+							}
+						}
+						else if(recvMsg.x > 787 && recvMsg.x < 846 && recvMsg.y > 400 && recvMsg.y < 530)
+						{
+							//lightup 버튼 눌리면 lightup = 1로 설정.
+							scBTN_Lightup = ~scBTN_Lightup;
+							if(scBTN_Lightup)
+							{
+								printf("Light up on\r\n");
+							}
+							else 
+							{
+								printf("Light up off\r\n");
+							}
+						}
+						else if (recvMsg.x > 915 && recvMsg.x < 965 && recvMsg.y > 400 && recvMsg.y < 560)
+						{
+							//lightdown 버튼 영역 터치되면 lightdown = 1로 설정
+							scBTN_Lightdown = ~scBTN_Lightdown;
+							if(scBTN_Lightdown)
+							{
+								printf("Light down on\r\n");
+							}
+							else 
+							{
+								printf("Light down off\r\n");
+							}
+						}
+					}
+				}
+			break;
+				}
+	
+		}
+
+}
+
+
+
 void calcAngle() // 각도 계산
 {
     getAccel(angle);
