@@ -39,7 +39,7 @@ int main(){
     sleep(1);
     lcdtextwrite( "END                  ", "CAR SIMULATOR", 1);
     lcdtextwrite( "END                  ", str_cnt, 2);
-
+    sleep(1);
  }
   //9 단계로 나뉨 CAR SIMULATOR
  // txtlcd_off();
