@@ -80,7 +80,7 @@ int startplace, stopplace1;
 
 int randtest = 0;                                     // 시험 랜덤항목 설정을 위한 변수
 int minuspoint = 0;                                   // 시험 감점위한 변수
-int gear = 0;                                         // 기어 판별위한 변수 (0중립1전진2후진)
+int gear = 1;                                         // 기어 판별위한 변수 (0중립1전진2후진)
 int uphillcnt, emergencycnt, junctioncnt, parkingcnt; // 구간별 제한시간 판별 위한 변수
 int uphillstop, uphillside1, uphillside2, uphillgo;
 int emergency1, emergency2, junctionpass;
@@ -181,7 +181,7 @@ void *touchscreen(void)
 	int scBTN_Lightdown = 0;
 	//third 부분에서 동작하는 변수들
 */
-	int msgID = msgget( MESSAGE_ID, IPC_CREAT|0666);
+	int msgID = msgget( MESSAGE_ID2, IPC_CREAT|0666);
 	BUTTON_MSG_S recvMsg;
 	while (1)
 	{
@@ -724,7 +724,15 @@ void *btncheck(void)
                     ledstat = 0;
                 }
                 break;
-            case KEY_VOLUMEDOWN: // 초기화면으로 복귀 코드
+            case KEY_VOLUMEDOWN: // 기어변경코드
+            if (gear == 1)
+                {
+                    gear=2;
+                }
+                else if (gear == 2)
+                {
+                   gear=1;
+                }
                 break;
             }
         }
@@ -912,7 +920,7 @@ void *ScreenOutput(void)
             fb_write(data, cols, rows);
             close_bmp();
             usleep(1000000); // 1초 대기
-            
+
         }
         break;
         case 1:
@@ -1867,7 +1875,7 @@ int main(void)
     pthread_create(&thread_object_1, NULL, trafLight, NULL);
     pthread_create(&thread_object_2, NULL, btncheck, NULL);
     pthread_create(&thread_object_2x, NULL, ledblinks, NULL);
-    pthread_create(&thread_object_4, NULL, trafLightss, NULL);
+    //pthread_create(&thread_object_4, NULL, trafLightss, NULL);
     pthread_create(&thread_object_5, NULL, ScreenOutput, NULL);
     pthread_create(&thread_object_6, NULL, ScreenOverlay, NULL);
     pthread_create(&thread_object_9, NULL, touchscreen, NULL);
@@ -1880,12 +1888,12 @@ int main(void)
     pthread_join(thread_object_2, NULL);
     pthread_join(thread_object_2x, NULL);
     // pthread_join(thread_object_3, NULL);
-    pthread_join(thread_object_4, NULL);
+    //pthread_join(thread_object_4, NULL);
     pthread_join(thread_object_5, NULL);
     pthread_join(thread_object_6, NULL);
     pthread_join(thread_object_7, NULL);
     pthread_join(thread_object_8, NULL);
-    pthread_join(thread_object_9, NULL);
+   pthread_join(thread_object_9, NULL);
     pthread_join(thread_object_10, NULL);
     // shmdt(trafLightState); // 공유메모리 연결 해제
 
