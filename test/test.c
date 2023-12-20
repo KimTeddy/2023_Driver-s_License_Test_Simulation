@@ -296,7 +296,7 @@ void *count(void)
             cnt[0] = 0;
             cnt[1]++;
         }
-        else if(cnt[1]== 6 && cnt[0] == 0)
+        else if(cnt[1]== 5 && cnt[0] == 9)
         {
             cnt[2] += 1;
             cnt[1] = 0;
@@ -352,7 +352,7 @@ void *count(void)
         //sprintf(str_cnt1, "%d", cnt[1]);
        // sprintf(str_cnt2, "%d", cnt[2]);
        // sprintf(str_cnt3, "%d", cnt[3]);
-        sprintf(str_cnt, "           %d:%d%d",  cnt[2], cnt[1], cnt[0]);
+        sprintf(str_cnt, "            %d:%d%d",  cnt[2], cnt[1], cnt[0]);
 		usleep(50000);    //테스트용
         //sleep(1);       //시연용
         lcdtextwrite( str1, str_cnt, 1);
