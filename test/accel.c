@@ -83,7 +83,7 @@ int main(void)
                 moving += 1;
                 printf("Moving : %d  Moving L : %d,  Moving_r : %d, Moving_f : %d, Moving_b : %d\n", moving, moving_l, moving_r, moving_f, moving_b);
                 //sleep(1);
-                
+                usleep(accel_t);
             
             }
 
@@ -103,6 +103,7 @@ int main(void)
                printf("Moving : %d  Moving L : %d,  Moving_r : %d, Moving_f : %d, Moving_b : %d\n", moving, moving_l, moving_r, moving_f, moving_b);
                //sleep(1);
                 //sleep(1);
+                usleep(accel_t);
             }
 
             else if( first_accel[2] - second_accel[2] > 4000 && first_accel[2] - second_accel[2] < 9000  && !(second_accel[0] - first_accel[0] > 5000) && !(first_accel[0] - second_accel[0] > 5000)) 
@@ -120,6 +121,7 @@ int main(void)
                 printf("Moving : %d  Moving L : %d,  Moving_r : %d, Moving_f : %d, Moving_b : %d\n", moving, moving_l, moving_r, moving_f, moving_b);
                 //sleep(1);
                 //sleep(1);
+                usleep(accel_t);
             }
             
             else if( second_accel[0] - first_accel[0] > 5000 && first_accel[2] - second_accel[2] > 4000 && first_accel[2] - second_accel[2] < 9000)
@@ -132,8 +134,8 @@ int main(void)
                 moving_l = 1;
                 printf(" Reverse Left \n");
                 printf("Moving : %d  Moving L : %d,  Moving_r : %d, Moving_f : %d, Moving_b : %d\n", moving, moving_l, moving_r, moving_f, moving_b);
-                sleep(1);
-
+                //sleep(1);
+                usleep(accel_t);
             }
             else if( first_accel[0] - second_accel[0] > 5000 && first_accel[2] - second_accel[2] > 4000 && first_accel[2] - second_accel[2] < 9000)
             //first_accel[2] - second_accel[2] > 4000 && first_accel[2] - second_accel[2] < 8000 -> slow down 구간 키트를 뒤로 적당히 기울인 경우 
@@ -145,7 +147,8 @@ int main(void)
                 moving_r = 1;
                 printf(" Reverse Right \n");
                 printf("Moving : %d  Moving L : %d,  Moving_r : %d, Moving_f : %d, Moving_b : %d\n", moving, moving_l, moving_r, moving_f, moving_b);;
-                sleep(1);
+                //sleep(1);
+                usleep(accel_t);
 
             }
 
@@ -160,6 +163,7 @@ int main(void)
                     //breakon
                     printf("Break On!\n");
                     printf("Moving : %d  Moving L : %d,  Moving_r : %d, Moving_f : %d, Moving_b : %d\n", moving, moving_l, moving_r, moving_f, moving_b);
+                    usleep(accel_t);
                     //sleep(1);
                    //sleep(1);
             }
@@ -181,6 +185,7 @@ int main(void)
                 */
                 printf(" Car Moving Forward \n");
                 printf("Moving : %d  Moving L : %d,  Moving_r : %d, Moving_f : %d, Moving_b : %d\n", moving, moving_l, moving_r, moving_f, moving_b);
+                usleep(accel_t);
                 //sleep(1);
                 //sleep(1);
             }
@@ -202,6 +207,7 @@ int main(void)
                     */
                     printf(" Car Accelation! \n");
                     printf("Moving : %d  Moving L : %d,  Moving_r : %d, Moving_f : %d, Moving_b : %d\n", moving, moving_l, moving_r, moving_f, moving_b);
+                    usleep(accel_t);
                     //sleep(1);
                     //sleep(1);
                 }
@@ -214,6 +220,7 @@ int main(void)
                 moving += 1;
                 moving_l = 1;
                 printf("Moving : %d  Moving L : %d,  Moving_r : %d, Moving_f : %d, Moving_b : %d\n", moving, moving_l, moving_r, moving_f, moving_b);
+                usleep(accel_t);
                 //sleep(1);
                 // 전진좌 : moving + 1, moving_l = 1
                 /*
@@ -232,6 +239,7 @@ int main(void)
                 moving += 1;
                 moving_r = 1;
                 printf("Moving : %d  Moving L : %d,  Moving_r : %d, Moving_f : %d, Moving_b : %d\n", moving, moving_l, moving_r, moving_f, moving_b);
+                usleep(accel_t);
                 //sleep(1);
                 // 전진우 : moving + 1, moving_r = 1
 
@@ -256,6 +264,7 @@ int main(void)
                 printf("Reverse Left\n");
                 printf("Moving : %d  Moving L : %d,  Moving_r : %d, Moving_f : %d, Moving_b : %d\n", moving, moving_l, moving_r, moving_f, moving_b);
                 //sleep(1);
+                usleep(accel_t);
             }
 
             else if (first_accel[0] - second_accel[0] > 5000 && first_accel[2] - second_accel[2] > 4000 && first_accel[2] - second_accel[2] < 9000)
@@ -268,6 +277,7 @@ int main(void)
                 printf("Reverse Right\n");
                 printf("Moving : %d  Moving L : %d,  Moving_r : %d, Moving_f : %d, Moving_b : %d\n", moving, moving_l, moving_r, moving_f, moving_b);
                 //sleep(1);
+                usleep(accel_t);
             }
             
             else 
@@ -283,6 +293,7 @@ int main(void)
                printf("Moving : %d  Moving L : %d,  Moving_r : %d, Moving_f : %d, Moving_b : %d\n", moving, moving_l, moving_r, moving_f, moving_b);
                 //sleep(1);
                 //sleep(1);
+                usleep(accel_t);
             }
 
             
