@@ -375,10 +375,55 @@ void *count(void)
         //sleep(1);       //시연용
         lcdtextwrite( str1, str_cnt, 2);
         //sprintf(str1, "%s", "PRESS START");
-        printf("\t\t\t\t\t?????????????????????\n");
+        printf("\t\t\t\t\t??????????????????%2d:%2d\n",  min_lcd, sec_lcd);
     }
 }
-  
+void now_turn_lcd(int level){
+            if (level == CRS_MAIN)
+            {
+                str1 = "PRESS START";
+            }
+            else if(level == CRS_MANUAL)
+            {
+                str1 = "MANUAL        ";
+            }  
+            else if (level == CRS_START)	
+            {
+                str1 = "BEGIN         ";
+            }
+            else if (level == CRS_BASIC)
+            {
+                str1 = "CAR COMPONENT";
+            }
+            
+            //CAR COMPONENT에서 다음으로 안 넘어가고 시간도 멈춤..
+            
+            else if (level == CRS_UPHILL)
+            {
+                str1 = "UP HILL        ";
+            }
+            else if (level == CRS_JUNCTION_1 || level == CRS_JUNCTION_2 )
+            {
+                str1 = "JUNCTION   ";
+            }
+            else if (level == CRS_PARKING)
+            {
+                str1 = "PARKING         ";
+            }
+            else if (level == CRS_EMERGENCY_A || level == CRS_EMERGENCY_B || level == CRS_EMERGENCY_C || level == CRS_EMERGENCY_D)
+            {
+                str1 = "EMERGENCY         ";
+            }
+            else if (level == CRS_ACCEL)
+            {
+                str1 = "ACCELATE         ";
+            }
+            else if (level == CRS_END)
+            {
+                str1 = "END                  ";
+            }
+            lcdtextwrite(str1, str1, 1);
+}
 
 void *textlcd()
 {
@@ -1750,6 +1795,7 @@ void driveTest()
         scBTN_Start = 0;
         nums=0; // 게임화면 0으로 시작
         now_level = CRS_BASIC;
+        now_turn_lcd(CRS_BASIC);
         showstate = 4; // 화면에 운전이미지 정지 표시 시작.0번은 디폴트. 이미지 00000고정
 
         next = 0;
@@ -2022,6 +2068,7 @@ void driveTest()
         printf("기본조작테스트가 끝났습니다. 좌측 방향지시등을 켠 후 10초내에 출발하십시오.\n");
         gameoverlaycheck=28;
         now_level = CRS_START;
+        now_turn_lcd(CRS_START);
         sleep(1);
         gameoverlaycheck=0;
         startcnt=0;
@@ -2052,6 +2099,7 @@ void driveTest()
         uphillcnt = 0;
         printf("경사구간평가를 시작합니다.\n");
         now_level = CRS_UPHILL;
+        now_turn_lcd(CRS_UPHILL);
         gameoverlaycheck=32;
         sleep(1);
         printf("지정된 위치에 정차 후 사이드브레이크를 올린 후, 삑 소리가 나면 사이드브레이크를 내리고 진행하십시오.\n");
@@ -2137,6 +2185,7 @@ void driveTest()
          if (randtest == 0)
          {
             now_level = CRS_EMERGENCY_A;
+            now_turn_lcd(CRS_EMERGENCY_A);
             gameoverlaycheck=30;
             emergencycnt = 0;
 
@@ -2179,6 +2228,7 @@ void driveTest()
 
          // 교차로구간1
          now_level = CRS_JUNCTION_1;
+         now_turn_lcd(CRS_JUNCTION_1);
          // crs_junction = 1;
          junctioncnt = 0;
          printf("교차로구간 평가를 시작합니다.\n");
@@ -2215,6 +2265,7 @@ void driveTest()
          while(nums<=320) {usleep(1000);}
 
          now_level = CRS_PARKING;
+         now_turn_lcd(CRS_PARKING);
          parkingcnt = 0;
          printf("주차구간 평가를 시작합니다.\n");
          gameoverlaycheck=36;
@@ -2387,6 +2438,7 @@ void driveTest()
          if (randtest == 0)
          {
             now_level = CRS_EMERGENCY_B;
+            now_turn_lcd(CRS_EMERGENCY_B);
             gameoverlaycheck=30;
             emergencycnt = 0;
 
@@ -2469,6 +2521,7 @@ void driveTest()
 
         
         now_level = CRS_JUNCTION_2;
+            now_turn_lcd(CRS_JUNCTION_2);
         gameoverlaycheck=41;
          // crs_junction = 1;
          junctioncnt = 0;
@@ -2525,6 +2578,7 @@ void driveTest()
         if (randtest == 0)
         {
             now_level = CRS_EMERGENCY_C;
+            now_turn_lcd(CRS_EMERGENCY_C);
             gameoverlaycheck=30;
             emergencycnt = 0;
 
@@ -2594,6 +2648,7 @@ void driveTest()
 
         // 가속구간
         now_level = CRS_ACCEL;
+            now_turn_lcd(CRS_ACCEL);
         gameoverlaycheck=38;
         usleep(1);
         // crs_accel = 1;
@@ -2628,6 +2683,7 @@ void driveTest()
         if (randtest == 0)
         {
             now_level = CRS_EMERGENCY_D;
+            now_turn_lcd(CRS_EMERGENCY_D);
             gameoverlaycheck=30;
             emergencycnt = 0;
 
@@ -2685,6 +2741,7 @@ void driveTest()
 
         // 종료구간
         now_level = CRS_END;
+            now_turn_lcd(CRS_END);
         while (1)
         {
             if ((nums<=1080 && nums>=1025) & (rightlight)) {
@@ -2715,6 +2772,7 @@ void driveTest()
 int showManual()
 { // 코스 설명 작성
     now_level=CRS_MANUAL;
+    now_turn_lcd(CRS_MANUAL);
     scBTN_Manual = 0;
     manualpage = 0;
     showstate = 1;
