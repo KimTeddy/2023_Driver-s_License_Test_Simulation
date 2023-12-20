@@ -1029,7 +1029,7 @@ void *ScreenOverlay(void)
         {
             usleep(500000); // 0.5초 대기
             strcpy(bmpfile2, "overlaymanual"); //overlaymanual
-            strcat(bmpfile2, nums3);
+            snprintf(bmpfile2, sizeof(bmpfile2), "%d", nums3); // maunalpage 변수로 페이지 확인
             strcat(bmpfile2, ".bmp");
 
             // FileRead
@@ -1067,7 +1067,7 @@ void *ScreenOverlay(void)
         case 3:
         {
             strcpy(bmpfile2, "overlaygame");
-            strcat(bmpfile2, nums4);
+            snprintf(bmpfile2, sizeof(bmpfile2), "%d", nums4); // maunalpage 변수로 페이지 확인
             strcat(bmpfile2, ".bmp");
 
             // FileRead
@@ -1889,7 +1889,7 @@ int main(void)
     //pthread_create(&thread_object_4, NULL, trafLightss, NULL);
     pthread_create(&thread_object_5, NULL, ScreenOutput, NULL);
     usleep(10000);
-    pthread_create(&thread_object_6, NULL, ScreenOverlay, NULL);
+   pthread_create(&thread_object_6, NULL, ScreenOverlay, NULL);
     pthread_create(&thread_object_9, NULL, touchscreen, NULL);
     pthread_create(&thread_object_10, NULL, buzzerwork, NULL);
     // pthread_create(&thread_object_3, NULL, sevenseg, NULL);
