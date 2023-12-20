@@ -884,8 +884,10 @@ void *AccelWork(void){
 }
 
 void *movecheck(void){
+    while(1) {
     while(simuwork==1) {
         nums = moving+2;
+    }
     }
 }
 
@@ -948,7 +950,7 @@ void *btncheck(void)
     ledOnOff(0, 1); //시작시 안전벨트 안한상태
     ledOnOff(1, 1); //시작시 사이드브레이크 올라가있음
     int msgID = msgget(MESSAGE_ID, IPC_CREAT | 0666);
-
+    while(1) {
     while (simuwork == 1)
     {
         int returnValue = 0;
@@ -1048,6 +1050,7 @@ void *btncheck(void)
     }
     buttonExit();
     ledLibExit();
+}
 }
 
 void *ledblinks(void)
@@ -1695,8 +1698,8 @@ void driveTest()
          gameoverlaycheck=2;
             // 기본조작시험
             //crs_basic = 1; // 기본조작평가 트리거
-        printf("기본조작평가를 시작합니다.\n");
         sleep(1);
+        printf("기본조작평가를 시작합니다.\n");
         gameoverlaycheck=3;
         sleep(1);
          //
@@ -2608,14 +2611,14 @@ int main(void)
     pthread_join(thread_object_2, NULL);
     pthread_join(thread_object_2x, NULL);
     pthread_join(thread_object_3, NULL);
-    //pthread_join(thread_object_4, NULL);
+    pthread_join(thread_object_4, NULL);
     pthread_join(thread_object_5, NULL);
     pthread_join(thread_object_6, NULL);
     pthread_join(thread_object_7, NULL);
     pthread_join(thread_object_8, NULL);
     pthread_join(thread_object_9, NULL);
     pthread_join(thread_object_10, NULL);
-    pthread_join(thread_object_11, NULL);
+   // pthread_join(thread_object_11, NULL);
     // shmdt(trafLightState); // 공유메모리 연결 해제
 
     //  return 0; // 프로그램 종료
