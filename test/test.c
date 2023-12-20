@@ -1095,25 +1095,25 @@ void driveTest()
 
          while(1) {
             dirfail=0;
-            if(nums<=186 && nums>=166 && moving_l==0) {
+            if(nums<=162 && nums>=144 && moving_l==0) {
                 if(dirfail>=5) {crash=1; testfail =1; }
                 else dirfail++;
             }
-            if(nums>=187) break;
+            if(nums>=163) break;
          }
 
-         while(nums<=218) {usleep(1000);}
+         while(nums<=197) {usleep(1000);}
 
           while(1) {
             dirfail=0;
-            if(nums<=237 && nums>=218 && moving_l==0) {
-                if(dirfail>=5) {crash=1; testfail =1; }
+            if(nums<=216 && nums>=199 && moving_l==0) {
+                if(dirfail>=5) {crash=1; testfail =1;  }
                 else dirfail++;
             }
-            if(nums>=238) break;
+            if(nums>=217) break;
          }
 
-         while(nums<=250) {usleep(1000);}
+         while(nums<=230) {usleep(1000);}
 
          // 돌발구간A
          if (randtest == 0)
@@ -1129,6 +1129,7 @@ void driveTest()
                 {
                     printf("돌발구간 실패. 10점감점되었습니다.\n");
                     minuspoint = minuspoint + 10;
+                    break;
                 }
                 usleep(100000);
                 if (emerlight == 1) break;
@@ -1140,6 +1141,7 @@ void driveTest()
                 {
                     printf("돌발구간 실패. 10점감점되었습니다.\n");
                     minuspoint = minuspoint + 10;
+                    break;
                 }
                 usleep(100000);
                 if (carspeed == 0) break;
@@ -1148,7 +1150,7 @@ void driveTest()
             alertscreen=0;
          }
 
-         while(nums<=279) {usleep(1000);}
+         while(nums<=270) {usleep(1000);}
 
          // 교차로구간1
          now_level = CRS_JUNCTION_1;
@@ -1164,18 +1166,18 @@ void driveTest()
                 failscreen=1;
             }
             usleep(100000);
-            if(nums<=346 && nums>=280 && trafLightState==3) // 적색신호등과 차량교차로 내 위치 판별 true
+            if(nums<=302 && nums>=273 && trafLightState==3) // 적색신호등과 차량교차로 내 위치 판별 true
             {
                 printf("신호위반 발생! 실격하셨습니다.\n");
                 testfail = 1;
                 failscreen =1;
             }
-            if (nums>=347) break;// 차량이 교차로지난 위치에 위치함 판별 true
+            if (nums>=303) break;// 차량이 교차로지난 위치에 위치함 판별 true
             else
                 junctioncnt++;
          }
         
-         while(nums<=362) {usleep(1000);}
+         while(nums<=320) {usleep(1000);}
 
          now_level = CRS_PARKING;
          parkingcnt = 0;
@@ -1198,15 +1200,15 @@ void driveTest()
                 failscreen =1;
             }
             dirfail=0;
-            if(nums<=426 && nums>=373 && moving_r==0) {
+            if(nums<=370 && nums>=330 && moving_r==0) {
                 if(dirfail>=5) {crash=1; testfail =1; }
                 else dirfail++;
             }
-            if(nums>=426) break;
+            if(nums>=371) break;
             else parkingcnt++;
          }
 
-         while(nums<=450) {
+         while(nums<=410) {
             usleep(100000);
             if (parkingcnt >= 300)
             {
@@ -1226,13 +1228,14 @@ void driveTest()
                 failscreen =1;
             }
             dirfail=0;
-            if(nums<=494 && nums>=451 && gear==2) {
+            if(nums<=435 && nums>=412 && moving_r==0) {
                 if(dirfail>=5) {crash=1; testfail =1; }
                 else dirfail++;
             }
-            if(nums>=494) break;
+            if(nums>=436) break;
             else parkingcnt++;
          }
+
         while(1) {
             usleep(100000);
             if (parkingcnt >= 300)
@@ -1242,7 +1245,24 @@ void driveTest()
                 failscreen =1;
             }
             dirfail=0;
-            if(nums<=530 && nums>=495 && ( gear!=2 || moving_l==0 )) {
+            if(nums<=464 && nums>=440 && ( gear!=2 || moving_l==0 )) {
+                if(dirfail>=5) {crash=1; testfail =1; }
+                else dirfail++;
+            }
+            if(nums>=465) break;
+            else parkingcnt++;
+         }
+
+        while(1) {
+            usleep(100000);
+            if (parkingcnt >= 300)
+            {
+                printf("주차 30초 이내 통과 실패. 실격하셨습니다.\n");
+                testfail = 1;
+                failscreen =1;
+            }
+            dirfail=0;
+            if(nums<=475 && nums>=465 && gear!=2 ) {
                 if(dirfail>=5) {crash=1; testfail =1; }
                 else dirfail++;
             }
