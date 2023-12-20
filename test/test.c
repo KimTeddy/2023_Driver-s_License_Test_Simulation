@@ -1743,6 +1743,7 @@ void driveTest()
             sleep(2);
             if (scBTN_Lightup == 1)
             {   
+                sleep(1);
                 gameoverlaycheck=50;
                 sleep(1);
                 printf("상향등 확인.\n");
@@ -1769,6 +1770,7 @@ void driveTest()
                 sleep(2);
             if (scBTN_Wiper == 1)
             {   
+                sleep(1);
                 gameoverlaycheck=51;
                 sleep(1);
                 gameoverlaycheck=52;
@@ -1803,7 +1805,8 @@ void driveTest()
             gameoverlaycheck=49;
                 sleep(2);
             if (scBTN_Lightdown == 1)
-            {   gameoverlaycheck=50;
+            {   sleep(1);
+                gameoverlaycheck=50;
                 sleep(1);
                 printf("하향등 확인.\n");
                 gameoverlaycheck=21;
@@ -1880,6 +1883,7 @@ void driveTest()
                 sleep(2);
             if (scBTN_Wiper == 1)
             {
+                sleep(1);
                 gameoverlaycheck=51;
                 sleep(1);
                 gameoverlaycheck=52;
@@ -2043,9 +2047,9 @@ void driveTest()
         }
 
          while(nums<=166) {usleep(1000);}
-
-         while(1) {
             dirfail=0;
+         while(1) {
+            
             if(nums<=162 && nums>=144 && moving_l==0) {
                 if(dirfail>=5) {gameoverlaycheck=35; crash=1; testfail =1; }
                 else dirfail++;
@@ -2054,9 +2058,9 @@ void driveTest()
          }
 
          while(nums<=197) {usleep(1000);}
-
-          while(1) {
             dirfail=0;
+          while(1) {
+            
             if(nums<=216 && nums>=199 && moving_l==0) {
                 if(dirfail>=5) {gameoverlaycheck=35; crash=1; testfail =1;  }
                 else dirfail++;
@@ -2191,7 +2195,7 @@ void driveTest()
             }
             else parkingcnt++;
             }
-
+        dirfail=0;
         while(1) {
             usleep(100000);
             if (parkingcnt >= 300)
@@ -2201,7 +2205,7 @@ void driveTest()
                 testfail = 1;
                 failscreen =1;
             }
-            dirfail=0;
+            
             if(nums<=435 && nums>=412 && moving_r==0) {
                 if(dirfail>=5) {gameoverlaycheck=35; crash=1; testfail =1; }
                 else dirfail++;
