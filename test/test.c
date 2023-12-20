@@ -247,6 +247,39 @@ void *txtdisplay(void)
     }
   } 
 */
+/*---------------------------------------바이패스--------------------------------------*/
+
+int satetybelt_bypass = 0;
+//int safetybelt = 0;
+//int testfail = 0;
+
+while (satetybelt_bypass==1) {
+    testfail = 0;
+ if(satetybelt_bypass == 0)
+ {
+     beake;
+ }
+}
+if (satetybelt_bypass == 0 && safetybelt == 0) {
+    testfail = 1;
+}
+
+int sidebrake_bypass = 0;
+//int sidebrake = 1;
+//int minuspoint = 0;
+
+while (sidebrake_bypass == 1) {
+    minuspoint = 0;
+    if (sidebrake_bypass == 0)
+    { 
+        break; 
+    }
+}
+if (sidebrake_bypass == 0 && sidebrake == 1) {
+    minus_point += 5;
+}
+
+/*---------------------------------------바이패스--------------------------------------*/
 void *count(void)
   {
 
