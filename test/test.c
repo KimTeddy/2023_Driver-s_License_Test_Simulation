@@ -1858,7 +1858,7 @@ int main(void)
     pthread_create(&thread_object_5, NULL, ScreenOutput, NULL);
     pthread_create(&thread_object_6, NULL, ScreenOverlay, NULL);
     pthread_create(&thread_object_9, NULL, touchscreen, NULL);
-    pthread_create(&thread_object_9, NULL, buzzerwork, NULL);
+    pthread_create(&thread_object_10, NULL, buzzerwork, NULL);
     // pthread_create(&thread_object_3, NULL, sevenseg, NULL);
 
     driveTest();
