@@ -35,7 +35,7 @@ int main (void)
 					}
 				}
 			*/	
-				{
+				
 					if (recvMsg.x <100 && recvMsg.y < 100)
 					{
 						printf ("You touched %d  %d\r\n", recvMsg.x, recvMsg.y);
@@ -62,4 +62,5 @@ int main (void)
 		}
 	
 	}
+
 }
