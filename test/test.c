@@ -253,12 +253,12 @@ void *txtdisplay(void)
 int satetybelt_bypass = 0;
 //int safetybelt = 0;
 //int testfail = 0;
-
-while (satetybelt_bypass==1) {
+void *check(void) {
+while (1) {
     testfail = 0;
  if(satetybelt_bypass == 0)
  {
-     beake;
+    break;
  }
 }
 if (satetybelt_bypass == 0 && safetybelt == 0) {
@@ -277,9 +277,9 @@ while (sidebrake_bypass == 1) {
     }
 }
 if (sidebrake_bypass == 0 && sidebrake == 1) {
-    minus_point += 5;
+    minuspoint = minuspoint + 5;
 }
-
+}
 /*---------------------------------------바이패스--------------------------------------*/
 void *count(void)
   {
@@ -1044,11 +1044,15 @@ void *btncheck(void)
             if (gear == 1)
                 {
                     gear=2;
+                    ledOnOff(7, 1);
+                    ledOnOff(6, 0);
                     printf("GEAR: R\r\n");
                 }
                 else if (gear == 2)
                 {
                    gear=1;
+                   ledOnOff(7, 0);
+                    ledOnOff(6, 1);
                    printf("GEAR: D\r\n");
                 }
                 break;
