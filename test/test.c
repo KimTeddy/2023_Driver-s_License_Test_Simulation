@@ -23,7 +23,7 @@
 #include "now_level_defs.h"
 #include "buzzer_soundeffect_defs.h"
 
-#define accel_t 100000
+#define accel_t 500000
 
 const double RADIAN_TO_DEGREE = 180.0 / 3.141592;
 int16_t AcX, AcY, AcZ, GyX, GyY, GyZ;
@@ -64,7 +64,7 @@ int crs_outofcrs = 0; // 구간을 벗어난 경우 트리거 ->
 
 int prev_level = CRS_MAIN;
 int simuwork = 0;
-int safetybelt = 0, sidebrake = 0, leftlight = 0, rightlight = 0, emerlight = 0;
+int safetybelt = 0, sidebrake = 1, leftlight = 0, rightlight = 0, emerlight = 0;
 int fnddat;
 int *trafLightState; // 신호등 현재 상태 확인변수
 int traflights;
@@ -92,11 +92,13 @@ int alertscreen=0, failscreen=0, dirfail=0, crash=0;
 int reverseframe=0; //후진판정구간 프레임 진행 정상화 변수
 int startcnt=0;
 int leftlightpass=0;
+char overlayname[30];
 
 int nums = 0;
 int nums2 = 0;
 int nums3 = 0;
 int nums4 = 0;
+int nums5 = 0;
 int leaderboard=0;
 
    int accel[3];
@@ -253,6 +255,9 @@ void *touchscreen(void)
 							//start_up 버튼의 영역이 터치가 되면 start_up = 1로 설정해주기
 							scBTN_startup= 1;
 							printf("Engine Start\r\n");
+                            nums = 1;
+                            sleep(1);
+                            nums = 2;
 							
 						}
 						else if(recvMsg.x > 785 && recvMsg.x < 840 && recvMsg.y > 30 && recvMsg.y < 180)
@@ -262,10 +267,16 @@ void *touchscreen(void)
 							if(scBTN_Wiper)
 							{
 								printf("Wiper on\r\n");
+                                strcpy(overlayname,"wiper0");
+                                usleep(500000);
+                                strcpy(overlayname,"wiper1");
+                                usleep(500000);
+                                strcpy(overlayname,"wiper2");
 							}
 							else 
 							{
 								printf("Wiper off\r\n");
+                                strcpy(overlayname,"0");
 							}
 						}
 						else if(recvMsg.x > 787 && recvMsg.x < 846 && recvMsg.y > 400 && recvMsg.y < 530)
@@ -275,10 +286,12 @@ void *touchscreen(void)
 							if(scBTN_Lightup)
 							{
 								printf("Light up on\r\n");
+                                strcpy(overlayname,"light");
 							}
 							else 
 							{
 								printf("Light up off\r\n");
+                                strcpy(overlayname,"0");
 							}
 						}
 						else if (recvMsg.x > 915 && recvMsg.x < 965 && recvMsg.y > 400 && recvMsg.y < 560)
@@ -288,10 +301,12 @@ void *touchscreen(void)
 							if(scBTN_Lightdown)
 							{
 								printf("Light down on\r\n");
+                                strcpy(overlayname,"light");
 							}
 							else 
 							{
 								printf("Light down off\r\n");
+                                strcpy(overlayname,"0");
 							}
 						}
 					}
@@ -302,7 +317,6 @@ void *touchscreen(void)
 		}
 
 }
-
 
 
 void calcAngle() // 각도 계산
@@ -580,7 +594,7 @@ void *AccelWork(void){
 
 void *movecheck(void){
     while(simuwork==1) {
-        nums = moving;
+        nums = moving+2;
     }
 }
 
@@ -640,6 +654,8 @@ void *btncheck(void)
     buttonInit();
     ledLibInit();
     ledOnOff(0, 0);
+    ledOnOff(0, 1); //시작시 안전벨트 안한상태
+    ledOnOff(1, 1); //시작시 사이드브레이크 올라가있음
     int msgID = msgget(MESSAGE_ID, IPC_CREAT | 0666);
 
     while (simuwork == 1)
@@ -655,12 +671,12 @@ void *btncheck(void)
                 if (safetybelt == 0)
                 {
                     safetybelt = 1;
-                    ledOnOff(0, 1);
+                    ledOnOff(0, 0);
                 }
                 else if (safetybelt == 1)
                 {
                     safetybelt = 0;
-                    ledOnOff(0, 0);
+                    ledOnOff(0, 1);
                 }
                 break;
 
@@ -728,10 +744,12 @@ void *btncheck(void)
             if (gear == 1)
                 {
                     gear=2;
+                    printf("GEAR: R\r\n");
                 }
                 else if (gear == 2)
                 {
                    gear=1;
+                   printf("GEAR: D\r\n");
                 }
                 break;
             }
@@ -919,15 +937,14 @@ void *ScreenOutput(void)
             // FileWrite
             fb_write(data, cols, rows);
             close_bmp();
-            usleep(1000000); // 1초 대기
+            usleep(500000); // 0.5초 대기
 
         }
         break;
         case 1:
         {
-            while (now_level == CRS_MANUAL) // 메뉴얼 표시상태
-            {
-                usleep(1000000); // 1초 대기
+            
+                usleep(500000); // 0.5초 대기
                 strcpy(bmpfile, "manual");
                 snprintf(bmpfile, sizeof(bmpfile), "%d", maunalpage); // maunalpage 변수로 페이지 확인
                 strcat(bmpfile, ".bmp");
@@ -940,14 +957,13 @@ void *ScreenOutput(void)
                 // FileWrite
                 fb_write(data, cols, rows);
                 close_bmp();
-            }
+            
         }
 
         case 2:
         {
-            while (now_level == CRS_MANUAL)
-            {                    // 리더보드 어떻게 만들지.... 점수 기록되면 도트 찍히게 해야하나?
-                usleep(1000000); // 1초 대기
+                             // 리더보드 어떻게 만들지.... 점수 기록되면 도트 찍히게 해야하나?
+                usleep(500000); // 0.5초 대기
                 strcpy(bmpfile, "leaderboard");
                 snprintf(bmpfile, sizeof(bmpfile), "%d", leaderboard); // leaderboard 변수로 페이지 확인
                 strcat(bmpfile, ".bmp");
@@ -960,14 +976,12 @@ void *ScreenOutput(void)
                 // FileWrite
                 fb_write(data, cols, rows);
                 close_bmp();
-            }
+            
         }
 
         case 3:
         {
-            fb_clear();
-            while (simuwork == 1)
-            {                   // 게임 진행중일 때
+             // 게임 진행중일 때
                 usleep(100000); // 0.1초 대기 10fps
                 strcpy(bmpfile, "");
                 snprintf(bmpfile, sizeof(bmpfile), "%05d", nums); // nums변수로 현재 프레임확인
@@ -981,7 +995,27 @@ void *ScreenOutput(void)
                 // FileWrite
                 fb_write(data, cols, rows);
                 close_bmp();
-            }
+            
+        }
+
+        case 4:
+        {
+             // 기본조작 진행중일 때
+                usleep(100000); // 0.1초 대기 10fps
+                strcpy(bmpfile, "");
+                nums=0;
+                snprintf(bmpfile, sizeof(bmpfile), "%05d", nums); // nums변수로 현재 프레임확인
+                strcat(bmpfile, ".bmp");
+                // FileRead
+                if (read_bmp(bmpfile, &data, &cols, &rows) < 0)
+                { // 숫자.bmp 출력
+                    printf("File open failed\r\n");
+                    return 0;
+                }
+                // FileWrite
+                fb_write(data, cols, rows);
+                close_bmp();
+            
         }
 
         default:
@@ -1017,26 +1051,13 @@ void *ScreenOverlay(void)
         case 0:
         {
             fb_clear2();
-            strcpy(bmpfile2, "overlaymainscreen");
-            strcat(bmpfile2, nums2);
-            strcat(bmpfile2, ".bmp");
-
-            // FileRead
-            if (read_bmp(bmpfile2, &data2, &cols2, &rows2) < 0)
-            {
-                printf("File open failed\r\n");
-                return 0;
-            }
-            // FileWrite
-            fb_write2(data2, cols2, rows2, 0, 0);
-
-            close_bmp();
+            usleep(500000); // 0.5초 대기
         }
         break;
         case 1:
         {
-            fb_clear2();
-            strcpy(bmpfile2, "overlaymanual");
+            usleep(500000); // 0.5초 대기
+            strcpy(bmpfile2, "overlaymanual"); //overlaymanual
             strcat(bmpfile2, nums3);
             strcat(bmpfile2, ".bmp");
 
@@ -1055,7 +1076,7 @@ void *ScreenOverlay(void)
 
         case 2:
         {
-            fb_clear2();
+            usleep(500000); // 0.5초 대기
             strcpy(bmpfile2, "overlayleaderboard");
             strcat(bmpfile2, ".bmp");
 
@@ -1076,6 +1097,25 @@ void *ScreenOverlay(void)
         {
             strcpy(bmpfile2, "overlaygame");
             strcat(bmpfile2, nums4);
+            strcat(bmpfile2, ".bmp");
+
+            // FileRead
+            if (read_bmp(bmpfile2, &data2, &cols2, &rows2) < 0)
+            {
+                printf("File open failed\r\n");
+                return 0;
+            }
+            // FileWrite
+            fb_write2(data2, cols2, rows2, 0, 0);
+
+            close_bmp();
+        }
+        break;
+
+        case 4:
+        {
+            strcpy(bmpfile2, "overlay");
+            strcat(bmpfile2, overlayname);
             strcat(bmpfile2, ".bmp");
 
             // FileRead
