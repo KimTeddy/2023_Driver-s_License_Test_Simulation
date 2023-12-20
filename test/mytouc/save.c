@@ -18,7 +18,7 @@ int main (void)
 				if (recvMsg.pressed == 1)
 				{
 					
-/*
+
 					if( recvMsg.x>410 && recvMsg.x<545 && recvMsg.y > 40 && recvMsg.y < 540 )
 					//START
 					{
@@ -35,7 +35,7 @@ int main (void)
 						printf("LEADER BOARD\r\n");
 					}
 				}
-			*/	
+			
 				
 /*
 case(1)
