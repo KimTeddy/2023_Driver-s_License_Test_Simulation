@@ -1,5 +1,5 @@
 //"100  "-> 유지하다가    깜빡"100 -5","99 -4","98 -3", "97 -3", "96 -2", "95 -1"깜빡       "95    "->유지
-#include <iostream>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <fcntl.h>
@@ -21,6 +21,7 @@ int c_score = 100; //처음 점수는 만점
 int testfail, number, counter;
 char buffer[7];
 char zero[7] = "      ";
+int minuspoint=0;
 
 //c_score변수는 100이고 minuspoint 변수에 5를 받았을때
 int main() {
