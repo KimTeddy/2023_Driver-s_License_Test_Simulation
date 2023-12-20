@@ -245,7 +245,7 @@ void *count(void)
   {
 
     while (1)
-	  {
+	{
       //cnt += 1;
 		  sprintf(str_cnt0, "%d", cnt[0]);
           sprintf(str_cnt1, "%d", cnt[1]);
