@@ -148,6 +148,7 @@ void ScoreAnim();
 
 *trafLightState = 0; // reset RGB LED state
 
+
 int showstate = 0; // 스크린에 표시할 이미지 state 변수. 0 = 메인스크린, 1 = 메뉴얼, 2 = 리더보드, 3 = 게임진행, 4 = 기능테스트
 /*
 	int first = 0;
