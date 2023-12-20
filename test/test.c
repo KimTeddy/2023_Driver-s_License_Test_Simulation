@@ -83,6 +83,7 @@ int now_level = CRS_MAIN;
 int crs_outofcrs = 0; // 구간을 벗어난 경우 트리거 ->
 
 int prev_level = CRS_MAIN;
+int prev_level_lcd = -1;
 int simuwork = 0;
 int safetybelt = 0, sidebrake = 1, leftlight = 0, rightlight = 0, emerlight = 0;
 int fnddat;
@@ -305,58 +306,60 @@ void *count(void)
         {
             cnt[0]++;
         }
-   	    if (now_level == CRS_MAIN)
-		{
-            str1 = "PRESS START";
-	  	}
-        else if(now_level == CRS_MANUAL)
-        {
-            str1 = "MANUAL        ";
-        }  
-		else if (now_level == CRS_START)	
-		{
-            str1 = "BEGIN         ";
-		}
-		else if (now_level == CRS_BASIC)
-		{
-            str1 = "CAR COMPONENT";
-		}
-        
-        //CAR COMPONENT에서 다음으로 안 넘어가고 시간도 멈춤..
-        
-		else if (now_level == CRS_UPHILL)
-		{
-            str1 = "UP HILL        ";
-		}
-		else if (now_level == CRS_JUNCTION_1 || now_level == CRS_JUNCTION_2 )
-		{
-            str1 = "JUNCTION   ";
-	  	}
-	  	else if (now_level == CRS_PARKING)
-	  	{
-            str1 = "PARKING         ";
-		}
-		else if (now_level == CRS_EMERGENCY_A || now_level == CRS_EMERGENCY_B || now_level == CRS_EMERGENCY_C || now_level == CRS_EMERGENCY_D)
-		{
-            str1 = "EMERGENCY         ";
-		}
-		else if (now_level == CRS_ACCEL)
-		{
-            str1 = "ACCELATE         ";
-		}
-	    else if (now_level == CRS_END)
-		{
-            str1 = "END                  ";
-	    }
-       // sprintf(str_cnt0, "%d", cnt[0]);
+        if(now_level != prev_level_lcd){
+            if (now_level == CRS_MAIN)
+            {
+                str1 = "PRESS START";
+            }
+            else if(now_level == CRS_MANUAL)
+            {
+                str1 = "MANUAL        ";
+            }  
+            else if (now_level == CRS_START)	
+            {
+                str1 = "BEGIN         ";
+            }
+            else if (now_level == CRS_BASIC)
+            {
+                str1 = "CAR COMPONENT";
+            }
+            
+            //CAR COMPONENT에서 다음으로 안 넘어가고 시간도 멈춤..
+            
+            else if (now_level == CRS_UPHILL)
+            {
+                str1 = "UP HILL        ";
+            }
+            else if (now_level == CRS_JUNCTION_1 || now_level == CRS_JUNCTION_2 )
+            {
+                str1 = "JUNCTION   ";
+            }
+            else if (now_level == CRS_PARKING)
+            {
+                str1 = "PARKING         ";
+            }
+            else if (now_level == CRS_EMERGENCY_A || now_level == CRS_EMERGENCY_B || now_level == CRS_EMERGENCY_C || now_level == CRS_EMERGENCY_D)
+            {
+                str1 = "EMERGENCY         ";
+            }
+            else if (now_level == CRS_ACCEL)
+            {
+                str1 = "ACCELATE         ";
+            }
+            else if (now_level == CRS_END)
+            {
+                str1 = "END                  ";
+            }
+            lcdtextwrite( str1, str_cnt, 1);
+        }
+        // sprintf(str_cnt0, "%d", cnt[0]);
         //sprintf(str_cnt1, "%d", cnt[1]);
-       // sprintf(str_cnt2, "%d", cnt[2]);
-       // sprintf(str_cnt3, "%d", cnt[3]);
+        // sprintf(str_cnt2, "%d", cnt[2]);
+        // sprintf(str_cnt3, "%d", cnt[3]);
         sprintf(str_cnt, "            %d:%d%d",  cnt[2], cnt[1], cnt[0]);
-		usleep(50000);    //테스트용
+        usleep(50000);    //테스트용
         //sleep(1);       //시연용
-        lcdtextwrite( str1, str_cnt, 1);
-	    lcdtextwrite( str1, str_cnt, 2);
+        lcdtextwrite( str1, str_cnt, 2);
         //sprintf(str1, "%s", "PRESS START");
     }  
 }
