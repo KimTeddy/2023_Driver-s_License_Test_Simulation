@@ -113,6 +113,8 @@ int startcnt=0;
 int leftlightpass=0;
 char overlayname[30];
 
+int gameoverlaycheck=0;
+
 int nums = 0;
 int nums2 = 0;
 int nums3 = 0;
@@ -1441,6 +1443,8 @@ void showMainScreen()
 
 void driveTest()
 {                   // 시험 코스 진행할 것 작성   while문으로 구간 판별후 반복조건문 탈출하게 작성해야함.
+    simuwork=1;
+    gameoverlaycheck=0;
     manualpage = 0; // 메뉴얼 시작은 선택페이지로.
     showstate = 1;  // 화면에 메뉴얼 출력. 메뉴얼 0페이지는 시험 시작전 코스설명 yes no 선택페이지로. 1페이지부터 코스설명.
     int next = 1;   // teststart = 1, mainmenu = 2 : default teststart
@@ -1450,9 +1454,9 @@ void driveTest()
     // 화면의 시작하기를 누를경우(testStart)
     if (next == 1)
     {
-         scBTN_Start = 0;
-         nums=0; // 게임화면 0으로 시작
-         now_level = CRS_BASIC;
+        scBTN_Start = 0;
+        nums=0; // 게임화면 0으로 시작
+        now_level = CRS_BASIC;
         showstate = 4; // 화면에 운전이미지 정지 표시 시작.0번은 디폴트. 이미지 00000고정
 
         next = 0;
@@ -1461,132 +1465,192 @@ void driveTest()
          randtest = rand() % 4; // random num 0~3
          // 시험 내용 작성
          printf("지금부터 운전면허 기능시험을 시작합니다."); // 화면에 띄울 수 있으면 띄우기.
+         gameoverlaycheck=2;
             // 기본조작시험
             //crs_basic = 1; // 기본조작평가 트리거
         printf("기본조작평가를 시작합니다.\n");
+        sleep(1);
+        gameoverlaycheck=3;
+        sleep(1);
          //
         printf("먼저, 3초 안에 시동을 켜십시오\n");
+        gameoverlaycheck=4;
         sleep(3);
+        gameoverlaycheck=0;
         if (scBTN_startup == 1) {
                 printf("시동 확인.\n");
-                sleep(1);
+                gameoverlaycheck=6;
+                sleep(3);
+                gameoverlaycheck=0;
             }
-        else     
+        else { gameoverlaycheck=5; testfail=1;
+        }
         switch (randtest)
         {
         case 0: // 상향등, 와이퍼 체크
         {
             printf("전조등테스트: 3초 안에 상향등을 켜십시오\n");
+            gameoverlaycheck=16;
             sleep(3);
+            gameoverlaycheck=0;
             if (scBTN_Lightup == 1)
             {
                 printf("상향등 확인.\n");
-                sleep(1);
+                gameoverlaycheck=18;
+                sleep(2);
+                gameoverlaycheck=0;
             }
             else if ((scBTN_Lightup == 0) | (scBTN_Lightdown == 1))
             {
                 printf("전조등 조작실패. 5점 감점.\n");
+                gameoverlaycheck=17;
                 minuspoint = minuspoint + 5;
-                sleep(1);
+                sleep(2);
+                gameoverlaycheck=0;
             }
             printf("와이퍼조작테스트: 3초 안에 와이퍼를 켜십시오\n");
+            gameoverlaycheck=13;
             sleep(3);
+            gameoverlaycheck=0;
             if (scBTN_Wiper == 1)
             {
                 printf("와이퍼 켜짐 확인.\n");
-                sleep(1);
+                gameoverlaycheck=15;
+                sleep(2);
+                gameoverlaycheck=0;
+                scBTN_Wiper =0;
             }
             else if (scBTN_Wiper == 0)
             {
                 printf("와이퍼 조작실패. 5점 감점.\n");
+                gameoverlaycheck=14;
                 minuspoint = minuspoint + 5;
-                sleep(1);
+                sleep(2);
+                gameoverlaycheck=0;
             }
         }
         break;
         case 1: //  하향등, 방향지시등 좌측 체크
         {
             printf("전조등테스트: 3초 안에 하향등을 켜십시오\n");
+            gameoverlaycheck=19;
             sleep(3);
+            gameoverlaycheck=0;
             if (scBTN_Lightdown == 1)
             {
                 printf("하향등 확인.\n");
-                sleep(1);
+                gameoverlaycheck=21;
+                sleep(2);
+                gameoverlaycheck=0;
+                scBTN_Lightdown =0;
             }
             else if ((scBTN_Lightdown == 0) | (scBTN_Lightup == 1))
             {
                 printf("전조등 조작실패. 5점 감점.\n");
+                gameoverlaycheck=20;
                 minuspoint = minuspoint + 5;
-                sleep(1);
+                sleep(2);
+                gameoverlaycheck=0;
             }
             printf("방향지시등조작테스트: 3초 안에 좌측 방향지시등을 켜십시오\n");
+            gameoverlaycheck=22;
             sleep(3);
+            gameoverlaycheck=0;
             if (leftlight == 1)
             {
                 printf("좌측 방향지시등 켜짐 확인.\n");
-                sleep(1);
+                gameoverlaycheck=24;
+                sleep(2);
+                gameoverlaycheck=0;
             }
             else if ((leftlight == 0) | (rightlight == 1))
             {
                 printf("방향지시등 조작실패. 5점 감점.\n");
+                gameoverlaycheck=23;
                 minuspoint = minuspoint + 5;
-                sleep(1);
+                sleep(2);
+                gameoverlaycheck=0;
             }
         }
         break;
         case 2: // 전진기어 와이퍼 체크
         {
             printf("기어조작테스트: 3초 안에 기어를 중립에서 전진기어로 바꾸십시오\n");
+            gameoverlaycheck=7;
         sleep(3);
+        gameoverlaycheck=0;
         if(gear==1) {
             printf("전진기어 확인.\n");
-            sleep(1);
+            gameoverlaycheck=9;
+            sleep(2);
+            gameoverlaycheck=0;
         }
         else if((gear==0)|(gear==2)) { 
             printf("기어 조작실패. 5점 감점.\n");
+            gameoverlaycheck=8;
             minuspoint=minuspoint+5;
-            sleep(1);
+            sleep(2);
+            gameoverlaycheck=0;
         }
             printf("와이퍼조작테스트: 3초 안에 와이퍼를 켜십시오\n");
+            gameoverlaycheck=13;
             sleep(3);
+            gameoverlaycheck=0;
             if (scBTN_Wiper == 1)
             {
                 printf("와이퍼 켜짐 확인.\n");
-                sleep(1);
+                gameoverlaycheck=15;
+                sleep(2);
+                gameoverlaycheck=0;
+                scBTN_Wiper = 0;
             }
             else if (scBTN_Wiper == 0)
             {
                 printf("와이퍼 조작실패. 5점 감점.\n");
+                gameoverlaycheck=14;
                 minuspoint = minuspoint + 5;
-                sleep(1);
+                sleep(2);
+                gameoverlaycheck=0;
             }
         }
         break;
         case 3: // 후진기어 우측방향지시등 체크
         {
             printf("기어조작테스트: 3초 안에 기어를 중립에서 후진기어로 바꾸십시오\n");
+            gameoverlaycheck=10;
         sleep(3);
+        gameoverlaycheck=0;
         if(gear==2) {
             printf("후진기어 확인.\n");
-            sleep(1);
+            gameoverlaycheck=12;
+            sleep(2);
+            gameoverlaycheck=0;
         }
         else if((gear==0)|(gear==1)) { 
             printf("기어 조작실패. 5점 감점.\n");
+            gameoverlaycheck=11;
             minuspoint=minuspoint+5;
-            sleep(1);
+            sleep(2);
+            gameoverlaycheck=0;
         }
             printf("방향지시등조작테스트: 3초 안에 우측 방향지시등을 켜십시오\n");
+            gameoverlaycheck=25;
             sleep(3);
+            gameoverlaycheck=0;
             if (rightlight == 1)
             {
                 printf("우측 방향지시등 켜짐 확인.\n");
-                sleep(1);
+                gameoverlaycheck=27;
+                sleep(2);
+                gameoverlaycheck=0;
             }
             else if ((rightlight == 0) | (leftlight == 1))
             {
                 printf("방향지시등 조작실패. 5점 감점.\n");
+                gameoverlaycheck=26;
                 minuspoint = minuspoint + 5;
-                sleep(1);
+                sleep(2);
+                gameoverlaycheck=0;
             }
         }
         break;
@@ -1598,13 +1662,16 @@ void driveTest()
         pthread_create(&thread_object_8, NULL, movecheck, NULL);
 
         printf("기본조작테스트가 끝났습니다. 좌측 방향지시등을 켠 후 10초내에 출발하십시오.\n");
+        gameoverlaycheck=28;
         now_level = CRS_START;
         sleep(1);
+        gameoverlaycheck=0;
         startcnt=0;
         while(1) {
             if(nums<=17 && nums<=20 && leftlight==1) leftlightpass =1;
             if(nums<=17 && startcnt ==9)  {
             printf("출발실패. 실격하셨습니다.\n");
+            gameoverlaycheck=29;
             testfail = 1;
             failscreen =1;
         }
@@ -1614,21 +1681,28 @@ void driveTest()
 
         while(nums<=25 && nums>=21) { if (leftlight) {
             printf("방향지시등 조작실패. 5점 감점.\n");
+            gameoverlaycheck=23;
                 minuspoint = minuspoint + 5;
                 break;}
                 }
-
+        gameoverlaycheck=0;
         while(nums<=71) {usleep(1000);}
        if (nums>=72) now_level = CRS_UPHILL;
         uphillcnt = 0;
         printf("경사구간평가를 시작합니다.\n");
         now_level = CRS_UPHILL;
+        gameoverlaycheck=32;
+        sleep(1);
         printf("지정된 위치에 정차 후 사이드브레이크를 올린 후, 삑 소리가 나면 사이드브레이크를 내리고 진행하십시오.\n");
+        gameoverlaycheck=33;
+        sleep(1);
+        gameoverlaycheck=0;
         while (1)
         {
             if (uphillcnt >= 300 || nums>=91)
             {
                 printf("경사구간 실패. 실격하셨습니다.\n");
+                gameoverlaycheck=34;
                 testfail = 1;
                 failscreen =1;
             }
@@ -1641,6 +1715,7 @@ void driveTest()
             if (uphillcnt >= 300 || (nums>=111 && sidebrake==1) )
             {
                 printf("경사구간 실패. 실격하셨습니다.\n");
+                gameoverlaycheck=34;
                 testfail = 1;
                 failscreen =1;
             }
@@ -1653,6 +1728,7 @@ void driveTest()
             if (uphillcnt >= 300)
             {
                 printf("경사구간 실패. 실격하셨습니다.\n");
+                gameoverlaycheck=34;
                 testfail = 1;
                 failscreen =1;
             }
@@ -1666,7 +1742,7 @@ void driveTest()
          while(1) {
             dirfail=0;
             if(nums<=162 && nums>=144 && moving_l==0) {
-                if(dirfail>=5) {crash=1; testfail =1; }
+                if(dirfail>=5) {gameoverlaycheck=35; crash=1; testfail =1; }
                 else dirfail++;
             }
             if(nums>=163) break;
@@ -1677,18 +1753,20 @@ void driveTest()
           while(1) {
             dirfail=0;
             if(nums<=216 && nums>=199 && moving_l==0) {
-                if(dirfail>=5) {crash=1; testfail =1;  }
+                if(dirfail>=5) {gameoverlaycheck=35; crash=1; testfail =1;  }
                 else dirfail++;
             }
             if(nums>=217) break;
          }
 
          while(nums<=230) {usleep(1000);}
+         gameoverlaycheck=0;
 
          // 돌발구간A
          if (randtest == 0)
          {
             now_level = CRS_EMERGENCY_A;
+            gameoverlaycheck=30;
             emergencycnt = 0;
 
             // 버저로 돌발 소리 내는 코드 필요
@@ -1698,11 +1776,14 @@ void driveTest()
                 if (emergencycnt >= 100)
                 {
                     printf("돌발구간 실패. 10점감점되었습니다.\n");
+                    gameoverlaycheck=31;
                     minuspoint = minuspoint + 10;
+                    sleep(1);
+                    gameoverlaycheck=0;
                     break;
                 }
                 usleep(100000);
-                if (emerlight == 1) break;
+                if (emerlight == 1) {gameoverlaycheck=0;break; }
                 else emergencycnt++;
             }
             while (1)
@@ -1710,16 +1791,19 @@ void driveTest()
                 if (emergencycnt >= 100)
                 {
                     printf("돌발구간 실패. 10점감점되었습니다.\n");
+                    gameoverlaycheck=31;
                     minuspoint = minuspoint + 10;
+                    sleep(1);
+                    gameoverlaycheck=0;
                     break;
                 }
                 usleep(100000);
-                if (carspeed == 0) break;
+                if (carspeed == 0) {gameoverlaycheck=0; break;}
                 else emergencycnt++;
             }
             alertscreen=0;
          }
-
+        gameoverlaycheck=0;
          while(nums<=270) {usleep(1000);}
 
          // 교차로구간1
@@ -1727,11 +1811,15 @@ void driveTest()
          // crs_junction = 1;
          junctioncnt = 0;
          printf("교차로구간 평가를 시작합니다.\n");
+         gameoverlaycheck=41;
+         sleep(1);
+         gameoverlaycheck=0;
          while (1)
          {
             if (junctioncnt >= 300)
             {
                 printf("교차로 30초 이내 통과 실패. 실격하셨습니다.\n");
+                gameoverlaycheck=42;
                 testfail = 1;
                 failscreen=1;
             }
@@ -1739,6 +1827,7 @@ void driveTest()
             if(nums<=302 && nums>=273 && trafLightState==3) // 적색신호등과 차량교차로 내 위치 판별 true
             {
                 printf("신호위반 발생! 실격하셨습니다.\n");
+                gameoverlaycheck=43;
                 testfail = 1;
                 failscreen =1;
             }
@@ -1752,11 +1841,16 @@ void driveTest()
          now_level = CRS_PARKING;
          parkingcnt = 0;
          printf("주차구간 평가를 시작합니다.\n");
+         gameoverlaycheck=36;
+         sleep(1);
+         gameoverlaycheck=0;
+
          while (1)
          {
             if (parkingcnt >= 300)
             {
                 printf("주차 30초 이내 통과 실패. 실격하셨습니다.\n");
+                gameoverlaycheck=37;
                 testfail = 1;
                 failscreen =1;
             }
@@ -1766,12 +1860,13 @@ void driveTest()
             if (parkingcnt >= 300)
             {
                 printf("주차 30초 이내 통과 실패. 실격하셨습니다.\n");
+                gameoverlaycheck=37;
                 testfail = 1;
                 failscreen =1;
             }
             dirfail=0;
             if(nums<=370 && nums>=330 && moving_r==0) {
-                if(dirfail>=5) {crash=1; testfail =1; }
+                if(dirfail>=5) {gameoverlaycheck=35; crash=1; testfail =1; }
                 else dirfail++;
             }
             if(nums>=371) break;
@@ -1783,6 +1878,7 @@ void driveTest()
             if (parkingcnt >= 300)
             {
                 printf("주차 30초 이내 통과 실패. 실격하셨습니다.\n");
+                gameoverlaycheck=37;
                 testfail = 1;
                 failscreen =1;
             }
@@ -1794,12 +1890,13 @@ void driveTest()
             if (parkingcnt >= 300)
             {
                 printf("주차 30초 이내 통과 실패. 실격하셨습니다.\n");
+                gameoverlaycheck=37;
                 testfail = 1;
                 failscreen =1;
             }
             dirfail=0;
             if(nums<=435 && nums>=412 && moving_r==0) {
-                if(dirfail>=5) {crash=1; testfail =1; }
+                if(dirfail>=5) {gameoverlaycheck=35; crash=1; testfail =1; }
                 else dirfail++;
             }
             if(nums>=436) break;
@@ -1811,12 +1908,13 @@ void driveTest()
             if (parkingcnt >= 300)
             {
                 printf("주차 30초 이내 통과 실패. 실격하셨습니다.\n");
+                gameoverlaycheck=37;
                 testfail = 1;
                 failscreen =1;
             }
             dirfail=0;
             if(nums<=464 && nums>=440 && ( gear!=2 || moving_l==0 )) {
-                if(dirfail>=5) {crash=1; testfail =1; }
+                if(dirfail>=5) {gameoverlaycheck=35; crash=1; testfail =1; }
                 else dirfail++;
             }
             if(nums>=465) break;
@@ -1828,12 +1926,13 @@ void driveTest()
             if (parkingcnt >= 300)
             {
                 printf("주차 30초 이내 통과 실패. 실격하셨습니다.\n");
+                gameoverlaycheck=37;
                 testfail = 1;
                 failscreen =1;
             }
             dirfail=0;
             if(nums<=475 && nums>=465 && gear!=2 ) {
-                if(dirfail>=5) {crash=1; testfail =1; }
+                if(dirfail>=5) {gameoverlaycheck=35; crash=1; testfail =1; }
                 else dirfail++;
             }
             if(nums>=476) break;
@@ -1846,6 +1945,7 @@ void driveTest()
             if (parkingcnt >= 300 || nums>=483)
             {
                 printf("주차 실패. 실격하셨습니다.\n");
+                gameoverlaycheck=37;
                 testfail = 1;
                 failscreen =1;
             }
@@ -1858,6 +1958,7 @@ void driveTest()
             if (parkingcnt >= 300 || nums>=489)
             {
                 printf("주차 실패. 실격하셨습니다.\n");
+                gameoverlaycheck=37;
                 testfail = 1;
                 failscreen =1;
             }
@@ -1869,7 +1970,7 @@ void driveTest()
          while(1) {
             dirfail=0;
             if(nums<=509 && nums>=489 && moving_r==0) {
-                if(dirfail>=5) {crash=1; testfail =1; }
+                if(dirfail>=5) {gameoverlaycheck=35; crash=1; testfail =1; }
                 else dirfail++;
             }
             if(nums>=510) break;
@@ -1880,7 +1981,7 @@ void driveTest()
          while(1) {
             dirfail=0;
             if(nums<=539 && nums>=520 && moving_r==0) {
-                if(dirfail>=5) {crash=1; testfail =1; }
+                if(dirfail>=5) {gameoverlaycheck=35; crash=1; testfail =1; }
                 else dirfail++;
             }
             if(nums>=540) break;
@@ -1892,6 +1993,7 @@ void driveTest()
          if (randtest == 0)
          {
             now_level = CRS_EMERGENCY_B;
+            gameoverlaycheck=30;
             emergencycnt = 0;
 
             // 버저로 돌발 소리 내는 코드 필요
@@ -1901,7 +2003,11 @@ void driveTest()
                 if (emergencycnt >= 100)
                 {
                     printf("돌발구간 실패. 10점감점되었습니다.\n");
+                    gameoverlaycheck=31;
                     minuspoint = minuspoint + 10;
+                    sleep(1);
+                    gameoverlaycheck=0;
+                    break;
                 }
                 usleep(100000);
                 if (emerlight == 1) break;
@@ -1912,7 +2018,11 @@ void driveTest()
                 if (emergencycnt >= 100)
                 {
                     printf("돌발구간 실패. 10점감점되었습니다.\n");
+                    gameoverlaycheck=31;
                     minuspoint = minuspoint + 10;
+                    sleep(1);
+                    gameoverlaycheck=0;
+                    break;
                 }
                 usleep(100000);
                 if (carspeed == 0) break;
@@ -2199,7 +2309,7 @@ void addLeaderBoard() {} // 리더보드 편집 함수 작성
 
 int main(void)
 {
-    simuwork = 1;
+    simuwork = 0;
     int shmID = shmget((key_t)7777, sizeof(int), IPC_CREAT | 0666); // 공유메모리 생성 요청, 이미 존재한다면 식별자 반환
     if (shmID == -1)
     {
@@ -2231,7 +2341,7 @@ int main(void)
     pthread_join(thread_object_6, NULL);
     pthread_join(thread_object_7, NULL);
     pthread_join(thread_object_8, NULL);
-   pthread_join(thread_object_9, NULL);
+    pthread_join(thread_object_9, NULL);
     pthread_join(thread_object_10, NULL);
     pthread_join(thread_object_11, NULL);
     // shmdt(trafLightState); // 공유메모리 연결 해제
