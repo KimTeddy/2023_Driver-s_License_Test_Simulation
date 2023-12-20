@@ -17,11 +17,18 @@
 #include <sys/kd.h>
 #include <math.h>
 #include <sys/ipc.h>
+#include <ctype.h>
 
 #include "touch.h"
 #include "button.h"
 #include "now_level_defs.h"
 #include "buzzer_soundeffect_defs.h"
+#include "fnd.h"
+
+#define MAX_FND_NUM 6
+#define FND_DATA_BUFF_LEN (MAX_FND_NUM + 2)
+#define FND_DRIVER_NAME "/dev/perifnd"
+#define BLINK_DELAY_MS 500
 
 #define accel_t 500000
 
@@ -34,7 +41,7 @@ double angle[3];
 pthread_t thread_object_1;  // 스레드 1 for rgb led
 pthread_t thread_object_2;  // 스레드 2 for btn and led
 pthread_t thread_object_2x; // 스레드 2x for led blink
-// pthread_t thread_object_3; //스레드 3 for 7segment
+pthread_t thread_object_3; //스레드 3 for 7segment
 pthread_t thread_object_4; // 스레드 4 for echo state(imsi)
 pthread_t thread_object_5; // 스레드 5 for lcd bitmap output
 pthread_t thread_object_6; // 스레드 6 for lcd overlay output
@@ -46,7 +53,7 @@ pthread_t thread_object_10; // 스레드 10 for buzzerwork
 int scBTN_Start = 0, scBTN_Manual = 0, scBTN_Leaderbd = 0; // 스크린터치로 인식할 시작/코스설명/리더보드 버튼 변수
 int scBTN_prevpage =0, scBTN_Nextpage = 0, scBTN_gotomain=0, scBTN_gotostart=0; // 메뉴얼 안에서 이전 이후 페이지, 메인이동, 시작이동 버튼변수
 int scBTN_startup=0, scBTN_Wiper = 0, scBTN_Lightup =0, scBTN_Lightdown =0; // 스크린터치 버튼으로 감지할 변수들. (토글작동해야함)
-int maunalpage = 0;                                        // 코스 설명 이미지 페이지 카운팅
+int manualpage = 0;                                        // 코스 설명 이미지 페이지 카운팅
 int testStart = 0, mainScreen = 0;
 
 int now_level = CRS_MAIN;
@@ -100,6 +107,11 @@ int nums3 = 0;
 int nums4 = 0;
 int nums5 = 0;
 int leaderboard=0;
+
+// 메인 코드에 넣을 것
+int c_score = 100; // 처음 점수는 만점
+int dispnum = 0;
+void ScoreAnim();
 
    int accel[3];
     int magnet[3];
@@ -159,6 +171,78 @@ else if(now_level != prev_level)
     }
 }
 
+
+void *fndwork(void) {
+	while (1)
+	{
+		if (simuwork == 1)
+			dispnum = c_score * 1000;
+		int off_main[6] = {1, 1, 1, 0, 0, 0};
+		if (c_score < 100)
+			off_main[0] = 0;
+		if (c_score < 10)
+			off_main[1] = 0;
+		fndDisp_canoff(dispnum, 0b1000, off_main);
+
+		if (minuspoint > 0)
+			ScoreAnim();
+	}
+}
+
+void ScoreAnim()
+{
+	int off4_backup = 0, off5_backup = 0;
+	int off[6] = {1, 1, 1, 0, 1, 1};
+	dispnum = c_score * 1000 + minuspoint;
+
+	if (minuspoint < 10)
+		off[4] = 0;
+	if (c_score < 100)
+		off[0] = 0;
+	if (c_score < 10)
+		off[1] = 0;
+	fndDisp_canoff(dispnum, 0b1000, off); // (현재점수 -까일점수)
+
+	off4_backup = off[4];
+	off5_backup = off[5];
+	for (int i = 0; i < 8; i++)
+	{
+		if (off4_backup == 1)
+			off[4] ^= 1;
+		if (off5_backup == 1)
+			off[5] ^= 1;
+		fndDisp_canoff(dispnum, 0b1000, off);
+		usleep(250000); // 0.5초
+	}
+	off[4] = off4_backup;
+	off[5] = off5_backup;
+
+	while (minuspoint > 0)
+	{
+		if (c_score < 100) // 현재 점수가 100보다 작으면 100의자리 LED 꺼짐
+			off[0] = 0;
+		if (c_score < 10) // 현재 점수가 10보다 작으면 10의자리 LED 꺼짐
+			off[1] = 0;
+		if (minuspoint < 10) // 감점할 점수가 10보다 작으면 10의자리 LED 꺼짐
+			off[4] = 0;
+
+
+		dispnum = c_score * 1000 + minuspoint;
+		fndDisp_canoff(dispnum, 0b1000, off);
+		usleep(70000); // 0.07초
+		--minuspoint;
+		--c_score;
+
+		printf("number :%d\n", c_score);
+	}
+
+	dispnum = c_score * 1000;
+	off[5] = 0; // minuspoint 다 처리됐으니 1의 자리도 끄기
+	fndDisp_canoff(dispnum, 0b1000, off);
+
+	if (c_score < 80)
+		testfail = 1;
+}
 
 void *touchscreen(void)
 {
@@ -232,18 +316,28 @@ void *touchscreen(void)
 							// MAIN SCREEN 버튼 영역 터치 디면 gotomain = 1로 설정
 							scBTN_gotomain = 1;
 							printf("Main Screen\r\n");
+                            usleep(10000);
+                            scBTN_gotomain = 0;
 						}
 						else if(recvMsg.x > 920 && recvMsg.x < 985 && recvMsg.y > 410 && recvMsg.y < 550)
 						{
 							//prev 화살표 버튼 눌리면 prevpage 1로 설정.
 							scBTN_prevpage = 1;
-							printf("Prev Page\r\n");
+                            if(manualpage>=1) {manualpage= manualpage-1;
+							printf("Prev Page\r\n");}
+                            else printf("This is First Page!!!\r\n");
+                            usleep(10000);
+                            scBTN_prevpage = 0;
 						}
 						else if (recvMsg.x > 925 && recvMsg.x < 985 && recvMsg.y > 10 && recvMsg.y < 150)
 						{
 							//next 버튼 영역 터치되면 nextpage = 1로 설정
 							scBTN_Nextpage = 1;
-							printf("Next Page\r\n");
+							if(manualpage<=8) {manualpage= manualpage+1;
+							printf("Next Page\r\n");}
+                            else printf("This is Last Page!!!\r\n");
+                            usleep(10000);
+                            scBTN_Nextpage = 0;
 						}
 						
 
@@ -917,7 +1011,7 @@ void *ScreenOutput(void)
             
                 usleep(500000); // 0.5초 대기
                 strcpy(bmpfile, "manual");
-                snprintf(bmpfile, sizeof(bmpfile), "%d", maunalpage); // maunalpage 변수로 페이지 확인
+                snprintf(bmpfile + strlen(bmpfile), sizeof(bmpfile) - strlen(bmpfile), "%d", manualpage);  // manualpage 변수로 페이지 확인
                 strcat(bmpfile, ".bmp");
                 // FileRead
                 if (read_bmp(bmpfile, &data, &cols, &rows) < 0)
@@ -936,7 +1030,7 @@ void *ScreenOutput(void)
                              // 리더보드 어떻게 만들지.... 점수 기록되면 도트 찍히게 해야하나?
                 usleep(500000); // 0.5초 대기
                 strcpy(bmpfile, "leaderboard");
-                snprintf(bmpfile, sizeof(bmpfile), "%d", leaderboard); // leaderboard 변수로 페이지 확인
+                snprintf(bmpfile + strlen(bmpfile), sizeof(bmpfile) - strlen(bmpfile), "%d", leaderboard);  // leaderboard 변수로 페이지 확인
                 strcat(bmpfile, ".bmp");
                 // FileRead
                 if (read_bmp(bmpfile, &data, &cols, &rows) < 0)
@@ -1029,11 +1123,11 @@ void *ScreenOverlay(void)
         {
             usleep(500000); // 0.5초 대기
             strcpy(bmpfile2, "overlaymanual"); //overlaymanual
-            snprintf(bmpfile2, sizeof(bmpfile2), "%d", nums3); // maunalpage 변수로 페이지 확인
+            snprintf(bmpfile2 + strlen(bmpfile2), sizeof(bmpfile2) - strlen(bmpfile2), "%d", manualpage);  // manualpage 변수로 페이지 확인
             strcat(bmpfile2, ".bmp");
 
             // FileRead
-            if (read_bmp(bmpfile2, &data2, &cols2, &rows2) < 0)
+            if (read_bmp2(bmpfile2, &data2, &cols2, &rows2) < 0)
             {
                 printf("File open failed\r\n");
                 return 0;
@@ -1041,7 +1135,7 @@ void *ScreenOverlay(void)
             // FileWrite
             fb_write2(data2, cols2, rows2, 0, 0);
 
-            close_bmp();
+            close_bmp2();
         }
         break;
 
@@ -1052,7 +1146,7 @@ void *ScreenOverlay(void)
             strcat(bmpfile2, ".bmp");
 
             // FileRead
-            if (read_bmp(bmpfile2, &data2, &cols2, &rows2) < 0)
+            if (read_bmp2(bmpfile2, &data2, &cols2, &rows2) < 0)
             {
                 printf("File open failed\r\n");
                 return 0;
@@ -1060,18 +1154,18 @@ void *ScreenOverlay(void)
             // FileWrite
             fb_write2(data2, cols2, rows2, 0, 0);
 
-            close_bmp();
+            close_bmp2();
         }
         break;
 
         case 3:
         {
             strcpy(bmpfile2, "overlaygame");
-            snprintf(bmpfile2, sizeof(bmpfile2), "%d", nums4); // maunalpage 변수로 페이지 확인
+            snprintf(bmpfile2 + strlen(bmpfile2), sizeof(bmpfile2) - strlen(bmpfile2), "%d", nums4);
             strcat(bmpfile2, ".bmp");
 
             // FileRead
-            if (read_bmp(bmpfile2, &data2, &cols2, &rows2) < 0)
+            if (read_bmp2(bmpfile2, &data2, &cols2, &rows2) < 0)
             {
                 printf("File open failed\r\n");
                 return 0;
@@ -1079,7 +1173,7 @@ void *ScreenOverlay(void)
             // FileWrite
             fb_write2(data2, cols2, rows2, 0, 0);
 
-            close_bmp();
+            close_bmp2();
         }
         break;
 
@@ -1090,7 +1184,7 @@ void *ScreenOverlay(void)
             strcat(bmpfile2, ".bmp");
 
             // FileRead
-            if (read_bmp(bmpfile2, &data2, &cols2, &rows2) < 0)
+            if (read_bmp2(bmpfile2, &data2, &cols2, &rows2) < 0)
             {
                 printf("File open failed\r\n");
                 return 0;
@@ -1098,7 +1192,7 @@ void *ScreenOverlay(void)
             // FileWrite
             fb_write2(data2, cols2, rows2, 0, 0);
 
-            close_bmp();
+            close_bmp2();
         }
         break;
 
@@ -1124,7 +1218,7 @@ void showMainScreen()
 
 void driveTest()
 {                   // 시험 코스 진행할 것 작성   while문으로 구간 판별후 반복조건문 탈출하게 작성해야함.
-    maunalpage = 0; // 메뉴얼 시작은 선택페이지로.
+    manualpage = 0; // 메뉴얼 시작은 선택페이지로.
     showstate = 1;  // 화면에 메뉴얼 출력. 메뉴얼 0페이지는 시험 시작전 코스설명 yes no 선택페이지로. 1페이지부터 코스설명.
     int next = 1;   // teststart = 1, mainmenu = 2 : default teststart
     // 시험을 시작하기에 앞서 코스 설명을 진행하겠습니다. (스킵 여부 물어서 스킵 가능하게.)
@@ -1841,22 +1935,22 @@ void driveTest()
 int showManual()
 { // 코스 설명 작성
     scBTN_Manual = 0;
-    maunalpage = 1;
+    manualpage = 0;
     showstate = 1;
     // 코스 설명 구간별로 이미지로 작성해서 띄우면 좋을것 같다고 생각.
     // 구간별 점수 및 전역 감점및 실격 요소, 제한시간 등 안내. 이미지 수동으로 넘기는 방식으로.
-    while (testStart != 1 | mainScreen != 1)
+    while (scBTN_gotostart != 1 | scBTN_gotomain != 1)
     { // 마지막페이지에서 메인화면 혹은 시험 시작을 선택할 때 까지 대기.
-        if (maunalpage == 9)
+        if (manualpage == 9)
         {
 
             if (scBTN_Start) ; // 시험시작으로 코스설명에 진입했을경우 testStart(시작하기)버튼과 mainScreen(메인화면) 버튼 표시
             else ;           // 메인화면에서 설명보기로 진입했을경우 mainScreen(메인화면) 버튼 표시
         }
     }
-    if (testStart)
+    if (scBTN_gotostart)
         return 1; // 시험시작 선택시 1(teststart) 리턴.
-    else if (mainScreen)
+    else if (scBTN_gotomain)
         return 2; // 메인화면 선택시 2(mainmenu) 리턴.
 }
 
@@ -1885,21 +1979,21 @@ int main(void)
 
     pthread_create(&thread_object_1, NULL, trafLight, NULL);
     pthread_create(&thread_object_2, NULL, btncheck, NULL);
+    pthread_create(&thread_object_10, NULL, buzzerwork, NULL);
     pthread_create(&thread_object_2x, NULL, ledblinks, NULL);
+    pthread_create(&thread_object_9, NULL, touchscreen, NULL);
+    pthread_create(&thread_object_3, NULL, fndwork, NULL);
     //pthread_create(&thread_object_4, NULL, trafLightss, NULL);
     pthread_create(&thread_object_5, NULL, ScreenOutput, NULL);
     usleep(10000);
-   pthread_create(&thread_object_6, NULL, ScreenOverlay, NULL);
-    pthread_create(&thread_object_9, NULL, touchscreen, NULL);
-    pthread_create(&thread_object_10, NULL, buzzerwork, NULL);
-    // pthread_create(&thread_object_3, NULL, sevenseg, NULL);
-
+    pthread_create(&thread_object_6, NULL, ScreenOverlay, NULL);
+    
     showMainScreen();
 
     pthread_join(thread_object_1, NULL);
     pthread_join(thread_object_2, NULL);
     pthread_join(thread_object_2x, NULL);
-    // pthread_join(thread_object_3, NULL);
+    pthread_join(thread_object_3, NULL);
     //pthread_join(thread_object_4, NULL);
     pthread_join(thread_object_5, NULL);
     pthread_join(thread_object_6, NULL);

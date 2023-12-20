@@ -1,7 +1,7 @@
 all: libMyPeri.a
 
-libMyPeri.a: accelMagGyro.o button.o buzzer.o colorled.o fnd.o lcdtext.o led.o libbmp.o libfbdev.o temp.o
-	arm-linux-gnueabi-ar rc libMyPeri.a accelMagGyro.o button.o buzzer.o colorled.o fnd.o lcdtext.o led.o libbmp.o libfbdev.o temp.o
+libMyPeri.a: accelMagGyro.o button.o buzzer.o colorled.o fnd.o lcdtext.o led.o libbmp.o libbmp2.o libfbdev.o temp.o
+	arm-linux-gnueabi-ar rc libMyPeri.a accelMagGyro.o button.o buzzer.o colorled.o fnd.o lcdtext.o led.o libbmp.o libbmp2.o libfbdev.o temp.o
 
 accelMagGyro.o: accelMagGyro.c accelMagGyro.h
 	arm-linux-gnueabi-gcc -o accelMagGyro.o -c accelMagGyro.c 
@@ -26,6 +26,9 @@ led.o: led.h led.c
 
 libbmp.o: libbmp.c libbmp.h bitmapFileHeader.h
 	arm-linux-gnueabi-gcc -o libbmp.o -c libbmp.c
+
+libbmp2.o: libbmp2.c libbmp2.h bitmapFileHeader.h
+	arm-linux-gnueabi-gcc -o libbmp2.o -c libbmp2.c
 
 libfbdev.o: libfbdev.c libfbdev.h
 	arm-linux-gnueabi-gcc -o libfbdev.o -c libfbdev.c
