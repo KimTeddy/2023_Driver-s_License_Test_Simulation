@@ -293,20 +293,22 @@ void *count(void)
     while (1)
 	{
       //cnt += 1;
-        if (cnt[0] == 9) 
-        {
-            cnt[0] = 0;
-            cnt[1]++;
-        }
-        else if(cnt[1]== 5 && cnt[0] == 9)
+        if(cnt[1]== 5 && cnt[0] == 9)
         {
             cnt[2] += 1;
             cnt[1] = 0;
+            cnt[0] = 0;
+        }
+        else if (cnt[0] == 9) 
+        {
+            cnt[0] = 0;
+            cnt[1]++;
         }
         else 
         {
             cnt[0]++;
         }
+
         if(now_level != prev_level_lcd){
             if (now_level == CRS_MAIN)
             {
@@ -352,6 +354,7 @@ void *count(void)
                 str1 = "END                  ";
             }
             lcdtextwrite( str1, str_cnt, 1);
+            prev_level_lcd = now_level;
         }
         // sprintf(str_cnt0, "%d", cnt[0]);
         //sprintf(str_cnt1, "%d", cnt[1]);
