@@ -271,7 +271,7 @@ void *count(void)
         cnt[0]++;
     }
  // 10초 단위 검사 
-    }          
+            
 
    	    if (CRS_MAIN)
 		{
@@ -353,7 +353,7 @@ void *count(void)
   	  		//lcdtextwrite( "END                  ", "CAR SIMULATOR", 2);
 		  	// "END"
 	    }
-  
+    }  
 }
   
 
