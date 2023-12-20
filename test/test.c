@@ -277,8 +277,8 @@ void *count(void)
             
    	    if (now_level == CRS_MAIN)
 		{
-            //str1 = "PRESS START";
-		   sprintf(str1, "%s", "PRESS START");
+            str1 = "PRESS START";
+		   //sprintf(str1, "%s", "PRESS START");
            //  lcdtextwrite( "PRESS START", "CAR S", 1);
 			 //  lcdtextwrite( "PRESS START", str_cnt, 2);
  			  // lcdtextwrite( "PRESS START", "CAR S", 2);
@@ -287,8 +287,8 @@ void *count(void)
 	  	}
         else if(now_level == CRS_MANUAL)
         {
-            //str1 = "MANUAL        ";
-            sprintf(str1, "%s", "MANUAL        ");
+            str1 = "MANUAL        ";
+            //sprintf(str1, "%s", "MANUAL        ");
         }  
 		else if (now_level == CRS_START)	
 		{
