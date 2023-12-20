@@ -293,6 +293,8 @@ void *count(void)
     while (1)
 	{
       //cnt += 1;
+      if(simuwork)
+      {
         if(cnt[1]== 6)
         {
             cnt[2] += 1;
@@ -308,6 +310,8 @@ void *count(void)
         {
             cnt[0]++;
         }
+    }
+       
 
         if(now_level != prev_level_lcd){
             if (now_level == CRS_MAIN)
