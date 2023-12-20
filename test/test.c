@@ -18,6 +18,7 @@
 #include <math.h>
 #include <sys/ipc.h>
 
+#include "touch.h"
 #include "button.h"
 #include "now_level_defs.h"
 #include "buzzer_soundeffect_defs.h"
@@ -118,8 +119,8 @@ int leaderboard=0;
 
 *trafLightState = 0; // reset RGB LED state
 
-int showstate = 0; // 스크린에 표시할 이미지 state 변수. 0 = 메인스크린, 1 = 메뉴얼, 2 = 리더보드, 3 = 게임진행
-
+int showstate = 0; // 스크린에 표시할 이미지 state 변수. 0 = 메인스크린, 1 = 메뉴얼, 2 = 리더보드, 3 = 게임진행, 4 = 기능테스트
+/*
 	int first = 0;
 	// scBTN_Start, Manual, Leaderbd 나오는 화면
 	int second = 0;
@@ -127,7 +128,7 @@ int showstate = 0; // 스크린에 표시할 이미지 state 변수. 0 = 메인�
 	int third = 0;
 	// scBTN_startup, Wiper, Lightup, Lightdown 나오는 화면 
 	// 화면에 따라 구간을 구분할 수 있는 트리거를 설정.
-
+*/
 void *buzzerwork(void) {
     while(1) {
         if(now_level == CRS_START && now_level != prev_level)
@@ -181,7 +182,7 @@ void *touchscreen(void)
 	//third 부분에서 동작하는 변수들
 */
 	int msgID = msgget( MESSAGE_ID, IPC_CREAT|0666);
-	BUTTON_MSG_T recvMsg;
+	BUTTON_MSG_S recvMsg;
 	while (1)
 	{
 		msgrcv(msgID, &recvMsg, sizeof (recvMsg)-sizeof (long int), 0, 0);
@@ -192,7 +193,7 @@ void *touchscreen(void)
 			case 999:
 				if (recvMsg.pressed == 1)
 				{
-					if(first)
+					if(showstate==0)
 					{
 						if( recvMsg.x>410 && recvMsg.x<545 && recvMsg.y > 40 && recvMsg.y < 540 )
 						// START버튼 눌리면 start = 1로 설정
@@ -215,7 +216,7 @@ void *touchscreen(void)
 					}
 
 				
-					else if(second)
+					else if(showstate==1)
 					{
 						if(recvMsg.x > 670 && recvMsg.x < 750 && recvMsg.y > 50 && recvMsg.y < 530)
 						{
@@ -245,7 +246,7 @@ void *touchscreen(void)
 						
 
 					}
-					else if(third)
+					else if(showstate==4)
 					{
 						if(recvMsg.x > 915 && recvMsg.x < 955 && recvMsg.y > 70 && recvMsg.y < 130)
 						{
@@ -901,7 +902,6 @@ void *ScreenOutput(void)
         {
         case 0:
         {
-            fb_clear();
             // FileRead
             if (read_bmp("mainscreen.bmp", &data, &cols, &rows) < 0)
             { // mainscreen.bmp 출력
@@ -916,7 +916,6 @@ void *ScreenOutput(void)
         break;
         case 1:
         {
-            fb_clear();
             while (now_level == CRS_MANUAL) // 메뉴얼 표시상태
             {
                 usleep(1000000); // 1초 대기
@@ -937,7 +936,6 @@ void *ScreenOutput(void)
 
         case 2:
         {
-            fb_clear();
             while (now_level == CRS_MANUAL)
             {                    // 리더보드 어떻게 만들지.... 점수 기록되면 도트 찍히게 해야하나?
                 usleep(1000000); // 1초 대기
@@ -1875,7 +1873,7 @@ int main(void)
     pthread_create(&thread_object_10, NULL, buzzerwork, NULL);
     // pthread_create(&thread_object_3, NULL, sevenseg, NULL);
 
-    driveTest();
+    showMainScreen();
 
     pthread_join(thread_object_1, NULL);
     pthread_join(thread_object_2, NULL);

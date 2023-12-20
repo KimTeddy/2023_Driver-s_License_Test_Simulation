@@ -2,7 +2,7 @@ all: testing
 	scp ./testing ecube@172.20.10.3:~/testfolder
 	echo "		5) send complete"
 
-testing: test.c libMyPeri.a libtouch.a
+testing: test.o libMyPeri.a libtouch.a
 	arm-linux-gnueabi-gcc -Xlinker --start-group -lpthread test.o -ltouch -lMyPeri -lm -Xlinker --end-group  -L. -o testing
 	echo "		4) testing OUTPUT"
 

@@ -33,7 +33,7 @@ int main (void)
 	//third 부분에서 동작하는 변수들
 
 	int msgID = msgget( MESSAGE_ID, IPC_CREAT|0666);
-	BUTTON_MSG_T recvMsg;
+	BUTTON_MSG_S recvMsg;
 	while (1)
 	{
 		msgrcv(msgID, &recvMsg, sizeof (recvMsg)-sizeof (long int), 0, 0);
