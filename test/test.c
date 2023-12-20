@@ -305,8 +305,6 @@ void *count(void)
         {
             cnt[0]++;
         }
-
-
    	    if (now_level == CRS_MAIN)
 		{
             str1 = "PRESS START";
@@ -350,10 +348,10 @@ void *count(void)
 		{
             str1 = "END                  ";
 	    }
-        sprintf(str_cnt0, "%d", cnt[0]);
-        sprintf(str_cnt1, "%d", cnt[1]);
-        sprintf(str_cnt2, "%d", cnt[2]);
-        sprintf(str_cnt3, "%d", cnt[3]);
+       // sprintf(str_cnt0, "%d", cnt[0]);
+        //sprintf(str_cnt1, "%d", cnt[1]);
+       // sprintf(str_cnt2, "%d", cnt[2]);
+       // sprintf(str_cnt3, "%d", cnt[3]);
         sprintf(str_cnt, "           %d:%d%d",  cnt[2], cnt[1], cnt[0]);
 		usleep(50000);    //테스트용
         //sleep(1);       //시연용
