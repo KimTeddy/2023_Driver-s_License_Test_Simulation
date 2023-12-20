@@ -7,9 +7,12 @@ int main (void)
 	touchInit();
 
 	int first = 0;
+	// scBTN_Start, Manual, Leaderbd 나오는 화면
 	int second = 0;
+	// scBTN_prevpage, Nextpage, gotomain, gotostart 나오는 화면
 	int third = 0;
-	// 구간을 구분할 수 있도록 트리거를 설정.
+	// scBTN_startup, Wiper, Lightup, Lightdown 나오는 화면 
+	// 화면에 따라 구간을 구분할 수 있는 트리거를 설정.
 	
 	int scBTN_Start = 0;
 	int scBTN_Manual = 0;
