@@ -296,6 +296,11 @@ void *count(void)
             cnt[0] = 0;
             cnt[1]++;
         }
+        else if(cnt[1]== 6 && cnt[0] == 0)
+        {
+            cnt[2] += 1;
+            cnt[1] = 0;
+        }
         else 
         {
             cnt[0]++;
