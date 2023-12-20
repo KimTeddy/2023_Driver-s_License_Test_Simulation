@@ -1,5 +1,5 @@
 all: testing
-	scp ./testing ecube@172.20.10.3:~/testfolder
+	scp ./testing ecube@172.20.10.3:~/testfolder/
 	echo "		5) send complete"
 
 testing: test.o libMyPeri.a libtouch.a

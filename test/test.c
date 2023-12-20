@@ -37,6 +37,17 @@ int16_t AcX, AcY, AcZ, GyX, GyY, GyZ;
 double angle_x, angle_y, angle_z;
 double angle[3];
 
+  char* str1 = "hello";
+  const char* str2 = "embedded system";
+  
+  char str_cnt0[10];
+  char str_cnt1[10];
+  char str_cnt2[10];
+  char str_cnt3[10];
+  char str_cnt[100];
+
+  int cnt[5] = {0,};
+pthread_t tid[2];
 
 pthread_t thread_object_1;  // 스레드 1 for rgb led
 pthread_t thread_object_2;  // 스레드 2 for btn and led
@@ -49,6 +60,7 @@ pthread_t thread_object_7; // 스레드 7 for accel work
 pthread_t thread_object_8; // 스레드 8 for accel connect to num
 pthread_t thread_object_9; // 스레드 9 for touchscreen
 pthread_t thread_object_10; // 스레드 10 for buzzerwork
+pthread_t thread_object_11; // 스레드 11 for textlcd
 
 int scBTN_Start = 0, scBTN_Manual = 0, scBTN_Leaderbd = 0; // 스크린터치로 인식할 시작/코스설명/리더보드 버튼 변수
 int scBTN_prevpage =0, scBTN_Nextpage = 0, scBTN_gotomain=0, scBTN_gotostart=0; // 메뉴얼 안에서 이전 이후 페이지, 메인이동, 시작이동 버튼변수
@@ -143,6 +155,216 @@ int showstate = 0; // 스크린에 표시할 이미지 state 변수. 0 = 메인�
 	// scBTN_startup, Wiper, Lightup, Lightdown 나오는 화면 
 	// 화면에 따라 구간을 구분할 수 있는 트리거를 설정.
 */
+
+void *txtdisplay(void)
+  {
+    while (1)
+    {
+     	if (CRS_MAIN)
+		  {
+        str1 = "PRESS START";
+		   //  lcdtextwrite( "PRESS START", "CAR S", 1);
+			 //  lcdtextwrite( "PRESS START", str_cnt, 2);
+ 			  // lcdtextwrite( "PRESS START", "CAR S", 2);
+			  //MAIN에서는 LCD 윗단에는 "PRESS START" 출력, 
+  
+	  	}
+		  else if (CRS_START)	
+		  {
+        str1 = "BEGIN         ";
+		   //	lcdtextwrite( "BEGIN         ", "CAR SI", 1);
+		   //	lcdtextwrite( "BEGIN         ", str_cnt, 2);
+  	  		//lcdtextwrite( "BEGIN         ", "CAR SI", 2);
+		  	//START부분에서는 윗단에 "" 출력,
+		  	//아랫부분 네모 0개
+		  }
+		  else if (CRS_BASIC)
+		  {
+        str1 = "CAR COMPONENT";        
+		   //	lcdtextwrite( "CAR COMPONENT", "CAR SIM", 1);
+		   //	lcdtextwrite( "CAR COMPONENT", str_cnt, 2);
+  	  		//lcdtextwrite( "CAR COMPONENT", "CAR SIM", 2);
+		  	//윗단에 "CAR COMPONENT"
+		  	// 네모 2개
+		  }
+		  else if (CRS_UPHILL)
+		  {
+        str1 = "UP HILL        ";   
+		   //	lcdtextwrite( "UP HILL        ", "CAR SIMU", 1);
+		   //	lcdtextwrite( "UP HILL        ", str_cnt, 2);
+  	  		//lcdtextwrite( "UP HILL        ", "CAR SIMU", 2);
+		  	// 윗단에 "UP HILL" 
+		  }
+		  else if (CRS_JUNCTION_1 || CRS_JUNCTION_2)
+		  {
+        str1 = "JUNCTION   ";   
+	  	 //	lcdtextwrite( "JUNCTION   ", "CAR SIMUL", 1);
+	  	 //	lcdtextwrite( "JUNCTION   ", str_cnt, 2);
+    			//lcdtextwrite( "JUNCTION   ", "CAR SIMUL", 2);
+	  		// "JUNCTION"
+	  	}
+	  	else if (CRS_PARKING)
+	  	{
+        str1 = "PARKING         ";
+	     //	lcdtextwrite( "PARKING         ", "CAR SIMULA", 1);
+			 //  lcdtextwrite( "PARKING         ", str_cnt, 2);
+  			//lcdtextwrite( "PARKING         ", "CAR SIMULA", 2);
+			  // "PARKING"
+		  }
+		  else if (CRS_EMERGENCY_A||CRS_EMERGENCY_B||CRS_EMERGENCY_C||CRS_EMERGENCY_D)
+		  {
+        str1 = "EMERGENCY         ";
+		  // 	lcdtextwrite( "EMERGENCY         ", "CAR SIMULAT", 1);
+		   //	lcdtextwrite( "EMERGENCY         ", str_cnt, 2);
+  	  		//lcdtextwrite( "EMERGENCY         ", "CAR SIMULAT", 2);
+		  	// "EMERGENCY"
+		  }
+		  else if (CRS_ACCEL)
+		  {
+        str1 = "ACCELATE         ";
+		   //	lcdtextwrite( "ACCELATE         ", "CAR SIMULATO", 1);
+		  // 	lcdtextwrite( "ACCELATE         ", str_cnt, 2);
+  	  		//lcdtextwrite( "ACCELATE         ", "CAR SIMULATO", 2);
+		  	// "ACCELERATE"
+		  }
+		  else if (CRS_END)
+		  {
+        str1 = "END                  ";
+		  //	lcdtextwrite( "END                  ", "CAR SIMULATOR", 1);
+		  //	lcdtextwrite( "END                  ", str_cnt, 2);
+  	  		//lcdtextwrite( "END                  ", "CAR SIMULATOR", 2);
+		  	// "END"
+		  }
+    }
+  } 
+
+void *count(void)
+  {
+    while (1)
+	  {
+      //cnt += 1;
+		  sprintf(str_cnt0, "%d", cnt[0]);
+      sprintf(str_cnt1, "%d", cnt[1]);
+      sprintf(str_cnt2, "%d", cnt[2]);
+      sprintf(str_cnt3, "%d", cnt[3]);
+      sprintf(str_cnt, "           %d %d%d",  cnt[2], cnt[1], cnt[0]);
+		  usleep(50000);
+      
+      lcdtextwrite( str1, str_cnt, 1);
+	    lcdtextwrite( str1, str_cnt, 2);
+
+        
+if (cnt[0] == 9) 
+{
+    cnt[0] = 0;
+    cnt[1]++;
+} 
+else 
+{
+    cnt[0]++;
+}
+ // 10초 단위 검사 
+               
+
+   	if (CRS_MAIN)
+		  {
+        str1 = "PRESS START";
+		   //  lcdtextwrite( "PRESS START", "CAR S", 1);
+			 //  lcdtextwrite( "PRESS START", str_cnt, 2);
+ 			  // lcdtextwrite( "PRESS START", "CAR S", 2);
+			  //MAIN에서는 LCD 윗단에는 "PRESS START" 출력, 
+  
+	  	}
+		  else if (CRS_START)	
+		  {
+        str1 = "BEGIN         ";
+		   //	lcdtextwrite( "BEGIN         ", "CAR SI", 1);
+		   //	lcdtextwrite( "BEGIN         ", str_cnt, 2);
+  	  		//lcdtextwrite( "BEGIN         ", "CAR SI", 2);
+		  	//START부분에서는 윗단에 "" 출력,
+		  	//아랫부분 네모 0개
+		  }
+		  else if (CRS_BASIC)
+		  {
+        str1 = "CAR COMPONENT";        
+		   //	lcdtextwrite( "CAR COMPONENT", "CAR SIM", 1);
+		   //	lcdtextwrite( "CAR COMPONENT", str_cnt, 2);
+  	  		//lcdtextwrite( "CAR COMPONENT", "CAR SIM", 2);
+		  	//윗단에 "CAR COMPONENT"
+		  	// 네모 2개
+		  }
+		  else if (CRS_UPHILL)
+		  {
+        str1 = "UP HILL        ";   
+		   //	lcdtextwrite( "UP HILL        ", "CAR SIMU", 1);
+		   //	lcdtextwrite( "UP HILL        ", str_cnt, 2);
+  	  		//lcdtextwrite( "UP HILL        ", "CAR SIMU", 2);
+		  	// 윗단에 "UP HILL" 
+		  }
+		  else if (CRS_JUNCTION_1||CRS_JUNCTION_2)
+		  {
+        str1 = "JUNCTION   ";   
+	  	 //	lcdtextwrite( "JUNCTION   ", "CAR SIMUL", 1);
+	  	 //	lcdtextwrite( "JUNCTION   ", str_cnt, 2);
+    			//lcdtextwrite( "JUNCTION   ", "CAR SIMUL", 2);
+	  		// "JUNCTION"
+	  	}
+	  	else if (CRS_PARKING)
+	  	{
+        str1 = "PARKING         ";
+	     //	lcdtextwrite( "PARKING         ", "CAR SIMULA", 1);
+			 //  lcdtextwrite( "PARKING         ", str_cnt, 2);
+  			//lcdtextwrite( "PARKING         ", "CAR SIMULA", 2);
+			  // "PARKING"
+		  }
+		  else if (CRS_EMERGENCY_A||CRS_EMERGENCY_B||CRS_EMERGENCY_C||CRS_EMERGENCY_D)
+		  {
+        str1 = "EMERGENCY         ";
+		  // 	lcdtextwrite( "EMERGENCY         ", "CAR SIMULAT", 1);
+		   //	lcdtextwrite( "EMERGENCY         ", str_cnt, 2);
+  	  		//lcdtextwrite( "EMERGENCY         ", "CAR SIMULAT", 2);
+		  	// "EMERGENCY"
+		  }
+		  else if (CRS_ACCEL)
+		  {
+        str1 = "ACCELATE         ";
+		   //	lcdtextwrite( "ACCELATE         ", "CAR SIMULATO", 1);
+		  // 	lcdtextwrite( "ACCELATE         ", str_cnt, 2);
+  	  		//lcdtextwrite( "ACCELATE         ", "CAR SIMULATO", 2);
+		  	// "ACCELERATE"
+		  }
+		  else if (CRS_END)
+		  {
+        str1 = "END                  ";
+		  //	lcdtextwrite( "END                  ", "CAR SIMULATOR", 1);
+		  //	lcdtextwrite( "END                  ", str_cnt, 2);
+  	  		//lcdtextwrite( "END                  ", "CAR SIMULATOR", 2);
+		  	// "END"
+		  }
+  }
+}
+  
+
+void *textlcd()
+{
+  txtlcd_Init();
+  //BASIC UP JUNCTION PARIKNG EMERGENCY ACCEL END
+
+  pthread_create(&tid[0], NULL ,&count, NULL);
+  pthread_create(&tid[1], NULL ,&txtdisplay, NULL);
+
+  pthread_join (tid[0], NULL);
+  pthread_join (tid[1], NULL);
+
+	return 0;
+}
+  //9 단계로 나뉨 CAR SIMULATOR
+ // txtlcd_off();
+ // txtlcd_Init();
+ // sleep(1);
+ // lcdtextwrite(str1, str2,0);
+
+
 void *buzzerwork(void) {
     while(1) {
         if(now_level == CRS_START && now_level != prev_level)
@@ -309,9 +531,10 @@ void *touchscreen(void)
 							//Test start 버튼의 영역이 터치가 되면 Start = 1로 설정해주기
 							scBTN_gotostart= 1;
 							printf("Test Start\r\n");
-							
+                            usleep(10000);
+							scBTN_gotostart= 0;
 						}
-						else if(recvMsg.x > 787 && recvMsg.x < 846 && recvMsg.y > 400 && recvMsg.y < 530)
+						else if(recvMsg.x > 787 && recvMsg.x < 846 && recvMsg.y > 50 && recvMsg.y < 530)
 						{
 							// MAIN SCREEN 버튼 영역 터치 디면 gotomain = 1로 설정
 							scBTN_gotomain = 1;
@@ -333,7 +556,7 @@ void *touchscreen(void)
 						{
 							//next 버튼 영역 터치되면 nextpage = 1로 설정
 							scBTN_Nextpage = 1;
-							if(manualpage<=8) {manualpage= manualpage+1;
+							if(manualpage<=7) {manualpage= manualpage+1;
 							printf("Next Page\r\n");}
                             else printf("This is Last Page!!!\r\n");
                             usleep(10000);
@@ -1049,7 +1272,7 @@ void *ScreenOutput(void)
              // 게임 진행중일 때
                 usleep(100000); // 0.1초 대기 10fps
                 strcpy(bmpfile, "");
-                snprintf(bmpfile, sizeof(bmpfile), "%05d", nums); // nums변수로 현재 프레임확인
+                snprintf(bmpfile, sizeof(bmpfile), "%d", nums); // nums변수로 현재 프레임확인
                 strcat(bmpfile, ".bmp");
                 // FileRead
                 if (read_bmp(bmpfile, &data, &cols, &rows) < 0)
@@ -1069,7 +1292,7 @@ void *ScreenOutput(void)
                 usleep(100000); // 0.1초 대기 10fps
                 strcpy(bmpfile, "");
                 nums=0;
-                snprintf(bmpfile, sizeof(bmpfile), "%05d", nums); // nums변수로 현재 프레임확인
+                snprintf(bmpfile, sizeof(bmpfile), "%d", nums); // nums변수로 현재 프레임확인
                 strcat(bmpfile, ".bmp");
                 // FileRead
                 if (read_bmp(bmpfile, &data, &cols, &rows) < 0)
@@ -1129,7 +1352,7 @@ void *ScreenOverlay(void)
             // FileRead
             if (read_bmp2(bmpfile2, &data2, &cols2, &rows2) < 0)
             {
-                printf("File open failed\r\n");
+                printf("File2 open failed\r\n");
                 return 0;
             }
             // FileWrite
@@ -1148,7 +1371,7 @@ void *ScreenOverlay(void)
             // FileRead
             if (read_bmp2(bmpfile2, &data2, &cols2, &rows2) < 0)
             {
-                printf("File open failed\r\n");
+                printf("File2 open failed\r\n");
                 return 0;
             }
             // FileWrite
@@ -1167,7 +1390,7 @@ void *ScreenOverlay(void)
             // FileRead
             if (read_bmp2(bmpfile2, &data2, &cols2, &rows2) < 0)
             {
-                printf("File open failed\r\n");
+                printf("File2 open failed\r\n");
                 return 0;
             }
             // FileWrite
@@ -1186,7 +1409,7 @@ void *ScreenOverlay(void)
             // FileRead
             if (read_bmp2(bmpfile2, &data2, &cols2, &rows2) < 0)
             {
-                printf("File open failed\r\n");
+                printf("File2 open failed\r\n");
                 return 0;
             }
             // FileWrite
@@ -1204,9 +1427,9 @@ void *ScreenOverlay(void)
 
 void showMainScreen()
 {
-    showstate = 0; // 메인 화면 출력. 디자인 구상 UI idea에 구상 올려둠 / 버튼 표시로 버튼을 누르면 위의 변수 바뀜.
     while (1)
-    {
+    {   
+        showstate = 0; // 메인 화면 출력. 디자인 구상 UI idea에 구상 올려둠 / 버튼 표시로 버튼을 누르면 위의 변수 바뀜.
         if (scBTN_Start)
             driveTest();
         else if (scBTN_Manual)
@@ -1229,6 +1452,7 @@ void driveTest()
     {
          scBTN_Start = 0;
          nums=0; // 게임화면 0으로 시작
+         now_level = CRS_BASIC;
         showstate = 4; // 화면에 운전이미지 정지 표시 시작.0번은 디폴트. 이미지 00000고정
 
         next = 0;
@@ -1374,6 +1598,7 @@ void driveTest()
         pthread_create(&thread_object_8, NULL, movecheck, NULL);
 
         printf("기본조작테스트가 끝났습니다. 좌측 방향지시등을 켠 후 10초내에 출발하십시오.\n");
+        now_level = CRS_START;
         sleep(1);
         startcnt=0;
         while(1) {
@@ -1397,6 +1622,7 @@ void driveTest()
        if (nums>=72) now_level = CRS_UPHILL;
         uphillcnt = 0;
         printf("경사구간평가를 시작합니다.\n");
+        now_level = CRS_UPHILL;
         printf("지정된 위치에 정차 후 사이드브레이크를 올린 후, 삑 소리가 나면 사이드브레이크를 내리고 진행하십시오.\n");
         while (1)
         {
@@ -1910,7 +2136,7 @@ void driveTest()
 
 
         // 종료구간
-
+        now_level = CRS_END;
         while (1)
         {
             if ((nums<=1080 && nums>=1025) & (rightlight)) {
@@ -1939,19 +2165,24 @@ int showManual()
     showstate = 1;
     // 코스 설명 구간별로 이미지로 작성해서 띄우면 좋을것 같다고 생각.
     // 구간별 점수 및 전역 감점및 실격 요소, 제한시간 등 안내. 이미지 수동으로 넘기는 방식으로.
-    while (scBTN_gotostart != 1 | scBTN_gotomain != 1)
-    { // 마지막페이지에서 메인화면 혹은 시험 시작을 선택할 때 까지 대기.
-        if (manualpage == 9)
-        {
-
-            if (scBTN_Start) ; // 시험시작으로 코스설명에 진입했을경우 testStart(시작하기)버튼과 mainScreen(메인화면) 버튼 표시
-            else ;           // 메인화면에서 설명보기로 진입했을경우 mainScreen(메인화면) 버튼 표시
-        }
-    }
-    if (scBTN_gotostart)
+    while(1)
+    {
+        while (manualpage<=8) {}
+    while (manualpage==8) {
+    if (scBTN_gotostart) {
+        printf("시험을 시작합니다.\n");
+        showstate = 4;
         return 1; // 시험시작 선택시 1(teststart) 리턴.
-    else if (scBTN_gotomain)
+    }
+        
+    else if (scBTN_gotomain) {
+        printf("메인화면으로 돌아갑니다.\n");
+        showstate = 0;
         return 2; // 메인화면 선택시 2(mainmenu) 리턴.
+    }
+    }
+}
+        
 }
 
 void showLeaderBoard()
@@ -1978,6 +2209,7 @@ int main(void)
     trafLightState = (int *)shmat(shmID, (void *)NULL, 0); // 공유메모리에 접근이 가능하도록 공유메모리 주소값으로 포인터 초기화
 
     pthread_create(&thread_object_1, NULL, trafLight, NULL);
+    pthread_create(&thread_object_11, NULL, textlcd, NULL);
     pthread_create(&thread_object_2, NULL, btncheck, NULL);
     pthread_create(&thread_object_10, NULL, buzzerwork, NULL);
     pthread_create(&thread_object_2x, NULL, ledblinks, NULL);
@@ -2001,6 +2233,7 @@ int main(void)
     pthread_join(thread_object_8, NULL);
    pthread_join(thread_object_9, NULL);
     pthread_join(thread_object_10, NULL);
+    pthread_join(thread_object_11, NULL);
     // shmdt(trafLightState); // 공유메모리 연결 해제
 
     //  return 0; // 프로그램 종료
