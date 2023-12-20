@@ -37,7 +37,7 @@ int16_t AcX, AcY, AcZ, GyX, GyY, GyZ;
 double angle_x, angle_y, angle_z;
 double angle[3];
 
-  char* str1 = "hello                           ";
+  char* str1 = "hello              ";
   const char* str2 = "embedded system";
   
   char str_cnt0[10];
