@@ -309,7 +309,8 @@ void *touchscreen(void)
 							//Test start 버튼의 영역이 터치가 되면 Start = 1로 설정해주기
 							scBTN_gotostart= 1;
 							printf("Test Start\r\n");
-							
+                            usleep(10000);
+							scBTN_gotostart= 0;
 						}
 						else if(recvMsg.x > 787 && recvMsg.x < 846 && recvMsg.y > 400 && recvMsg.y < 530)
 						{
@@ -1204,9 +1205,9 @@ void *ScreenOverlay(void)
 
 void showMainScreen()
 {
-    showstate = 0; // 메인 화면 출력. 디자인 구상 UI idea에 구상 올려둠 / 버튼 표시로 버튼을 누르면 위의 변수 바뀜.
     while (1)
-    {
+    {   
+        showstate = 0; // 메인 화면 출력. 디자인 구상 UI idea에 구상 올려둠 / 버튼 표시로 버튼을 누르면 위의 변수 바뀜.
         if (scBTN_Start)
             driveTest();
         else if (scBTN_Manual)
@@ -1229,6 +1230,7 @@ void driveTest()
     {
          scBTN_Start = 0;
          nums=0; // 게임화면 0으로 시작
+         now_level = CRS_BASIC;
         showstate = 4; // 화면에 운전이미지 정지 표시 시작.0번은 디폴트. 이미지 00000고정
 
         next = 0;
@@ -1374,6 +1376,7 @@ void driveTest()
         pthread_create(&thread_object_8, NULL, movecheck, NULL);
 
         printf("기본조작테스트가 끝났습니다. 좌측 방향지시등을 켠 후 10초내에 출발하십시오.\n");
+        now_level = CRS_START;
         sleep(1);
         startcnt=0;
         while(1) {
@@ -1397,6 +1400,7 @@ void driveTest()
        if (nums>=72) now_level = CRS_UPHILL;
         uphillcnt = 0;
         printf("경사구간평가를 시작합니다.\n");
+        now_level = CRS_UPHILL;
         printf("지정된 위치에 정차 후 사이드브레이크를 올린 후, 삑 소리가 나면 사이드브레이크를 내리고 진행하십시오.\n");
         while (1)
         {
@@ -1910,7 +1914,7 @@ void driveTest()
 
 
         // 종료구간
-
+        now_level = CRS_END;
         while (1)
         {
             if ((nums<=1080 && nums>=1025) & (rightlight)) {
@@ -1948,10 +1952,16 @@ int showManual()
             else ;           // 메인화면에서 설명보기로 진입했을경우 mainScreen(메인화면) 버튼 표시
         }
     }
-    if (scBTN_gotostart)
+    if (scBTN_gotostart) {
+        printf("메인화면으로 돌아갑니다.\n");
         return 1; // 시험시작 선택시 1(teststart) 리턴.
-    else if (scBTN_gotomain)
+    }
+        
+    else if (scBTN_gotomain) {
+        printf("메인화면으로 돌아갑니다.\n");
         return 2; // 메인화면 선택시 2(mainmenu) 리턴.
+    }
+        
 }
 
 void showLeaderBoard()
