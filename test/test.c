@@ -2003,6 +2003,7 @@ void driveTest()
 
         printf("기본조작테스트가 끝났습니다. 좌측 방향지시등을 켠 후 10초내에 출발하십시오.\n");
         gameoverlaycheck=28;
+        accelen=1;
         now_level = CRS_START;
         sleep(1);
         gameoverlaycheck=0;
