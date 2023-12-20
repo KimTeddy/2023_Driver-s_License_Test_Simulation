@@ -726,14 +726,15 @@ void *AccelWork(void){
                 usleep(accel_t);
             }
 
-            else if(  gear == 2 && second_accel[2] - first_accel[2] > 4000 && second_accel[2] - first_accel[2] < 9000 && !(second_accel[0] - first_accel[0] > 5000) && !(first_accel[0] - second_accel[0] > 5000)) 
+            else if(  gear == 2 && (second_accel[2] - first_accel[2] > 4000) && (second_accel[2] - first_accel[2] < 9000) && !(second_accel[0] - first_accel[0] > 5000) && !(first_accel[0] - second_accel[0] > 5000)) 
+            {
             // gear == 2 [후진기어]이고 앞으로 기울이면 moving이 - 가 되게끔
             // second_accel[2] - first_accel[2] > 4000 && second_accel[2] - first_accel[2] < 9000 -> 앞으로 기울였으면
             // !(second_accel[0] - first_accel[0] > 5000) && !(first_accel[0] - second_accel[0] > 5000) -> 키트를 좌우로 기울이지 않았으면
             // && 키트를 왼쪽, 뒤쪽으로 돌리지 않았으면 Slow Down
-            { 
+             
 
-                // ~ 차 속도를 감소하는 코드?
+                // ~ 차 속도를 감소하는 코드
                 moving -= 1;
                 moving_f = 0;
                 moving_b = 1;
