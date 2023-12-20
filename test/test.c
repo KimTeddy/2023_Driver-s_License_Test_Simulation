@@ -37,7 +37,8 @@ pthread_t thread_object_4; // 스레드 4 for echo state(imsi)
 pthread_t thread_object_5; // 스레드 5 for lcd bitmap output
 pthread_t thread_object_6; // 스레드 6 for lcd overlay output
 pthread_t thread_object_7; // 스레드 7 for accel work
-pthread_t thread_object_8; // 스레드 7 for accel connect to num
+pthread_t thread_object_8; // 스레드 8 for accel connect to num
+pthread_t thread_object_9; // 스레드 9 for touchscreen
 
 int scBTN_Start = 0, scBTN_Manual = 0, scBTN_Leaderbd = 0; // 스크린터치로 인식할 시작/코스설명/리더보드 버튼 변수
 int scBTN_prevpage =0, scBTN_Nextpage = 0, scBTN_gotomain=0, scBTN_gotostart=0; // 메뉴얼 안에서 이전 이후 페이지, 메인이동, 시작이동 버튼변수
@@ -112,11 +113,6 @@ int leaderboard=0;
 
 int showstate = 0; // 스크린에 표시할 이미지 state 변수. 0 = 메인스크린, 1 = 메뉴얼, 2 = 리더보드, 3 = 게임진행
 
-
-void *touchscreen(void)
-{
-    touchInit();
-
 	int first = 0;
 	// scBTN_Start, Manual, Leaderbd 나오는 화면
 	int second = 0;
@@ -124,7 +120,12 @@ void *touchscreen(void)
 	int third = 0;
 	// scBTN_startup, Wiper, Lightup, Lightdown 나오는 화면 
 	// 화면에 따라 구간을 구분할 수 있는 트리거를 설정.
-	
+
+void *touchscreen(void)
+{
+    touchInit();
+
+	/*
 	int scBTN_Start = 0;
 	int scBTN_Manual = 0;
 	int scBTN_Leaderbd = 0;
@@ -142,7 +143,7 @@ void *touchscreen(void)
 	int scBTN_Lightup = 0;
 	int scBTN_Lightdown = 0;
 	//third 부분에서 동작하는 변수들
-
+*/
 	int msgID = msgget( MESSAGE_ID, IPC_CREAT|0666);
 	BUTTON_MSG_T recvMsg;
 	while (1)
@@ -1197,6 +1198,10 @@ void driveTest()
         default:
             printf("random init failed");
         }
+        
+        pthread_create(&thread_object_7, NULL, AccelWork, NULL);
+        pthread_create(&thread_object_8, NULL, movecheck, NULL);
+
         printf("기본조작테스트가 끝났습니다. 좌측 방향지시등을 켠 후 10초내에 출발하십시오.\n");
         sleep(10);
         if (nums<=17) // 출발선 이전
@@ -1795,8 +1800,8 @@ int main(void)
     pthread_create(&thread_object_4, NULL, trafLightss, NULL);
     pthread_create(&thread_object_5, NULL, ScreenOutput, NULL);
     //pthread_create(&thread_object_6, NULL, ScreenOverlay, NULL);
-    pthread_create(&thread_object_7, NULL, AccelWork, NULL);
-    pthread_create(&thread_object_8, NULL, movecheck, NULL);
+    
+    pthread_create(&thread_object_9, NULL, touchscreen, NULL);
     // pthread_create(&thread_object_3, NULL, sevenseg, NULL);
 
     driveTest();
@@ -1810,6 +1815,7 @@ int main(void)
     //pthread_join(thread_object_6, NULL);
     pthread_join(thread_object_7, NULL);
     pthread_join(thread_object_8, NULL);
+    pthread_join(thread_object_9, NULL);
     // shmdt(trafLightState); // 공유메모리 연결 해제
 
     //  return 0; // 프로그램 종료
