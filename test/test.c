@@ -853,6 +853,24 @@ void *AccelWork(void){
                     //sleep(1);
                     //sleep(1);
                 }
+                else if( gear == 2 && second_accel[2] - first_accel[2] > 8000 )
+                { 
+                  // gear = 2인 상태에서 많이 기울인 경우
+
+                    // ~ 차 속도를 빠르게 ~
+
+                    moving -= 2;  
+                    moving_l = 0;
+                    moving_r = 0; 
+                    moving_f = 1;
+                    moving_b = 0;
+
+                    printf(" Car Accelation! \n");
+                    printf("Gear : %d Moving : %d  Moving L : %d,  Moving_r : %d, Moving_f : %d, Moving_b : %d\n", gear,  moving, moving_l, moving_r, moving_f, moving_b);
+                    usleep(accel_t);
+                    //sleep(1);
+                    //sleep(1);
+                }
                 
             else if( gear == 1 && first_accel[0] - second_accel[0] > 5000 && second_accel[2] - first_accel[2] > 4000 && second_accel[2] - first_accel[2] < 9000) 
             { 
