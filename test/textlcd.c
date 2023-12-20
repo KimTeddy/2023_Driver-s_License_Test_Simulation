@@ -1,82 +1,67 @@
+#include "textlcd.h"
 #include "lcdtext.h"
+#include "simuwork.h"
+/*
+#define CRS_MAIN 0  //메인 메뉴 단게
+#define CRS_START 1 // 코스 시작 전 대기 (게임 시작 전 -> ~설명 단계~)
+#define CRS_BASIC 2 //기본 조작 단계
+#define CRS_UP 3    //경사로
+#define CRS_JUNCTION 4  //교차로
+#define CRS_PARKING 5   //주차
+#define CRS_EMERGENCY 6 //돌발
+#define CRS_ACCEL 7     //가속 구간
+*/
 
-int main(){
-  
-  txtlcd_Init();
-  //BASIC UP JUNCTION PARIKNG EMERGENCY ACCEL END
-  int CRS_MAIN = 0;
-  int CRS_START = 0;
-  int CRS_BASIC = 0;
-  int CRS_UP = 0;
-  int CRS_JUNCTION = 0;
-  int CRS_PARKING = 0;
-  int CRS_EMERGENCY = 0;
-  int CRS_ACCEL = 0;
-  int CRS_END = 0;
-  const char* str1 = "hello";
-  const char* str2 = "embedded system";
-  
-  char str_cnt[100];
-  int cnt = 0;
-while (1)
+//lcdtextwrite(str1, str2, lineFlag);
+// lineflag 1 쓰면 두번 째 줄은 0으로 초기화, 1번째 줄에만 입력
+// lineflag 2 쓰면 첫번 째 줄은 0으로 초기화, 2번째 줄에만 입력
+// 네모는 0xff인가?
+void crs_lcd()	//함수 이름 수정필요하면 하세요.
+{
+	char str_cnt[100];
+  	int cnt = 0;
+	txtlcd_Init();	//txtlcd 초기화
+	while (1)
 	{
 		if(cnt >= 59)
 		{
 			cnt = 100;
-      CRS_MAIN = 1;
 		}
 		else if(cnt >= 159)
 		{
 			cnt = 200;
-      CRS_MAIN = 0;
-      CRS_START = 1;
 		}
 		else if(cnt >= 259)
 		{
 			cnt = 300;
-      CRS_START = 0;
-      CRS_BASIC = 1;
 		}
 		else if(cnt >= 359)
 		{
 			cnt = 400;
-      CRS_BASIC = 0;
-      CRS_UP = 1;
 		}
 		else if(cnt >= 459)
 		{
 			cnt = 500;
-      CRS_UP = 0;
-      CRS_JUNCTION = 1;
-      CRS_PARKING = 0;
 		}
 		else if(cnt >= 559)
 		{
 			cnt = 600;
-      CRS_PARKING = 1;
-      CRS_EMERGENCY = 0;
-    }
+		}
 		else if(cnt >= 659)
 		{
-			cnt = 700;
-      CRS_EMERGENCY = 1;
-      CRS_ACCEL = 0;
+			cnt = 700
 		}
 		else if(cnt >= 759)
 		{
 			cnt = 800;
-      CRS_ACCEL = 1;
-      CRS_END = 0;
 		}
 		else if(cnt = 859)
 		{
 			cnt = 900;
-      CRS_END = 1;
 		}
 		else if(cnt >= 959)
 		{
 			cnt = 1000;
-      CRS_END = 0;
 		}
 		else if(cnt >= 1059)
 		{
@@ -85,11 +70,11 @@ while (1)
 		
 		cnt += 1;
 		sprintf(str_cnt, "              %d", cnt);
-		usleep(500000);
+		sleep(1);
 		
 		if (CRS_MAIN)
 		{
-		  lcdtextwrite( "PRESS START", "CAR S", 1);
+		  	lcdtextwrite( "PRESS START", "CAR S", 1);
 			lcdtextwrite( "PRESS START", str_cnt, 2);
  			// lcdtextwrite( "PRESS START", "CAR S", 2);
 			//MAIN에서는 LCD 윗단에는 "PRESS START" 출력, 
@@ -139,7 +124,6 @@ while (1)
   			//lcdtextwrite( "EMERGENCY         ", "CAR SIMULAT", 2);
 			// "EMERGENCY"
 		}
-
 		else if (CRS_ACCEL)
 		{
 			lcdtextwrite( "ACCELATE         ", "CAR SIMULATO", 1);
@@ -155,11 +139,7 @@ while (1)
 			// "END"
 		}
 	}
-  //9 단계로 나뉨 CAR SIMULATOR
- // txtlcd_off();
- // txtlcd_Init();
- // sleep(1);
- // lcdtextwrite(str1, str2,0);
 
-  return 0;
+	txtlcd_Exit();	//게임 종료시 txtlcd도 꺼지도록 설정?
 }
+
