@@ -306,7 +306,7 @@ void *count(void)
             cnt[0]++;
         }
 
- // 10초 단위 검사 
+
    	    if (now_level == CRS_MAIN)
 		{
             str1 = "PRESS START";
