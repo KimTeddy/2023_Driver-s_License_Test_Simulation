@@ -9,7 +9,8 @@
 
 int fnd(int num, char mode);
 int fndDisp(int num , int dotflag);
-char fndDisp_ch(char c[MAX_FND_NUM+1]);
+int fndDisp_canoff(int num, int dotflag, int offdigit[]);
+int fndDisp_ch(char ch[]);
 #define FND_DRIVER_NAME "/dev/perifnd"
 
 #endif
