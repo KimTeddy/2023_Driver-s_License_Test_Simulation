@@ -118,7 +118,7 @@ int scBTN_startup=0, scBTN_Wiper = 0, scBTN_Lightup =0, scBTN_Lightdown =0;
 						}
 					}
 
-					}
+				
 					else if(second)
 					{
 						if(recvMsg.x > 670 && recvMsg.x < 750 && recvMsg.y > 50 && recvMsg.y < 530)
@@ -161,27 +161,48 @@ int scBTN_startup=0, scBTN_Wiper = 0, scBTN_Lightup =0, scBTN_Lightdown =0;
 						else if(recvMsg.x > 785 && recvMsg.x < 840 && recvMsg.y > 30 && recvMsg.y < 180)
 						{
 							// wiper 버튼 영역 터치 디면 wiper = 1로 설정
-							scBTN_Wiper = 1;
-							printf("Wiper\r\n");
+							scBTN_Wiper = ~scBTN_Wiper;
+							if(scBTN_Wiper)
+							{
+								printf("Wiper on\r\n");
+							}
+							else 
+							{
+								printf("Wiper off\r\n");
+							}
 						}
 						else if(recvMsg.x > 787 && recvMsg.x < 846 && recvMsg.y > 400 && recvMsg.y < 530)
 						{
 							//lightup 버튼 눌리면 lightup = 1로 설정.
-							scBTN_Lightup = 1;
-							printf("High beam\r\n");
+							scBTN_Lightup = ~scBTN_Lightup;
+							if(scBTN_Lightup)
+							{
+								printf("Light up on\r\n");
+							}
+							else 
+							{
+								printf("Light up off\r\n");
+							}
 						}
 						else if (recvMsg.x > 915 && recvMsg.x < 965 && recvMsg.y > 400 && recvMsg.y < 560)
 						{
 							//lightdown 버튼 영역 터치되면 lightdown = 1로 설정
-							scBTN_Lightdown = 1;
-							printf("Light down\r\n");
+							scBTN_Lightdown = ~scBTN_Lightdown;
+							if(scBTN_Lightdown)
+							{
+								printf("Light down on\r\n");
+							}
+							else 
+							{
+								printf("Light down off\r\n");
+							}
 						}
 					}
-
+				}
 			break;
 				}
 	
 		}
 
-	}
 }
+
