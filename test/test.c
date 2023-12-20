@@ -1261,7 +1261,7 @@ void *ScreenOutput(void)
                 fb_write(data, cols, rows);
                 close_bmp();
             
-        }
+        }break;
 
         case 2:
         {
@@ -1280,7 +1280,7 @@ void *ScreenOutput(void)
                 fb_write(data, cols, rows);
                 close_bmp();
             
-        }
+        }break;
 
         case 3:
         {
@@ -1299,7 +1299,7 @@ void *ScreenOutput(void)
                 fb_write(data, cols, rows);
                 close_bmp();
             
-        }
+        }break;
 
         case 4:
         {
@@ -1319,7 +1319,7 @@ void *ScreenOutput(void)
                 fb_write(data, cols, rows);
                 close_bmp();
             
-        }
+        }break;
 
         default:
             break;
