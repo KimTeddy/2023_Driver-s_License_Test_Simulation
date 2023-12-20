@@ -45,7 +45,7 @@ double angle[3];
   char str_cnt2[10];
   char str_cnt3[10];
   char str_cnt[100];
-
+int min_lcd=0, sec_lcd=0;
   int cnt[5] = {0,};
 pthread_t tid[2];
 
@@ -293,27 +293,31 @@ void *count(void)
       
     while (1)
 	{
-      //cnt += 1;
-      if(simuwork)
-      {
-        if(cnt[1]== 6)
+        //cnt += 1;
+        if(simuwork)
         {
-            cnt[2] += 1;
-            cnt[1] = 0;
-            cnt[0] = 0;
+            ++sec_lcd;
+            if(sec_lcd == 60)
+            {
+                ++min_lcd;
+                sec_lcd = 0;
+            }
         }
-        else if (cnt[0] == 9) 
-        {
-            cnt[0] = 0;
-            cnt[1]++;
-        }
-        else 
-        {
-            cnt[0]++;
-        }
-    }
-       
-
+        // if(cnt[1]== 6)
+        // {
+        //     cnt[2] += 1;
+        //     cnt[1] = 0;
+        //     cnt[0] = 0;
+        // }
+        // else if (cnt[0] == 9) 
+        // {
+        //     cnt[0] = 0;
+        //     cnt[1]++;
+        // }
+        // else 
+        // {
+        //     cnt[0]++;
+        // }
         if(now_level != prev_level_lcd){
             if (now_level == CRS_MAIN)
             {
@@ -365,12 +369,14 @@ void *count(void)
         //sprintf(str_cnt1, "%d", cnt[1]);
         // sprintf(str_cnt2, "%d", cnt[2]);
         // sprintf(str_cnt3, "%d", cnt[3]);
-        sprintf(str_cnt, "            %d:%d%d",  cnt[2], cnt[1], cnt[0]);
+        //sprintf(str_cnt, "            %d:%d%d",  cnt[2], cnt[1], cnt[0]);
+        sprintf(str_cnt, "            %2d:%2d",  min_lcd, sec_lcd);
         usleep(50000);    //테스트용
         //sleep(1);       //시연용
         lcdtextwrite( str1, str_cnt, 2);
         //sprintf(str1, "%s", "PRESS START");
-    }  
+        printf("\t\t\t\t\t?????????????????????\n");
+    }
 }
   
 
