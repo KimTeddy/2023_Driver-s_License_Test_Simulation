@@ -106,9 +106,9 @@ int main(void)
                 usleep(accel_t);
             }
 
-            else if( first_accel[2] - second_accel[2] > 4000 && first_accel[2] - second_accel[2] < 9000  && !(second_accel[0] - first_accel[0] > 5000) && !(first_accel[0] - second_accel[0] > 5000)) 
-            // 뒤로 기울인 경우
-            // first_accel[2] - second_accel[2] > 4000 && first_accel[2] - second_accel[2] < 8000 -> 키트를 조금만 기울인 경우 : 후진기어
+            else if(  gear == 2 && second_accel[2] - first_accel[2] > 4000 && second_accel[2] - first_accel[2] < 9000 && !(second_accel[0] - first_accel[0] > 5000) && !(first_accel[0] - second_accel[0] > 5000)) 
+            // gear == 2 [후진기어]이고 앞으로 기울이면 moving이 - 가 되게끔
+            // second_accel[2] - first_accel[2] > 4000 && second_accel[2] - first_accel[2] < 9000 -> 앞으로 기울였으면
             // !(second_accel[0] - first_accel[0] > 5000) && !(first_accel[0] - second_accel[0] > 5000) -> 키트를 좌우로 기울이지 않았으면
             // && 키트를 왼쪽, 뒤쪽으로 돌리지 않았으면 Slow Down
             { 
@@ -117,7 +117,7 @@ int main(void)
                 moving -= 1;
                 moving_f = 0;
                 moving_b = 1;
-                printf(" Slow Down \n");
+                printf(" Going Back \n");
                 printf("Moving : %d  Moving L : %d,  Moving_r : %d, Moving_f : %d, Moving_b : %d\n", moving, moving_l, moving_r, moving_f, moving_b);
                 //sleep(1);
                 //sleep(1);
@@ -137,8 +137,9 @@ int main(void)
                 //sleep(1);
                 usleep(accel_t);
             }
-            else if( first_accel[0] - second_accel[0] > 5000 && first_accel[2] - second_accel[2] > 4000 && first_accel[2] - second_accel[2] < 9000)
-            //first_accel[2] - second_accel[2] > 4000 && first_accel[2] - second_accel[2] < 8000 -> slow down 구간 키트를 뒤로 적당히 기울인 경우 
+            else if(first_accel[0] - second_accel[0] > 5000 && first_accel[2] - second_accel[2] > 4000 && first_accel[2] - second_accel[2] < 9000)
+            // gear == 2[후진 기어]이고 앞으로 기울이면 뒤로 가게
+            // first_accel[2] - second_accel[2] > 4000 && first_accel[2] - second_accel[2] < 8000 -> slow down 구간 키트를 뒤로 적당히 기울인 경우 
             // 뒤로 기울인 경우
             // first_accel[0] - second_accel[0] > 5000 
             // -> 핸들을 오른쪽으로 돌린 경우
@@ -168,7 +169,7 @@ int main(void)
                    //sleep(1);
             }
         
-            else if( second_accel[2] - first_accel[2] > 4000 && second_accel[2] - first_accel[2] < 9000)
+            else if( gear == 1 && second_accel[2] - first_accel[2] > 4000 && second_accel[2] - first_accel[2] < 9000)
             {// 앞으로만 기울인 경우 [  가속도 센서의 z값이 바뀜  ]
 
                 // ~차가 앞으로 진행하는 코드 ~
@@ -278,6 +279,15 @@ int main(void)
                 printf("Moving : %d  Moving L : %d,  Moving_r : %d, Moving_f : %d, Moving_b : %d\n", moving, moving_l, moving_r, moving_f, moving_b);
                 //sleep(1);
                 usleep(accel_t);
+            }
+            else if(gear == 0)
+            // 기어를 넣지 않으면 움직이지 않고
+            {
+              printf("N gear\r\n");
+                moving_l = 0;
+                moving_r = 0;    
+                moving_f = 0;
+                moving_b = 0;
             }
             
             else 
