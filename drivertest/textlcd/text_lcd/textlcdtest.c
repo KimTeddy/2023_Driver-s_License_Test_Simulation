@@ -11,7 +11,7 @@ int main(){
   {
 
     
-    sprintf(str_cnt, "%d", cnt);
+    sprintf(str_cnt, "      %d", cnt);
     txtlcd_Init();
     lcdtextwrite( "PRESS START", "CAR S", 1);
     lcdtextwrite( "PRESS START", str_cnt, 2);
