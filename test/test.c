@@ -2700,7 +2700,7 @@ int main(void)
     pthread_join(thread_object_8, NULL);
     pthread_join(thread_object_9, NULL);
     pthread_join(thread_object_10, NULL);
-   // pthread_join(thread_object_11, NULL);
+   pthread_join(thread_object_11, NULL);
     // shmdt(trafLightState); // 공유메모리 연결 해제
 
     //  return 0; // 프로그램 종료
