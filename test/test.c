@@ -146,6 +146,7 @@ void ScoreAnim();
     //뒤로 기울인 각도 크면 break_on = 1이 되도록
     int moving_f = 0;
     int moving_b = 0;
+    int accelen =0;
 
 *trafLightState = 0; // reset RGB LED state
 
@@ -550,7 +551,7 @@ void *touchscreen(void)
 							//Test start 버튼의 영역이 터치가 되면 Start = 1로 설정해주기
 							scBTN_gotostart= 1;
 							printf("Test Start\r\n");
-                            usleep(10000);
+                            usleep(1000000);
 							scBTN_gotostart= 0;
 						}
 						else if(recvMsg.x > 787 && recvMsg.x < 846 && recvMsg.y > 50 && recvMsg.y < 530)
@@ -558,7 +559,7 @@ void *touchscreen(void)
 							// MAIN SCREEN 버튼 영역 터치 디면 gotomain = 1로 설정
 							scBTN_gotomain = 1;
 							printf("Main Screen\r\n");
-                            usleep(10000);
+                            usleep(1000000);
                             scBTN_gotomain = 0;
 						}
 						else if(recvMsg.x > 920 && recvMsg.x < 985 && recvMsg.y > 410 && recvMsg.y < 550)
@@ -906,7 +907,7 @@ void *AccelWork(void){
 
 void *movecheck(void){
     while(1) {
-    while(simuwork==1) {
+    while(accelen==1) {
         nums = moving+2;
     }
     }
@@ -1058,15 +1059,15 @@ void *btncheck(void)
             if (gear == 1)
                 {
                     gear=2;
-                    ledOnOff(7, 1);
-                    ledOnOff(6, 0);
+                    ledOnOff(6, 1);
+                    ledOnOff(7, 0);
                     printf("GEAR: R\r\n");
                 }
                 else if (gear == 2)
                 {
                    gear=1;
-                   ledOnOff(7, 0);
-                    ledOnOff(6, 1);
+                   ledOnOff(7, 1);
+                    ledOnOff(6, 0);
                    printf("GEAR: D\r\n");
                 }
                 break;
@@ -1686,13 +1687,15 @@ void *ScreenOverlay(void)
 
 void showMainScreen()
 {
+    int checking =0;
     while (1)
     {   
         showstate = 0; // 메인 화면 출력. 디자인 구상 UI idea에 구상 올려둠 / 버튼 표시로 버튼을 누르면 위의 변수 바뀜.
         if (scBTN_Start)
             driveTest();
         else if (scBTN_Manual)
-            showManual();
+           checking=showManual();
+           if(checking==1) driveTest();
         else if (scBTN_Leaderbd)
             showLeaderBoard();
     }
@@ -2662,6 +2665,7 @@ void driveTest()
 
 int showManual()
 { // 코스 설명 작성
+    now_level=CRS_MANUAL;
     scBTN_Manual = 0;
     manualpage = 0;
     showstate = 1;
@@ -2669,17 +2673,17 @@ int showManual()
     // 구간별 점수 및 전역 감점및 실격 요소, 제한시간 등 안내. 이미지 수동으로 넘기는 방식으로.
     while(1)
     {
-        while (manualpage<=8) {}
+        while (manualpage<=7) {}
     while (manualpage==8) {
-    if (scBTN_gotostart) {
+    if (scBTN_gotostart==1) {
         printf("시험을 시작합니다.\n");
-        showstate = 4;
+        fb_clear2();
         return 1; // 시험시작 선택시 1(teststart) 리턴.
     }
         
-    else if (scBTN_gotomain) {
+    else if (scBTN_gotomain==1) {
         printf("메인화면으로 돌아갑니다.\n");
-        showstate = 0;
+        fb_clear2();
         return 2; // 메인화면 선택시 2(mainmenu) 리턴.
     }
     }
