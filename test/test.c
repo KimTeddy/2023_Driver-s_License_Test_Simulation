@@ -370,7 +370,7 @@ void *count(void)
         // sprintf(str_cnt2, "%d", cnt[2]);
         // sprintf(str_cnt3, "%d", cnt[3]);
         //sprintf(str_cnt, "            %d:%d%d",  cnt[2], cnt[1], cnt[0]);
-        sprintf(str_cnt, "            %2d:%2d",  min_lcd, sec_lcd);
+        sprintf(str_cnt, "          %2d:%2d",  min_lcd, sec_lcd);
         usleep(50000);    //테스트용
         //sleep(1);       //시연용
         lcdtextwrite( str1, str_cnt, 2);
