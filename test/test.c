@@ -243,10 +243,7 @@ void *txtdisplay(void)
 
 void *count(void)
   {
-      cnt[0] = 0;
-      cnt[1] = 0;
-      cnt[2] = 0;
-      str1 = "PRESS START";
+
     while (1)
 	  {
       //cnt += 1;
@@ -255,25 +252,24 @@ void *count(void)
           sprintf(str_cnt2, "%d", cnt[2]);
           sprintf(str_cnt3, "%d", cnt[3]);
           sprintf(str_cnt, "           %d %d%d",  cnt[2], cnt[1], cnt[0]);
-		  usleep(50000);
-      
+		  usleep(50000);    //테스트용
+          //sleep(1);       //시연용
           lcdtextwrite( str1, str_cnt, 1);
 	      lcdtextwrite( str1, str_cnt, 2);
 
         
-    if (cnt[0] == 9) 
-    {
-        cnt[0] = 0;
-        cnt[1]++;
-    }
-    else 
-    {
-        cnt[0]++;
-    }
+        if (cnt[0] == 9) 
+        {
+            cnt[0] = 0;
+            cnt[1]++;
+        }
+        else 
+        {
+            cnt[0]++;
+        }
  // 10초 단위 검사 
             
-
-   	    if (CRS_MAIN)
+   	    if (now_level == CRS_MAIN)
 		{
             str1 = "PRESS START";
 		   //  lcdtextwrite( "PRESS START", "CAR S", 1);
@@ -282,12 +278,12 @@ void *count(void)
 			  //MAIN에서는 LCD 윗단에는 "PRESS START" 출력, 
   
 	  	}
-        else if(CRS_MANUAL)
+        else if(now_level == CRS_MANUAL)
         {
             str1 = "MANUAL        ";
 
         }  
-		else if (CRS_START)	
+		else if (now_level == CRS_START)	
 		{
             str1 = "BEGIN         ";
 		   //	lcdtextwrite( "BEGIN         ", "CAR SI", 1);
@@ -296,7 +292,7 @@ void *count(void)
 		  	//START부분에서는 윗단에 "" 출력,
 		  	//아랫부분 네모 0개
 		}
-		else if (CRS_BASIC)
+		else if (now_level == CRS_BASIC)
 		{
             str1 = "CAR COMPONENT";        
 		   //	lcdtextwrite( "CAR COMPONENT", "CAR SIM", 1);
@@ -305,7 +301,7 @@ void *count(void)
 		  	//윗단에 "CAR COMPONENT"
 		  	// 네모 2개
 		}
-		else if (CRS_UPHILL)
+		else if (now_level == CRS_UPHILL)
 		{
             str1 = "UP HILL        ";   
 		   //	lcdtextwrite( "UP HILL        ", "CAR SIMU", 1);
@@ -313,7 +309,7 @@ void *count(void)
   	  		//lcdtextwrite( "UP HILL        ", "CAR SIMU", 2);
 		  	// 윗단에 "UP HILL" 
 		}
-		else if (CRS_JUNCTION_1||CRS_JUNCTION_2)
+		else if (now_level == CRS_JUNCTION_1|| now_level == CRS_JUNCTION_2 )
 		{
             str1 = "JUNCTION   ";   
 	  	 //	lcdtextwrite( "JUNCTION   ", "CAR SIMUL", 1);
@@ -321,7 +317,7 @@ void *count(void)
     			//lcdtextwrite( "JUNCTION   ", "CAR SIMUL", 2);
 	  		// "JUNCTION"
 	  	}
-	  	else if (CRS_PARKING)
+	  	else if (now_level == CRS_PARKING)
 	  	{
             str1 = "PARKING         ";
 	     //	lcdtextwrite( "PARKING         ", "CAR SIMULA", 1);
@@ -329,7 +325,7 @@ void *count(void)
   			//lcdtextwrite( "PARKING         ", "CAR SIMULA", 2);
 			  // "PARKING"
 		}
-		else if (CRS_EMERGENCY_A||CRS_EMERGENCY_B||CRS_EMERGENCY_C||CRS_EMERGENCY_D)
+		else if (now_level == CRS_EMERGENCY_A||now_level == CRS_EMERGENCY_B|| now_level == CRS_EMERGENCY_C||now_level == CRS_EMERGENCY_D)
 		{
             str1 = "EMERGENCY         ";
 		  // 	lcdtextwrite( "EMERGENCY         ", "CAR SIMULAT", 1);
@@ -337,7 +333,7 @@ void *count(void)
   	  		//lcdtextwrite( "EMERGENCY         ", "CAR SIMULAT", 2);
 		  	// "EMERGENCY"
 		}
-		else if (CRS_ACCEL)
+		else if (now_level == CRS_ACCEL)
 		{
             str1 = "ACCELATE         ";
 		   //	lcdtextwrite( "ACCELATE         ", "CAR SIMULATO", 1);
@@ -345,7 +341,7 @@ void *count(void)
   	  		//lcdtextwrite( "ACCELATE         ", "CAR SIMULATO", 2);
 		  	// "ACCELERATE"
 		}
-	    else if (CRS_END)
+	    else if (now_level == CRS_END)
 		{
             str1 = "END                  ";
 		  //	lcdtextwrite( "END                  ", "CAR SIMULATOR", 1);
