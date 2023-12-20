@@ -1692,9 +1692,11 @@ void showMainScreen()
         showstate = 0; // 메인 화면 출력. 디자인 구상 UI idea에 구상 올려둠 / 버튼 표시로 버튼을 누르면 위의 변수 바뀜.
         if (scBTN_Start)
             driveTest();
-        else if (scBTN_Manual)
+        else if (scBTN_Manual) {
            checking=showManual();
-           if(checking==1) driveTest();
+           if(checking==1) {fb_clear2(); driveTest();}
+           else fb_clear2();
+        }
         else if (scBTN_Leaderbd)
             showLeaderBoard();
     }
@@ -2676,13 +2678,11 @@ int showManual()
     while (manualpage==8) {
     if (scBTN_gotostart==1) {
         printf("시험을 시작합니다.\n");
-        fb_clear2();
         return 1; // 시험시작 선택시 1(teststart) 리턴.
     }
         
     else if (scBTN_gotomain==1) {
         printf("메인화면으로 돌아갑니다.\n");
-        fb_clear2();
         return 2; // 메인화면 선택시 2(mainmenu) 리턴.
     }
     }
