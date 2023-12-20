@@ -1888,6 +1888,7 @@ int main(void)
     pthread_create(&thread_object_2x, NULL, ledblinks, NULL);
     //pthread_create(&thread_object_4, NULL, trafLightss, NULL);
     pthread_create(&thread_object_5, NULL, ScreenOutput, NULL);
+    usleep(10000);
     pthread_create(&thread_object_6, NULL, ScreenOverlay, NULL);
     pthread_create(&thread_object_9, NULL, touchscreen, NULL);
     pthread_create(&thread_object_10, NULL, buzzerwork, NULL);
