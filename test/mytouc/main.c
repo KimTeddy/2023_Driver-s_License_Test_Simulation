@@ -32,7 +32,7 @@ int main (void)
 	int scBTN_Lightdown = 0;
 	//third 부분에서 동작하는 변수들
 
-	int msgID = msgget( MESSAGE_ID, IPC_CREAT|0666);
+	int msgID = msgget( MESSAGE_ID2, IPC_CREAT|0666);
 	BUTTON_MSG_S recvMsg;
 	while (1)
 	{

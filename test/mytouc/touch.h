@@ -1,6 +1,6 @@
 #ifndef _TOUCH_H_
 #define _TOUCH_H_
-#define MESSAGE_ID 1122
+#define MESSAGE_ID2 1133
 typedef struct
 {
 	long int messageNum;
