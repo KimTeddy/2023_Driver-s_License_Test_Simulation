@@ -2,11 +2,13 @@
 
 int main(){
   
+  txtlcd_Init();
   //BASIC UP JUNCTION PARIKNG EMERGENCY ACCEL END
   int CRS_MAIN = 0;
   int CRS_START = 0;
   int CRS_BASIC = 0;
   int CRS_UP = 0;
+  int CRS_JUNCTION = 0;
   int CRS_PARKING = 0;
   int CRS_EMERGENCY = 0;
   int CRS_ACCEL = 0;
@@ -45,34 +47,36 @@ while (1)
 		{
 			cnt = 500;
       CRS_UP = 0;
-      CRS_PARKING = 1;
+      CRS_JUNCTION = 1;
+      CRS_PARKING = 0;
 		}
 		else if(cnt >= 559)
 		{
 			cnt = 600;
-      CRS_PARKING = 0;
-      CRS_EMERGENCY = 1;
+      CRS_PARKING = 1;
+      CRS_EMERGENCY = 0;
     }
 		else if(cnt >= 659)
 		{
-			cnt = 700
-      CRS_EMERGENCY = 0;
-      CRS_ACCEL = 1;
+			cnt = 700;
+      CRS_EMERGENCY = 1;
+      CRS_ACCEL = 0;
 		}
 		else if(cnt >= 759)
 		{
 			cnt = 800;
-      CRS_ACCEL = 0;
-      CRS_END = 1;
+      CRS_ACCEL = 1;
+      CRS_END = 0;
 		}
 		else if(cnt = 859)
 		{
 			cnt = 900;
-      CRS_END = 0;
+      CRS_END = 1;
 		}
 		else if(cnt >= 959)
 		{
 			cnt = 1000;
+      CRS_END = 0;
 		}
 		else if(cnt >= 1059)
 		{
@@ -81,7 +85,7 @@ while (1)
 		
 		cnt += 1;
 		sprintf(str_cnt, "              %d", cnt);
-		usleep(5000000);
+		usleep(500000);
 		
 		if (CRS_MAIN)
 		{
