@@ -39,6 +39,7 @@ pthread_t thread_object_6; // 스레드 6 for lcd overlay output
 pthread_t thread_object_7; // 스레드 7 for accel work
 pthread_t thread_object_8; // 스레드 8 for accel connect to num
 pthread_t thread_object_9; // 스레드 9 for touchscreen
+pthread_t thread_object_10; // 스레드 10 for buzzerwork
 
 int scBTN_Start = 0, scBTN_Manual = 0, scBTN_Leaderbd = 0; // 스크린터치로 인식할 시작/코스설명/리더보드 버튼 변수
 int scBTN_prevpage =0, scBTN_Nextpage = 0, scBTN_gotomain=0, scBTN_gotostart=0; // 메뉴얼 안에서 이전 이후 페이지, 메인이동, 시작이동 버튼변수
@@ -59,6 +60,7 @@ int now_level = CRS_MAIN;
 // additional part
 int crs_outofcrs = 0; // 구간을 벗어난 경우 트리거 ->
 
+int prev_level = CRS_MAIN;
 int simuwork = 0;
 int safetybelt = 0, sidebrake = 0, leftlight = 0, rightlight = 0, emerlight = 0;
 int fnddat;
@@ -122,6 +124,35 @@ int showstate = 0; // 스크린에 표시할 이미지 state 변수. 0 = 메인�
 	int third = 0;
 	// scBTN_startup, Wiper, Lightup, Lightdown 나오는 화면 
 	// 화면에 따라 구간을 구분할 수 있는 트리거를 설정.
+
+void *buzzerwork(void) {
+    while(1) {
+        if(now_level == CRS_START && now_level != prev_level)
+// MANUAL에서 START로 넘어가면
+{
+    soundEffect(SE_START);
+    // START 단계에서는 START 소리 출력
+    prev_level = now_level;
+}
+
+else if(now_level == CRS_EMERGENCY_A || now_level == CRS_EMERGENCY_B || now_level == CRS_EMERGENCY_C || now_level == CRS_EMERGENCY_D && now_level != prev_level)
+{
+    soundEffect(SE_ACCIDENT);
+    // EMERGENCY 단계에서는 ACCIDENT 소리 출력
+    prev_level = now_level;
+}
+
+else if(now_level != prev_level)
+//now_level이 넘어가서 prev_level과 달라지면 now_level이 변한 것
+{
+    soundEffect(SE_ENDTURN);
+    //level이 바뀌면 TURN바뀌는 소리를 버저로 출력
+    prev_level = now_level;
+    // prev_level도 다음 level로 바꿔주기
+}
+    }
+}
+
 
 void *touchscreen(void)
 {
@@ -1824,9 +1855,9 @@ int main(void)
     pthread_create(&thread_object_2x, NULL, ledblinks, NULL);
     pthread_create(&thread_object_4, NULL, trafLightss, NULL);
     pthread_create(&thread_object_5, NULL, ScreenOutput, NULL);
-    //pthread_create(&thread_object_6, NULL, ScreenOverlay, NULL);
-    
+    pthread_create(&thread_object_6, NULL, ScreenOverlay, NULL);
     pthread_create(&thread_object_9, NULL, touchscreen, NULL);
+    pthread_create(&thread_object_9, NULL, buzzerwork, NULL);
     // pthread_create(&thread_object_3, NULL, sevenseg, NULL);
 
     driveTest();
@@ -1837,10 +1868,11 @@ int main(void)
     // pthread_join(thread_object_3, NULL);
     pthread_join(thread_object_4, NULL);
     pthread_join(thread_object_5, NULL);
-    //pthread_join(thread_object_6, NULL);
+    pthread_join(thread_object_6, NULL);
     pthread_join(thread_object_7, NULL);
     pthread_join(thread_object_8, NULL);
     pthread_join(thread_object_9, NULL);
+    pthread_join(thread_object_10, NULL);
     // shmdt(trafLightState); // 공유메모리 연결 해제
 
     //  return 0; // 프로그램 종료
