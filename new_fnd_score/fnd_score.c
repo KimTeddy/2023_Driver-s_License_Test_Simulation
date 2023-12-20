@@ -31,8 +31,23 @@ void ScoreAnim();
 // c_score변수는 100이고 minuspoint 변수에 5를 받았을때
 int main()
 {
-	// usleep(900000);
-	minuspoint = 25;
+		if (simuwork == 1)
+			dispnum = c_score * 1000;
+		int off_main[6] = {1, 1, 1, 0, 0, 0};
+		if (c_score < 100)
+			off_main[0] = 0;
+		if (c_score < 10)
+			off_main[1] = 0;
+		fndDisp_canoff(dispnum, 0b1000, off_main);
+	 usleep(900000);
+
+	minuspoint = 5;
+		ScoreAnim();
+	minuspoint = 15;
+		ScoreAnim();
+	minuspoint = 10;
+		ScoreAnim();
+		/*
 	while (1)
 	{
 		if (simuwork == 1)
@@ -46,7 +61,7 @@ int main()
 
 		if (minuspoint > 0)
 			ScoreAnim();
-	}
+	}*/
 	return 0;
 }
 
@@ -75,8 +90,8 @@ void ScoreAnim()
 		fndDisp_canoff(dispnum, 0b1000, off);
 		usleep(250000); // 0.5초
 	}
-	off[1] = off4_backup;
-	off[0] = off5_backup;
+	off[4] = off4_backup;
+	off[5] = off5_backup;
 
 	while (minuspoint > 0)
 	{
@@ -87,11 +102,11 @@ void ScoreAnim()
 		if (minuspoint < 10) // 감점할 점수가 10보다 작으면 10의자리 LED 꺼짐
 			off[4] = 0;
 
-		if (fortest)
-		{
-			minuspoint += 5;
-			fortest = 0;
-		}
+		// if (fortest)
+		// {
+		// 	minuspoint += 5;
+		// 	fortest = 0;
+		// }
 
 		dispnum = c_score * 1000 + minuspoint;
 		fndDisp_canoff(dispnum, 0b1000, off);

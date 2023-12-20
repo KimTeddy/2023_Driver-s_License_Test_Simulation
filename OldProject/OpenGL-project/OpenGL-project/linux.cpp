@@ -1,4 +1,4 @@
-#ifdef __LINUX//¸®´ª½ºÀü¿ë
+#ifdef __LINUX//ë¦¬ëˆ…ìŠ¤ì „ìš©
 #include "GL/freeglut.h"
 #include <unistd.h>
 #include <sys/types.h>
@@ -6,7 +6,7 @@
 #include <pthread.h>
 #include <sys/shm.h>
 //#include "/libfbdev/libfbdev.h"
-#else//À©µµ¿ìÀü¿ë
+#else//ìœˆë„ìš°ì „ìš©
 #define _CRT_SECURE_NO_WARNINGS
 #include <GL/glut.h>
 //#include "winnt.h"
@@ -16,14 +16,14 @@
 //#include <windows.h>
 #endif
 
-//°øÅë
+//ê³µí†µ
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
 #include "simuwork.h"
 
-#include "libfbdev.h"
-#include "bitmapFileHeader.h"
+//#include "libfbdev.h"
+//#include "bitmapFileHeader.h"
 
 #define min(a,b)            (((a) < (b)) ? (a) : (b))
 #define max(a,b)            (((a) > (b)) ? (a) : (b))
@@ -32,30 +32,30 @@
 
 
 
-#ifdef __LINUX//¸®´ª½º Àü¿ë ÄÚµù
-pthread_t thread_object_1; //½º·¹µå 1 for rgb led
-pthread_t thread_object_2; //½º·¹µå 2 for btn and led
-pthread_t thread_object_3; //½º·¹µå 3 for 7segment
+#ifdef __LINUX//ë¦¬ëˆ…ìŠ¤ ì „ìš© ì½”ë”©
+pthread_t thread_object_1; //ìŠ¤ë ˆë“œ 1 for rgb led
+pthread_t thread_object_2; //ìŠ¤ë ˆë“œ 2 for btn and led
+pthread_t thread_object_3; //ìŠ¤ë ˆë“œ 3 for 7segment
 #endif
 
 #define PI 3.141592
 
-int simuwork = 0; //½Ã¹Ä·¹ÀÌ¼Ç °ÔÀÓ(?) µ¿ÀÛ ¿©ºÎ È®ÀÎº¯¼ö
-int safetybelt = 0, sidebrake = 0, leftlight = 0, rightlight = 0, emerlight = 0; // ¾ÈÀüº§Æ®, »çÀÌµåºê·¹ÀÌÅ©, ¹æÇâÁö½ÃµîÁÂ, ¿ì, ºñ»óµî º¯¼ö
-int fnddat; // FND(7segment) µ¥ÀÌÅÍ º¯¼ö
+int simuwork = 0; //ì‹œë®¬ë ˆì´ì…˜ ê²Œì„(?) ë™ì‘ ì—¬ë¶€ í™•ì¸ë³€ìˆ˜
+int safetybelt = 0, sidebrake = 0, leftlight = 0, rightlight = 0, emerlight = 0; // ì•ˆì „ë²¨íŠ¸, ì‚¬ì´ë“œë¸Œë ˆì´í¬, ë°©í–¥ì§€ì‹œë“±ì¢Œ, ìš°, ë¹„ìƒë“± ë³€ìˆ˜
+int fnddat; // FND(7segment) ë°ì´í„° ë³€ìˆ˜
 
-//ÀÌ°Å ½Å°æ ¾È ½áµµ µÊ
+//ì´ê±° ì‹ ê²½ ì•ˆ ì¨ë„ ë¨
 const int Wid=1024, Hei=600;
 int Width = 1024, Height = 600;
-int mouse_x = 0;//¸¶Áö¸·À¸·Î Å¬¸¯ÇÑ À§Ä¡
+int mouse_x = 0;//ë§ˆì§€ë§‰ìœ¼ë¡œ í´ë¦­í•œ ìœ„ì¹˜
 int mouse_y = 0;
 int rotationX = 0, rotationY = 0;
 float view_rotate[16] = { 1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1 };
 
-//ÀÌ°Ô ÀüºÎ ÀÚµ¿Â÷ °ü·Ã
+//ì´ê²Œ ì „ë¶€ ìë™ì°¨ ê´€ë ¨
 float dspeed, speed;
-float dxcar = 0, dycar = 0, xcar = 0, ycar = 0;//ÀÚµ¿Â÷ ÀÌµ¿/À§Ä¡
-int rcar;//·ÎÅ×ÀÌ¼Ç
+float dxcar = 0, dycar = 0, xcar = 0, ycar = 0;//ìë™ì°¨ ì´ë™/ìœ„ì¹˜
+int rcar;//ë¡œí…Œì´ì…˜
 bool acceration = false;
 
 void perspective(GLdouble fovy, GLdouble zfar);
@@ -96,67 +96,67 @@ char pixel_data[Wid * Hei * 3];
 //
 //void ScreenCapture(const char* strFilePath)
 //{
-//    //ºñÆ®¸Ê ÆÄÀÏ Ã³¸®¸¦ À§ÇÑ Çì´õ ±¸Á¶Ã¼
+//    //ë¹„íŠ¸ë§µ íŒŒì¼ ì²˜ë¦¬ë¥¼ ìœ„í•œ í—¤ë” êµ¬ì¡°ì²´
 //    BITMAPFILEHEADER	BMFH;
 //    BITMAPINFOHEADER	BMIH;
 //
 //    int nWidth = 0;
 //    int nHeight = 0;
-//    unsigned long dwQuadrupleWidth = 0;		//LJH Ãß°¡, °¡·Î »çÀÌÁî°¡ 4ÀÇ ¹è¼ö°¡ ¾Æ´Ï¶ó¸é 4ÀÇ ¹è¼ö·Î ¸¸µé¾î¼­ ÀúÀå
+//    unsigned long dwQuadrupleWidth = 0;		//LJH ì¶”ê°€, ê°€ë¡œ ì‚¬ì´ì¦ˆê°€ 4ì˜ ë°°ìˆ˜ê°€ ì•„ë‹ˆë¼ë©´ 4ì˜ ë°°ìˆ˜ë¡œ ë§Œë“¤ì–´ì„œ ì €ì¥
 //
-//    GLbyte* pPixelData = NULL;				//front bufferÀÇ ÇÈ¼¿ °ªµéÀ» ¾ò¾î ¿À±â À§ÇÑ ¹öÆÛÀÇ Æ÷ÀÎÅÍ
+//    GLbyte* pPixelData = NULL;				//front bufferì˜ í”½ì…€ ê°’ë“¤ì„ ì–»ì–´ ì˜¤ê¸° ìœ„í•œ ë²„í¼ì˜ í¬ì¸í„°
 //
-//    nWidth = 1024;		//(³ªÀÇ °æ¿ì)¸®´ª½º¿¡¼­ÀÇ °æ¿ì ÇØ»óµµ °íÁ¤ÀÌ¹Ç·Î ±× °ªÀ» ÀÔ·Â
+//    nWidth = 1024;		//(ë‚˜ì˜ ê²½ìš°)ë¦¬ëˆ…ìŠ¤ì—ì„œì˜ ê²½ìš° í•´ìƒë„ ê³ ì •ì´ë¯€ë¡œ ê·¸ ê°’ì„ ì…ë ¥
 //    nHeight = 600;
 //
-//    //4ÀÇ ¹è¼öÀÎÁö ¾Æ´ÑÁö È®ÀÎÇØ¼­ 4ÀÇ ¹è¼ö°¡ ¾Æ´Ï¶ó¸é 4ÀÇ ¹è¼ö·Î ¸ÂÃçÁØ´Ù.
+//    //4ì˜ ë°°ìˆ˜ì¸ì§€ ì•„ë‹Œì§€ í™•ì¸í•´ì„œ 4ì˜ ë°°ìˆ˜ê°€ ì•„ë‹ˆë¼ë©´ 4ì˜ ë°°ìˆ˜ë¡œ ë§ì¶°ì¤€ë‹¤.
 //    dwQuadrupleWidth = (nWidth % 4) ? ((nWidth)+(4 - (nWidth % 4))) : (nWidth);
 //
-//    //ºñÆ®¸Ê ÆÄÀÏ Çì´õ Ã³¸®
-//    BMFH.bfType = 0x4D42;		//B(42)¿Í M(4D)¿¡ ÇØ´çÇÏ´Â ASCII °ªÀ» ³Ö¾îÁØ´Ù.
-//    //¹ÙÀÌÆ® ´ÜÀ§·Î ÀüÃ¼ÆÄÀÏ Å©±â
+//    //ë¹„íŠ¸ë§µ íŒŒì¼ í—¤ë” ì²˜ë¦¬
+//    BMFH.bfType = 0x4D42;		//B(42)ì™€ M(4D)ì— í•´ë‹¹í•˜ëŠ” ASCII ê°’ì„ ë„£ì–´ì¤€ë‹¤.
+//    //ë°”ì´íŠ¸ ë‹¨ìœ„ë¡œ ì „ì²´íŒŒì¼ í¬ê¸°
 //    BMFH.bfSize = sizeof(BITMAPFILEHEADER) + sizeof(BITMAPINFOHEADER) + (dwQuadrupleWidth * 3 * nHeight);
-//    //¿µ»ó µ¥ÀÌÅÍ À§Ä¡±îÁöÀÇ °Å¸®
+//    //ì˜ìƒ ë°ì´í„° ìœ„ì¹˜ê¹Œì§€ì˜ ê±°ë¦¬
 //    BMFH.bfOffBits = sizeof(BITMAPFILEHEADER) + sizeof(BITMAPINFOHEADER);
 //
-//    //ºñÆ®¸Ê ÀÎÆ÷ Çì´õ Ã³¸®
-//    BMIH.biSize = sizeof(BITMAPINFOHEADER);		//ÀÌ ±¸Á¶Ã¼ÀÇ Å©±â
-//    BMIH.biWidth = nWidth;							//ÇÈ¼¿ ´ÜÀ§·Î ¿µ»óÀÇ Æø
-//    BMIH.biHeight = nHeight;							//¿µ»óÀÇ ³ôÀÌ
-//    BMIH.biPlanes = 1;								//ºñÆ® ÇÃ·¹ÀÎ ¼ö(Ç×»ó 1)
-//    BMIH.biBitCount = 24;								//ÇÈ¼¿´ç ºñÆ®¼ö(ÄÃ·¯, Èæ¹é ±¸º°)
-//    BMIH.biCompression = 0;							//¾ĞÃà À¯¹«
-//    BMIH.biSizeImage = dwQuadrupleWidth * 3 * nHeight;	//¿µ»óÀÇ Å©±â
-//    BMIH.biXPelsPerMeter = 0;								//°¡·Î ÇØ»óµµ
-//    BMIH.biYPelsPerMeter = 0;								//¼¼·Î ÇØ»óµµ
-//    BMIH.biClrUsed = 0;								//½ÇÁ¦ »ç¿ë »ö»ó¼ö
-//    BMIH.biClrImportant = 0;								//Áß¿äÇÑ »ö»ó ÀÎµ¦½º
+//    //ë¹„íŠ¸ë§µ ì¸í¬ í—¤ë” ì²˜ë¦¬
+//    BMIH.biSize = sizeof(BITMAPINFOHEADER);		//ì´ êµ¬ì¡°ì²´ì˜ í¬ê¸°
+//    BMIH.biWidth = nWidth;							//í”½ì…€ ë‹¨ìœ„ë¡œ ì˜ìƒì˜ í­
+//    BMIH.biHeight = nHeight;							//ì˜ìƒì˜ ë†’ì´
+//    BMIH.biPlanes = 1;								//ë¹„íŠ¸ í”Œë ˆì¸ ìˆ˜(í•­ìƒ 1)
+//    BMIH.biBitCount = 24;								//í”½ì…€ë‹¹ ë¹„íŠ¸ìˆ˜(ì»¬ëŸ¬, í‘ë°± êµ¬ë³„)
+//    BMIH.biCompression = 0;							//ì••ì¶• ìœ ë¬´
+//    BMIH.biSizeImage = dwQuadrupleWidth * 3 * nHeight;	//ì˜ìƒì˜ í¬ê¸°
+//    BMIH.biXPelsPerMeter = 0;								//ê°€ë¡œ í•´ìƒë„
+//    BMIH.biYPelsPerMeter = 0;								//ì„¸ë¡œ í•´ìƒë„
+//    BMIH.biClrUsed = 0;								//ì‹¤ì œ ì‚¬ìš© ìƒ‰ìƒìˆ˜
+//    BMIH.biClrImportant = 0;								//ì¤‘ìš”í•œ ìƒ‰ìƒ ì¸ë±ìŠ¤
 //
-//    pPixelData = new GLbyte[dwQuadrupleWidth * 3 * nHeight];	//LJH ¼öÁ¤
+//    pPixelData = new GLbyte[dwQuadrupleWidth * 3 * nHeight];	//LJH ìˆ˜ì •
 //
-//    //ÇÁ·±Æ® ¹öÆÛ·Î ºÎÅÍ ÇÈ¼¿ Á¤º¸µéÀ» ¾ò¾î¿Â´Ù.
+//    //í”„ëŸ°íŠ¸ ë²„í¼ë¡œ ë¶€í„° í”½ì…€ ì •ë³´ë“¤ì„ ì–»ì–´ì˜¨ë‹¤.
 //    glReadPixels(
-//        0, 0,					//Ä¸Ã³ÇÒ ¿µ¿ªÀÇ ÁÂÃø»ó´Ü ÁÂÇ¥
-//        nWidth, nHeight,		//Ä¸Ã³ÇÒ ¿µ¿ªÀÇ Å©±â
-//        GL_BGR_EXT,					//Ä¸Ã³ÇÑ ÀÌ¹ÌÁöÀÇ ÇÈ¼¿ Æ÷¸Ë
-//        GL_UNSIGNED_BYTE,		//Ä¸Ã³ÇÑ ÀÌ¹ÌÁöÀÇ µ¥ÀÌÅÍ Æ÷¸Ë
-//        pPixelData				//Ä¸Ã³ÇÑ ÀÌ¹ÌÁöÀÇ Á¤º¸¸¦ ´ã¾ÆµÑ ¹öÆÛ Æ÷ÀÎÅÍ
+//        0, 0,					//ìº¡ì²˜í•  ì˜ì—­ì˜ ì¢Œì¸¡ìƒë‹¨ ì¢Œí‘œ
+//        nWidth, nHeight,		//ìº¡ì²˜í•  ì˜ì—­ì˜ í¬ê¸°
+//        GL_BGR_EXT,					//ìº¡ì²˜í•œ ì´ë¯¸ì§€ì˜ í”½ì…€ í¬ë§·
+//        GL_UNSIGNED_BYTE,		//ìº¡ì²˜í•œ ì´ë¯¸ì§€ì˜ ë°ì´í„° í¬ë§·
+//        pPixelData				//ìº¡ì²˜í•œ ì´ë¯¸ì§€ì˜ ì •ë³´ë¥¼ ë‹´ì•„ë‘˜ ë²„í¼ í¬ì¸í„°
 //    );
 //
-//    {//ÀúÀå ºÎºĞ
+//    {//ì €ì¥ ë¶€ë¶„
 //        FILE* outFile = fopen(strFilePath, "wb");
 //        if (outFile == NULL)
 //        {
-//            //¿¡·¯ Ã³¸®
-//            printf( "¿¡·¯" );
+//            //ì—ëŸ¬ ì²˜ë¦¬
+//            printf( "ì—ëŸ¬" );
 //            //fclose( outFile );
 //        }
 //
-//        fwrite(&BMFH, sizeof(char), sizeof(BITMAPFILEHEADER), outFile);			//ÆÄÀÏ Çì´õ ¾²±â
-//        fwrite(&BMIH, sizeof(char), sizeof(BITMAPINFOHEADER), outFile);			//ÀÎÆ÷ Çì´õ ¾²±â
-//        fwrite(pPixelData, sizeof(unsigned char), BMIH.biSizeImage, outFile);	//glReadPixels·Î ÀĞÀº µ¥ÀÌÅÍ ¾²±â
+//        fwrite(&BMFH, sizeof(char), sizeof(BITMAPFILEHEADER), outFile);			//íŒŒì¼ í—¤ë” ì“°ê¸°
+//        fwrite(&BMIH, sizeof(char), sizeof(BITMAPINFOHEADER), outFile);			//ì¸í¬ í—¤ë” ì“°ê¸°
+//        fwrite(pPixelData, sizeof(unsigned char), BMIH.biSizeImage, outFile);	//glReadPixelsë¡œ ì½ì€ ë°ì´í„° ì“°ê¸°
 //
-//        fclose(outFile);	//ÆÄÀÏ ´İ±â
+//        fclose(outFile);	//íŒŒì¼ ë‹«ê¸°
 //    }
 //
 //    if (pPixelData != NULL)
@@ -212,7 +212,7 @@ int squareVertices[4][2] = {
     {xcar - 5, ycar + 2}
 };
 
-// ÇÏ¾á °æ·Î ÁÂÇ¥(¹ÙÄû°¡ ´êÀ¸¸é -5Ãâ·Â)
+// í•˜ì–€ ê²½ë¡œ ì¢Œí‘œ(ë°”í€´ê°€ ë‹¿ìœ¼ë©´ -5ì¶œë ¥)
 int whitepath1[][4] = {
     {-97, -61, -97, 55},
     {-97, 55 , 91, 55},
@@ -235,31 +235,31 @@ int whitepath1[][4] = {
     {-9, -9, -9, -43},
     {-76, -43, -9, -43}
 };
-//ÁÖÈ² °æ·Î ÁÂÇ¥(¹ÙÄû°¡ ´êÀ¸¸é -5Ãâ·Â)
+//ì£¼í™© ê²½ë¡œ ì¢Œí‘œ(ë°”í€´ê°€ ë‹¿ìœ¼ë©´ -5ì¶œë ¥)
 int lines[][4] = {
-    {-87, 9, -87, 45},   // 1. {-87, 9}¿Í {-87, 45}¸¦ ÀÌÀº ¼±
-    {-87, 45, 82, 45},   // 2. {-87, 45}¿Í {82, 45}¸¦ ÀÌÀº ¼±
-    {82, 45, 82, 9},    // 3. {82, 45}¿Í {82, 9}¸¦ ÀÌÀº ¼±
-    {0, 9, 0, 36},      // 4. {0, 9}¿Í {0, 36}¸¦ ÀÌÀº ¼±
-    {-17, 0, -87, 0},   // 5. {0, 9}¿Í {0, 36}¸¦ ÀÌÀº ¼±
-    {-87, 0, -87, -52}, // 6. {-87, 0}¿Í {-87, -52}¸¦ ÀÌÀº ¼±
-    {-87, -52, 82, -52},// 7. {-87, -52}¿Í {82, -52}¸¦ ÀÌÀº ¼±
-    {82, -52, 82, -9},  // 8. {82, -52}¿Í {82, -9}¸¦ ÀÌÀº ¼±
-    {0, -52, 0, -12},   // 9. {0, -52}¿Í {0, -12}¸¦ ÀÌÀº ¼±
-    {7, 0, 67, 0}       // 10. {7, 0}¿Í {67, 0}¸¦ ÀÌÀº ¼±
+    {-87, 9, -87, 45},   // 1. {-87, 9}ì™€ {-87, 45}ë¥¼ ì´ì€ ì„ 
+    {-87, 45, 82, 45},   // 2. {-87, 45}ì™€ {82, 45}ë¥¼ ì´ì€ ì„ 
+    {82, 45, 82, 9},    // 3. {82, 45}ì™€ {82, 9}ë¥¼ ì´ì€ ì„ 
+    {0, 9, 0, 36},      // 4. {0, 9}ì™€ {0, 36}ë¥¼ ì´ì€ ì„ 
+    {-17, 0, -87, 0},   // 5. {0, 9}ì™€ {0, 36}ë¥¼ ì´ì€ ì„ 
+    {-87, 0, -87, -52}, // 6. {-87, 0}ì™€ {-87, -52}ë¥¼ ì´ì€ ì„ 
+    {-87, -52, 82, -52},// 7. {-87, -52}ì™€ {82, -52}ë¥¼ ì´ì€ ì„ 
+    {82, -52, 82, -9},  // 8. {82, -52}ì™€ {82, -9}ë¥¼ ì´ì€ ì„ 
+    {0, -52, 0, -12},   // 9. {0, -52}ì™€ {0, -12}ë¥¼ ì´ì€ ì„ 
+    {7, 0, 67, 0}       // 10. {7, 0}ì™€ {67, 0}ë¥¼ ì´ì€ ì„ 
 };
 int rqLines1[][4] = {
-    {-97, 26, -73, 26},   // 1¹ø ÁÙ
-    {-19, 0, -19, 9},     // 2¹ø ÁÙ
-    {67, 0, 67, 9},       // 3¹ø ÁÙ
-    {9, 0, 9, -9},        // 4¹ø ÁÙ
-    {-9, -17, 0, -17},     // 5¹ø ÁÙ
+    {-97, 26, -73, 26},   // 1ë²ˆ ì¤„
+    {-19, 0, -19, 9},     // 2ë²ˆ ì¤„
+    {67, 0, 67, 9},       // 3ë²ˆ ì¤„
+    {9, 0, 9, -9},        // 4ë²ˆ ì¤„
+    {-9, -17, 0, -17},     // 5ë²ˆ ì¤„
     {73, 9, 91, 9}
 };
 
 ////////////////////////////////////////////////////////////////
 bool isPointOnLine(float x, float y, float x1, float y1, float x2, float y2) {
-    // ¼±ºĞ (x1, y1) - (x2, y2) À§¿¡ Á¡ (x, y)°¡ ÀÖ´ÂÁö È®ÀÎ
+    // ì„ ë¶„ (x1, y1) - (x2, y2) ìœ„ì— ì  (x, y)ê°€ ìˆëŠ”ì§€ í™•ì¸
     float minX = min(x1, x2);
     float maxX = max(x1, x2);
     float minY = min(y1, y2);
@@ -277,12 +277,12 @@ bool isPointOnPath(int x, int y, int x1, int y1, int x2, int y2) {
 }
 ///////////////////////////////////////////////////////
 bool isRectangleOnLines() {
-    // »ç°¢ÇüÀÇ ³× ²ÀÁşÁ¡ÀÌ ¼± À§¿¡ ÀÖ´ÂÁö È®ÀÎ
+    // ì‚¬ê°í˜•ì˜ ë„¤ ê¼­ì§“ì ì´ ì„  ìœ„ì— ìˆëŠ”ì§€ í™•ì¸
     for (int i = 0; i < 20; ++i) {
         for (int j = 0; j < 4; ++j) {
             if (isPointOnPath(squareVertices[j][0], squareVertices[j][1],
                 whitepath1[i][0], whitepath1[i][1], whitepath1[i][2], whitepath1[i][3])) {
-                return true; // »ç°¢ÇüÀÇ ²ÀÁşÁ¡ÀÌ ¼± À§¿¡ ÀÖ´Ù¸é true ¹İÈ¯
+                return true; // ì‚¬ê°í˜•ì˜ ê¼­ì§“ì ì´ ì„  ìœ„ì— ìˆë‹¤ë©´ true ë°˜í™˜
             }
         }
     }
@@ -290,11 +290,11 @@ bool isRectangleOnLines() {
         for (int t = 0; t < 4; ++t) {
             if (isPointOnLine(squareVertices[t][0], squareVertices[t][1],
                 lines[k][0], lines[k][1], lines[k][2], lines[k][3])) {
-                return true; // »ç°¢ÇüÀÇ ²ÀÁşÁ¡ÀÌ ¼± À§¿¡ ÀÖ´Ù¸é true ¹İÈ¯
+                return true; // ì‚¬ê°í˜•ì˜ ê¼­ì§“ì ì´ ì„  ìœ„ì— ìˆë‹¤ë©´ true ë°˜í™˜
             }
         }
     }
-    return false; // »ç°¢ÇüÀÇ ²ÀÁşÁ¡ÀÌ ¼± À§¿¡ ¾ø´Ù¸é false ¹İÈ¯
+    return false; // ì‚¬ê°í˜•ì˜ ê¼­ì§“ì ì´ ì„  ìœ„ì— ì—†ë‹¤ë©´ false ë°˜í™˜
 }
 void updateSquareVertices() {
     // Update squareVertices based on the current square position
@@ -306,12 +306,12 @@ void updateSquareVertices() {
     squareVertices[2][1] = ycar + 2;
     squareVertices[3][0] = xcar - 5;
     squareVertices[3][1] = ycar + 2;
-}// ¼±ºĞ (x1, y1) - (x2, y2) À§¿¡ Á¡ (x, y)°¡ ÀÖ´ÂÁö È®ÀÎ
+}// ì„ ë¶„ (x1, y1) - (x2, y2) ìœ„ì— ì  (x, y)ê°€ ìˆëŠ”ì§€ í™•ì¸
 
 void display_lines(int line_width = 5.0) {
     //
-    glColor3f(1.0, 1.0, 1.0);  // Èò»ö¼³Á¤
-    glLineWidth(line_width);         // µÎ²² 2 ¼³Á¤
+    glColor3f(1.0, 1.0, 1.0);  // í°ìƒ‰ì„¤ì •
+    glLineWidth(line_width);         // ë‘ê»˜ 2 ì„¤ì •
     glBegin(GL_LINES);
     for (int i = 0; i < 20; ++i) {
         glVertex3f(whitepath1[i][0], 0.1, whitepath1[i][1]);
@@ -323,8 +323,8 @@ void display_lines(int line_width = 5.0) {
     }
     glEnd();
     //
-    glColor3f(1.0, 1.0, 0.0);  // ³ë¶õ»ö ¼³Á¤
-    glLineWidth(line_width);         // µÎ²² 2 ¼³Á¤
+    glColor3f(1.0, 1.0, 0.0);  // ë…¸ë€ìƒ‰ ì„¤ì •
+    glLineWidth(line_width);         // ë‘ê»˜ 2 ì„¤ì •
 
     glBegin(GL_LINES);
     for (int i = 0; i < 10; ++i) {
@@ -334,7 +334,7 @@ void display_lines(int line_width = 5.0) {
     glEnd();
 
     //
-    glColor3f(0.0, 1.0, 0.0);  // ÃÊ·Ï»ö ¼³Á¤
+    glColor3f(0.0, 1.0, 0.0);  // ì´ˆë¡ìƒ‰ ì„¤ì •
     glBegin(GL_QUADS);
     for (int i = 0; i < 4; ++i) {
         glVertex3f(squareVertices[i][0], 0.1, squareVertices[i][1]);
@@ -344,8 +344,8 @@ void display_lines(int line_width = 5.0) {
 
     glFlush();
 }
-void drawingCar() {//ÀÚµ¿Â÷ ¸ğµ¨¸µ, ÀÌµ¿, È¸Àü
-    // Â÷ ¾ÕÀ§ ºÎºĞ
+void drawingCar() {//ìë™ì°¨ ëª¨ë¸ë§, ì´ë™, íšŒì „
+    // ì°¨ ì•ìœ„ ë¶€ë¶„
     glColor3f(1.0, 1.0, 1.0);
     glBegin(GL_POLYGON);
     glVertex3i(8, 3, 4);   // A
@@ -354,7 +354,7 @@ void drawingCar() {//ÀÚµ¿Â÷ ¸ğµ¨¸µ, ÀÌµ¿, È¸Àü
     glVertex3i(3, 3, 4);   // D
     glEnd();
 
-    // Â÷ ¹üÆÛºÎºĞ 
+    // ì°¨ ë²”í¼ë¶€ë¶„ 
     glColor3f(1.0, 1.0, 1.0);
     glBegin(GL_POLYGON);
     glVertex3i(8, 3, 4);   // A
@@ -363,7 +363,7 @@ void drawingCar() {//ÀÚµ¿Â÷ ¸ğµ¨¸µ, ÀÌµ¿, È¸Àü
     glVertex3i(8, 0, 4);   // E
     glEnd();
 
-    // Â÷ ¹ÙÄû ±âÁØ ¾Õ ºÎºĞ 
+    // ì°¨ ë°”í€´ ê¸°ì¤€ ì• ë¶€ë¶„ 
     glColor3f(1.0, 1.0, 1.0);
     glBegin(GL_POLYGON);
     glVertex3i(8, 3, 4);   // A
@@ -372,7 +372,7 @@ void drawingCar() {//ÀÚµ¿Â÷ ¸ğµ¨¸µ, ÀÌµ¿, È¸Àü
     glVertex3i(8, 0, 4);   // E
     glEnd();
 
-    // Â÷ ¹ÙÄû ±âÁØ ¾Õ ºÎºĞ [RIGHT]
+    // ì°¨ ë°”í€´ ê¸°ì¤€ ì• ë¶€ë¶„ [RIGHT]
     glColor3f(1.0, 1.0, 1.0);
     glBegin(GL_POLYGON);
     glVertex3i(8, 3, -4);   // A
@@ -382,7 +382,7 @@ void drawingCar() {//ÀÚµ¿Â÷ ¸ğµ¨¸µ, ÀÌµ¿, È¸Àü
     glEnd();
 
 
-    // Â÷ ¹ÙÄû ±âÁØ À­ ºÎºĞ 
+    // ì°¨ ë°”í€´ ê¸°ì¤€ ìœ— ë¶€ë¶„ 
     glColor3f(1.0, 1.0, 1.0);
     glBegin(GL_POLYGON);
     glVertex3i(6, 3, 4);   // G
@@ -391,7 +391,7 @@ void drawingCar() {//ÀÚµ¿Â÷ ¸ğµ¨¸µ, ÀÌµ¿, È¸Àü
     glVertex3i(6, 1, 4);   // M
     glEnd();
 
-    // Â÷ ¹ÙÄû ±âÁØ °¡¿îµ¥ ºÎºĞ 
+    // ì°¨ ë°”í€´ ê¸°ì¤€ ê°€ìš´ë° ë¶€ë¶„ 
     glColor3f(1.0, 1.0, 1.0);
     glBegin(GL_POLYGON);
     glVertex3i(3, 3, 4);   // D
@@ -400,7 +400,7 @@ void drawingCar() {//ÀÚµ¿Â÷ ¸ğµ¨¸µ, ÀÌµ¿, È¸Àü
     glVertex3i(-3, 3, 4);   // O
     glEnd();
 
-    // Â÷ ¹ÙÄû ±âÁØ À­ ºÎºĞ [RIGHT]
+    // ì°¨ ë°”í€´ ê¸°ì¤€ ìœ— ë¶€ë¶„ [RIGHT]
     glColor3f(1.0, 1.0, 1.0);
     glBegin(GL_POLYGON);
     glVertex3i(6, 3, -4);   // G
@@ -409,7 +409,7 @@ void drawingCar() {//ÀÚµ¿Â÷ ¸ğµ¨¸µ, ÀÌµ¿, È¸Àü
     glVertex3i(6, 1, -4);   // M
     glEnd();
 
-    // Â÷ ¹ÙÄû ±âÁØ °¡¿îµ¥ ºÎºĞ [RIGHT]
+    // ì°¨ ë°”í€´ ê¸°ì¤€ ê°€ìš´ë° ë¶€ë¶„ [RIGHT]
     glColor3f(1.0, 1.0, 1.0);
     glBegin(GL_POLYGON);
     glVertex3i(3, 3, -4);   // D
@@ -418,7 +418,7 @@ void drawingCar() {//ÀÚµ¿Â÷ ¸ğµ¨¸µ, ÀÌµ¿, È¸Àü
     glVertex3i(-3, 3, -4);   // O
     glEnd();
 
-    //Â÷ ¾Õ À¯¸® ÇÁ·¹ÀÓ1
+    //ì°¨ ì• ìœ ë¦¬ í”„ë ˆì„1
     glColor3f(1.0, 1.0, 1.0);   //WHITE
     glBegin(GL_POLYGON);
     glVertex3i(3, 6, 4);   // P
@@ -426,7 +426,7 @@ void drawingCar() {//ÀÚµ¿Â÷ ¸ğµ¨¸µ, ÀÌµ¿, È¸Àü
     glVertex3i(3, 3, 3);   // T
     glVertex3i(3, 3, 4);   // D
     glEnd();
-    //Â÷ ¾Õ À¯¸® ÇÁ·¹ÀÓ2
+    //ì°¨ ì• ìœ ë¦¬ í”„ë ˆì„2
     glColor3f(1.0, 1.0, 1.0);   //WHITE
     glBegin(GL_POLYGON);
     glVertex3i(3, 6, 4);   // P
@@ -434,7 +434,7 @@ void drawingCar() {//ÀÚµ¿Â÷ ¸ğµ¨¸µ, ÀÌµ¿, È¸Àü
     glVertex3i(3, 5, -4);   // X
     glVertex3i(3, 5, 4);   // Y
     glEnd();
-    //Â÷ ¾Õ À¯¸® ÇÁ·¹ÀÓ3
+    //ì°¨ ì• ìœ ë¦¬ í”„ë ˆì„3
     glColor3f(1.0, 1.0, 1.0);   //WHITE
     glBegin(GL_POLYGON);
     glVertex3i(3, 6, -3);   // W
@@ -443,7 +443,7 @@ void drawingCar() {//ÀÚµ¿Â÷ ¸ğµ¨¸µ, ÀÌµ¿, È¸Àü
     glVertex3i(3, 3, -3);   // U
     glEnd();
 
-    //Â÷ ¾Õ À¯¸®
+    //ì°¨ ì• ìœ ë¦¬
     glColor3f(0.0, 0.0, 0.0);   //BLACK
     glBegin(GL_POLYGON);
     glVertex3i(3, 5, 3);   // R
@@ -452,7 +452,7 @@ void drawingCar() {//ÀÚµ¿Â÷ ¸ğµ¨¸µ, ÀÌµ¿, È¸Àü
     glVertex3i(3, 3, 3);   // T
     glEnd();
 
-    //Â÷ µŞ À¯¸® ÇÁ·¹ÀÓ1
+    //ì°¨ ë’· ìœ ë¦¬ í”„ë ˆì„1
     glColor3f(1.0, 1.0, 1.0);   //WHITE
     glBegin(GL_POLYGON);
     glVertex3i(-6, 6, 4);   // P(X - 8)
@@ -460,7 +460,7 @@ void drawingCar() {//ÀÚµ¿Â÷ ¸ğµ¨¸µ, ÀÌµ¿, È¸Àü
     glVertex3i(-6, 3, 3);   // T
     glVertex3i(-6, 3, 4);   // D
     glEnd();
-    //Â÷ µŞ À¯¸® ÇÁ·¹ÀÓ2
+    //ì°¨ ë’· ìœ ë¦¬ í”„ë ˆì„2
     glColor3f(1.0, 1.0, 1.0);   //WHITE
     glBegin(GL_POLYGON);
     glVertex3i(-6, 6, 4);   // P
@@ -468,7 +468,7 @@ void drawingCar() {//ÀÚµ¿Â÷ ¸ğµ¨¸µ, ÀÌµ¿, È¸Àü
     glVertex3i(-6, 5, -4);   // X
     glVertex3i(-6, 5, 4);   // Y
     glEnd();
-    //Â÷ µŞ À¯¸® ÇÁ·¹ÀÓ3
+    //ì°¨ ë’· ìœ ë¦¬ í”„ë ˆì„3
     glColor3f(1.0, 1.0, 1.0);   //WHITE
     glBegin(GL_POLYGON);
     glVertex3i(-6, 6, -3);   // W
@@ -477,7 +477,7 @@ void drawingCar() {//ÀÚµ¿Â÷ ¸ğµ¨¸µ, ÀÌµ¿, È¸Àü
     glVertex3i(-6, 3, -3);   // U
     glEnd();
 
-    //Â÷ µŞ À¯¸®
+    //ì°¨ ë’· ìœ ë¦¬
     glColor3f(0.0, 0.0, 0.0);   //BLACK
     glBegin(GL_POLYGON);
     glVertex3i(-6, 5, 3);   // R
@@ -486,7 +486,7 @@ void drawingCar() {//ÀÚµ¿Â÷ ¸ğµ¨¸µ, ÀÌµ¿, È¸Àü
     glVertex3i(-6, 3, 3);   // T
     glEnd();
 
-    //Â÷ ¿· À¯¸® ÇÁ·¹ÀÓ1 
+    //ì°¨ ì˜† ìœ ë¦¬ í”„ë ˆì„1 
     glColor3f(1.0, 1.0, 1.0);   //WHITE
     glBegin(GL_POLYGON);
     glVertex3i(-6, 6, 4);   // A1
@@ -494,7 +494,7 @@ void drawingCar() {//ÀÚµ¿Â÷ ¸ğµ¨¸µ, ÀÌµ¿, È¸Àü
     glVertex3i(-5, 3, 4);   // C1
     glVertex3i(-6, 3, 4);   // Z
     glEnd();
-    //Â÷ ¿· À¯¸® ÇÁ·¹ÀÓ2 
+    //ì°¨ ì˜† ìœ ë¦¬ í”„ë ˆì„2 
     glColor3f(1.0, 1.0, 1.0);   //WHITE
     glBegin(GL_POLYGON);
     glVertex3i(-6, 6, 4);   // A1
@@ -502,7 +502,7 @@ void drawingCar() {//ÀÚµ¿Â÷ ¸ğµ¨¸µ, ÀÌµ¿, È¸Àü
     glVertex3i(3, 5, 4);   // Y
     glVertex3i(-6, 5, 4);   // H1
     glEnd();
-    //Â÷ ¿· À¯¸® ÇÁ·¹ÀÓ3
+    //ì°¨ ì˜† ìœ ë¦¬ í”„ë ˆì„3
     glColor3f(1.0, 1.0, 1.0);   //WHITE
     glBegin(GL_POLYGON);
     glVertex3i(2, 6, 4);   // G1
@@ -510,7 +510,7 @@ void drawingCar() {//ÀÚµ¿Â÷ ¸ğµ¨¸µ, ÀÌµ¿, È¸Àü
     glVertex3i(3, 3, 4);   // D
     glVertex3i(2, 3, 4);   // F1
     glEnd();
-    //Â÷ ¿· À¯¸®
+    //ì°¨ ì˜† ìœ ë¦¬
     glColor3f(0.0, 0.0, 0.0);   //BLACK
     glBegin(GL_POLYGON);
     glVertex3i(-5, 5, 4);   // D1
@@ -519,7 +519,7 @@ void drawingCar() {//ÀÚµ¿Â÷ ¸ğµ¨¸µ, ÀÌµ¿, È¸Àü
     glVertex3i(-5, 3, 4);   // C1
     glEnd();
 
-    // Â÷ ¿· À¯¸® ÇÁ·¹ÀÓ1 [RIGHT]
+    // ì°¨ ì˜† ìœ ë¦¬ í”„ë ˆì„1 [RIGHT]
     glColor3f(1.0, 1.0, 1.0);   //WHITE
     glBegin(GL_POLYGON);
     glVertex3i(-6, 6, -4);   // A1
@@ -527,7 +527,7 @@ void drawingCar() {//ÀÚµ¿Â÷ ¸ğµ¨¸µ, ÀÌµ¿, È¸Àü
     glVertex3i(-5, 3, -4);   // C1
     glVertex3i(-6, 3, -4);   // Z
     glEnd();
-    //Â÷ ¿· À¯¸® ÇÁ·¹ÀÓ2 [RIGHT]
+    //ì°¨ ì˜† ìœ ë¦¬ í”„ë ˆì„2 [RIGHT]
     glColor3f(1.0, 1.0, 1.0);   //WHITE
     glBegin(GL_POLYGON);
     glVertex3i(-6, 6, -4);   // A1
@@ -535,7 +535,7 @@ void drawingCar() {//ÀÚµ¿Â÷ ¸ğµ¨¸µ, ÀÌµ¿, È¸Àü
     glVertex3i(3, 5, -4);   // Y
     glVertex3i(-6, 5, -4);   // H1
     glEnd();
-    //Â÷ ¿· À¯¸® ÇÁ·¹ÀÓ3 [RIGHT]
+    //ì°¨ ì˜† ìœ ë¦¬ í”„ë ˆì„3 [RIGHT]
     glColor3f(1.0, 1.0, 1.0);   //WHITE
     glBegin(GL_POLYGON);
     glVertex3i(2, 6, -4);   // G1
@@ -543,7 +543,7 @@ void drawingCar() {//ÀÚµ¿Â÷ ¸ğµ¨¸µ, ÀÌµ¿, È¸Àü
     glVertex3i(3, 3, -4);   // D
     glVertex3i(2, 3, -4);   // F1
     glEnd();
-    //Â÷ ¿· À¯¸® [RIGHT]
+    //ì°¨ ì˜† ìœ ë¦¬ [RIGHT]
     glColor3f(0.0, 0.0, 0.0);   //BLACK
     glBegin(GL_POLYGON);
     glVertex3i(-5, 5, -4);   // D1
@@ -552,7 +552,7 @@ void drawingCar() {//ÀÚµ¿Â÷ ¸ğµ¨¸µ, ÀÌµ¿, È¸Àü
     glVertex3i(-5, 3, -4);   // C1
     glEnd();
 
-    //Â÷ ¶Ñ²±
+    //ì°¨ ëšœê»‘
     glColor3f(1.0, 1.0, 1.0);   //WHITE
     glBegin(GL_POLYGON);
     glVertex3i(3, 6, -4);   // Q
@@ -561,7 +561,7 @@ void drawingCar() {//ÀÚµ¿Â÷ ¸ğµ¨¸µ, ÀÌµ¿, È¸Àü
     glVertex3i(-6, 6, -4);   // I1
     glEnd();
 
-    //ÅÃ½Ã Ç¥½ÃÇÏ´Â °Å(¶Ñ²± À§¿¡)1
+    //íƒì‹œ í‘œì‹œí•˜ëŠ” ê±°(ëšœê»‘ ìœ„ì—)1
     glColor3f(1.0, 1.0, 0.0);   //Yellow
     glBegin(GL_POLYGON);
     glVertex3i(-3, 7, 2);   // M1
@@ -569,7 +569,7 @@ void drawingCar() {//ÀÚµ¿Â÷ ¸ğµ¨¸µ, ÀÌµ¿, È¸Àü
     glVertex3i(-1, 6, 2);   // K1
     glVertex3i(-3, 6, 2);   // J1
     glEnd();
-    //ÅÃ½Ã Ç¥½ÃÇÏ´Â °Å(¶Ñ²± À§¿¡)2
+    //íƒì‹œ í‘œì‹œí•˜ëŠ” ê±°(ëšœê»‘ ìœ„ì—)2
     glColor3f(1.0, 1.0, 0.0);   //YELLOW
     glBegin(GL_POLYGON);
     glVertex3i(-1, 7, 2);   // N1
@@ -577,7 +577,7 @@ void drawingCar() {//ÀÚµ¿Â÷ ¸ğµ¨¸µ, ÀÌµ¿, È¸Àü
     glVertex3i(-1, 6, -2);   // L1
     glVertex3i(-1, 6, 2);   // K1
     glEnd();
-    //ÅÃ½Ã Ç¥½ÃÇÏ´Â °Å(¶Ñ²± À§¿¡)3 O1 P1 Q1 L1
+    //íƒì‹œ í‘œì‹œí•˜ëŠ” ê±°(ëšœê»‘ ìœ„ì—)3 O1 P1 Q1 L1
     glColor3f(1.0, 1.0, 0.0);   //YELLOW
     glBegin(GL_POLYGON);
     glVertex3i(-1, 7, -2);   // O1
@@ -585,7 +585,7 @@ void drawingCar() {//ÀÚµ¿Â÷ ¸ğµ¨¸µ, ÀÌµ¿, È¸Àü
     glVertex3i(-3, 6, -2);   // Q1
     glVertex3i(-1, 6, -2);   // L1
     glEnd();
-    //ÅÃ½Ã Ç¥½ÃÇÏ´Â °Å(¶Ñ²± À§¿¡)4 P1 M1 J1 Q1
+    //íƒì‹œ í‘œì‹œí•˜ëŠ” ê±°(ëšœê»‘ ìœ„ì—)4 P1 M1 J1 Q1
     glColor3f(1.0, 1.0, 0.0);   //YELLOW
     glBegin(GL_POLYGON);
     glVertex3i(-3, 7, -2);   // P1
@@ -593,7 +593,7 @@ void drawingCar() {//ÀÚµ¿Â÷ ¸ğµ¨¸µ, ÀÌµ¿, È¸Àü
     glVertex3i(-3, 6, 2);   // J1
     glVertex3i(-3, 6, -2);   // Q1
     glEnd();
-    //ÅÃ½Ã Ç¥½ÃÇÏ´Â °Å(¶Ñ²± À§¿¡)5 [¶Ñ²±] P1 O1 N1 M1
+    //íƒì‹œ í‘œì‹œí•˜ëŠ” ê±°(ëšœê»‘ ìœ„ì—)5 [ëšœê»‘] P1 O1 N1 M1
     glColor3f(1.0, 1.0, 0.0);   //YELLOW
     glBegin(GL_POLYGON);
     glVertex3i(-3, 7, -2);   // P1
@@ -602,7 +602,7 @@ void drawingCar() {//ÀÚµ¿Â÷ ¸ğµ¨¸µ, ÀÌµ¿, È¸Àü
     glVertex3i(-3, 7, 2);   // M1
     glEnd();
 
-    //ÈÄ¸é ¹ÙÄû À­ ºÎºĞ T1 O R1 S1
+    //í›„ë©´ ë°”í€´ ìœ— ë¶€ë¶„ T1 O R1 S1
     glColor3f(1.0, 1.0, 1.0);   //PINK
     glBegin(GL_POLYGON);
     glVertex3i(-6, 3, 4);   // T1
@@ -611,7 +611,7 @@ void drawingCar() {//ÀÚµ¿Â÷ ¸ğµ¨¸µ, ÀÌµ¿, È¸Àü
     glVertex3i(-6, 1, 4);   // S1
     glEnd();
 
-    //ÈÄ¸é ¹ÙÄû µŞ ºÎºĞ [RIGHT]
+    //í›„ë©´ ë°”í€´ ë’· ë¶€ë¶„ [RIGHT]
     glColor3f(1.0, 1.0, 1.0);   //PINK
     glBegin(GL_POLYGON);
     glVertex3i(-9, 3, 4);   // K
@@ -620,7 +620,7 @@ void drawingCar() {//ÀÚµ¿Â÷ ¸ğµ¨¸µ, ÀÌµ¿, È¸Àü
     glVertex3i(-9, 0, 4);   // L
     glEnd();
 
-    //ÈÄ¸é ¹ÙÄû À­ ºÎºĞ [RIGHT]
+    //í›„ë©´ ë°”í€´ ìœ— ë¶€ë¶„ [RIGHT]
     glColor3f(1.0, 1.0, 1.0);   //PINK
     glBegin(GL_POLYGON);
     glVertex3i(-6, 3, -4);   // T1
@@ -629,7 +629,7 @@ void drawingCar() {//ÀÚµ¿Â÷ ¸ğµ¨¸µ, ÀÌµ¿, È¸Àü
     glVertex3i(-6, 1, -4);   // S1
     glEnd();
 
-    //ÈÄ¸é ¹ÙÄû µŞ ºÎºĞ K T1 U1 L
+    //í›„ë©´ ë°”í€´ ë’· ë¶€ë¶„ K T1 U1 L
     glColor3f(1.0, 1.0, 1.0);   //PINK
     glBegin(GL_POLYGON);
     glVertex3i(-9, 3, -4);   // K
@@ -638,7 +638,7 @@ void drawingCar() {//ÀÚµ¿Â÷ ¸ğµ¨¸µ, ÀÌµ¿, È¸Àü
     glVertex3i(-9, 0, -4);   // L
     glEnd();
 
-    //Â÷ Æ®··Å©
+    //ì°¨ íŠ¸ë í¬
     glColor3f(1.0, 1.0, 1.0);   //RED
     glBegin(GL_POLYGON);
     glVertex3i(-9, 3, 4);   // K
@@ -648,7 +648,7 @@ void drawingCar() {//ÀÚµ¿Â÷ ¸ğµ¨¸µ, ÀÌµ¿, È¸Àü
 
     glEnd();
 
-    //Â÷ ÈÄ¸é ¹üÆÛ KL,
+    //ì°¨ í›„ë©´ ë²”í¼ KL,
     glColor3f(1.0, 1.0, 1.0);   // PINK
     glBegin(GL_POLYGON);
     glVertex3i(-9, 3, 4);   // K
@@ -657,7 +657,7 @@ void drawingCar() {//ÀÚµ¿Â÷ ¸ğµ¨¸µ, ÀÌµ¿, È¸Àü
     glVertex3i(-9, 3, -4);   // K(-Z)
     glEnd();
 
-    //Â÷ ¼ÕÀâÀÌ1 [LEFT] A2 B2 C2 D2
+    //ì°¨ ì†ì¡ì´1 [LEFT] A2 B2 C2 D2
     glColor3f(1.0, 1.0, 0.0);
     glBegin(GL_POLYGON);
     glVertex3i(2, 3, 5);   // A2
@@ -665,7 +665,7 @@ void drawingCar() {//ÀÚµ¿Â÷ ¸ğµ¨¸µ, ÀÌµ¿, È¸Àü
     glVertex3i(0, 2, 5);   // C2
     glVertex3i(0, 3, 5);   // D2
     glEnd();
-    //Â÷ ¼ÕÀâÀÌ2 [LEFT] A2 D2 E2 F1
+    //ì°¨ ì†ì¡ì´2 [LEFT] A2 D2 E2 F1
     glColor3f(1.0, 1.0, 0.0);
     glBegin(GL_POLYGON);
     glVertex3i(2, 3, 5);   // A2
@@ -673,7 +673,7 @@ void drawingCar() {//ÀÚµ¿Â÷ ¸ğµ¨¸µ, ÀÌµ¿, È¸Àü
     glVertex3i(0, 3, 4);   // E2
     glVertex3i(2, 3, 4);   // F1
     glEnd();
-    //Â÷ ¼ÕÀâÀÌ2 [LEFT] D2 E2 G2 C2
+    //ì°¨ ì†ì¡ì´2 [LEFT] D2 E2 G2 C2
     glColor3f(1.0, 1.0, 0.0);
     glBegin(GL_POLYGON);
     glVertex3i(0, 3, 5);   // D2
@@ -681,7 +681,7 @@ void drawingCar() {//ÀÚµ¿Â÷ ¸ğµ¨¸µ, ÀÌµ¿, È¸Àü
     glVertex3i(0, 2, 4);   // G2
     glVertex3i(0, 2, 5);   // C2
     glEnd();
-    //Â÷ ¼ÕÀâÀÌ2 [LEFT] A2 F1 F2 B2
+    //ì°¨ ì†ì¡ì´2 [LEFT] A2 F1 F2 B2
     glColor3f(1.0, 1.0, 0.0);
     glBegin(GL_POLYGON);
     glVertex3i(2, 3, 5);   // A2
@@ -690,7 +690,7 @@ void drawingCar() {//ÀÚµ¿Â÷ ¸ğµ¨¸µ, ÀÌµ¿, È¸Àü
     glVertex3i(2, 2, 5);   // B2
     glEnd();
 
-    //Â÷ ¼ÕÀâÀÌ1 [RIGHT] 
+    //ì°¨ ì†ì¡ì´1 [RIGHT] 
     glColor3f(1.0, 1.0, 0.0);
     glBegin(GL_POLYGON);
     glVertex3i(2, 3, -5);   // A2
@@ -698,7 +698,7 @@ void drawingCar() {//ÀÚµ¿Â÷ ¸ğµ¨¸µ, ÀÌµ¿, È¸Àü
     glVertex3i(0, 2, -5);   // C2
     glVertex3i(0, 3, -5);   // D2
     glEnd();
-    //Â÷ ¼ÕÀâÀÌ2 [RIGHT] A2 D2 E2 F1
+    //ì°¨ ì†ì¡ì´2 [RIGHT] A2 D2 E2 F1
     glColor3f(1.0, 1.0, 0.0);
     glBegin(GL_POLYGON);
     glVertex3i(2, 3, -5);   // A2
@@ -706,7 +706,7 @@ void drawingCar() {//ÀÚµ¿Â÷ ¸ğµ¨¸µ, ÀÌµ¿, È¸Àü
     glVertex3i(0, 3, -4);   // E2
     glVertex3i(2, 3, -4);   // F1
     glEnd();
-    //Â÷ ¼ÕÀâÀÌ2 [RIGHT] D2 E2 G2 C2
+    //ì°¨ ì†ì¡ì´2 [RIGHT] D2 E2 G2 C2
     glColor3f(1.0, 1.0, 0.0);
     glBegin(GL_POLYGON);
     glVertex3i(0, 3, -5);   // D2
@@ -714,7 +714,7 @@ void drawingCar() {//ÀÚµ¿Â÷ ¸ğµ¨¸µ, ÀÌµ¿, È¸Àü
     glVertex3i(0, 2, -4);   // G2
     glVertex3i(0, 2, -5);   // C2
     glEnd();
-    //Â÷ ¼ÕÀâÀÌ2 [RIGHT] A2 F1 F2 B2
+    //ì°¨ ì†ì¡ì´2 [RIGHT] A2 F1 F2 B2
     glColor3f(1.0, 1.0, 0.0);
     glBegin(GL_POLYGON);
     glVertex3i(2, 3, -5);   // A2
@@ -723,7 +723,7 @@ void drawingCar() {//ÀÚµ¿Â÷ ¸ğµ¨¸µ, ÀÌµ¿, È¸Àü
     glVertex3i(2, 2, -5);   // B2
     glEnd();
 
-    //Â÷ ¹Ù´Ú1
+    //ì°¨ ë°”ë‹¥1
     glColor3f(1.0, 1.0, 1.0);
     glBegin(GL_POLYGON);
     glVertex3i(6, 0, -4);   // A3
@@ -731,7 +731,7 @@ void drawingCar() {//ÀÚµ¿Â÷ ¸ğµ¨¸µ, ÀÌµ¿, È¸Àü
     glVertex3i(8, 0, 4);   // E
     glVertex3i(6, 0, 4);   // H
     glEnd();
-    //Â÷ ¹Ù´Ú2
+    //ì°¨ ë°”ë‹¥2
     glColor3f(1.0, 1.0, 1.0);
     glBegin(GL_POLYGON);
     glVertex3i(-3, 0, -4);   // N(Z-8)
@@ -739,7 +739,7 @@ void drawingCar() {//ÀÚµ¿Â÷ ¸ğµ¨¸µ, ÀÌµ¿, È¸Àü
     glVertex3i(3, 0, 4);   // I
     glVertex3i(-3, 0, 4);   // N
     glEnd();
-    //Â÷ ¹Ù´Ú3
+    //ì°¨ ë°”ë‹¥3
     glColor3f(1.0, 1.0, 1.0);
     glBegin(GL_POLYGON);
     glVertex3i(-9, 0, 4);   // L
@@ -773,27 +773,27 @@ void keyboard(unsigned char key, int x, int y) {
     glutPostRedisplay();
 }
 
-void drawingCar_ok(float car_size) {//Å×½ºÆ®¿ë ÀÚµ¿Â÷ ¸ğµ¨¸µ, ÀÌµ¿, È¸Àü
+void drawingCar_ok(float car_size) {//í…ŒìŠ¤íŠ¸ìš© ìë™ì°¨ ëª¨ë¸ë§, ì´ë™, íšŒì „
     glPushMatrix();
-    glTranslatef(xcar, 1, ycar);//ÀÚµ¿Â÷ ÀÌµ¿
-    glRotatef(rcar, 0.0f, 1.0f, 0.0f);//ÀÚµ¿Â÷ È¸Àü
-    //glRotatef(180, 0.0f, 1.0f, 0.0f);//ÀÚµ¿Â÷ È¸Àü
+    glTranslatef(xcar, 1, ycar);//ìë™ì°¨ ì´ë™
+    glRotatef(rcar, 0.0f, 1.0f, 0.0f);//ìë™ì°¨ íšŒì „
+    //glRotatef(180, 0.0f, 1.0f, 0.0f);//ìë™ì°¨ íšŒì „
     //glBegin(GL_LINES);
     //    glColor3f(0.0, 0.0, 1.0);
     //    glVertex3f(0.0, 0.0, 0.0);  glVertex3f(-10.0, 0.0, 0.0); /* Z axis  */
     //glEnd();
-    glRotatef(180, 0.0f, 1.0f, 0.0f);//ÀÚµ¿Â÷ È¸Àü
+    glRotatef(180, 0.0f, 1.0f, 0.0f);//ìë™ì°¨ íšŒì „
     glScalef(car_size, car_size, car_size);
     drawingCar();
     //glutWireCube(5.0);
     glPopMatrix();
 }
 
-void drawScene(float car_size = 0.4, int line_width = 5) {//±×¸± ¹°Ã¼¸¸
+void drawScene(float car_size = 0.4, int line_width = 5) {//ê·¸ë¦´ ë¬¼ì²´ë§Œ
     glPushMatrix();
         display_lines(line_width);
     glPopMatrix();
-// Æò¸é ±×¸®±â
+// í‰ë©´ ê·¸ë¦¬ê¸°
     glPushMatrix();
         glColor3f(0.5, 0.5, 0.5);
         glTranslatef(0.0, -0.5, 0.0);
@@ -830,7 +830,7 @@ char start[] = "START";
 char info[] = "INFO";
 char quit[] = "QUIT";
 void main_menu() {
-    glClearColor(.9f, .9f, .9f, 1.0f);//¹è°æ»ö
+    glClearColor(.9f, .9f, .9f, 1.0f);//ë°°ê²½ìƒ‰
 
     glPushMatrix();
     glRotatef(90, 1.0, 0.0, 0.0);
@@ -877,12 +877,12 @@ void disp() {
     if (simuwork == CRS_MAIN)
     {
         perspective();
-        glClearColor(.9f, .9f, .9f, 1.0f);//¹è°æ»ö
+        glClearColor(.9f, .9f, .9f, 1.0f);//ë°°ê²½ìƒ‰
 
         glViewport(0, 0, Width, Height);
 
         glPushMatrix();
-        gluLookAt(0.0, -100.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0);//Ä«¸Ş¶ó À§Ä¡/¹Ù¶óº¸´Â ÃÊÁ¡ À§Ä¡/Ä«¸Ş¶ó ±â¿ïÀÓ
+        gluLookAt(0.0, -100.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0);//ì¹´ë©”ë¼ ìœ„ì¹˜/ë°”ë¼ë³´ëŠ” ì´ˆì  ìœ„ì¹˜/ì¹´ë©”ë¼ ê¸°ìš¸ì„
 
         glRotatef(rotationX, 1.0, 0.0, 0.0);
         glRotatef(rotationY, 0.0, 1.0, 0.0);
@@ -893,10 +893,10 @@ void disp() {
 
         glPopMatrix();
     }
-    else//½Ã¹Ä ÁøÇàÁß
-    {//-------------------------ÀüÃ¼ È­¸é--------------------------------------
+    else//ì‹œë®¬ ì§„í–‰ì¤‘
+    {//-------------------------ì „ì²´ í™”ë©´--------------------------------------
         perspective();
-        glClearColor(.9f, .9f, .9f, 1.0f);//¹è°æ»ö
+        glClearColor(.9f, .9f, .9f, 1.0f);//ë°°ê²½ìƒ‰
         glLoadIdentity();
 
         glViewport(0, 0, Width, Height);
@@ -904,7 +904,7 @@ void disp() {
         glPushMatrix();
         gluLookAt(xcar - 10 * cos((180 - rcar) * PI / 180.0), 20, ycar - 10 * sin((180 - rcar) * PI / 180.0),
             xcar + 10 * cos((180 - rcar) * PI / 180.0), 0.1, ycar + 10 * sin((180 - rcar) * PI / 180.0),
-            0.0, 1.0, 0.0);//Ä«¸Ş¶ó À§Ä¡/¹Ù¶óº¸´Â ÃÊÁ¡ À§Ä¡/Ä«¸Ş¶ó ±â¿ïÀÓ
+            0.0, 1.0, 0.0);//ì¹´ë©”ë¼ ìœ„ì¹˜/ë°”ë¼ë³´ëŠ” ì´ˆì  ìœ„ì¹˜/ì¹´ë©”ë¼ ê¸°ìš¸ì„
 
         glPushMatrix();
 
@@ -916,7 +916,7 @@ void disp() {
         glPopMatrix();
         glPopMatrix();
 
-        //-----------------------¿À¸¥ÂÊ À§ È­¸é----------------------------
+        //-----------------------ì˜¤ë¥¸ìª½ ìœ„ í™”ë©´----------------------------
         glViewport(Width * 3 / 5, Height * 3 / 5, Width * 2 / 5, Height * 2 / 5);
         //glViewport(0, Height / 2, Width/3, Height/2);
         glPushMatrix();
@@ -930,24 +930,24 @@ void disp() {
         //Sleep(100);
         //screen_dump();
         //exit(0);
-//#ifdef __LINUX//¸®´ª½º Àü¿ë ÄÚµù
-    int screen_width;
-    int screen_height;
-    int bits_per_pixel;
-    int line_length;
-fb_init(&screen_width, &screen_height, &bits_per_pixel, &line_length);
-        unsigned long dwQuadrupleWidth = 0;		//LJH Ãß°¡, °¡·Î »çÀÌÁî°¡ 4ÀÇ ¹è¼ö°¡ ¾Æ´Ï¶ó¸é 4ÀÇ ¹è¼ö·Î ¸¸µé¾î¼­ ÀúÀå
-        char* pPixelData = NULL;				//front bufferÀÇ ÇÈ¼¿ °ªµéÀ» ¾ò¾î ¿À±â À§ÇÑ ¹öÆÛÀÇ Æ÷ÀÎÅÍ
-        //4ÀÇ ¹è¼öÀÎÁö ¾Æ´ÑÁö È®ÀÎÇØ¼­ 4ÀÇ ¹è¼ö°¡ ¾Æ´Ï¶ó¸é 4ÀÇ ¹è¼ö·Î ¸ÂÃçÁØ´Ù.
-        dwQuadrupleWidth = (Width % 4) ? ((Width)+(4 - (Width % 4))) : (Width);
-        pPixelData = new char[dwQuadrupleWidth * 3 * Height];	//LJH ¼öÁ¤
-        glReadPixels(0, 0, Width, Height, GL_BGR_EXT, GL_UNSIGNED_BYTE, pPixelData);
-
-        fb_write_reverse(pPixelData, 1024, 600);
-        if (pPixelData != NULL)
-        {
-            delete[] pPixelData;
-        }
+//#ifdef __LINUX//ë¦¬ëˆ…ìŠ¤ ì „ìš© ì½”ë”©
+//    int screen_width;
+//    int screen_height;
+//    int bits_per_pixel;
+//    int line_length;
+//fb_init(&screen_width, &screen_height, &bits_per_pixel, &line_length);
+//        unsigned long dwQuadrupleWidth = 0;		//LJH ì¶”ê°€, ê°€ë¡œ ì‚¬ì´ì¦ˆê°€ 4ì˜ ë°°ìˆ˜ê°€ ì•„ë‹ˆë¼ë©´ 4ì˜ ë°°ìˆ˜ë¡œ ë§Œë“¤ì–´ì„œ ì €ì¥
+//        char* pPixelData = NULL;				//front bufferì˜ í”½ì…€ ê°’ë“¤ì„ ì–»ì–´ ì˜¤ê¸° ìœ„í•œ ë²„í¼ì˜ í¬ì¸í„°
+//        //4ì˜ ë°°ìˆ˜ì¸ì§€ ì•„ë‹Œì§€ í™•ì¸í•´ì„œ 4ì˜ ë°°ìˆ˜ê°€ ì•„ë‹ˆë¼ë©´ 4ì˜ ë°°ìˆ˜ë¡œ ë§ì¶°ì¤€ë‹¤.
+//        dwQuadrupleWidth = (Width % 4) ? ((Width)+(4 - (Width % 4))) : (Width);
+//        pPixelData = new char[dwQuadrupleWidth * 3 * Height];	//LJH ìˆ˜ì •
+//        glReadPixels(0, 0, Width, Height, GL_BGR_EXT, GL_UNSIGNED_BYTE, pPixelData);
+//
+//        fb_write_reverse(pPixelData, 1024, 600);
+//        if (pPixelData != NULL)
+//        {
+//            delete[] pPixelData;
+//        }
 //#endif
     }
     //screen_dump();
@@ -963,7 +963,7 @@ void mouse(int button, int state, int x, int y)
         mouse_y = y;
         simuwork++;
     }
-    else if (button == GLUT_LEFT_BUTTON && state == GLUT_UP) //¸¶¿ì½º ¹öÆ°¿¡¼­ ¼Õ ¶¿ ¶§
+    else if (button == GLUT_LEFT_BUTTON && state == GLUT_UP) //ë§ˆìš°ìŠ¤ ë²„íŠ¼ì—ì„œ ì† ë—„ ë•Œ
     {
     }
     glutPostRedisplay();
@@ -987,35 +987,35 @@ void motion(int x, int y)
     glutPostRedisplay();
 }
 
-#ifdef __LINUX//¸®´ª½º Àü¿ë ÄÚµù
+#ifdef __LINUX//ë¦¬ëˆ…ìŠ¤ ì „ìš© ì½”ë”©
 
 void* sevenseg(void) {
     //reset 7seg state
     while (1) {
         if (simuwork == 1) { // repeat if simulation is working
-            //100 Ç¥½Ã
-            //±¸°£º° Á¶°Ç¹® ÀÛ¼ºÇØ¾ßÇÔ
+            //100 í‘œì‹œ
+            //êµ¬ê°„ë³„ ì¡°ê±´ë¬¸ ì‘ì„±í•´ì•¼í•¨
         }
     }
 }
-/* 7 seg decoder ¸¸µé¶§ Âü°í.
-14,11,10,6,8,7 => ¼±ÅÃ ÀÚ¸®¼ö¸¸ LOW, ¿Ü¿¡´Â HIGH => 3ÀÚ¸®¸¸ »ç¿ëÇÒ°ÍÀÌ±â¿¡ 14,11,10 HIGH°íÁ¤, 6,8,7¹ø°¥¾Æ°¡¸ç LOW ÀÔ·Â.
-- Ç¥½Ã: 5¹øÇÉ high, 1,2,3,4,9,12,13¹øÇÉ low
-0 Ç¥½Ã: 1,2,4,9,12,13¹øÇÉ high, 3,5¹øÇÉ low
-1 Ç¥½Ã: 4,9¹øÇÉ high 1,2,3,5,12,13¹øÇÉ low
-2 Ç¥½Ã: 1,2,5,9,13¹øÇÉ high, 3,4,12¹øÇÉ low
-3 Ç¥½Ã: 2,4,5,9,13¹øÇÉ high, 1,3,12¹øÇÉ low
-4 Ç¥½Ã: 4,5,9,12¹øÇÉ high, 1,2,3,13¹øÇÉ low
-5 Ç¥½Ã: 2,4,5,12,13¹øÇÉ high, 1,3,9¹øÇÉ low
-6 Ç¥½Ã: 1,2,4,5,12,13¹øÇÉ high, 3,9¹øÇÉ low
-7 Ç¥½Ã: 4,9,12,13¹øÇÉhigh, 1,2,3,5¹øÇÉ low
-8 Ç¥½Ã: 1,2,4,5,9,12,13¹øÇÉ high, 3¹øÇÉ low
-9 Ç¥½Ã: 2,3,4,5,9,12,13¹øÇÉ high, 1¹øÇÉ low
+/* 7 seg decoder ë§Œë“¤ë•Œ ì°¸ê³ .
+14,11,10,6,8,7 => ì„ íƒ ìë¦¬ìˆ˜ë§Œ LOW, ì™¸ì—ëŠ” HIGH => 3ìë¦¬ë§Œ ì‚¬ìš©í• ê²ƒì´ê¸°ì— 14,11,10 HIGHê³ ì •, 6,8,7ë²ˆê°ˆì•„ê°€ë©° LOW ì…ë ¥.
+- í‘œì‹œ: 5ë²ˆí•€ high, 1,2,3,4,9,12,13ë²ˆí•€ low
+0 í‘œì‹œ: 1,2,4,9,12,13ë²ˆí•€ high, 3,5ë²ˆí•€ low
+1 í‘œì‹œ: 4,9ë²ˆí•€ high 1,2,3,5,12,13ë²ˆí•€ low
+2 í‘œì‹œ: 1,2,5,9,13ë²ˆí•€ high, 3,4,12ë²ˆí•€ low
+3 í‘œì‹œ: 2,4,5,9,13ë²ˆí•€ high, 1,3,12ë²ˆí•€ low
+4 í‘œì‹œ: 4,5,9,12ë²ˆí•€ high, 1,2,3,13ë²ˆí•€ low
+5 í‘œì‹œ: 2,4,5,12,13ë²ˆí•€ high, 1,3,9ë²ˆí•€ low
+6 í‘œì‹œ: 1,2,4,5,12,13ë²ˆí•€ high, 3,9ë²ˆí•€ low
+7 í‘œì‹œ: 4,9,12,13ë²ˆí•€high, 1,2,3,5ë²ˆí•€ low
+8 í‘œì‹œ: 1,2,4,5,9,12,13ë²ˆí•€ high, 3ë²ˆí•€ low
+9 í‘œì‹œ: 2,3,4,5,9,12,13ë²ˆí•€ high, 1ë²ˆí•€ low
 */
 #endif
 
 int main(int argc, char** argv) {
-#ifdef __LINUX//¸®´ª½º Àü¿ë ÄÚµù
+#ifdef __LINUX//ë¦¬ëˆ…ìŠ¤ ì „ìš© ì½”ë”©
     pthread_create(&thread_object_1, NULL, trafLight, NULL);
     pthread_create(&thread_object_2, NULL, btncheck, NULL);
     pthread_create(&thread_object_2, NULL, sevenseg, NULL);
