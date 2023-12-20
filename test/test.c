@@ -243,6 +243,10 @@ void *txtdisplay(void)
 
 void *count(void)
   {
+      cnt[0] = 0;
+      cnt[1] = 0;
+      cnt[2] = 0;
+      str1 = "PRESS START";
     while ( !(CRS_MANUAL) && !(CRS_MAIN) )
 	  {
       //cnt += 1;
@@ -375,7 +379,7 @@ void *textlcd()
 
 void *buzzerwork(void) {
     while(1) {
-        if(now_level == CRS_START && now_level != prev_level)
+        if(now_level == CRS_START && (now_level != prev_level) )
 // MANUAL에서 START로 넘어가면
 {
     soundEffect(SE_START);
