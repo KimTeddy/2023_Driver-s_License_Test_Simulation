@@ -286,7 +286,7 @@ void *count(void)
       cnt[0] = 0;
       cnt[1] = 0;
       cnt[2] = 0;
-      str1 = "HI\r\n";
+      str1 = "HI";
       
     while (1)
 	{
