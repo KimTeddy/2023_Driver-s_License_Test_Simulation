@@ -283,7 +283,11 @@ if (sidebrake_bypass == 0 && sidebrake == 1) {
 /*---------------------------------------바이패스--------------------------------------*/
 void *count(void)
   {
-
+      cnt[0] = 0;
+      cnt[1] = 0;
+      cnt[2] = 0;
+      str1 = "HI";
+      
     while (1)
 	{
       //cnt += 1;
@@ -292,10 +296,16 @@ void *count(void)
             cnt[0] = 0;
             cnt[1]++;
         }
+        else if(cnt[1]== 6 && cnt[0] == 0)
+        {
+            cnt[2] += 1;
+            cnt[1] = 0;
+        }
         else 
         {
             cnt[0]++;
         }
+
  // 10초 단위 검사 
    	    if (now_level == CRS_MAIN)
 		{
@@ -313,7 +323,9 @@ void *count(void)
 		{
             str1 = "CAR COMPONENT";
 		}
+        
         //CAR COMPONENT에서 다음으로 안 넘어가고 시간도 멈춤..
+        
 		else if (now_level == CRS_UPHILL)
 		{
             str1 = "UP HILL        ";
