@@ -312,7 +312,7 @@ void *touchscreen(void)
                             usleep(10000);
 							scBTN_gotostart= 0;
 						}
-						else if(recvMsg.x > 787 && recvMsg.x < 846 && recvMsg.y > 400 && recvMsg.y < 530)
+						else if(recvMsg.x > 787 && recvMsg.x < 846 && recvMsg.y > 50 && recvMsg.y < 530)
 						{
 							// MAIN SCREEN 버튼 영역 터치 디면 gotomain = 1로 설정
 							scBTN_gotomain = 1;
@@ -334,7 +334,7 @@ void *touchscreen(void)
 						{
 							//next 버튼 영역 터치되면 nextpage = 1로 설정
 							scBTN_Nextpage = 1;
-							if(manualpage<=8) {manualpage= manualpage+1;
+							if(manualpage<=7) {manualpage= manualpage+1;
 							printf("Next Page\r\n");}
                             else printf("This is Last Page!!!\r\n");
                             usleep(10000);
@@ -1050,7 +1050,7 @@ void *ScreenOutput(void)
              // 게임 진행중일 때
                 usleep(100000); // 0.1초 대기 10fps
                 strcpy(bmpfile, "");
-                snprintf(bmpfile, sizeof(bmpfile), "%05d", nums); // nums변수로 현재 프레임확인
+                snprintf(bmpfile, sizeof(bmpfile), "%d", nums); // nums변수로 현재 프레임확인
                 strcat(bmpfile, ".bmp");
                 // FileRead
                 if (read_bmp(bmpfile, &data, &cols, &rows) < 0)
@@ -1070,7 +1070,7 @@ void *ScreenOutput(void)
                 usleep(100000); // 0.1초 대기 10fps
                 strcpy(bmpfile, "");
                 nums=0;
-                snprintf(bmpfile, sizeof(bmpfile), "%05d", nums); // nums변수로 현재 프레임확인
+                snprintf(bmpfile, sizeof(bmpfile), "%d", nums); // nums변수로 현재 프레임확인
                 strcat(bmpfile, ".bmp");
                 // FileRead
                 if (read_bmp(bmpfile, &data, &cols, &rows) < 0)
@@ -1130,7 +1130,7 @@ void *ScreenOverlay(void)
             // FileRead
             if (read_bmp2(bmpfile2, &data2, &cols2, &rows2) < 0)
             {
-                printf("File open failed\r\n");
+                printf("File2 open failed\r\n");
                 return 0;
             }
             // FileWrite
@@ -1149,7 +1149,7 @@ void *ScreenOverlay(void)
             // FileRead
             if (read_bmp2(bmpfile2, &data2, &cols2, &rows2) < 0)
             {
-                printf("File open failed\r\n");
+                printf("File2 open failed\r\n");
                 return 0;
             }
             // FileWrite
@@ -1168,7 +1168,7 @@ void *ScreenOverlay(void)
             // FileRead
             if (read_bmp2(bmpfile2, &data2, &cols2, &rows2) < 0)
             {
-                printf("File open failed\r\n");
+                printf("File2 open failed\r\n");
                 return 0;
             }
             // FileWrite
@@ -1187,7 +1187,7 @@ void *ScreenOverlay(void)
             // FileRead
             if (read_bmp2(bmpfile2, &data2, &cols2, &rows2) < 0)
             {
-                printf("File open failed\r\n");
+                printf("File2 open failed\r\n");
                 return 0;
             }
             // FileWrite
@@ -1943,24 +1943,23 @@ int showManual()
     showstate = 1;
     // 코스 설명 구간별로 이미지로 작성해서 띄우면 좋을것 같다고 생각.
     // 구간별 점수 및 전역 감점및 실격 요소, 제한시간 등 안내. 이미지 수동으로 넘기는 방식으로.
-    while (scBTN_gotostart != 1 | scBTN_gotomain != 1)
-    { // 마지막페이지에서 메인화면 혹은 시험 시작을 선택할 때 까지 대기.
-        if (manualpage == 9)
-        {
-
-            if (scBTN_Start) ; // 시험시작으로 코스설명에 진입했을경우 testStart(시작하기)버튼과 mainScreen(메인화면) 버튼 표시
-            else ;           // 메인화면에서 설명보기로 진입했을경우 mainScreen(메인화면) 버튼 표시
-        }
-    }
+    while(1)
+    {
+        while (manualpage<=8) {}
+    while (manualpage==8) {
     if (scBTN_gotostart) {
-        printf("메인화면으로 돌아갑니다.\n");
+        printf("시험을 시작합니다.\n");
+        showstate = 4;
         return 1; // 시험시작 선택시 1(teststart) 리턴.
     }
         
     else if (scBTN_gotomain) {
         printf("메인화면으로 돌아갑니다.\n");
+        showstate = 0;
         return 2; // 메인화면 선택시 2(mainmenu) 리턴.
     }
+    }
+}
         
 }
 
