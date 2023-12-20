@@ -351,6 +351,7 @@ void *count(void)
                 str1 = "END                  ";
             }
             lcdtextwrite( str1, str_cnt, 1);
+            prev_level_lcd = now_level;
         }
         // sprintf(str_cnt0, "%d", cnt[0]);
         //sprintf(str_cnt1, "%d", cnt[1]);
