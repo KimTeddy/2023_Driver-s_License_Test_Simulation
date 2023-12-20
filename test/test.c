@@ -1714,15 +1714,17 @@ void driveTest()
          //
         printf("먼저, 3초 안에 시동을 켜십시오\n");
         gameoverlaycheck=4;
-        sleep(3);
-        gameoverlaycheck=0;
+        sleep(1);
+        gameoverlaycheck=49;
+        sleep(2);
         if (scBTN_startup == 1) {
                 printf("시동 확인.\n");
                 nums=1;
                 gameoverlaycheck=6;
-                sleep(3);
+                sleep(1);
                 nums=2;
-                gameoverlaycheck=0;
+                gameoverlaycheck=49;
+                sleep(2);
             }
         else { gameoverlaycheck=5; testfail=1;
         }
@@ -1732,33 +1734,44 @@ void driveTest()
         {
             printf("전조등테스트: 3초 안에 상향등을 켜십시오\n");
             gameoverlaycheck=16;
-            sleep(3);
-            gameoverlaycheck=0;
+            sleep(1);
+            gameoverlaycheck=49;
+            sleep(2);
             if (scBTN_Lightup == 1)
             {
                 printf("상향등 확인.\n");
                 gameoverlaycheck=18;
-                sleep(2);
-                gameoverlaycheck=0;
+                sleep(1);
+                gameoverlaycheck=49;
+                sleep(1);
             }
             else if ((scBTN_Lightup == 0) | (scBTN_Lightdown == 1))
             {
                 printf("전조등 조작실패. 5점 감점.\n");
                 gameoverlaycheck=17;
                 minuspoint = minuspoint + 5;
-                sleep(2);
-                gameoverlaycheck=0;
+                sleep(1);
+                gameoverlaycheck=49;
+                sleep(1);
             }
             printf("와이퍼조작테스트: 3초 안에 와이퍼를 켜십시오\n");
             gameoverlaycheck=13;
-            sleep(3);
-            gameoverlaycheck=0;
+            sleep(1);
+            gameoverlaycheck=49;
+                sleep(2);
             if (scBTN_Wiper == 1)
-            {
+            {   
+                gameoverlaycheck=51;
+                usleep(500000);
+                gameoverlaycheck=52;
+                sleep(500000);
+                gameoverlaycheck=53;
+                sleep(500000);
                 printf("와이퍼 켜짐 확인.\n");
                 gameoverlaycheck=15;
-                sleep(2);
-                gameoverlaycheck=0;
+                sleep(1);
+                gameoverlaycheck=49;
+                sleep(1);
                 scBTN_Wiper =0;
             }
             else if (scBTN_Wiper == 0)
@@ -1766,8 +1779,9 @@ void driveTest()
                 printf("와이퍼 조작실패. 5점 감점.\n");
                 gameoverlaycheck=14;
                 minuspoint = minuspoint + 5;
-                sleep(2);
-                gameoverlaycheck=0;
+                sleep(1);
+                gameoverlaycheck=49;
+                sleep(1);
             }
         }
         break;
@@ -1775,14 +1789,17 @@ void driveTest()
         {
             printf("전조등테스트: 3초 안에 하향등을 켜십시오\n");
             gameoverlaycheck=19;
-            sleep(3);
-            gameoverlaycheck=0;
+            sleep(1);
+            gameoverlaycheck=49;
+                sleep(2);
             if (scBTN_Lightdown == 1)
-            {
+            {   gameoverlaycheck=50;
+                sleep(1);
                 printf("하향등 확인.\n");
                 gameoverlaycheck=21;
+                sleep(1);
+                gameoverlaycheck=49;
                 sleep(2);
-                gameoverlaycheck=0;
                 scBTN_Lightdown =0;
             }
             else if ((scBTN_Lightdown == 0) | (scBTN_Lightup == 1))
@@ -1790,27 +1807,31 @@ void driveTest()
                 printf("전조등 조작실패. 5점 감점.\n");
                 gameoverlaycheck=20;
                 minuspoint = minuspoint + 5;
-                sleep(2);
-                gameoverlaycheck=0;
+                sleep(1);
+                gameoverlaycheck=49;
+                sleep(1);
             }
             printf("방향지시등조작테스트: 3초 안에 좌측 방향지시등을 켜십시오\n");
             gameoverlaycheck=22;
-            sleep(3);
-            gameoverlaycheck=0;
+            sleep(1);
+            gameoverlaycheck=49;
+                sleep(2);
             if (leftlight == 1)
             {
                 printf("좌측 방향지시등 켜짐 확인.\n");
                 gameoverlaycheck=24;
-                sleep(2);
-                gameoverlaycheck=0;
+                sleep(1);
+                gameoverlaycheck=49;
+                sleep(1);
             }
             else if ((leftlight == 0) | (rightlight == 1))
             {
                 printf("방향지시등 조작실패. 5점 감점.\n");
                 gameoverlaycheck=23;
                 minuspoint = minuspoint + 5;
-                sleep(2);
-                gameoverlaycheck=0;
+                sleep(1);
+                gameoverlaycheck=49;
+                sleep(1);
             }
         }
         break;
@@ -1818,31 +1839,42 @@ void driveTest()
         {
             printf("기어조작테스트: 3초 안에 기어를 중립에서 전진기어로 바꾸십시오\n");
             gameoverlaycheck=7;
-        sleep(3);
-        gameoverlaycheck=0;
+        sleep(1);
+        gameoverlaycheck=49;
+                sleep(2);
         if(gear==1) {
             printf("전진기어 확인.\n");
             gameoverlaycheck=9;
-            sleep(2);
-            gameoverlaycheck=0;
+            sleep(1);
+            gameoverlaycheck=49;
+                sleep(1);
         }
         else if((gear==0)|(gear==2)) { 
             printf("기어 조작실패. 5점 감점.\n");
             gameoverlaycheck=8;
             minuspoint=minuspoint+5;
-            sleep(2);
-            gameoverlaycheck=0;
+            sleep(1);
+            gameoverlaycheck=49;
+                sleep(1);
         }
             printf("와이퍼조작테스트: 3초 안에 와이퍼를 켜십시오\n");
             gameoverlaycheck=13;
-            sleep(3);
-            gameoverlaycheck=0;
+            sleep(1);
+            gameoverlaycheck=49;
+                sleep(2);
             if (scBTN_Wiper == 1)
             {
+                gameoverlaycheck=51;
+                usleep(500000);
+                gameoverlaycheck=52;
+                sleep(500000);
+                gameoverlaycheck=53;
+                sleep(500000);
                 printf("와이퍼 켜짐 확인.\n");
                 gameoverlaycheck=15;
-                sleep(2);
-                gameoverlaycheck=0;
+                sleep(1);
+                gameoverlaycheck=49;
+                sleep(1);
                 scBTN_Wiper = 0;
             }
             else if (scBTN_Wiper == 0)
@@ -1850,8 +1882,9 @@ void driveTest()
                 printf("와이퍼 조작실패. 5점 감점.\n");
                 gameoverlaycheck=14;
                 minuspoint = minuspoint + 5;
-                sleep(2);
-                gameoverlaycheck=0;
+                sleep(1);
+                gameoverlaycheck=49;
+                sleep(1);
             }
         }
         break;
@@ -1859,39 +1892,45 @@ void driveTest()
         {
             printf("기어조작테스트: 3초 안에 기어를 중립에서 후진기어로 바꾸십시오\n");
             gameoverlaycheck=10;
-        sleep(3);
-        gameoverlaycheck=0;
+        sleep(1);
+        gameoverlaycheck=49;
+                sleep(2);
         if(gear==2) {
             printf("후진기어 확인.\n");
             gameoverlaycheck=12;
-            sleep(2);
-            gameoverlaycheck=0;
+            sleep(1);
+            gameoverlaycheck=49;
+                sleep(1);
         }
         else if((gear==0)|(gear==1)) { 
             printf("기어 조작실패. 5점 감점.\n");
             gameoverlaycheck=11;
             minuspoint=minuspoint+5;
-            sleep(2);
-            gameoverlaycheck=0;
+            sleep(1);
+            gameoverlaycheck=49;
+                sleep(1);
         }
             printf("방향지시등조작테스트: 3초 안에 우측 방향지시등을 켜십시오\n");
             gameoverlaycheck=25;
-            sleep(3);
-            gameoverlaycheck=0;
+            sleep(1);
+            gameoverlaycheck=49;
+                sleep(2);
             if (rightlight == 1)
             {
                 printf("우측 방향지시등 켜짐 확인.\n");
                 gameoverlaycheck=27;
+                sleep(1);
+                gameoverlaycheck=49;
                 sleep(2);
-                gameoverlaycheck=0;
             }
             else if ((rightlight == 0) | (leftlight == 1))
             {
                 printf("방향지시등 조작실패. 5점 감점.\n");
                 gameoverlaycheck=26;
                 minuspoint = minuspoint + 5;
-                sleep(2);
-                gameoverlaycheck=0;
+                sleep(1);
+                gameoverlaycheck=49;
+                sleep(1);
             }
         }
         break;
@@ -1910,7 +1949,7 @@ void driveTest()
         startcnt=0;
         while(1) {
             if(nums<=17 && nums<=20 && leftlight==1) leftlightpass =1;
-            if(nums<=17 && startcnt ==9)  {
+            if(nums<=17 && startcnt ==20)  {
             printf("출발실패. 실격하셨습니다.\n");
             gameoverlaycheck=29;
             testfail = 1;
