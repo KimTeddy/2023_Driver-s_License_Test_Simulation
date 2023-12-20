@@ -1218,6 +1218,7 @@ void *ScreenOutput(void)
     char *data;
     char bmpfile[200];
     
+    
     // remove cursor
     int conFD = open("/dev/tty0", O_RDWR);
     ioctl(conFD, KDSETMODE, KD_GRAPHICS);
@@ -1229,6 +1230,7 @@ void *ScreenOutput(void)
         printf("FrameBuffer Init Failed\r\n");
         return 0;
     }
+    fb_clear();
     while (1)
     {
         switch (showstate)
@@ -1349,6 +1351,7 @@ void *ScreenOverlay(void)
     }
 
     fb_clear2(0, 0, 1024, 600);
+    fb_clear2();
 
     while (1)
     {
@@ -1981,6 +1984,7 @@ void driveTest()
             gameoverlaycheck=29;
             testfail = 1;
             failscreen =1;
+                return 1;
         }
         if(nums>=18) break;
         else {startcnt++;}
@@ -2013,6 +2017,7 @@ void driveTest()
                 gameoverlaycheck=34;
                 testfail = 1;
                 failscreen =1;
+                return 1;
             }
             usleep(100000);
             if (nums<=91 && nums>=77 && sidebrake) {buzzerPlaySong(740);
@@ -2028,6 +2033,7 @@ void driveTest()
                 gameoverlaycheck=34;
                 testfail = 1;
                 failscreen =1;
+                return 1;
             }
             usleep(100000);
             if (sidebrake==0) break;
@@ -2041,18 +2047,20 @@ void driveTest()
                 gameoverlaycheck=34;
                 testfail = 1;
                 failscreen =1;
+                return 1;
             }
             usleep(100000);
             if (nums>=97) break;
             else uphillcnt++;
         }
 
-         while(nums<=166) {usleep(1000);}
+         while(nums<=140) {usleep(1000);}
             dirfail=0;
          while(1) {
             
             if(nums<=162 && nums>=144 && moving_l==0) {
-                if(dirfail>=5) {gameoverlaycheck=35; crash=1; testfail =1; }
+                printf("dir fail!!!");
+                if(dirfail>=5) {gameoverlaycheck=35; crash=1; testfail =1;}
                 else dirfail++;
             }
             if(nums>=163) break;
@@ -2063,6 +2071,7 @@ void driveTest()
           while(1) {
             
             if(nums<=216 && nums>=199 && moving_l==0) {
+                printf("dir fail!!!");
                 if(dirfail>=5) {gameoverlaycheck=35; crash=1; testfail =1;  }
                 else dirfail++;
             }
@@ -2140,6 +2149,7 @@ void driveTest()
                 gameoverlaycheck=43;
                 testfail = 1;
                 failscreen =1;
+                return 1;
             }
             if (nums>=303) {buzzerPlaySong(740);
                 sleep(1);
@@ -2165,6 +2175,7 @@ void driveTest()
                 gameoverlaycheck=37;
                 testfail = 1;
                 failscreen =1;
+                return 1;
             }
             
             while(1) {
@@ -2175,6 +2186,7 @@ void driveTest()
                 gameoverlaycheck=37;
                 testfail = 1;
                 failscreen =1;
+                return 1;
             }
             dirfail=0;
             if(nums<=370 && nums>=330 && moving_r==0) {
@@ -2193,6 +2205,7 @@ void driveTest()
                 gameoverlaycheck=37;
                 testfail = 1;
                 failscreen =1;
+                return 1;
             }
             else parkingcnt++;
             }
@@ -2205,6 +2218,7 @@ void driveTest()
                 gameoverlaycheck=37;
                 testfail = 1;
                 failscreen =1;
+                return 1;
             }
             
             if(nums<=435 && nums>=412 && moving_r==0) {
@@ -2223,6 +2237,7 @@ void driveTest()
                 gameoverlaycheck=37;
                 testfail = 1;
                 failscreen =1;
+                return 1;
             }
             dirfail=0;
             if(nums<=464 && nums>=440 && ( gear!=2 || moving_l==0 )) {
@@ -2241,6 +2256,7 @@ void driveTest()
                 gameoverlaycheck=37;
                 testfail = 1;
                 failscreen =1;
+                return 1;
             }
             dirfail=0;
             if(nums<=475 && nums>=465 && gear!=2 ) {
@@ -2260,6 +2276,7 @@ void driveTest()
                 gameoverlaycheck=37;
                 testfail = 1;
                 failscreen =1;
+                return 1;
             }
             usleep(100000);
             if (nums<=482 && nums>=479 && sidebrake) {buzzerPlaySong(740);
@@ -2275,6 +2292,7 @@ void driveTest()
                 gameoverlaycheck=37;
                 testfail = 1;
                 failscreen =1;
+                return 1;
             }
             usleep(100000);
             if(nums<=488 && nums>=485 && gear==1) break;
@@ -2413,6 +2431,7 @@ void driveTest()
                 gameoverlaycheck=43;
                 testfail = 1;
                 failscreen =1;
+                return 1;
             }
 
             if(nums<=745 && nums>=729 && leftlight==1) junctionpass=1;
