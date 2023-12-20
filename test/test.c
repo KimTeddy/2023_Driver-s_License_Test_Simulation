@@ -16,6 +16,7 @@
 #include <linux/fb.h>
 #include <sys/kd.h>
 #include <math.h>
+#include <sys/ipc.h>
 
 #include "button.h"
 #include "now_level_defs.h"

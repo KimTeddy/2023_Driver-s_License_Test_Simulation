@@ -31,7 +31,7 @@ EMERGENCY 부분에서는 ACCIDENT 소리
 
 
 */
-int prev_level = now_level;
+int prev_level = CRS_MAIN;
 
 if(now_level == CRS_START && now_level != prev_level)
 // MANUAL에서 START로 넘어가면
