@@ -370,7 +370,7 @@ void *count(void)
         // sprintf(str_cnt2, "%d", cnt[2]);
         // sprintf(str_cnt3, "%d", cnt[3]);
         //sprintf(str_cnt, "            %d:%d%d",  cnt[2], cnt[1], cnt[0]);
-        sprintf(str_cnt, "            %2d:%2d",  min_lcd, sec_lcd);
+        sprintf(str_cnt, "          %2d:%2d",  min_lcd, sec_lcd);
         usleep(50000);    //테스트용
         //sleep(1);       //시연용
         lcdtextwrite( str1, str_cnt, 2);
@@ -848,6 +848,24 @@ void *AccelWork(void){
                     dycar = speed * sin((180-rcar) * PI / 180.0); ycar += dycar;
                     break; 
                     */
+                    printf(" Car Accelation! \n");
+                    printf("Gear : %d Moving : %d  Moving L : %d,  Moving_r : %d, Moving_f : %d, Moving_b : %d\n", gear,  moving, moving_l, moving_r, moving_f, moving_b);
+                    usleep(accel_t);
+                    //sleep(1);
+                    //sleep(1);
+                }
+                else if( gear == 2 && second_accel[2] - first_accel[2] > 8000 )
+                { 
+                  // gear = 2인 상태에서 많이 기울인 경우
+
+                    // ~ 차 속도를 빠르게 ~
+
+                    moving -= 2;  
+                    moving_l = 0;
+                    moving_r = 0; 
+                    moving_f = 0;
+                    moving_b = 1;
+
                     printf(" Car Accelation! \n");
                     printf("Gear : %d Moving : %d  Moving L : %d,  Moving_r : %d, Moving_f : %d, Moving_b : %d\n", gear,  moving, moving_l, moving_r, moving_f, moving_b);
                     usleep(accel_t);
