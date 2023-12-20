@@ -862,8 +862,8 @@ void *AccelWork(void){
                     moving -= 2;  
                     moving_l = 0;
                     moving_r = 0; 
-                    moving_f = 1;
-                    moving_b = 0;
+                    moving_f = 0;
+                    moving_b = 1;
 
                     printf(" Car Accelation! \n");
                     printf("Gear : %d Moving : %d  Moving L : %d,  Moving_r : %d, Moving_f : %d, Moving_b : %d\n", gear,  moving, moving_l, moving_r, moving_f, moving_b);
