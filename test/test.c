@@ -369,6 +369,7 @@ void *count(void)
         //sleep(1);       //시연용
         lcdtextwrite( str1, str_cnt, 2);
         //sprintf(str1, "%s", "PRESS START");
+        printf("\t\t\t\t\t?????????????????????\n");
     }  
 }
   
