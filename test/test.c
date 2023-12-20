@@ -1512,7 +1512,7 @@ void *ScreenOverlay(void)
                 break;
             }
 
-            strcat(bmpfile2, overlayname);
+            strcpy(bmpfile2, overlayname);
             strcat(bmpfile2, ".bmp");
 
             // FileRead
@@ -1644,7 +1644,7 @@ void *ScreenOverlay(void)
                 break;
             }
 
-            strcat(bmpfile2, overlayname);
+            strcpy(bmpfile2, overlayname);
             strcat(bmpfile2, ".bmp");
 
             // FileRead
