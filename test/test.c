@@ -293,20 +293,22 @@ void *count(void)
     while (1)
 	{
       //cnt += 1;
-        if (cnt[0] == 9) 
-        {
-            cnt[0] = 0;
-            cnt[1]++;
-        }
-        else if(cnt[1]== 5 && cnt[0] == 9)
+        if(cnt[1]== 5 && cnt[0] == 9)
         {
             cnt[2] += 1;
             cnt[1] = 0;
+            cnt[0] = 0;
+        }
+        else if (cnt[0] == 9) 
+        {
+            cnt[0] = 0;
+            cnt[1]++;
         }
         else 
         {
             cnt[0]++;
         }
+
         if(now_level != prev_level_lcd){
             if (now_level == CRS_MAIN)
             {
