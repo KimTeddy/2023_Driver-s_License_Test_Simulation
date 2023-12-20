@@ -33,7 +33,7 @@ EMERGENCY 부분에서는 ACCIDENT 소리
 */
 int prev_level = now_level;
 if(now_level == CRS_START)
-// MANUAL에서 
+// MANUAL에서 START로 넘어가면
 {
     soundEffect(SE_START);
     // START 단계에서는 START 소리 출력
