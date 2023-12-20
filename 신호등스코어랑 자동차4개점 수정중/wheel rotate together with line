@@ -1,0 +1,168 @@
+ #include <GL/glut.h>
+#include <cmath>
+#include <cstdio>
+
+#define PI 3.14159265358979323846
+
+float xcar = 0.0, ycar = 0.0;
+float rcar = 0.0;
+float speed = 1.0;
+float xcar_A, ycar_A;
+float xcar_B, ycar_B;
+float xcar_C, ycar_C;
+float xcar_D, ycar_D;
+
+void updateCarPoints();
+void drawThickRedLine(float x1, float y1, float z1, float x2, float y2, float z2, float thickness);
+void drawCarPoints();
+void drawCar();
+void display();
+void reshape(int w, int h);
+void keyboard(unsigned char key, int x, int y);
+
+#include <GL/glut.h>
+#include <cmath>
+#include <stdio.h>
+#define PI 3.14159265358979323846
+
+
+
+void updateCarPoints() {
+    // 중심점을 기준으로 각 점의 상대적인 위치 계산
+    float x_A_rel = -5.0, y_A_rel = -2.0;
+    float x_B_rel = -5.0, y_B_rel = 2.0;
+    float x_C_rel = 5.0, y_C_rel = 2.0;
+    float x_D_rel = 5.0, y_D_rel = -2.0;
+
+    // 회전 각도 계산
+    float angle_rad = rcar * PI / 180.0;
+    float cos_angle = cos(angle_rad);
+    float sin_angle = sin(angle_rad);
+
+    // 회전 행렬을 사용하여 각 점을 회전
+    xcar_A = xcar + x_A_rel * cos_angle - y_A_rel * sin_angle;
+    ycar_A = ycar + x_A_rel * sin_angle + y_A_rel * cos_angle;
+
+    xcar_B = xcar + x_B_rel * cos_angle - y_B_rel * sin_angle;
+    ycar_B = ycar + x_B_rel * sin_angle + y_B_rel * cos_angle;
+
+    xcar_C = xcar + x_C_rel * cos_angle - y_C_rel * sin_angle;
+    ycar_C = ycar + x_C_rel * sin_angle + y_C_rel * cos_angle;
+
+    xcar_D = xcar + x_D_rel * cos_angle - y_D_rel * sin_angle;
+    ycar_D = ycar + x_D_rel * sin_angle + y_D_rel * cos_angle;
+}
+
+void drawThickRedLine(float x1, float y1, float z1, float x2, float y2, float z2, float thickness) {
+    glEnable(GL_LINE_SMOOTH);  // 선을 부드럽게 표시하도록 설정
+    glLineWidth(thickness);    // 선의 두께 설정
+    glColor3f(1.0f, 0.0f, 0.0f);  // 빨간 색상으로 설정
+
+    // 두꺼운 빨간 선 그리기
+    glBegin(GL_LINES);
+    glVertex3f(x1, y1, z1);
+    glVertex3f(x2, y2, z2);
+    glEnd();
+}
+
+void drawCarPoints() {
+    // Draw Point 1
+    glPointSize(10.0f);
+    glColor3f(1.0, 0.0, 0.0);
+    glBegin(GL_POINTS);
+    glVertex3f(xcar, 1.0, ycar);
+    glEnd();
+
+    // Draw Point 2
+    glColor3f(0.0, 1.0, 0.0);
+    glBegin(GL_POINTS);
+    glVertex3f(xcar_A, 1.0, ycar_A);
+    glEnd();
+
+    // Draw Point 3
+    glColor3f(0.0, 0.0, 1.0);
+    glBegin(GL_POINTS);
+    glVertex3f(xcar_B, 1.0, ycar_B);
+    glEnd();
+
+    // Draw Point 4
+    glColor3f(1.0, 1.0, 0.0);
+    glBegin(GL_POINTS);
+    glVertex3f(xcar_C, 1.0, ycar_C);
+    glEnd();
+
+    // Draw Point 5
+    glColor3f(1.0, 0.0, 1.0);
+    glBegin(GL_POINTS);
+    glVertex3f(xcar_D, 1.0, ycar_D);
+    glEnd();
+}
+
+void drawCar() {
+    glPushMatrix();
+    glTranslatef(xcar, 1.0, ycar);
+    // glRotatef(rcar, 0.0, 1.0, 0.0); // 회전 적용
+
+    // updateCarPoints 함수를 통해 좌표 갱신
+    updateCarPoints();
+
+    drawCarPoints();
+    // 차의 네 점을 이어주는 빨간색 두꺼운 선 그리기
+    drawThickRedLine(xcar_A, 0, ycar_A, xcar_B, 0, ycar_B, 5.0);  // A to B
+    drawThickRedLine(xcar_B, 0, ycar_B, xcar_C, 0, ycar_C, 5.0);  // B to C
+    drawThickRedLine(xcar_C, 0, ycar_C, xcar_D, 0, ycar_D, 5.0);  // C to D
+    drawThickRedLine(xcar_D, 0, ycar_D, xcar_A, 0, ycar_A, 5.0);  // D to A
+
+    glPopMatrix();
+}
+
+void display() {
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    glLoadIdentity();
+    gluLookAt(0.0, 60.0, 60.0, 0.0, -1.0, 0.0, 0.0, 1.0, 0.0);
+    drawCar();
+    glutSwapBuffers();
+}
+
+void reshape(int w, int h) {
+    glViewport(0, 0, w, h);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluPerspective(45.0, (float)w / (float)h, 1.0, 100.0);
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+}
+
+void keyboard(unsigned char key, int x, int y) {
+    switch (key) {
+    case 'a':
+        rcar += 3.0;
+        printf("rcar=%f\n", rcar);
+        break;
+    case 'd':
+        rcar -= 3.0;
+        printf("rcar=%f\n", rcar);
+        break;
+    }
+
+    glutPostRedisplay();
+}
+
+
+
+
+int main(int argc, char** argv) {
+    glutInit(&argc, argv);
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
+    glutCreateWindow("Simple Car Simulation");
+    glEnable(GL_DEPTH_TEST);
+
+    glutDisplayFunc(display);
+    glutReshapeFunc(reshape);
+    glutKeyboardFunc(keyboard);
+
+    glutMainLoop();
+
+    return 0;
+}

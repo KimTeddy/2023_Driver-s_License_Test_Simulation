@@ -1,0 +1,195 @@
+#include <linux/gpio.h>
+#include <linux/delay.h>
+
+// GPIO 핀 번호 설정 (예: GPIO 핀 번호 17)
+#define LED_PIN 17
+
+// 깜빡임 횟수 및 간격 설정
+#define NUM_BLINKS 3
+#define BLINK_DELAY_MS 500
+
+static int __init mydriver_init(void) {
+    int ret;
+
+    // GPIO 핀 초기화
+    ret = gpio_request(LED_PIN, "mydriver_led");
+    if (ret) {
+        pr_err("Failed to request GPIO pin\n");
+        return ret;
+    }
+
+    // GPIO 핀 출력으로 설정
+    ret = gpio_direction_output(LED_PIN, 0);
+    if (ret) {
+        pr_err("Failed to set GPIO pin direction\n");
+        gpio_free(LED_PIN);
+        return ret;
+    }
+
+    // LED 깜빡임
+    for (int i = 0; i < NUM_BLINKS; ++i) {
+        // LED 켜기
+        gpio_set_value(LED_PIN, 1);
+        udelay(BLINK_DELAY_MS * 1000); // 딜레이 (마이크로초 단위)
+
+        // LED 끄기
+        gpio_set_value(LED_PIN, 0);
+        udelay(BLINK_DELAY_MS * 1000); // 딜레이 (마이크로초 단위)
+    }
+
+    return 0;
+}
+
+static void __exit mydriver_exit(void) {
+    // GPIO 핀 해제
+    gpio_free(LED_PIN);
+}
+
+module_init(mydriver_init);
+module_exit(mydriver_exit);
+
+MODULE_LICENSE("GPL");
+MODULE_AUTHOR("Your Name");
+MODULE_DESCRIPTION("My Linux Driver");
+/*---------------------------------------------------------------------------------------*/
+#include <stdio.h>
+#include <unistd.h>
+
+int main() {
+    int c_score = 100;
+    int minuspoint = 5;
+    char fnd_str[10];
+
+    while (1) {
+        // 문자열 생성
+        snprintf(fnd_str, sizeof(fnd_str), "%d -%d", c_score, minuspoint);
+
+        // 결과 출력
+        printf("FND: %s\n", fnd_str);
+
+        // 0.5초 대기
+        usleep(500000); // 0.5초 = 500000 마이크로초
+
+        // FND 꺼짐
+        printf("FND: OFF\n");
+
+        // 0.5초 대기
+        usleep(500000); // 0.5초 = 500000 마이크로초
+
+        // 값 변경
+        if (minuspoint > 0) {
+            minuspoint--;
+            c_score--;
+        }
+    }
+
+    return 0;
+}
+/*-------------------------------------------------*/
+#include <util/delay.h>
+
+int main(void) {
+    while (1) {
+        // 일반적인 사용 예제: 1000 밀리초(1초) 동안 대기
+        _delay_ms(1000);
+        
+        // 다른 대기 시간을 사용하려면 매개변수를 조절합니다.
+        // 예: 500 밀리초(0.5초) 동안 대기
+        _delay_ms(500);
+    }
+
+    return 0;
+}
+//딜레이 사용법
+/*-------------------------------------------------*/
+#include <unistd.h>
+
+int main(void) {
+    while (1) {
+        // 500,000 마이크로초(0.5초) 동안 대기
+        usleep(500000);
+        
+        // 다른 대기 시간을 사용하려면 매개변수를 조절합니다.
+        // 예: 250,000 마이크로초(0.25초) 동안 대기
+        usleep(250000);
+    }
+
+    return 0;
+}
+//딜레이 사용법2
+
+/*-------------------------------------------------*/
+#include <stdio.h>
+
+int main() {
+    int myInteger = 123;
+    char myString[20];  // 충분한 크기로 배열을 할당하세요.
+
+    // 정수를 문자열로 변환하여 myString에 저장
+    sprintf(myString, "%d", myInteger);
+
+    // 결과 확인
+    printf("Integer: %d\nString: %s\n", myInteger, myString);
+
+    return 0;
+}
+//sprintf 사용법
+#include <stdio.h>
+
+int main() {
+    int myInteger = 123;
+    char myString[20];  // 충분한 크기로 배열을 할당하세요.
+
+    // 다른 문자열과 함께 정수를 문자열로 변환하여 myString에 저장
+    sprintf(myString, "The number is %d and another string", myInteger);
+
+    // 결과 확인
+    printf("Result: %s\n", myString);
+
+    return 0;
+}
+///
+#include <stdio.h>
+
+int main() {
+    int myInteger = 123;
+    char c[10];  // 충분한 크기로 배열을 할당하세요.
+
+    // 다른 문자열과 함께 정수를 문자열로 변환하여 c에 저장
+    snprintf(c, sizeof(c), "abc%ddef", myInteger);
+
+    // 결과 확인
+    printf("Result: %s\n", c);
+
+    return 0;
+}
+/*-------------------------------------------------*/
+/*1초마다까 깜빡거리면서 "100 -5","99 -4","98 -3", "97 -3", "96 -2", "95 -1"로 넘어가고
+그다음에는 "95    "로 유지하는 fnd.c 어떻게 만들까*/
+#include <stdio.h>
+#include <unistd.h>
+
+int main() {
+    int c_score = 100;
+    int minuspoint = 5;
+    char fnd_str[10];
+
+    while (1) {
+        // 문자열 생성
+        snprintf(fnd_str, sizeof(fnd_str), "%d -%d", c_score, minuspoint);
+
+        // 결과 출력
+        printf("FND: %s\n", fnd_str);
+
+        // 1초 대기
+        usleep(1000000); // 1초 = 1000000 마이크로초
+
+        // 값 변경
+        if (minuspoint > 0) {
+            minuspoint--;
+            c_score--;
+        }
+    }
+
+    return 0;
+}
