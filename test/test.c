@@ -84,6 +84,7 @@ int sidebreakcheck, sidebreakcheck2;
 int accelcheck, accelsuccess, finalcheck, finalsuccess; // 구간내 항목 성공여부 판별 변수
 int carspeed;                              // 차의 현재 속도
 int alertscreen=0, failscreen=0, dirfail=0, crash=0;
+int reverseframe=0; //후진판정구간 프레임 진행 정상화 변수
 
 int nums = 0;
 int nums2 = 0;
@@ -1235,9 +1236,9 @@ void driveTest()
             if(nums>=436) break;
             else parkingcnt++;
          }
-
         while(1) {
             usleep(100000);
+            if(nums>=439) reverseframe=1;
             if (parkingcnt >= 300)
             {
                 printf("주차 30초 이내 통과 실패. 실격하셨습니다.\n");
@@ -1269,6 +1270,7 @@ void driveTest()
             if(nums>=476) break;
             else parkingcnt++;
          }
+         if(nums>=476) reverseframe=0;
 
          while (1)
          {
