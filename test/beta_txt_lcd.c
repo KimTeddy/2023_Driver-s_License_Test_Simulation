@@ -1,15 +1,6 @@
 #include "lcdtext.h"
 #include <pthread.h>
 
-  int CRS_MAIN = 0;
-  int CRS_START = 0;
-  int CRS_BASIC = 0;
-  int CRS_UP = 0;
-  int CRS_JUNCTION = 0;
-  int CRS_PARKING = 0;
-  int CRS_EMERGENCY = 0;
-  int CRS_ACCEL = 0;
-  int CRS_END = 0;
   char* str1 = "hello";
   const char* str2 = "embedded system";
   
@@ -119,98 +110,6 @@ void *count()
       
       lcdtextwrite( str1, str_cnt, 1);
 	    lcdtextwrite( str1, str_cnt, 2);
-/*
-		  if(cnt[0] >= 9)
-		  {
-			  cnt[1] += 1;
-        cnt[0] = 0;
-       // CRS_MAIN = 1;
-        if(cnt[1] >= 2)
-		    {
-			    //cnt = 200;
-          CRS_MAIN = 1;
-          CRS_START = 0;
-          cnt[0] += 1;
-		    }
-		    else if(cnt[1] >= 3)
-		    {
-			    //cnt = 0;
-          //cnt += 1;
-          CRS_START = 1;
-          CRS_BASIC = 0;
-          cnt[0] += 1;
-          //sprintf(str_cnt, "            %d", cnt);
-		    }
-		    else if(cnt[1] >= 4)
-		    {
-			    //cnt = 0;
-          //cnt += 1;
-          CRS_START = 0;
-          CRS_BASIC = 1;
-          cnt[0] += 1;
-          // sprintf(str_cnt, "            %d", cnt);
-		    }
-		    else if(cnt[1] >= 5)
-		    {
-			    //cnt = 500;
-          //cnt += 1;
-          CRS_BASIC = 0;
-          CRS_UP = 1;
-          if(cnt[1] == 5 && cnt[0] >= 9)
-          {
-            cnt[1] = 0;
-            cnt[2] += 1;
-          }
-        // sprintf(str_cnt, "            %d", cnt);
-		    }
-		    else if(cnt[2] >= 1)
-		    {
-			    //cnt = 600;
-          //cnt += 1;
-          CRS_JUNCTION = 1;
-          CRS_PARKING = 0;
-        // sprintf(str_cnt, "            %d", cnt);
-        }
-		    else if(cnt[2] >= 2)
-		    {
-			    //cnt = 700;
-        // cnt += 1;
-         CRS_JUNCTION = 0;
-         CRS_PARKING = 1;
-      
-        //sprintf(str_cnt, "            %d", cnt);
-		  }
-		    else if(cnt[2] >= 3)
-		    {
-			    //cnt = 800;
-          //cnt += 1;
-          CRS_PARKING = 0;
-          CRS_EMERGENCY = 1;
-          //sprintf(str_cnt, "            %d", cnt);
-		    }
-		    else if(cnt[2] >= 4)
-	  	  {
-		  	  //cnt = 900;
-          //cnt += 1;
-          CRS_EMERGENCY = 0;
-          CRS_ACCEL = 1;
-          //sprintf(str_cnt, "            %d", cnt);
-		    }
-		    else if(cnt[2] >= 5)
-		    {
-		  	  //cnt = 1000;
-          //cnt += 1;
-          CRS_ACCEL = 0;
-          CRS_END = 1;
-          //sprintf(str_cnt, "            %d", cnt);
-		    }
-		  }
-	
-		 else 
-      cnt[0] += 1;
-   }
-*/
-
 
         
 if (cnt[0] == 9) 
@@ -224,63 +123,6 @@ else
 }
  // 10초 단위 검사 
                
-if (cnt[1] == 6 && cnt[0] == 0) 
-{
-    cnt[0] = 0;
-    cnt[1] = 0;
-    cnt[2]++;
-}
-if(cnt[2] == 0 && cnt[1] == 1)
-{
-  CRS_MAIN = 1;
-}
-else if(cnt[2] == 0 && cnt[1] == 2)
-{
-  CRS_MAIN = 0;
-  CRS_START = 1;
-}
-else if(cnt[2] == 0 && cnt[1] == 3)
-{
-  CRS_START = 0;
-  CRS_BASIC = 1;
-}
-else if(cnt[2] == 0 && cnt[1] == 4)
-{
-  CRS_BASIC = 0;
-  CRS_UP = 1;
-}
-else if(cnt[2] == 0 && cnt[1] == 5)
-{
-  CRS_UP = 0;
-  CRS_JUNCTION = 1;
-}
-else if(cnt[2] == 1 && cnt[1] == 0)
-{
-  CRS_JUNCTION = 0;
-  CRS_PARKING = 1;
-}
-else if(cnt[2] == 1 && cnt[1] == 1)
-{
-  CRS_PARKING = 0;
-  CRS_EMERGENCY = 1;
-}
-else if(cnt[2] == 1 && cnt[1] == 2)
-{
-  CRS_EMERGENCY = 0;
-  CRS_ACCEL = 1;
-}
-else if(cnt[2] == 1 && cnt[1] == 3)
-{
-  CRS_ACCEL = 0;
-  CRS_END = 1;
-}
-else if(cnt[2] == 1 && cnt[1] == 4)
-{
-  CRS_END = 0;
-}
-
-
-
 
    	if (CRS_MAIN)
 		  {
@@ -383,3 +225,4 @@ int main()
  // lcdtextwrite(str1, str2,0);
 
   
+
