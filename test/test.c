@@ -293,7 +293,7 @@ void *count(void)
     while (1)
 	{
       //cnt += 1;
-        if(cnt[1]== 5 && cnt[0] == 9)
+        if(cnt[1]== 6)
         {
             cnt[2] += 1;
             cnt[1] = 0;
