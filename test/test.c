@@ -1740,7 +1740,9 @@ void driveTest()
             gameoverlaycheck=49;
             sleep(2);
             if (scBTN_Lightup == 1)
-            {
+            {   
+                gameoverlaycheck=50;
+                sleep(1);
                 printf("상향등 확인.\n");
                 gameoverlaycheck=18;
                 sleep(1);
@@ -1764,11 +1766,11 @@ void driveTest()
             if (scBTN_Wiper == 1)
             {   
                 gameoverlaycheck=51;
-                usleep(500000);
+                sleep(1);
                 gameoverlaycheck=52;
-                sleep(500000);
+                sleep(1);
                 gameoverlaycheck=53;
-                sleep(500000);
+                sleep(1);
                 printf("와이퍼 켜짐 확인.\n");
                 gameoverlaycheck=15;
                 sleep(1);
@@ -1867,11 +1869,11 @@ void driveTest()
             if (scBTN_Wiper == 1)
             {
                 gameoverlaycheck=51;
-                usleep(500000);
+                sleep(1);
                 gameoverlaycheck=52;
-                sleep(500000);
+                sleep(1);
                 gameoverlaycheck=53;
-                sleep(500000);
+                sleep(1);
                 printf("와이퍼 켜짐 확인.\n");
                 gameoverlaycheck=15;
                 sleep(1);
