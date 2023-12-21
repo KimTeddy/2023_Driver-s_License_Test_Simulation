@@ -17,7 +17,7 @@ int probeTouchPath(char *newPath)
 	int returnValue = 0;
 	int number = 0;
 	#define HAVE_TO_FIND_1 "N: Name=\"WaveShare WaveShare Touchscreen\"\n"
-	#define HAVE_TO_FIND_2 "H: Handlers=mouse1 event"
+	#define HAVE_TO_FIND_2 "H: Handlers=mouse0 event"
 	
 	FILE *fp = fopen(PROBE_FILE, "rt");
 	while(!feof(fp)) //끝까지 읽어들인다.

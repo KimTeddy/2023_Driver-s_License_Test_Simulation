@@ -1152,7 +1152,7 @@ void *btncheck(void)
     ledOnOff(0, 0);
     ledOnOff(0, 1); //시작시 안전벨트 안한상태
     ledOnOff(1, 1); //시작시 사이드브레이크 올라가있음
-    ledOnOFF(7,0); //시작시 drive
+    ledOnOff(7,0); //시작시 drive
     int msgID = msgget(MESSAGE_ID, IPC_CREAT | 0666);
     while(1) {
     while (simuwork == 1)
@@ -2307,11 +2307,11 @@ void driveTest()
             }
             if(nums>=163) break;
          }
-
+        dirfail=0;
          while(nums<=197) {usleep(100000);
             if(moving_r || moving_l) {
                 printf("dir fail!");
-                if(dirfail>=7) {
+                if(dirfail>=5) {
 	soundEffect(SE_MINUS);
 	minuspoint = minuspoint + 5;
 	}
@@ -2406,7 +2406,7 @@ void driveTest()
          gameoverlaycheck=0;
          while (1)
          {
-            if (junctioncnt >= 300)
+            if (junctioncnt >= 400)
             {
                 printf("교차로 30초 이내 통과 실패. 실격하셨습니다.\n");
                 gameoverlaycheck=42;
@@ -2761,7 +2761,7 @@ void driveTest()
          gameoverlaycheck=0;
          while (1)
          {
-            if (junctioncnt >= 300)
+            if (junctioncnt >= 400)
             {
                 printf("교차로 30초 이내 통과 실패. 실격하셨습니다.\n");
                 gameoverlaycheck=42;
