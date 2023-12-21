@@ -766,6 +766,7 @@ void *AccelWork(void){
                 moving_r = 1;
                 moving_l = 0;
                 moving += 1;
+                carspeed=1;
                 printf("Gear : %d Moving : %d  Moving L : %d,  Moving_r : %d, Moving_f : %d, Moving_b : %d\n", gear,  moving, moving_l, moving_r, moving_f, moving_b);
                 //sleep(1);
                 usleep(accel_t);
@@ -785,6 +786,7 @@ void *AccelWork(void){
                 moving_l = 1;
                 moving_r = 0;
                 moving += 1;
+                carspeed=1;
                printf("Gear : %d Moving : %d  Moving L : %d,  Moving_r : %d, Moving_f : %d, Moving_b : %d\n", gear,  moving, moving_l, moving_r, moving_f, moving_b);
                //sleep(1);
                 //sleep(1);
@@ -805,6 +807,7 @@ void *AccelWork(void){
                 moving_b = 1;
                 moving_l = 0;
                 moving_r = 0;
+                carspeed=1;
                 printf(" Going Back \n");
                 printf("Gear : %d Moving : %d  Moving L : %d,  Moving_r : %d, Moving_f : %d, Moving_b : %d\n", gear,  moving, moving_l, moving_r, moving_f, moving_b);
                 //sleep(1);
@@ -821,6 +824,7 @@ void *AccelWork(void){
                 moving -= 1;
                 moving_l = 1;
                 moving_r = 0;
+                carspeed=1;
                 printf(" Reverse Left \n");
                 printf("Gear : %d Moving : %d  Moving L : %d,  Moving_r : %d, Moving_f : %d, Moving_b : %d\n", gear,  moving, moving_l, moving_r, moving_f, moving_b);
                 //sleep(1);
@@ -835,6 +839,7 @@ void *AccelWork(void){
                 moving -= 1;
                 moving_r = 1;
                 moving_l = 0;
+                carspeed=1;
                 printf(" Reverse Right \n");
                 printf("Gear : %d Moving : %d  Moving L : %d,  Moving_r : %d, Moving_f : %d, Moving_b : %d\n", gear,  moving, moving_l, moving_r, moving_f, moving_b);
                 //sleep(1);
@@ -850,6 +855,7 @@ void *AccelWork(void){
                     break_on = 1;
                     moving_l = 0;
                     moving_r = 0;
+                    carspeed ==0;
                     //breakon
                     printf("Break On!\n");
                     printf("Gear : %d Moving : %d  Moving L : %d,  Moving_r : %d, Moving_f : %d, Moving_b : %d\n", gear,  moving, moving_l, moving_r, moving_f, moving_b);
@@ -868,6 +874,7 @@ void *AccelWork(void){
                 moving_r = 0;
                 moving_f = 1;
                 moving_b = 0;
+                carspeed=1;
                 /*speed = 1;  //조금만 기울인 경우 speed = 1;
                 dxcar = speed * cos((180-rcar) * PI / 180.0); xcar += dxcar;
                 dycar = speed * sin((180-rcar) * PI / 180.0); ycar += dycar;
@@ -889,6 +896,7 @@ void *AccelWork(void){
                     moving_r = 0; 
                     moving_f = 1;
                     moving_b = 0;
+                    carspeed=2;
                     /*
                     speed = 2;  //많이 기울인 경우 speed = 2로 설정하여 가속
                     dxcar = speed * cos((180-rcar) * PI / 180.0); xcar += dxcar;
@@ -912,6 +920,7 @@ void *AccelWork(void){
                     moving_r = 0; 
                     moving_f = 0;
                     moving_b = 1;
+                    carspeed=2;
 
                     printf(" Car Accelation! \n");
                     printf("Gear : %d Moving : %d  Moving L : %d,  Moving_r : %d, Moving_f : %d, Moving_b : %d\n", gear,  moving, moving_l, moving_r, moving_f, moving_b);
@@ -927,6 +936,7 @@ void *AccelWork(void){
                 //앞으로 기울인 상태에서 왼쪽으로 기울이면 악셀 + 핸들 왼쪽을 돌리면 옆으로 같이 진행하도록
                 moving += 1;
                 moving_l = 1;
+                carspeed=1;
                 printf("Gear : %d Moving : %d  Moving L : %d,  Moving_r : %d, Moving_f : %d, Moving_b : %d\n", gear,  moving, moving_l, moving_r, moving_f, moving_b);
                 usleep(accel_t);
                 //sleep(1);
@@ -946,6 +956,7 @@ void *AccelWork(void){
                 
                 moving += 1;
                 moving_r = 1;
+                carspeed=1;
                 printf("Gear : %d Moving : %d  Moving L : %d,  Moving_r : %d, Moving_f : %d, Moving_b : %d\n", gear,  moving, moving_l, moving_r, moving_f, moving_b);
                 usleep(accel_t);
             }
@@ -1440,7 +1451,6 @@ void *ScreenOverlay(void)
     }
 
     fb_clear2(0, 0, 1024, 600);
-    fb_clear2();
 
     while (1)
     {
@@ -1448,7 +1458,19 @@ void *ScreenOverlay(void)
         {
         case 0:
         {
-            fb_clear2();
+            strcpy(bmpfile2, "empty");
+            strcat(bmpfile2, ".bmp");
+
+            // FileRead
+            if (read_bmp2(bmpfile2, &data2, &cols2, &rows2) < 0)
+            {
+                printf("File2 open failed\r\n");
+                return 0;
+            }
+            // FileWrite
+            fb_write2(data2, cols2, rows2, 0, 0);
+
+            close_bmp2();
             usleep(500000); // 0.5초 대기
         }
         break;
@@ -2079,6 +2101,7 @@ void driveTest()
             printf("출발실패. 실격하셨습니다.\n");
             gameoverlaycheck=29;
             testfail = 1;
+            sleep(2);
             gameoverlaycheck=54;
                 sleep(3);
                 return 1;
@@ -2161,7 +2184,7 @@ void driveTest()
             
             if(nums<=162 && nums>=144 && moving_l==0) {
                 printf("dir fail!!!");
-                if(dirfail>=5) {gameoverlaycheck=35; crash=1; testfail =1;}
+                if(dirfail>=5) {gameoverlaycheck=35; crash=1; testfail =1; sleep(2); gameoverlaycheck=54; sleep(2); return 1;}
                 else dirfail++;
             }
             if(nums>=163) break;
@@ -2173,7 +2196,7 @@ void driveTest()
             
             if(nums<=216 && nums>=199 && moving_l==0) {
                 printf("dir fail!!!");
-                if(dirfail>=5) {gameoverlaycheck=35; crash=1; testfail =1;  }
+                if(dirfail>=5) {gameoverlaycheck=35; crash=1; testfail =1; sleep(2); gameoverlaycheck=54; sleep(2); return 1;}
                 else dirfail++;
             }
             if(nums>=217) break;
@@ -2252,7 +2275,8 @@ void driveTest()
                 printf("신호위반 발생! 실격하셨습니다.\n");
                 gameoverlaycheck=43;
                 testfail = 1;
-                gameoverlaycheck=54;
+                sleep(2);
+            gameoverlaycheck=54;
                 sleep(3);
                 return 1;
             }
@@ -2275,44 +2299,47 @@ void driveTest()
 
          while (1)
          {
-            if (parkingcnt >= 300)
+            if (parkingcnt >= 500)
             {
                 printf("주차 30초 이내 통과 실패. 실격하셨습니다.\n");
                 gameoverlaycheck=37;
                 testfail = 1;
-                gameoverlaycheck=54;
+                sleep(2);
+            gameoverlaycheck=54;
                 sleep(3);
                 return 1;
             }
             
             while(1) {
             usleep(100000);
-            if (parkingcnt >= 300)
+            if (parkingcnt >= 500)
             {
                 printf("주차 30초 이내 통과 실패. 실격하셨습니다.\n");
                 gameoverlaycheck=37;
                 testfail = 1;
-                gameoverlaycheck=54;
+                sleep(2);
+            gameoverlaycheck=54;
                 sleep(3);
                 return 1;
             }
             dirfail=0;
-            if(nums<=370 && nums>=330 && moving_r==0) {
-                if(dirfail>=5) {gameoverlaycheck=35; crash=1; testfail =1; }
+            if(nums<=365 && nums>=330 && moving_r==0) {
+                if(dirfail>=7) {gameoverlaycheck=35; crash=1; testfail =1; sleep(2); gameoverlaycheck=54; sleep(2); return 1;}
                 else dirfail++;
             }
-            if(nums>=371) break;
+            if(nums>=365) break;
             else parkingcnt++;
          }
 
          while(nums<=410) {
             usleep(100000);
-            if (parkingcnt >= 300)
+            if (parkingcnt >= 500)
             {
                 printf("주차 30초 이내 통과 실패. 실격하셨습니다.\n");
                 gameoverlaycheck=37;
                 testfail = 1;
-                gameoverlaycheck=54;
+                sleep(2);
+            gameoverlaycheck=54;
                 sleep(3);
                 return 1;
             }
@@ -2321,38 +2348,41 @@ void driveTest()
         dirfail=0;
         while(1) {
             usleep(100000);
-            if (parkingcnt >= 300)
+            if (parkingcnt >= 500)
             {
                 printf("주차 30초 이내 통과 실패. 실격하셨습니다.\n");
                 gameoverlaycheck=37;
                 testfail = 1;
-                gameoverlaycheck=54;
+                sleep(2);
+            gameoverlaycheck=54;
                 sleep(3);
                 return 1;
             }
             
-            if(nums<=435 && nums>=412 && moving_r==0) {
-                if(dirfail>=5) {gameoverlaycheck=35; crash=1; testfail =1; }
+            if(nums<=435 && nums>=423 && moving_r==0) {
+                if(dirfail>=15) {gameoverlaycheck=35; crash=1; testfail =1; sleep(2); gameoverlaycheck=54; sleep(2); return 1;}
                 else dirfail++;
             }
             if(nums>=436) break;
             else parkingcnt++;
+            
          }
         while(1) {
             usleep(100000);
             if(nums>=439) reverseframe=1;
-            if (parkingcnt >= 300)
+            if (parkingcnt >= 500)
             {
                 printf("주차 30초 이내 통과 실패. 실격하셨습니다.\n");
                 gameoverlaycheck=37;
                 testfail = 1;
-                gameoverlaycheck=54;
+                sleep(2);
+            gameoverlaycheck=54;
                 sleep(3);
                 return 1;
             }
             dirfail=0;
             if(nums<=464 && nums>=440 && ( gear!=2 || moving_l==0 )) {
-                if(dirfail>=5) {gameoverlaycheck=35; crash=1; testfail =1; }
+                if(dirfail>=15) {gameoverlaycheck=35; crash=1; testfail =1; sleep(2); gameoverlaycheck=54; sleep(2); return 1;}
                 else dirfail++;
             }
             if(nums>=465) break;
@@ -2361,18 +2391,19 @@ void driveTest()
 
         while(1) {
             usleep(100000);
-            if (parkingcnt >= 300)
+            if (parkingcnt >= 500)
             {
                 printf("주차 30초 이내 통과 실패. 실격하셨습니다.\n");
                 gameoverlaycheck=37;
                 testfail = 1;
-                gameoverlaycheck=54;
+                sleep(2);
+            gameoverlaycheck=54;
                 sleep(3);
                 return 1;
             }
             dirfail=0;
             if(nums<=475 && nums>=465 && gear!=2 ) {
-                if(dirfail>=5) {gameoverlaycheck=35; crash=1; testfail =1; }
+                if(dirfail>=15) {gameoverlaycheck=35; crash=1; testfail =1; sleep(2); gameoverlaycheck=54; sleep(2); return 1;}
                 else dirfail++;
             }
             if(nums>=476) break;
@@ -2382,12 +2413,13 @@ void driveTest()
 
          while (1)
          {
-            if (parkingcnt >= 300 || nums>=483)
+            if (parkingcnt >= 500 || nums>=483)
             {
                 printf("주차 실패. 실격하셨습니다.\n");
                 gameoverlaycheck=37;
                 testfail = 1;
-                gameoverlaycheck=54;
+                sleep(2);
+            gameoverlaycheck=54;
                 sleep(3);
                 return 1;
             }
@@ -2399,12 +2431,13 @@ void driveTest()
          }
 
          while(1) {
-            if (parkingcnt >= 300 || nums>=489)
+            if (parkingcnt >= 500 || nums>=489)
             {
                 printf("주차 실패. 실격하셨습니다.\n");
                 gameoverlaycheck=37;
                 testfail = 1;
-                gameoverlaycheck=54;
+                sleep(2);
+            gameoverlaycheck=54;
                 sleep(3);
                 return 1;
             }
@@ -2416,7 +2449,7 @@ void driveTest()
          while(1) {
             dirfail=0;
             if(nums<=509 && nums>=489 && moving_r==0) {
-                if(dirfail>=5) {gameoverlaycheck=35; crash=1; testfail =1; }
+                if(dirfail>=15) {gameoverlaycheck=35; crash=1; testfail =1; sleep(2); gameoverlaycheck=54; sleep(2); return 1;}
                 else dirfail++;
             }
             if(nums>=510) break;
@@ -2427,7 +2460,7 @@ void driveTest()
          while(1) {
             dirfail=0;
             if(nums<=539 && nums>=520 && moving_r==0) {
-                if(dirfail>=5) {gameoverlaycheck=35; crash=1; testfail =1; }
+                if(dirfail>=15) {gameoverlaycheck=35; crash=1; testfail =1; sleep(2); gameoverlaycheck=54; sleep(2); return 1;}
                 else dirfail++;
             }
             if(nums>=540) break;
@@ -2488,7 +2521,7 @@ void driveTest()
             while(1) {
             dirfail=0;
             if(nums<=587 && nums>=567 && moving_r==0) {
-                if(dirfail>=5) {gameoverlaycheck=35; crash=1; testfail =1; }
+                if(dirfail>=5) {gameoverlaycheck=35; crash=1; testfail =1; sleep(2); gameoverlaycheck=54; sleep(2); return 1;}
                 else dirfail++;
             }
             if(nums>=588) break;
@@ -2499,7 +2532,7 @@ void driveTest()
         while(1) {
             dirfail=0;
             if(nums<=630 && nums>=612 && moving_r==0) {
-                if(dirfail>=5) {gameoverlaycheck=35; crash=1; testfail =1; }
+                if(dirfail>=5) {gameoverlaycheck=35; crash=1; testfail =1; sleep(2); gameoverlaycheck=54; sleep(2); return 1;}
                 else dirfail++;
             }
             if(nums>=631) break;
@@ -2510,7 +2543,7 @@ void driveTest()
         while(1) {
             dirfail=0;
             if(nums<=710 && nums>=693 && moving_r==0) {
-                if(dirfail>=5) {gameoverlaycheck=35; crash=1; testfail =1; }
+                if(dirfail>=5) {gameoverlaycheck=35; crash=1; testfail =1; sleep(2); gameoverlaycheck=54; sleep(2); return 1;}
                 else dirfail++;
             }
             if(nums>=711) break;
@@ -2537,8 +2570,10 @@ void driveTest()
                 printf("교차로 30초 이내 통과 실패. 실격하셨습니다.\n");
                 gameoverlaycheck=42;
                 testfail = 1;
-                gameoverlaycheck=54;
+                sleep(2);
+            gameoverlaycheck=54;
                 sleep(3);
+                return 1;
             }
             usleep(100000);
 
@@ -2547,7 +2582,8 @@ void driveTest()
                 printf("신호위반 발생! 실격하셨습니다.\n");
                 gameoverlaycheck=43;
                 testfail = 1;
-                gameoverlaycheck=54;
+                sleep(2);
+            gameoverlaycheck=54;
                 sleep(3);
                 return 1;
             }
@@ -2628,7 +2664,7 @@ void driveTest()
         while(1) {
             dirfail=0;
             if(nums<=853 && nums>=826 && moving_l==0) {
-                if(dirfail>=5) {gameoverlaycheck=35; crash=1; testfail =1; }
+                if(dirfail>=5) {gameoverlaycheck=35; crash=1; testfail =1; sleep(2); gameoverlaycheck=54; sleep(2); return 1; }
                 else dirfail++;
             }
             if(nums>=854) break;
@@ -2639,7 +2675,7 @@ void driveTest()
         while(1) {
             dirfail=0;
             if(nums<=904 && nums>=881 && moving_l==0) {
-                if(dirfail>=5) {gameoverlaycheck=35; crash=1; testfail =1; }
+                if(dirfail>=5) {gameoverlaycheck=35; crash=1; testfail =1; sleep(2); gameoverlaycheck=54; sleep(2); return 1;}
                 else dirfail++;
             }
             if(nums>=905) break;
@@ -2657,11 +2693,15 @@ void driveTest()
         gameoverlaycheck=0;
         while (1)
         {
-            if (nums<=911 && nums>=937 &&carspeed == 0)
+            if (nums<=937 && nums>=911 &&carspeed == 0)
             {
                 printf("가속구간내 정지. 실격하셨습니다.\n");
                 gameoverlaycheck=40;
                 testfail = 1;
+                sleep(2);
+            gameoverlaycheck=54;
+                sleep(3);
+                return 1;
             }
             if ((carspeed == 2) && nums<=937 )
             {
@@ -2731,7 +2771,7 @@ void driveTest()
         while(1) {
             dirfail=0;
             if(nums<=1003 && nums>=981 && moving_l==0) {
-                if(dirfail>=5) {gameoverlaycheck=35; crash=1; testfail =1; }
+                if(dirfail>=5) {gameoverlaycheck=35; crash=1; testfail =1; sleep(2); gameoverlaycheck=54; sleep(2); return 1;}
                 else dirfail++;
             }
             if(nums>=1004) break;
@@ -2762,8 +2802,8 @@ void driveTest()
         simuwork=0; 
         sleep(1);
         gameoverlaycheck=48;
-        if(c_score>=80) {gameoverlaycheck=47; sleep(3); simufin=1;}
-        else if(c_score>=80) {gameoverlaycheck=45; sleep(3);simufin=1;}
+        if(c_score>=80) {gameoverlaycheck=47; sleep(3); simufin=1; sleep(3); return 1;}
+        else if(c_score>=80) {gameoverlaycheck=45; sleep(3);simufin=1; sleep(3); return 1; }
 
     }
     else if (next == 2)
