@@ -413,7 +413,7 @@ void now_turn_lcd(int level){
                 str1 = "UP HILL        ";
                 lcdtextwrite("UP HILL        ", str2, 1);
             }
-            else if (level == CRS_JUNCTION_1 || level == CRS_JUNCTION_2 )
+            else if ((level == CRS_JUNCTION_1) || (level == CRS_JUNCTION_2 ))
             {
                 str1 = "JUNCTION   ";
                 lcdtextwrite("JUNCTION   ", str2, 1);
@@ -423,7 +423,7 @@ void now_turn_lcd(int level){
                 str1 = "PARKING         ";
                 lcdtextwrite("PARKING         ", str2, 1);
             }
-            else if (level == CRS_EMERGENCY_A || level == CRS_EMERGENCY_B || level == CRS_EMERGENCY_C || level == CRS_EMERGENCY_D)
+            else if ((level == CRS_EMERGENCY_A) || (level == CRS_EMERGENCY_B) || (level == CRS_EMERGENCY_C) || (level == CRS_EMERGENCY_D))
             {
                 str1 = "EMERGENCY         ";
                 lcdtextwrite("EMERGENCY         ", str2, 1);
