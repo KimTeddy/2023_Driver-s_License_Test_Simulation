@@ -394,7 +394,7 @@ void now_turn_lcd(int level){
             }
             else if (level == CRS_BASIC)
             {
-                str1 = "BEGIN         ";
+                str1 = "CAR COMPONENT";
             }
             
             //CAR COMPONENT에서 다음으로 안 넘어가고 시간도 멈춤..
