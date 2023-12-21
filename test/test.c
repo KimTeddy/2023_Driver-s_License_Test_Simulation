@@ -697,7 +697,7 @@ void *touchscreen(void)
                             usleep(1000000);
 							scBTN_gotostart= 0;
 						}
-						else if(recvMsg.x > 787 && recvMsg.x < 846 && recvMsg.y > 50 && recvMsg.y < 530)
+						else if((recvMsg.x > 787) && (recvMsg.x < 846) && (recvMsg.y > 50) && (recvMsg.y < 530))
 						{
 							// MAIN SCREEN 버튼 영역 터치 디면 gotomain = 1로 설정
 							scBTN_gotomain = 1;
@@ -705,7 +705,7 @@ void *touchscreen(void)
                             usleep(1000000);
                             scBTN_gotomain = 0;
 						}
-						else if(recvMsg.x > 920 && recvMsg.x < 985 && recvMsg.y > 410 && recvMsg.y < 550)
+						else if((recvMsg.x > 920) && (recvMsg.x < 985) && (recvMsg.y > 410) && (recvMsg.y < 550))
 						{
 							//prev 화살표 버튼 눌리면 prevpage 1로 설정.
 							scBTN_prevpage = 1;
@@ -715,7 +715,7 @@ void *touchscreen(void)
                             usleep(10000);
                             scBTN_prevpage = 0;
 						}
-						else if (recvMsg.x > 925 && recvMsg.x < 985 && recvMsg.y > 10 && recvMsg.y < 150)
+						else if ((recvMsg.x > 925) && (recvMsg.x < 985) && (recvMsg.y > 10) && (recvMsg.y < 150))
 						{
 							//next 버튼 영역 터치되면 nextpage = 1로 설정
 							scBTN_Nextpage = 1;
@@ -730,7 +730,7 @@ void *touchscreen(void)
 					}
 					else if(showstate==4)
 					{
-						if(recvMsg.x > 915 && recvMsg.x < 955 && recvMsg.y > 70 && recvMsg.y < 130)
+						if((recvMsg.x > 915) && (recvMsg.x < 955 )&& (recvMsg.y > 70) && (recvMsg.y < 130))
 						{
 							//start_up 버튼의 영역이 터치가 되면 start_up = 1로 설정해주기
 							scBTN_startup= 1;
@@ -740,7 +740,7 @@ void *touchscreen(void)
                             nums = 2;
 							
 						}
-						else if(recvMsg.x > 785 && recvMsg.x < 840 && recvMsg.y > 30 && recvMsg.y < 180)
+						else if((recvMsg.x > 785) && (recvMsg.x < 840) && (recvMsg.y > 30) && (recvMsg.y < 180))
 						{
 							// wiper 버튼 영역 터치 디면 wiper = 1로 설정
 							scBTN_Wiper = ~scBTN_Wiper;
@@ -759,7 +759,7 @@ void *touchscreen(void)
                                 strcpy(overlayname,"0");
 							}
 						}
-						else if(recvMsg.x > 787 && recvMsg.x < 846 && recvMsg.y > 400 && recvMsg.y < 530)
+						else if((recvMsg.x > 787) &&( recvMsg.x < 846) &&( recvMsg.y > 400) && (recvMsg.y < 530))
 						{
 							//lightup 버튼 눌리면 lightup = 1로 설정.
 							scBTN_Lightup = ~scBTN_Lightup;
@@ -774,7 +774,7 @@ void *touchscreen(void)
                                 strcpy(overlayname,"0");
 							}
 						}
-						else if (recvMsg.x > 915 && recvMsg.x < 965 && recvMsg.y > 400 && recvMsg.y < 560)
+						else if ((recvMsg.x > 915) && (recvMsg.x < 965) && (recvMsg.y > 400) &&(recvMsg.y < 560))
 						{
 							//lightdown 버튼 영역 터치되면 lightdown = 1로 설정
 							scBTN_Lightdown = ~scBTN_Lightdown;
