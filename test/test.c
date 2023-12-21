@@ -426,17 +426,17 @@ void now_turn_lcd(int level){
             else if (level == CRS_EMERGENCY_A || level == CRS_EMERGENCY_B || level == CRS_EMERGENCY_C || level == CRS_EMERGENCY_D)
             {
                 str1 = "EMERGENCY         ";
-                lcdtextwrite("EMERGENCY         ";, str2, 1);
+                lcdtextwrite("EMERGENCY         ", str2, 1);
             }
             else if (level == CRS_ACCEL)
             {
                 str1 = "ACCELATE         ";
-                lcdtextwrite("ACCELATE         ";, str2, 1);
+                lcdtextwrite("ACCELATE         ", str2, 1);
             }
             else //if (level == CRS_END)
             {
                 str1 = "END                  ";
-                lcdtextwrite("END                  ";, str2, 1);
+                lcdtextwrite("END                  ", str2, 1);
             }
             sleep(1);
             lcdtextwrite(str1, str2, 1);
