@@ -397,6 +397,8 @@ void now_turn_lcd(int level){
             }
             
             //CAR COMPONENT에서 다음으로 안 넘어가고 시간도 멈춤..
+            // 스레드가 죽는 것 아님 + printf로 확인한 결과 시간은 계속 감
+            // CAR_COMPONENT에서 START로 넘어가면서, txt_lcd에 표현이 안되는 것인데
             
             else if (level == CRS_UPHILL)
             {
