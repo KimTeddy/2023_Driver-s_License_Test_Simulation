@@ -37,8 +37,8 @@ int16_t AcX, AcY, AcZ, GyX, GyY, GyZ;
 double angle_x, angle_y, angle_z;
 double angle[3];
 
-  char* str1 = "hello";
-  const char* str2 = "CAR SIMULATOR";
+  char* str1 = "hello              ";
+  const char* str2 = "embedded system";
   
   char str_cnt0[10];
   char str_cnt1[10];
@@ -363,7 +363,7 @@ void *count(void)
             {
                 str1 = "END                  ";
             }
-            //lcdtextwrite( str1, str2, 1);
+            lcdtextwrite( str1, str_cnt, 1);
             prev_level_lcd = now_level;
         }
         // sprintf(str_cnt0, "%d", cnt[0]);
@@ -373,7 +373,7 @@ void *count(void)
         //sprintf(str_cnt, "            %d:%d%d",  cnt[2], cnt[1], cnt[0]);
         sprintf(str_cnt, "          %2d:%2d",  min_lcd, sec_lcd);
         //sleep(1);       //시연용
-        lcdtextwrite( str1, str2, 2);
+        lcdtextwrite( str1, str_cnt, 2);
         usleep(50000);    //테스트용
         //sprintf(str1, "%s", "PRESS START");
         printf("\t\t\t\t\t??????????????????%2d:%2d\n",  min_lcd, sec_lcd);
@@ -421,7 +421,7 @@ void now_turn_lcd(int level){
             {
                 str1 = "ACCELATE         ";
             }
-            else if (level == CRS_END)
+            else //if (level == CRS_END)
             {
                 str1 = "END                  ";
             }
@@ -506,8 +506,8 @@ void *textlcd()
         //sprintf(str_cnt, "            %d:%d%d",  cnt[2], cnt[1], cnt[0]);
        // sprintf(str_cnt, "           %2d:%2d",  min_lcd, sec_lcd);
         //sleep(1);       //시연용
-        lcdtextwrite( str1, str2, 1);
-        lcdtextwrite( str1, str2, 2);
+        lcdtextwrite( str1, str_cnt, 1);
+        lcdtextwrite( str1, str_cnt, 2);
         usleep(50000);    //테스트용
         //sprintf(str1, "%s", "PRESS START");
         printf("\t\t\t\t\t??????????????????%2d:%2d\n",  min_lcd, sec_lcd);
@@ -2289,15 +2289,18 @@ void driveTest()
             else uphillcnt++;
         }
 
-         while(nums<=140) {usleep(100000);
+         while(nums<=140) {
+            usleep(100000);
             if(moving_r || moving_l) {
                 printf("dir fail!");
-                if(dirfail>=7) {
+                if(dirfail>=5) {
 	soundEffect(SE_MINUS);
 	minuspoint = minuspoint + 5;
+    break;
 	}
                 else dirfail++;
-            break;}
+            }
+
 }
             dirfail=0;
          while(1) {
@@ -2310,15 +2313,18 @@ void driveTest()
             if(nums>=163) break;
          }
         dirfail=0;
-         while(nums<=197) {usleep(100000);
+         while(nums<=197) {
+            usleep(100000);
             if(moving_r || moving_l) {
                 printf("dir fail!");
                 if(dirfail>=5) {
 	soundEffect(SE_MINUS);
 	minuspoint = minuspoint + 5;
+    break;
 	}
                 else dirfail++;
-            break;}
+            }
+
 }
             dirfail=0;
           while(1) {
@@ -2331,15 +2337,18 @@ void driveTest()
             if(nums>=217) break;
          }
 
-         while(nums<=230) {usleep(100000);
+         while(nums<=230) {
+            usleep(100000);
             if(moving_r || moving_l) {
                 printf("dir fail!");
-                if(dirfail>=7) {
+                if(dirfail>=5) {
 	soundEffect(SE_MINUS);
 	minuspoint = minuspoint + 5;
+    break;
 	}
                 else dirfail++;
-            break;}
+            }
+
 }
          gameoverlaycheck=0;
 
@@ -2386,15 +2395,18 @@ void driveTest()
             alertscreen=0;
          }
         gameoverlaycheck=0;
-         while(nums<=270) {usleep(100000);
+         while(nums<=270) {
+            usleep(100000);
             if(moving_r || moving_l) {
                 printf("dir fail!");
-                if(dirfail>=7) {
+                if(dirfail>=5) {
 	soundEffect(SE_MINUS);
 	minuspoint = minuspoint + 5;
+    break;
 	}
                 else dirfail++;
-            break;}
+            }
+
 }
 
          // 교차로구간1
@@ -2435,15 +2447,18 @@ void driveTest()
                 junctioncnt++;
          }
         
-         while(nums<=320) {usleep(100000);
+         while(nums<=320) {
+            usleep(100000);
             if(moving_r || moving_l) {
                 printf("dir fail!");
-                if(dirfail>=7) {
+                if(dirfail>=5) {
 	soundEffect(SE_MINUS);
 	minuspoint = minuspoint + 5;
+    break;
 	}
                 else dirfail++;
-            break;}
+            }
+
 }
 
          now_level = CRS_PARKING;
@@ -2616,15 +2631,18 @@ void driveTest()
             if(nums>=540) break;
          }
 
-         while(nums<=542) {usleep(100000);
+         while(nums<=542) {
+            usleep(100000);
             if(moving_r || moving_l) {
                 printf("dir fail!");
-                if(dirfail>=7) {
+                if(dirfail>=5) {
 	soundEffect(SE_MINUS);
 	minuspoint = minuspoint + 5;
+    break;
 	}
                 else dirfail++;
-            break;}
+            }
+
 }
 
          // 돌발구간B
@@ -2673,15 +2691,18 @@ void driveTest()
          }
 
          
-         while(nums<=565) {usleep(100000);
+         while(nums<=565) {
+            usleep(100000);
             if(moving_r || moving_l) {
                 printf("dir fail!");
-                if(dirfail>=7) {
+                if(dirfail>=5) {
 	soundEffect(SE_MINUS);
 	minuspoint = minuspoint + 5;
+    break;
 	}
                 else dirfail++;
-            break;}
+            }
+
 }
             // crs_emergency = 0;
 
@@ -2696,15 +2717,18 @@ void driveTest()
             if(nums>=588) break;
          }
 
-         while(nums<=610) {usleep(100000);
+         while(nums<=610) {
+            usleep(100000);
             if(moving_r || moving_l) {
                 printf("dir fail!");
-                if(dirfail>=7) {
+                if(dirfail>=5) {
 	soundEffect(SE_MINUS);
 	minuspoint = minuspoint + 5;
+    break;
 	}
                 else dirfail++;
-            break;}
+            }
+
 }
              dirfail=0;
         while(1) {
@@ -2717,15 +2741,17 @@ void driveTest()
             if(nums>=631) break;
          }
 
-         while(nums<=690) {usleep(100000);
+         while(nums<=690) {
+            usleep(100000);
             if(moving_r || moving_l) {
                 printf("dir fail!");
-                if(dirfail>=7) {
+                if(dirfail>=5) {
 	soundEffect(SE_MINUS);
 	minuspoint = minuspoint + 5;
+    break;
 	}
                 else dirfail++;
-            break;}
+            }
 }
             dirfail=0;
         while(1) {
@@ -2738,15 +2764,18 @@ void driveTest()
             if(nums>=711) break;
          }
 
-         while(nums<=725) {usleep(100000);
+         while(nums<=725) {
+            usleep(100000);
             if(moving_r || moving_l) {
                 printf("dir fail!");
-                if(dirfail>=7) {
+                if(dirfail>=5) {
 	soundEffect(SE_MINUS);
 	minuspoint = minuspoint + 5;
+    break;
 	}
                 else dirfail++;
-            break;}
+            }
+
 }
         
         // 교차로구간2
@@ -2802,15 +2831,18 @@ void driveTest()
                     gameoverlaycheck=0;
                 }
         
-         while(nums<=775) {usleep(100000);
+         while(nums<=775) {
+            usleep(100000);
             if(moving_r || moving_l) {
                 printf("dir fail!");
-                if(dirfail>=7) {
+                if(dirfail>=5) {
 	soundEffect(SE_MINUS);
 	minuspoint = minuspoint + 5;
+    break;
 	}
                 else dirfail++;
-            break;}
+            }
+
 }
 
 
@@ -2866,15 +2898,18 @@ void driveTest()
             // crs_emergency = 0;
         }
 
-        while(nums<=824) {usleep(100000);
+        while(nums<=824) {
+            usleep(100000);
             if(moving_r || moving_l) {
                 printf("dir fail!");
-                if(dirfail>=7) {
+                if(dirfail>=5) {
 	soundEffect(SE_MINUS);
 	minuspoint = minuspoint + 5;
+    break;
 	}
                 else dirfail++;
-            break;}
+            }
+
 }
         dirfail=0;
         while(1) {
@@ -2887,15 +2922,18 @@ void driveTest()
             if(nums>=854) break;
          }
 
-         while(nums<=879) {usleep(100000);
+         while(nums<=879) {
+            usleep(100000);
             if(moving_r || moving_l) {
                 printf("dir fail!");
-                if(dirfail>=7) {
+                if(dirfail>=5) {
 	soundEffect(SE_MINUS);
 	minuspoint = minuspoint + 5;
+    break;
 	}
                 else dirfail++;
-            break;}
+            }
+
 }
             dirfail=0;
         while(1) {
@@ -2908,15 +2946,18 @@ void driveTest()
             if(nums>=905) break;
          }
 
-         while(nums<=911) {usleep(100000);
+         while(nums<=911) {
+            usleep(100000);
             if(moving_r || moving_l) {
                 printf("dir fail!");
-                if(dirfail>=7) {
+                if(dirfail>=5) {
 	soundEffect(SE_MINUS);
 	minuspoint = minuspoint + 5;
+    break;
 	}
                 else dirfail++;
-            break;}
+            }
+
 }
 
         // 가속구간
@@ -3002,15 +3043,18 @@ void driveTest()
             alertscreen=0;
         }
 
-        while(nums<=979) {usleep(100000);
+        while(nums<=979) {
+            usleep(100000);
             if(moving_r || moving_l) {
                 printf("dir fail!");
-                if(dirfail>=7) {
+                if(dirfail>=5) {
 	soundEffect(SE_MINUS);
 	minuspoint = minuspoint + 5;
+    break;
 	}
                 else dirfail++;
-            break;}
+            }
+
 }
 
             dirfail=0;
@@ -3024,15 +3068,18 @@ void driveTest()
             if(nums>=1004) break;
          }
 
-         while(nums<=1023) {usleep(100000);
+         while(nums<=1023) {
+            usleep(100000);
             if(moving_r || moving_l) {
                 printf("dir fail!");
-                if(dirfail>=7) {
+                if(dirfail>=5) {
 	soundEffect(SE_MINUS);
 	minuspoint = minuspoint + 5;
+    break;
 	}
                 else dirfail++;
-            break;}
+            }
+
 }
 
 
