@@ -507,7 +507,7 @@ void *textlcd()
        // sprintf(str_cnt, "           %2d:%2d",  min_lcd, sec_lcd);
         //sleep(1);       //시연용
         lcdtextwrite( str1, str2, 1);
-        //lcdtextwrite( str1, str_cnt, 2);
+        lcdtextwrite( str1, str2, 2);
         usleep(50000);    //테스트용
         //sprintf(str1, "%s", "PRESS START");
         printf("\t\t\t\t\t??????????????????%2d:%2d\n",  min_lcd, sec_lcd);
