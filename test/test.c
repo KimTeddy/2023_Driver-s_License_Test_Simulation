@@ -2546,7 +2546,7 @@ void driveTest()
          while(nums<=542) {usleep(1000);}
 
          // 돌발구간B
-         if (randtest == 0)
+         if (randtest == 1)
          {
             now_level = CRS_EMERGENCY_B;
             now_turn_lcd(CRS_EMERGENCY_B);
@@ -2692,7 +2692,7 @@ void driveTest()
 
         // 돌발구간C
         
-        if (randtest == 0)
+        if (randtest == 2)
         {
             now_level = CRS_EMERGENCY_C;
             now_turn_lcd(CRS_EMERGENCY_C);
@@ -2804,7 +2804,7 @@ void driveTest()
 
         // 돌발구간D
         
-        if (randtest == 0)
+        if (randtest == 3)
         {
             now_level = CRS_EMERGENCY_D;
             now_turn_lcd(CRS_EMERGENCY_D);
