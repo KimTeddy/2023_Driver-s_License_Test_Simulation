@@ -1,0 +1,7 @@
+처음 복사후 chmod +x ./overlay.sh
+
+ps -ax | grep X
+X -core pid 확인후 sudo kill 확인한pid
+2회 반복
+
+./overlay.sh 로 사용
