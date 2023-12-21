@@ -445,7 +445,7 @@ void *textlcd()
                 sec_lcd = 0;
             }
         }
-
+/*
         if(now_level != prev_level_lcd){
             if (now_level == CRS_MAIN)
             {
@@ -493,6 +493,8 @@ void *textlcd()
             
             prev_level_lcd = now_level;
         }
+        */
+       
         // sprintf(str_cnt0, "%d", cnt[0]);
         //sprintf(str_cnt1, "%d", cnt[1]);
         // sprintf(str_cnt2, "%d", cnt[2]);
