@@ -1,0 +1,80 @@
+gameoverlaycheck
+gameoverlaycheck=
+0 empty빈화면
+
+1 safetybeltfail 안전벨트해제
+
+2 start1 지금부터 기능시험 시작
+3 start2 기본조작평가시작
+4 start3 3초이내 시동켜십시오
+
+5 startfail 시동실패
+6 startsucceess 시동성공 ////
+
+7 basicgeardrive 기어조작테스트 3초이내 중립-전진
+8 basicgeardrivefail 기어실패5점감점
+9 basicgeardrivesuccess 전진기어확인
+
+10 basicgearrev 기어조작테스트 3초이내 중립-후진
+11 basicgearrevfail 기어실패5점감점
+12 basicgearrevsuccess 후진기어확인
+
+13 basicwiper 와이퍼 3초이내 켜기
+14 basicwiperfail 와이퍼실패 5점감점
+15 basicwipersuccess 와이퍼켜짐확인
+
+16 basiclightup 전조등 3초이내 상향
+17 basiclightupfail 전조등실패5점감점
+18 basiclightupsucces 상향등확인
+
+19 basiclightdown 전조등 3초이내 하향
+20 basiclightdownfail 전조등실패5점감점
+21 basiclightdownsuccess 하향등확인
+
+22 basiclightleft 방향지시등 3초이내좌측
+23 basiclightleftfail 방향지시등실패 5점감점
+24 basiclightleftsuccess 좌측방향등확인
+
+25 basiclightright 방향지시등 3초이내우측
+26 basiclightrightfail 방향지시등실패 5점감점
+27 basiclightrightsuccess 우측방향등확인
+
+28 basicfin 기본조작끝 좌측지시등 켜고 10초내 출발
+29 basicfinfail 출발실패 실격
+
+30 emer 돌발발생
+31 emerfail 돌발구간실패10점감점
+
+32 uphill 경사구간평가
+33 uphill2 지정위치 삑 사이드
+34 uphillfail 경사실패 실격
+
+35 crash 회전충돌
+
+36  parking  주차안내
+37  parkingfail 주차실패 실격
+
+38 accel 가속안내
+39 accelfail 가속구간실패 10점감점
+40 accelstopfail 가속구간내 정지 실격
+
+41 junction 교차로진입
+42 junctiontimefail 교차로시간실패 실격
+43 junctioncrash 교차로신호위반
+
+44 endlightfail 종료구간방향지시등 실패 5점감점
+
+45 testfail 불합격
+46 testout 실격
+47 testsuccess 합격
+48 testfin 시험종료
+
+49overlaybutton
+50overlaylight
+51overlaywiper0
+52  1
+53  2
+54 gotomain
+
+accelen
+simufin
