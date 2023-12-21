@@ -294,6 +294,7 @@ void *count(void)
     while (1)
 	{
         //cnt += 1;
+        /*
         if(simuwork)
         {
             ++sec_lcd;
@@ -303,7 +304,7 @@ void *count(void)
                 sec_lcd = 0;
             }
         }
-    
+    */
         // if(cnt[1]== 6)
         // {
         //     cnt[2] += 1;
@@ -373,7 +374,7 @@ void *count(void)
         //sprintf(str_cnt, "            %d:%d%d",  cnt[2], cnt[1], cnt[0]);
         sprintf(str_cnt, "          %2d:%2d",  min_lcd, sec_lcd);
         //sleep(1);       //시연용
-        lcdtextwrite( str1, str2, 2);
+        //lcdtextwrite( str1, str2, 2);
         usleep(50000);    //테스트용
         //sprintf(str1, "%s", "PRESS START");
         printf("\t\t\t\t\t??????????????????%2d:%2d\n",  min_lcd, sec_lcd);
@@ -394,7 +395,7 @@ void now_turn_lcd(int level){
             }
             else if (level == CRS_BASIC)
             {
-                str1 = "CAR COMPONENT";
+                str1 = "BEGIN         ";
             }
             
             //CAR COMPONENT에서 다음으로 안 넘어가고 시간도 멈춤..
@@ -426,8 +427,8 @@ void now_turn_lcd(int level){
                 str1 = "END                  ";
             }
             sleep(1);
-            lcdtextwrite(str1, str_cnt, 1);
-            //lcdtextwrite(str1, str_cnt, 2);
+            lcdtextwrite(str1, str2, 1);
+            lcdtextwrite(str1, str2, 2);
 }
 
 void *textlcd()
@@ -435,91 +436,12 @@ void *textlcd()
   txtlcd_Init();
   //BASIC UP JUNCTION PARIKNG EMERGENCY ACCEL END
 
-    while (1)
-	{
-        /*
-        //cnt += 1;
-        if(simuwork)
-        {
-            ++sec_lcd;
-            if(sec_lcd == 60)
-            {
-                ++min_lcd;
-                sec_lcd = 0;
-            }
-        }
-        */
-/*
-        if(now_level != prev_level_lcd){
-            if (now_level == CRS_MAIN)
-            {
-                str1 = "PRESS START";
-            }
-            else if(now_level == CRS_MANUAL)
-            {
-                str1 = "MANUAL        ";
-            }  
-            else if (now_level == CRS_START)	
-            {
-                str1 = "BEGIN         ";
-            }
-            else if (now_level == CRS_BASIC)
-            {
-                str1 = "CAR COMPONENT";
-            }
-            
-            //CAR COMPONENT에서 다음으로 안 넘어가고 시간도 멈춤..
-            
-            else if (now_level == CRS_UPHILL)
-            {
-                str1 = "UP HILL        ";
-            }
-            else if (now_level == CRS_JUNCTION_1 || now_level == CRS_JUNCTION_2 )
-            {
-                str1 = "JUNCTION   ";
-            }
-            else if (now_level == CRS_PARKING)
-            {
-                str1 = "PARKING         ";
-            }
-            else if (now_level == CRS_EMERGENCY_A || now_level == CRS_EMERGENCY_B || now_level == CRS_EMERGENCY_C || now_level == CRS_EMERGENCY_D)
-            {
-                str1 = "EMERGENCY         ";
-            }
-            else if (now_level == CRS_ACCEL)
-            {
-                str1 = "ACCELATE         ";
-            }
-            else if (now_level == CRS_END)
-            {
-                str1 = "END                  ";
-            }
-            
-            prev_level_lcd = now_level;
-        }
-        */
+    
 
-        // sprintf(str_cnt0, "%d", cnt[0]);
-        //sprintf(str_cnt1, "%d", cnt[1]);
-        // sprintf(str_cnt2, "%d", cnt[2]);
-        // sprintf(str_cnt3, "%d", cnt[3]);
-        //sprintf(str_cnt, "            %d:%d%d",  cnt[2], cnt[1], cnt[0]);
-       // sprintf(str_cnt, "           %2d:%2d",  min_lcd, sec_lcd);
-        //sleep(1);       //시연용
-        lcdtextwrite( str1, str2, 1);
-        lcdtextwrite( str1, str2, 2);
-        usleep(50000);    //테스트용
-        //sprintf(str1, "%s", "PRESS START");
-        printf("\t\t\t\t\t??????????????????%2d:%2d\n",  min_lcd, sec_lcd);
-    }
-
-
-
-
-  //pthread_create(&tid[0], NULL ,&count, NULL);
+  pthread_create(&tid[0], NULL ,&count, NULL);
   //pthread_create(&tid[1], NULL ,&txtdisplay, NULL);
 
-  //pthread_join (tid[0], NULL);
+  pthread_join (tid[0], NULL);
   //pthread_join (tid[1], NULL);
 }
   //9 단계로 나뉨 CAR SIMULATOR
