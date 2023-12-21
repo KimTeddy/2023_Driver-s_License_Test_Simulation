@@ -425,7 +425,8 @@ void now_turn_lcd(int level){
             {
                 str1 = "END                  ";
             }
-            lcdtextwrite(str1, str1, 1);
+            lcdtextwrite(str1, str_cnt, 1);
+            lcdtextwrite(str1, str_cnt, 2);
 }
 
 void *textlcd()
@@ -435,6 +436,7 @@ void *textlcd()
 
     while (1)
 	{
+        /*
         //cnt += 1;
         if(simuwork)
         {
@@ -445,6 +447,7 @@ void *textlcd()
                 sec_lcd = 0;
             }
         }
+        */
 /*
         if(now_level != prev_level_lcd){
             if (now_level == CRS_MAIN)
@@ -494,13 +497,13 @@ void *textlcd()
             prev_level_lcd = now_level;
         }
         */
-       
+
         // sprintf(str_cnt0, "%d", cnt[0]);
         //sprintf(str_cnt1, "%d", cnt[1]);
         // sprintf(str_cnt2, "%d", cnt[2]);
         // sprintf(str_cnt3, "%d", cnt[3]);
         //sprintf(str_cnt, "            %d:%d%d",  cnt[2], cnt[1], cnt[0]);
-        sprintf(str_cnt, "          %2d:%2d",  min_lcd, sec_lcd);
+       // sprintf(str_cnt, "           %2d:%2d",  min_lcd, sec_lcd);
         //sleep(1);       //시연용
         lcdtextwrite( str1, str_cnt, 1);
         lcdtextwrite( str1, str_cnt, 2);
