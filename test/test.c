@@ -1911,6 +1911,7 @@ void driveTest()
     {
         scBTN_Start = 0;
         nums=0; // 게임화면 0으로 시작
+        c_score = 100;
         now_level = CRS_BASIC;
         now_turn_lcd(CRS_BASIC);
         showstate = 4; // 화면에 운전이미지 정지 표시 시작.0번은 디폴트. 이미지 00000고정
@@ -2219,12 +2220,13 @@ void driveTest()
             usleep(100000);
             if(moving_r || moving_l) {
                 printf("dir fail!");
-                if(dirfail>=7) {
+                if(dirfail>=5) {
 	soundEffect(SE_MINUS);
 	minuspoint = minuspoint + 5;
+    break;
 	}
                 else dirfail++;
-            break;}
+            }
 
         }
 
