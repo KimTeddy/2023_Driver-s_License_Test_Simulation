@@ -836,7 +836,18 @@ void *AccelWork(void){
           //  moving_l = 0;
           //  moving_r = 0;
             // printf("Set Changing Value\n");
-            if( gear == 1 &&( (first_accel[0] - second_accel[0]) > 5000 )&& !(((first_accel[2] - second_accel[2]) < 9000)&&( (first_accel[2] - second_accel[2]) > 4000 )) ) 
+            if(showstate==0) {
+                printf("  RESET \n");
+                moving_f = 0;
+                moving_b = 0;
+                moving_r = 0;
+                moving_l = 0;
+                moving == 0;
+                carspeed=0;
+                usleep(accel_t);
+            }
+
+            else if( gear == 1 &&( (first_accel[0] - second_accel[0]) > 5000 )&& !(((first_accel[2] - second_accel[2]) < 9000)&&( (first_accel[2] - second_accel[2]) > 4000 )) ) 
             { //오른쪽으로 기운 경우 차이가 5000이상 나면 
               // 그리고 Break_on 정도로 기울이지 않았다면 Handle Turn Right
             
@@ -1141,6 +1152,7 @@ void *btncheck(void)
     ledOnOff(0, 0);
     ledOnOff(0, 1); //시작시 안전벨트 안한상태
     ledOnOff(1, 1); //시작시 사이드브레이크 올라가있음
+    ledOnOFF(7,0); //시작시 drive
     int msgID = msgget(MESSAGE_ID, IPC_CREAT | 0666);
     while(1) {
     while (simuwork == 1)
@@ -2201,7 +2213,21 @@ void driveTest()
                 break;}
                 }
         gameoverlaycheck=0;
-        while(nums<=71) {usleep(1000);}
+
+
+        while(nums<=71) {
+            usleep(100000);
+            if(moving_r || moving_l) {
+                printf("dir fail!");
+                if(dirfail>=7) {
+	soundEffect(SE_MINUS);
+	minuspoint = minuspoint + 5;
+	}
+                else dirfail++;
+            break;}
+
+        }
+
        if (nums>=72) now_level = CRS_UPHILL;
         uphillcnt = 0;
         printf("경사구간평가를 시작합니다.\n");
@@ -2261,7 +2287,16 @@ void driveTest()
             else uphillcnt++;
         }
 
-         while(nums<=140) {usleep(1000);}
+         while(nums<=140) {usleep(100000);
+            if(moving_r || moving_l) {
+                printf("dir fail!");
+                if(dirfail>=7) {
+	soundEffect(SE_MINUS);
+	minuspoint = minuspoint + 5;
+	}
+                else dirfail++;
+            break;}
+}
             dirfail=0;
          while(1) {
             usleep(150000);
@@ -2273,7 +2308,16 @@ void driveTest()
             if(nums>=163) break;
          }
 
-         while(nums<=197) {usleep(1000);}
+         while(nums<=197) {usleep(100000);
+            if(moving_r || moving_l) {
+                printf("dir fail!");
+                if(dirfail>=7) {
+	soundEffect(SE_MINUS);
+	minuspoint = minuspoint + 5;
+	}
+                else dirfail++;
+            break;}
+}
             dirfail=0;
           while(1) {
             usleep(150000);
@@ -2285,7 +2329,16 @@ void driveTest()
             if(nums>=217) break;
          }
 
-         while(nums<=230) {usleep(1000);}
+         while(nums<=230) {usleep(100000);
+            if(moving_r || moving_l) {
+                printf("dir fail!");
+                if(dirfail>=7) {
+	soundEffect(SE_MINUS);
+	minuspoint = minuspoint + 5;
+	}
+                else dirfail++;
+            break;}
+}
          gameoverlaycheck=0;
 
          // 돌발구간A
@@ -2331,7 +2384,16 @@ void driveTest()
             alertscreen=0;
          }
         gameoverlaycheck=0;
-         while(nums<=270) {usleep(1000);}
+         while(nums<=270) {usleep(100000);
+            if(moving_r || moving_l) {
+                printf("dir fail!");
+                if(dirfail>=7) {
+	soundEffect(SE_MINUS);
+	minuspoint = minuspoint + 5;
+	}
+                else dirfail++;
+            break;}
+}
 
          // 교차로구간1
          now_level = CRS_JUNCTION_1;
@@ -2371,7 +2433,16 @@ void driveTest()
                 junctioncnt++;
          }
         
-         while(nums<=320) {usleep(1000);}
+         while(nums<=320) {usleep(100000);
+            if(moving_r || moving_l) {
+                printf("dir fail!");
+                if(dirfail>=7) {
+	soundEffect(SE_MINUS);
+	minuspoint = minuspoint + 5;
+	}
+                else dirfail++;
+            break;}
+}
 
          now_level = CRS_PARKING;
          now_turn_lcd(CRS_PARKING);
@@ -2543,7 +2614,16 @@ void driveTest()
             if(nums>=540) break;
          }
 
-         while(nums<=542) {usleep(1000);}
+         while(nums<=542) {usleep(100000);
+            if(moving_r || moving_l) {
+                printf("dir fail!");
+                if(dirfail>=7) {
+	soundEffect(SE_MINUS);
+	minuspoint = minuspoint + 5;
+	}
+                else dirfail++;
+            break;}
+}
 
          // 돌발구간B
          if (randtest == 1)
@@ -2591,7 +2671,16 @@ void driveTest()
          }
 
          
-         while(nums<=565) {usleep(1000);}
+         while(nums<=565) {usleep(100000);
+            if(moving_r || moving_l) {
+                printf("dir fail!");
+                if(dirfail>=7) {
+	soundEffect(SE_MINUS);
+	minuspoint = minuspoint + 5;
+	}
+                else dirfail++;
+            break;}
+}
             // crs_emergency = 0;
 
             dirfail=0;
@@ -2605,7 +2694,16 @@ void driveTest()
             if(nums>=588) break;
          }
 
-         while(nums<=610) {usleep(1000);}
+         while(nums<=610) {usleep(100000);
+            if(moving_r || moving_l) {
+                printf("dir fail!");
+                if(dirfail>=7) {
+	soundEffect(SE_MINUS);
+	minuspoint = minuspoint + 5;
+	}
+                else dirfail++;
+            break;}
+}
              dirfail=0;
         while(1) {
            
@@ -2617,7 +2715,16 @@ void driveTest()
             if(nums>=631) break;
          }
 
-         while(nums<=690) {usleep(1000);}
+         while(nums<=690) {usleep(100000);
+            if(moving_r || moving_l) {
+                printf("dir fail!");
+                if(dirfail>=7) {
+	soundEffect(SE_MINUS);
+	minuspoint = minuspoint + 5;
+	}
+                else dirfail++;
+            break;}
+}
             dirfail=0;
         while(1) {
             
@@ -2629,7 +2736,16 @@ void driveTest()
             if(nums>=711) break;
          }
 
-         while(nums<=725) {usleep(1000);}
+         while(nums<=725) {usleep(100000);
+            if(moving_r || moving_l) {
+                printf("dir fail!");
+                if(dirfail>=7) {
+	soundEffect(SE_MINUS);
+	minuspoint = minuspoint + 5;
+	}
+                else dirfail++;
+            break;}
+}
         
         // 교차로구간2
 
@@ -2684,7 +2800,16 @@ void driveTest()
                     gameoverlaycheck=0;
                 }
         
-         while(nums<=775) {usleep(1000);}
+         while(nums<=775) {usleep(100000);
+            if(moving_r || moving_l) {
+                printf("dir fail!");
+                if(dirfail>=7) {
+	soundEffect(SE_MINUS);
+	minuspoint = minuspoint + 5;
+	}
+                else dirfail++;
+            break;}
+}
 
 
 
@@ -2739,7 +2864,16 @@ void driveTest()
             // crs_emergency = 0;
         }
 
-        while(nums<=824) {usleep(1000);}
+        while(nums<=824) {usleep(100000);
+            if(moving_r || moving_l) {
+                printf("dir fail!");
+                if(dirfail>=7) {
+	soundEffect(SE_MINUS);
+	minuspoint = minuspoint + 5;
+	}
+                else dirfail++;
+            break;}
+}
         dirfail=0;
         while(1) {
             
@@ -2751,7 +2885,16 @@ void driveTest()
             if(nums>=854) break;
          }
 
-         while(nums<=879) {usleep(1000);}
+         while(nums<=879) {usleep(100000);
+            if(moving_r || moving_l) {
+                printf("dir fail!");
+                if(dirfail>=7) {
+	soundEffect(SE_MINUS);
+	minuspoint = minuspoint + 5;
+	}
+                else dirfail++;
+            break;}
+}
             dirfail=0;
         while(1) {
             
@@ -2763,7 +2906,16 @@ void driveTest()
             if(nums>=905) break;
          }
 
-         while(nums<=911) {usleep(1000);}
+         while(nums<=911) {usleep(100000);
+            if(moving_r || moving_l) {
+                printf("dir fail!");
+                if(dirfail>=7) {
+	soundEffect(SE_MINUS);
+	minuspoint = minuspoint + 5;
+	}
+                else dirfail++;
+            break;}
+}
 
         // 가속구간
         now_level = CRS_ACCEL;
@@ -2848,7 +3000,16 @@ void driveTest()
             alertscreen=0;
         }
 
-        while(nums<=979) {usleep(1000);}
+        while(nums<=979) {usleep(100000);
+            if(moving_r || moving_l) {
+                printf("dir fail!");
+                if(dirfail>=7) {
+	soundEffect(SE_MINUS);
+	minuspoint = minuspoint + 5;
+	}
+                else dirfail++;
+            break;}
+}
 
             dirfail=0;
         while(1) {
@@ -2861,7 +3022,16 @@ void driveTest()
             if(nums>=1004) break;
          }
 
-         while(nums<=1023) {usleep(1000);}
+         while(nums<=1023) {usleep(100000);
+            if(moving_r || moving_l) {
+                printf("dir fail!");
+                if(dirfail>=7) {
+	soundEffect(SE_MINUS);
+	minuspoint = minuspoint + 5;
+	}
+                else dirfail++;
+            break;}
+}
 
 
         // 종료구간
