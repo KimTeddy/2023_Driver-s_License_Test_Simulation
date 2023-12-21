@@ -38,7 +38,7 @@ double angle_x, angle_y, angle_z;
 double angle[3];
 
   char* str1 = "hello              ";
-  const char* str2 = "embedded system";
+  const char* str2 = "CAR SIMULATOR";
   
   char str_cnt0[10];
   char str_cnt1[10];
@@ -363,7 +363,7 @@ void *count(void)
             {
                 str1 = "END                  ";
             }
-            lcdtextwrite( str1, str_cnt, 1);
+            //lcdtextwrite( str1, str2, 1);
             prev_level_lcd = now_level;
         }
         // sprintf(str_cnt0, "%d", cnt[0]);
@@ -373,7 +373,7 @@ void *count(void)
         //sprintf(str_cnt, "            %d:%d%d",  cnt[2], cnt[1], cnt[0]);
         sprintf(str_cnt, "          %2d:%2d",  min_lcd, sec_lcd);
         //sleep(1);       //시연용
-        lcdtextwrite( str1, str_cnt, 2);
+        lcdtextwrite( str1, str2, 2);
         usleep(50000);    //테스트용
         //sprintf(str1, "%s", "PRESS START");
         printf("\t\t\t\t\t??????????????????%2d:%2d\n",  min_lcd, sec_lcd);
