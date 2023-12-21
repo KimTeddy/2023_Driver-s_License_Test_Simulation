@@ -38,7 +38,7 @@ double angle_x, angle_y, angle_z;
 double angle[3];
 
   char* str1 = "hello              ";
-  const char* str2 = "embedded system";
+  const char* str2 = "CAR SIMULATOR";
   
   char str_cnt0[10];
   char str_cnt1[10];
@@ -447,7 +447,8 @@ void *textlcd()
 {
   txtlcd_Init();
   //BASIC UP JUNCTION PARIKNG EMERGENCY ACCEL END
-
+  lcdtextwrite("               ", str2, 1);
+  lcdtextwrite("               ", str2, 2);
 
   pthread_create(&tid[0], NULL ,&count, NULL);
   //pthread_create(&tid[1], NULL ,&txtdisplay, NULL);
