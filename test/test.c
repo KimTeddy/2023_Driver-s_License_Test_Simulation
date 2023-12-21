@@ -421,7 +421,7 @@ void now_turn_lcd(int level){
             {
                 str1 = "ACCELATE         ";
             }
-            else //if (level == CRS_END)
+            else if (level == CRS_END)
             {
                 str1 = "END                  ";
             }
