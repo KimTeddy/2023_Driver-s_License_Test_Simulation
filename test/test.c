@@ -529,7 +529,7 @@ void *textlcd()
 
 void *buzzerwork(void) {
     while(1) {
-        if(now_level == CRS_START && (now_level != prev_level) )
+        if((now_level == CRS_START) && (now_level != prev_level) )
 // MANUAL에서 START로 넘어가면
 {
     soundEffect(SE_START);
@@ -537,7 +537,7 @@ void *buzzerwork(void) {
     prev_level = now_level;
 }
 
-else if(now_level == CRS_EMERGENCY_A || now_level == CRS_EMERGENCY_B || now_level == CRS_EMERGENCY_C || now_level == CRS_EMERGENCY_D && now_level != prev_level)
+else if(((now_level == CRS_EMERGENCY_A) || (now_level == CRS_EMERGENCY_B) || (now_level == CRS_EMERGENCY_C) || (now_level == CRS_EMERGENCY_D)) &&(now_level != prev_level))
 {
     soundEffect(SE_ACCIDENT);
     // EMERGENCY 단계에서는 ACCIDENT 소리 출력
@@ -554,7 +554,6 @@ else if(now_level != prev_level)
 }
     }
 }
-
 
 void *fndwork(void) {
 	while (1)
