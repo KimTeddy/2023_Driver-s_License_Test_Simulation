@@ -2264,7 +2264,7 @@ void driveTest()
          while(nums<=140) {usleep(1000);}
             dirfail=0;
          while(1) {
-            usleep(500000);
+            usleep(150000);
             if(nums<=162 && nums>=144 && moving_l==0) {
                 printf("dir fail!!!");
                 if(dirfail>=7) {gameoverlaycheck=35; crash=1; testfail =1; sleep(2); gameoverlaycheck=54; sleep(2); return 1;}
@@ -2276,7 +2276,7 @@ void driveTest()
          while(nums<=197) {usleep(1000);}
             dirfail=0;
           while(1) {
-            usleep(500000);
+            usleep(150000);
             if(nums<=216 && nums>=199 && moving_l==0) {
                 printf("dir fail!!!");
                 if(dirfail>=7) {gameoverlaycheck=35; crash=1; testfail =1; sleep(2); gameoverlaycheck=54; sleep(2); return 1;}
@@ -2385,7 +2385,7 @@ void driveTest()
          {
 
             while(1) {
-            usleep(500000);
+            usleep(150000);
             /*if (parkingcnt >= 500)
             {
                 printf("주차 30초 이내 통과 실패. 실격하셨습니다.\n");
@@ -2443,7 +2443,7 @@ void driveTest()
             
          }
         while(1) {
-            usleep(500000);
+            usleep(150000);
             if(nums>=439) reverseframe=1;
        /*    if (parkingcnt >= 500)
             {
@@ -2457,7 +2457,7 @@ void driveTest()
             }*/
             dirfail=0;
             if(nums<=464 && nums>=440 && ( gear!=2 || moving_l==0 )) {
-                if(dirfail>=15) {gameoverlaycheck=35; crash=1; testfail =1; sleep(2); gameoverlaycheck=54; sleep(2); return 1;}
+                if(dirfail>=10) {gameoverlaycheck=35; crash=1; testfail =1; sleep(2); gameoverlaycheck=54; sleep(2); return 1;}
                 else dirfail++;
             }
             if(nums>=465) break;
@@ -2465,7 +2465,7 @@ void driveTest()
          }
 
         while(1) {
-            usleep(500000);
+            usleep(150000);
           /*  if (parkingcnt >= 500)
             {
                 printf("주차 30초 이내 통과 실패. 실격하셨습니다.\n");
@@ -2478,7 +2478,7 @@ void driveTest()
             }*/
             dirfail=0;
             if(nums<=475 && nums>=465 && gear!=2 ) {
-                if(dirfail>=15) {gameoverlaycheck=35; crash=1; testfail =1; sleep(2); gameoverlaycheck=54; sleep(2); return 1;}
+                if(dirfail>=10) {gameoverlaycheck=35; crash=1; testfail =1; sleep(2); gameoverlaycheck=54; sleep(2); return 1;}
                 else dirfail++;
             }
             if(nums>=476) break;
@@ -2523,7 +2523,7 @@ void driveTest()
             dirfail=0;
          while(1) {
             
-            usleep(500000);
+            usleep(150000);
             if(nums<=509 && nums>=489 && moving_r==0) {
                 if(dirfail>=15) {gameoverlaycheck=35; crash=1; testfail =1; sleep(2); gameoverlaycheck=54; sleep(2); return 1;}
                 else dirfail++;
@@ -2535,7 +2535,7 @@ void driveTest()
             dirfail=0;
          while(1) {
             
-            usleep(500000);
+            usleep(150000);
             if(nums<=539 && nums>=520 && moving_r==0) {
                 if(dirfail>=15) {gameoverlaycheck=35; crash=1; testfail =1; sleep(2); gameoverlaycheck=54; sleep(2); return 1;}
                 else dirfail++;
@@ -2597,7 +2597,7 @@ void driveTest()
             dirfail=0;
             while(1) {
             
-            usleep(500000);
+            usleep(150000);
             if(nums<=587 && nums>=567 && moving_r==0) {
                 if(dirfail>=5) {gameoverlaycheck=35; crash=1; testfail =1; sleep(2); gameoverlaycheck=54; sleep(2); return 1;}
                 else dirfail++;
@@ -2609,7 +2609,7 @@ void driveTest()
              dirfail=0;
         while(1) {
            
-            usleep(500000);
+            usleep(150000);
             if(nums<=630 && nums>=612 && moving_r==0) {
                 if(dirfail>=5) {gameoverlaycheck=35; crash=1; testfail =1; sleep(2); gameoverlaycheck=54; sleep(2); return 1;}
                 else dirfail++;
@@ -2621,7 +2621,7 @@ void driveTest()
             dirfail=0;
         while(1) {
             
-            usleep(500000);
+            usleep(150000);
             if(nums<=710 && nums>=693 && moving_r==0) {
                 if(dirfail>=5) {gameoverlaycheck=35; crash=1; testfail =1; sleep(2); gameoverlaycheck=54; sleep(2); return 1;}
                 else dirfail++;
@@ -2743,7 +2743,7 @@ void driveTest()
         dirfail=0;
         while(1) {
             
-            usleep(500000);
+            usleep(150000);
             if(nums<=853 && nums>=826 && moving_l==0) {
                 if(dirfail>=5) {gameoverlaycheck=35; crash=1; testfail =1; sleep(2); gameoverlaycheck=54; sleep(2); return 1; }
                 else dirfail++;
@@ -2755,7 +2755,7 @@ void driveTest()
             dirfail=0;
         while(1) {
             
-            usleep(500000);
+            usleep(150000);
             if(nums<=904 && nums>=881 && moving_l==0) {
                 if(dirfail>=5) {gameoverlaycheck=35; crash=1; testfail =1; sleep(2); gameoverlaycheck=54; sleep(2); return 1;}
                 else dirfail++;
@@ -2853,7 +2853,7 @@ void driveTest()
             dirfail=0;
         while(1) {
             
-            usleep(500000);
+            usleep(150000);
             if(nums<=1003 && nums>=981 && moving_l==0) {
                 if(dirfail>=5) {gameoverlaycheck=35; crash=1; testfail =1; sleep(2); gameoverlaycheck=54; sleep(2); return 1;}
                 else dirfail++;
