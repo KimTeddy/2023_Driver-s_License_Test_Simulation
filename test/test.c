@@ -38,7 +38,7 @@ double angle_x, angle_y, angle_z;
 double angle[3];
 
   char* str1 = "hello              ";
-  const char* str2 = "embedded system";
+  const char* str2 = "CAR SIMULATOR";
   
   char str_cnt0[10];
   char str_cnt1[10];
@@ -291,9 +291,9 @@ void *count(void)
       cnt[2] = 0;
       str1 = "HI";
       
-    while (1)
-	{
+
         //cnt += 1;
+        /*
         if(simuwork)
         {
             ++sec_lcd;
@@ -303,7 +303,7 @@ void *count(void)
                 sec_lcd = 0;
             }
         }
-    
+    */
         // if(cnt[1]== 6)
         // {
         //     cnt[2] += 1;
@@ -319,51 +319,54 @@ void *count(void)
         // {
         //     cnt[0]++;
         // }
-        if(now_level != prev_level_lcd){
-            if (now_level == CRS_MAIN)
-            {
-                str1 = "PRESS START";
-            }
-            else if(now_level == CRS_MANUAL)
-            {
-                str1 = "MANUAL        ";
-            }  
-            else if (now_level == CRS_START)	
-            {
-                str1 = "BEGIN         ";
-            }
-            else if (now_level == CRS_BASIC)
-            {
-                str1 = "CAR COMPONENT";
-            }
-            
-            //CAR COMPONENT에서 다음으로 안 넘어가고 시간도 멈춤..
-            
-            else if (now_level == CRS_UPHILL)
-            {
-                str1 = "UP HILL        ";
-            }
-            else if (now_level == CRS_JUNCTION_1 || now_level == CRS_JUNCTION_2 )
-            {
-                str1 = "JUNCTION   ";
-            }
-            else if (now_level == CRS_PARKING)
-            {
-                str1 = "PARKING         ";
-            }
-            else if (now_level == CRS_EMERGENCY_A || now_level == CRS_EMERGENCY_B || now_level == CRS_EMERGENCY_C || now_level == CRS_EMERGENCY_D)
-            {
-                str1 = "EMERGENCY         ";
-            }
-            else if (now_level == CRS_ACCEL)
-            {
-                str1 = "ACCELATE         ";
-            }
-            else if (now_level == CRS_END)
-            {
-                str1 = "END                  ";
-            }
-            lcdtextwrite( str1, str_cnt, 1);
+        while (1)
+	    {
+            if(now_level != prev_level_lcd)
+                {
+                if (now_level == CRS_MAIN)
+                {
+                    str1 = "PRESS START";
+                }
+                else if(now_level == CRS_MANUAL)
+                {
+                    str1 = "MANUAL        ";
+                }  
+                else if (now_level == CRS_START)	
+                {
+                    str1 = "BEGIN         ";
+                }
+                else if (now_level == CRS_BASIC)
+                {
+                    str1 = "CAR COMPONENT";
+                }
+                
+                //CAR COMPONENT에서 다음으로 안 넘어가고 시간도 멈춤..
+                
+                else if (now_level == CRS_UPHILL)
+                {
+                    str1 = "UP HILL        ";
+                }
+                else if (now_level == CRS_JUNCTION_1 || now_level == CRS_JUNCTION_2 )
+                {
+                    str1 = "JUNCTION   ";
+                }
+                else if (now_level == CRS_PARKING)
+                {
+                    str1 = "PARKING         ";
+                }
+                else if (now_level == CRS_EMERGENCY_A || now_level == CRS_EMERGENCY_B || now_level == CRS_EMERGENCY_C || now_level == CRS_EMERGENCY_D)
+                {
+                    str1 = "EMERGENCY         ";
+                }
+                else if (now_level == CRS_ACCEL)
+                {
+                    str1 = "ACCELATE         ";
+                }
+                else if (now_level == CRS_END)
+                {
+                    str1 = "END                  ";
+                }
+            //lcdtextwrite( str1, str2, 1);
             prev_level_lcd = now_level;
         }
         // sprintf(str_cnt0, "%d", cnt[0]);
@@ -371,9 +374,9 @@ void *count(void)
         // sprintf(str_cnt2, "%d", cnt[2]);
         // sprintf(str_cnt3, "%d", cnt[3]);
         //sprintf(str_cnt, "            %d:%d%d",  cnt[2], cnt[1], cnt[0]);
-        sprintf(str_cnt, "          %2d:%2d",  min_lcd, sec_lcd);
+        //sprintf(str_cnt, "          %2d:%2d",  min_lcd, sec_lcd);
         //sleep(1);       //시연용
-        lcdtextwrite( str1, str_cnt, 2);
+        //lcdtextwrite( str1, str2, 2);
         usleep(50000);    //테스트용
         //sprintf(str1, "%s", "PRESS START");
         printf("\t\t\t\t\t??????????????????%2d:%2d\n",  min_lcd, sec_lcd);
@@ -383,18 +386,22 @@ void now_turn_lcd(int level){
             if (level == CRS_MAIN)
             {
                 str1 = "PRESS START";
+                lcdtextwrite("PRESS START", str2, 1);
             }
             else if(level == CRS_MANUAL)
             {
                 str1 = "MANUAL        ";
+                lcdtextwrite("MANUAL        ", str2, 1);
             }  
             else if (level == CRS_START)	
             {
                 str1 = "BEGIN         ";
+                lcdtextwrite("BEGIN         ", str2, 1);
             }
             else if (level == CRS_BASIC)
             {
                 str1 = "BEGIN         ";
+                lcdtextwrite("BEGIN         ", str2, 1);
             }
             
             //CAR COMPONENT에서 다음으로 안 넘어가고 시간도 멈춤..
@@ -404,122 +411,49 @@ void now_turn_lcd(int level){
             else if (level == CRS_UPHILL)
             {
                 str1 = "UP HILL        ";
+                lcdtextwrite("UP HILL        ", str2, 1);
             }
             else if (level == CRS_JUNCTION_1 || level == CRS_JUNCTION_2 )
             {
                 str1 = "JUNCTION   ";
+                lcdtextwrite("JUNCTION   ", str2, 1);
             }
             else if (level == CRS_PARKING)
             {
                 str1 = "PARKING         ";
+                lcdtextwrite("PARKING         ", str2, 1);
             }
             else if (level == CRS_EMERGENCY_A || level == CRS_EMERGENCY_B || level == CRS_EMERGENCY_C || level == CRS_EMERGENCY_D)
             {
                 str1 = "EMERGENCY         ";
+                lcdtextwrite("EMERGENCY         ", str2, 1);
             }
             else if (level == CRS_ACCEL)
             {
                 str1 = "ACCELATE         ";
+                lcdtextwrite("ACCELATE         ", str2, 1);
             }
             else //if (level == CRS_END)
             {
                 str1 = "END                  ";
+                lcdtextwrite("END                  ", str2, 1);
             }
             sleep(1);
-            lcdtextwrite(str1, str_cnt, 1);
-            //lcdtextwrite(str1, str_cnt, 2);
+            lcdtextwrite(str1, str2, 1);
+            lcdtextwrite(str1, str2, 2);
 }
 
 void *textlcd()
 {
   txtlcd_Init();
   //BASIC UP JUNCTION PARIKNG EMERGENCY ACCEL END
+  lcdtextwrite("               ", str2, 1);
+  lcdtextwrite("               ", str2, 2);
 
-    while (1)
-	{
-        /*
-        //cnt += 1;
-        if(simuwork)
-        {
-            ++sec_lcd;
-            if(sec_lcd == 60)
-            {
-                ++min_lcd;
-                sec_lcd = 0;
-            }
-        }
-        */
-/*
-        if(now_level != prev_level_lcd){
-            if (now_level == CRS_MAIN)
-            {
-                str1 = "PRESS START";
-            }
-            else if(now_level == CRS_MANUAL)
-            {
-                str1 = "MANUAL        ";
-            }  
-            else if (now_level == CRS_START)	
-            {
-                str1 = "BEGIN         ";
-            }
-            else if (now_level == CRS_BASIC)
-            {
-                str1 = "CAR COMPONENT";
-            }
-            
-            //CAR COMPONENT에서 다음으로 안 넘어가고 시간도 멈춤..
-            
-            else if (now_level == CRS_UPHILL)
-            {
-                str1 = "UP HILL        ";
-            }
-            else if (now_level == CRS_JUNCTION_1 || now_level == CRS_JUNCTION_2 )
-            {
-                str1 = "JUNCTION   ";
-            }
-            else if (now_level == CRS_PARKING)
-            {
-                str1 = "PARKING         ";
-            }
-            else if (now_level == CRS_EMERGENCY_A || now_level == CRS_EMERGENCY_B || now_level == CRS_EMERGENCY_C || now_level == CRS_EMERGENCY_D)
-            {
-                str1 = "EMERGENCY         ";
-            }
-            else if (now_level == CRS_ACCEL)
-            {
-                str1 = "ACCELATE         ";
-            }
-            else if (now_level == CRS_END)
-            {
-                str1 = "END                  ";
-            }
-            
-            prev_level_lcd = now_level;
-        }
-        */
-
-        // sprintf(str_cnt0, "%d", cnt[0]);
-        //sprintf(str_cnt1, "%d", cnt[1]);
-        // sprintf(str_cnt2, "%d", cnt[2]);
-        // sprintf(str_cnt3, "%d", cnt[3]);
-        //sprintf(str_cnt, "            %d:%d%d",  cnt[2], cnt[1], cnt[0]);
-       // sprintf(str_cnt, "           %2d:%2d",  min_lcd, sec_lcd);
-        //sleep(1);       //시연용
-        lcdtextwrite( str1, str_cnt, 1);
-        lcdtextwrite( str1, str_cnt, 2);
-        usleep(50000);    //테스트용
-        //sprintf(str1, "%s", "PRESS START");
-        printf("\t\t\t\t\t??????????????????%2d:%2d\n",  min_lcd, sec_lcd);
-    }
-
-
-
-
-  //pthread_create(&tid[0], NULL ,&count, NULL);
+  pthread_create(&tid[0], NULL ,&count, NULL);
   //pthread_create(&tid[1], NULL ,&txtdisplay, NULL);
 
-  //pthread_join (tid[0], NULL);
+  pthread_join (tid[0], NULL);
   //pthread_join (tid[1], NULL);
 }
   //9 단계로 나뉨 CAR SIMULATOR
@@ -1152,7 +1086,7 @@ void *btncheck(void)
     ledOnOff(0, 0);
     ledOnOff(0, 1); //시작시 안전벨트 안한상태
     ledOnOff(1, 1); //시작시 사이드브레이크 올라가있음
-    ledOnOFF(7,0); //시작시 drive
+    ledOnOff(7,0); //시작시 drive
     int msgID = msgget(MESSAGE_ID, IPC_CREAT | 0666);
     while(1) {
     while (simuwork == 1)
@@ -1911,6 +1845,7 @@ void driveTest()
     {
         scBTN_Start = 0;
         nums=0; // 게임화면 0으로 시작
+        c_score = 100;
         now_level = CRS_BASIC;
         now_turn_lcd(CRS_BASIC);
         showstate = 4; // 화면에 운전이미지 정지 표시 시작.0번은 디폴트. 이미지 00000고정
@@ -2219,12 +2154,13 @@ void driveTest()
             usleep(100000);
             if(moving_r || moving_l) {
                 printf("dir fail!");
-                if(dirfail>=7) {
+                if(dirfail>=5) {
 	soundEffect(SE_MINUS);
 	minuspoint = minuspoint + 5;
+    break;
 	}
                 else dirfail++;
-            break;}
+            }
 
         }
 
@@ -2287,15 +2223,18 @@ void driveTest()
             else uphillcnt++;
         }
 
-         while(nums<=140) {usleep(100000);
+         while(nums<=140) {
+            usleep(100000);
             if(moving_r || moving_l) {
                 printf("dir fail!");
-                if(dirfail>=7) {
+                if(dirfail>=5) {
 	soundEffect(SE_MINUS);
 	minuspoint = minuspoint + 5;
+    break;
 	}
                 else dirfail++;
-            break;}
+            }
+
 }
             dirfail=0;
          while(1) {
@@ -2307,16 +2246,19 @@ void driveTest()
             }
             if(nums>=163) break;
          }
-
-         while(nums<=197) {usleep(100000);
+        dirfail=0;
+         while(nums<=197) {
+            usleep(100000);
             if(moving_r || moving_l) {
                 printf("dir fail!");
-                if(dirfail>=7) {
+                if(dirfail>=5) {
 	soundEffect(SE_MINUS);
 	minuspoint = minuspoint + 5;
+    break;
 	}
                 else dirfail++;
-            break;}
+            }
+
 }
             dirfail=0;
           while(1) {
@@ -2329,15 +2271,18 @@ void driveTest()
             if(nums>=217) break;
          }
 
-         while(nums<=230) {usleep(100000);
+         while(nums<=230) {
+            usleep(100000);
             if(moving_r || moving_l) {
                 printf("dir fail!");
-                if(dirfail>=7) {
+                if(dirfail>=5) {
 	soundEffect(SE_MINUS);
 	minuspoint = minuspoint + 5;
+    break;
 	}
                 else dirfail++;
-            break;}
+            }
+
 }
          gameoverlaycheck=0;
 
@@ -2384,15 +2329,18 @@ void driveTest()
             alertscreen=0;
          }
         gameoverlaycheck=0;
-         while(nums<=270) {usleep(100000);
+         while(nums<=270) {
+            usleep(100000);
             if(moving_r || moving_l) {
                 printf("dir fail!");
-                if(dirfail>=7) {
+                if(dirfail>=5) {
 	soundEffect(SE_MINUS);
 	minuspoint = minuspoint + 5;
+    break;
 	}
                 else dirfail++;
-            break;}
+            }
+
 }
 
          // 교차로구간1
@@ -2406,7 +2354,7 @@ void driveTest()
          gameoverlaycheck=0;
          while (1)
          {
-            if (junctioncnt >= 300)
+            if (junctioncnt >= 400)
             {
                 printf("교차로 30초 이내 통과 실패. 실격하셨습니다.\n");
                 gameoverlaycheck=42;
@@ -2433,15 +2381,18 @@ void driveTest()
                 junctioncnt++;
          }
         
-         while(nums<=320) {usleep(100000);
+         while(nums<=320) {
+            usleep(100000);
             if(moving_r || moving_l) {
                 printf("dir fail!");
-                if(dirfail>=7) {
+                if(dirfail>=5) {
 	soundEffect(SE_MINUS);
 	minuspoint = minuspoint + 5;
+    break;
 	}
                 else dirfail++;
-            break;}
+            }
+
 }
 
          now_level = CRS_PARKING;
@@ -2614,15 +2565,18 @@ void driveTest()
             if(nums>=540) break;
          }
 
-         while(nums<=542) {usleep(100000);
+         while(nums<=542) {
+            usleep(100000);
             if(moving_r || moving_l) {
                 printf("dir fail!");
-                if(dirfail>=7) {
+                if(dirfail>=5) {
 	soundEffect(SE_MINUS);
 	minuspoint = minuspoint + 5;
+    break;
 	}
                 else dirfail++;
-            break;}
+            }
+
 }
 
          // 돌발구간B
@@ -2671,15 +2625,18 @@ void driveTest()
          }
 
          
-         while(nums<=565) {usleep(100000);
+         while(nums<=565) {
+            usleep(100000);
             if(moving_r || moving_l) {
                 printf("dir fail!");
-                if(dirfail>=7) {
+                if(dirfail>=5) {
 	soundEffect(SE_MINUS);
 	minuspoint = minuspoint + 5;
+    break;
 	}
                 else dirfail++;
-            break;}
+            }
+
 }
             // crs_emergency = 0;
 
@@ -2694,15 +2651,18 @@ void driveTest()
             if(nums>=588) break;
          }
 
-         while(nums<=610) {usleep(100000);
+         while(nums<=610) {
+            usleep(100000);
             if(moving_r || moving_l) {
                 printf("dir fail!");
-                if(dirfail>=7) {
+                if(dirfail>=5) {
 	soundEffect(SE_MINUS);
 	minuspoint = minuspoint + 5;
+    break;
 	}
                 else dirfail++;
-            break;}
+            }
+
 }
              dirfail=0;
         while(1) {
@@ -2715,15 +2675,17 @@ void driveTest()
             if(nums>=631) break;
          }
 
-         while(nums<=690) {usleep(100000);
+         while(nums<=690) {
+            usleep(100000);
             if(moving_r || moving_l) {
                 printf("dir fail!");
-                if(dirfail>=7) {
+                if(dirfail>=5) {
 	soundEffect(SE_MINUS);
 	minuspoint = minuspoint + 5;
+    break;
 	}
                 else dirfail++;
-            break;}
+            }
 }
             dirfail=0;
         while(1) {
@@ -2736,15 +2698,18 @@ void driveTest()
             if(nums>=711) break;
          }
 
-         while(nums<=725) {usleep(100000);
+         while(nums<=725) {
+            usleep(100000);
             if(moving_r || moving_l) {
                 printf("dir fail!");
-                if(dirfail>=7) {
+                if(dirfail>=5) {
 	soundEffect(SE_MINUS);
 	minuspoint = minuspoint + 5;
+    break;
 	}
                 else dirfail++;
-            break;}
+            }
+
 }
         
         // 교차로구간2
@@ -2761,7 +2726,7 @@ void driveTest()
          gameoverlaycheck=0;
          while (1)
          {
-            if (junctioncnt >= 300)
+            if (junctioncnt >= 400)
             {
                 printf("교차로 30초 이내 통과 실패. 실격하셨습니다.\n");
                 gameoverlaycheck=42;
@@ -2800,15 +2765,18 @@ void driveTest()
                     gameoverlaycheck=0;
                 }
         
-         while(nums<=775) {usleep(100000);
+         while(nums<=775) {
+            usleep(100000);
             if(moving_r || moving_l) {
                 printf("dir fail!");
-                if(dirfail>=7) {
+                if(dirfail>=5) {
 	soundEffect(SE_MINUS);
 	minuspoint = minuspoint + 5;
+    break;
 	}
                 else dirfail++;
-            break;}
+            }
+
 }
 
 
@@ -2864,15 +2832,18 @@ void driveTest()
             // crs_emergency = 0;
         }
 
-        while(nums<=824) {usleep(100000);
+        while(nums<=824) {
+            usleep(100000);
             if(moving_r || moving_l) {
                 printf("dir fail!");
-                if(dirfail>=7) {
+                if(dirfail>=5) {
 	soundEffect(SE_MINUS);
 	minuspoint = minuspoint + 5;
+    break;
 	}
                 else dirfail++;
-            break;}
+            }
+
 }
         dirfail=0;
         while(1) {
@@ -2885,15 +2856,18 @@ void driveTest()
             if(nums>=854) break;
          }
 
-         while(nums<=879) {usleep(100000);
+         while(nums<=879) {
+            usleep(100000);
             if(moving_r || moving_l) {
                 printf("dir fail!");
-                if(dirfail>=7) {
+                if(dirfail>=5) {
 	soundEffect(SE_MINUS);
 	minuspoint = minuspoint + 5;
+    break;
 	}
                 else dirfail++;
-            break;}
+            }
+
 }
             dirfail=0;
         while(1) {
@@ -2906,15 +2880,18 @@ void driveTest()
             if(nums>=905) break;
          }
 
-         while(nums<=911) {usleep(100000);
+         while(nums<=911) {
+            usleep(100000);
             if(moving_r || moving_l) {
                 printf("dir fail!");
-                if(dirfail>=7) {
+                if(dirfail>=5) {
 	soundEffect(SE_MINUS);
 	minuspoint = minuspoint + 5;
+    break;
 	}
                 else dirfail++;
-            break;}
+            }
+
 }
 
         // 가속구간
@@ -3000,15 +2977,18 @@ void driveTest()
             alertscreen=0;
         }
 
-        while(nums<=979) {usleep(100000);
+        while(nums<=979) {
+            usleep(100000);
             if(moving_r || moving_l) {
                 printf("dir fail!");
-                if(dirfail>=7) {
+                if(dirfail>=5) {
 	soundEffect(SE_MINUS);
 	minuspoint = minuspoint + 5;
+    break;
 	}
                 else dirfail++;
-            break;}
+            }
+
 }
 
             dirfail=0;
@@ -3022,15 +3002,18 @@ void driveTest()
             if(nums>=1004) break;
          }
 
-         while(nums<=1023) {usleep(100000);
+         while(nums<=1023) {
+            usleep(100000);
             if(moving_r || moving_l) {
                 printf("dir fail!");
-                if(dirfail>=7) {
+                if(dirfail>=5) {
 	soundEffect(SE_MINUS);
 	minuspoint = minuspoint + 5;
+    break;
 	}
                 else dirfail++;
-            break;}
+            }
+
 }
 
 
