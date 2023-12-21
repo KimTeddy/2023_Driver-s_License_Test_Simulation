@@ -303,6 +303,7 @@ void *count(void)
                 sec_lcd = 0;
             }
         }
+    
         // if(cnt[1]== 6)
         // {
         //     cnt[2] += 1;
