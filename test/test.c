@@ -421,7 +421,7 @@ void now_turn_lcd(int level){
             {
                 str1 = "ACCELATE         ";
             }
-            else if (level == CRS_END)
+            else //if (level == CRS_END)
             {
                 str1 = "END                  ";
             }
@@ -836,7 +836,7 @@ void *AccelWork(void){
           //  moving_l = 0;
           //  moving_r = 0;
             // printf("Set Changing Value\n");
-            if( gear == 1 && first_accel[0] - second_accel[0] > 5000 && !(first_accel[2] - second_accel[2] < 9000 && first_accel[2] - second_accel[2] > 4000 ) ) 
+            if( gear == 1 &&( (first_accel[0] - second_accel[0]) > 5000 )&& !(((first_accel[2] - second_accel[2]) < 9000)&&( (first_accel[2] - second_accel[2]) > 4000 )) ) 
             { //오른쪽으로 기운 경우 차이가 5000이상 나면 
               // 그리고 Break_on 정도로 기울이지 않았다면 Handle Turn Right
             
@@ -856,7 +856,7 @@ void *AccelWork(void){
             
             }
 
-            else if( gear == 1 && second_accel[0] - first_accel[0] > 5000 && !(first_accel[2] - second_accel[2] < 9000 && first_accel[2] - second_accel[2] > 4000 ) )
+            else if( gear == 1 && ((second_accel[0] - first_accel[0]) > 5000) && !(((first_accel[2] - second_accel[2]) < 9000) && ((first_accel[2] - second_accel[2]) > 4000) ) )
             { // 왼쪽으로 기운 경우 [차이가 5000이상 나면] 
               // && 뒤로 기울이지 않았다면 Handle Turn Left 출력
 
@@ -876,7 +876,7 @@ void *AccelWork(void){
                 usleep(accel_t);
             }
 
-            else if(  gear == 2 && (second_accel[2] - first_accel[2] > 4000) && (second_accel[2] - first_accel[2] < 9000) && !(second_accel[0] - first_accel[0] > 5000) && !(first_accel[0] - second_accel[0] > 5000)) 
+            else if(  gear == 2 && ((second_accel[2] - first_accel[2]) > 4000) && ((second_accel[2] - first_accel[2]) < 9000) && !((second_accel[0] - first_accel[0]) > 5000) && !((first_accel[0] - second_accel[0]) > 5000)) 
             {
             // gear == 2 [후진기어]이고 앞으로 기울이면 moving이 - 가 되게끔
             // second_accel[2] - first_accel[2] > 4000 && second_accel[2] - first_accel[2] < 9000 -> 앞으로 기울였으면
@@ -898,7 +898,7 @@ void *AccelWork(void){
                 usleep(accel_t);
             }
             
-            else if( second_accel[0] - first_accel[0] > 5000 && gear == 2 && second_accel[2] - first_accel[2] > 4000 && second_accel[2] - first_accel[2] < 9000 )
+            else if( ((second_accel[0] - first_accel[0]) > 5000) &&( gear == 2) && ((second_accel[2] - first_accel[2]) > 4000) && ((second_accel[2] - first_accel[2]) < 9000) )
             // gear == 2 && second_accel[2] - first_accel[2] > 4000 && second_accel[2] - first_accel[2] < 9000 &&
             // -> 후진기어 상태에서 앞으로 기울이고  
             //second_accel[0] - first_accel[0] > 5000
@@ -913,7 +913,7 @@ void *AccelWork(void){
                 //sleep(1);
                 usleep(accel_t);
             }
-            else if(first_accel[0] - second_accel[0] > 5000 && gear == 2 && second_accel[2] - first_accel[2] > 4000 && second_accel[2] - first_accel[2] < 9000 )
+            else if(((first_accel[0] - second_accel[0]) > 5000) && (gear == 2) && ((second_accel[2] - first_accel[2]) > 4000) && ((second_accel[2] - first_accel[2]) < 9000) )
             // gear == 2 && second_accel[2] - first_accel[2] > 4000 && second_accel[2] - first_accel[2] < 9000
             // -> [후진 기어]이고 앞으로 기울이고
             // first_accel[0] - second_accel[0] > 5000 
@@ -930,7 +930,7 @@ void *AccelWork(void){
 
             }
 
-            else if( first_accel[2] - second_accel[2] > 9000 )
+            else if(( first_accel[2] - second_accel[2]) > 9000 )
             { // 뒤로 기울인 각도가 큰 경우 (돌발에서 급 브레이크 밟은 경우)
                     // ~ 차 멈추는 코드 ~
                     printf(" Stop \n");
@@ -947,7 +947,7 @@ void *AccelWork(void){
                    //sleep(1);
             }
         
-            else if( gear == 1 && second_accel[2] - first_accel[2] > 4000 && second_accel[2] - first_accel[2] < 9000)
+            else if(( gear == 1) && ((second_accel[2] - first_accel[2]) > 4000) && ((second_accel[2] - first_accel[2] )< 9000))
             {// 앞으로만 기울인 경우 [  가속도 센서의 z값이 바뀜  ]
 
                 // ~차가 앞으로 진행하는 코드 ~
@@ -970,7 +970,7 @@ void *AccelWork(void){
                 //sleep(1);
             }
 
-            else if( gear == 1 && second_accel[2] - first_accel[2] > 8000 )
+            else if( (gear == 1) && ((second_accel[2] - first_accel[2]) > 8000 ))
                 { // 앞으로 많이 기울인 경우 (가속 구간에서 가속)
                     // ~ 차 속도를 빠르게 ~
 
@@ -992,7 +992,7 @@ void *AccelWork(void){
                     //sleep(1);
                     //sleep(1);
                 }
-                else if( gear == 2 && second_accel[2] - first_accel[2] > 8000 )
+                else if( (gear == 2) &&(( second_accel[2] - first_accel[2]) > 8000 ))
                 { 
                   // gear = 2인 상태에서 많이 기울인 경우
 
@@ -1012,7 +1012,7 @@ void *AccelWork(void){
                     //sleep(1);
                 }
                 
-            else if( gear == 1 && first_accel[0] - second_accel[0] > 5000 && second_accel[2] - first_accel[2] > 4000 && second_accel[2] - first_accel[2] < 9000) 
+            else if( (gear == 1) && ((first_accel[0] - second_accel[0]) > 5000) && ((second_accel[2] - first_accel[2] )> 4000) && ((second_accel[2] - first_accel[2]) < 9000)) 
             { 
                 printf(" Going Left! \n");
                 sleep(1);
@@ -1033,7 +1033,7 @@ void *AccelWork(void){
                 */
 
             }
-            else if( gear == 1 && second_accel[0] - first_accel[0] > 5000 && second_accel[2] - first_accel[2] > 4000 && second_accel[2] - first_accel[2] < 9000) 
+            else if( (gear == 1) && ((second_accel[0] - first_accel[0]) > 5000) &&(( second_accel[2] - first_accel[2] )> 4000 )&&(( second_accel[2] - first_accel[2]) < 9000)) 
             { 
                 printf(" Going Right! \n");
                 
