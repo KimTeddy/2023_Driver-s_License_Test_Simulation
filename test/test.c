@@ -2179,10 +2179,10 @@ void driveTest()
          while(nums<=140) {usleep(1000);}
             dirfail=0;
          while(1) {
-            
+            usleep(500000);
             if(nums<=162 && nums>=144 && moving_l==0) {
                 printf("dir fail!!!");
-                if(dirfail>=5) {gameoverlaycheck=35; crash=1; testfail =1; sleep(2); gameoverlaycheck=54; sleep(2); return 1;}
+                if(dirfail>=7) {gameoverlaycheck=35; crash=1; testfail =1; sleep(2); gameoverlaycheck=54; sleep(2); return 1;}
                 else dirfail++;
             }
             if(nums>=163) break;
@@ -2191,10 +2191,10 @@ void driveTest()
          while(nums<=197) {usleep(1000);}
             dirfail=0;
           while(1) {
-            
+            usleep(500000);
             if(nums<=216 && nums>=199 && moving_l==0) {
                 printf("dir fail!!!");
-                if(dirfail>=5) {gameoverlaycheck=35; crash=1; testfail =1; sleep(2); gameoverlaycheck=54; sleep(2); return 1;}
+                if(dirfail>=7) {gameoverlaycheck=35; crash=1; testfail =1; sleep(2); gameoverlaycheck=54; sleep(2); return 1;}
                 else dirfail++;
             }
             if(nums>=217) break;
@@ -2268,7 +2268,8 @@ void driveTest()
                 sleep(3);
             }
             usleep(100000);
-            if(nums<=302 && nums>=273 && trafLightState==3) // 적색신호등과 차량교차로 내 위치 판별 true
+            int traflights = *trafLightState; 
+            if(nums<=302 && nums>=273 && traflights==3) // 적색신호등과 차량교차로 내 위치 판별 true
             {
                 printf("신호위반 발생! 실격하셨습니다.\n");
                 gameoverlaycheck=43;
@@ -2297,20 +2298,10 @@ void driveTest()
 
          while (1)
          {
-            if (parkingcnt >= 500)
-            {
-                printf("주차 30초 이내 통과 실패. 실격하셨습니다.\n");
-                gameoverlaycheck=37;
-                testfail = 1;
-                sleep(2);
-            gameoverlaycheck=54;
-                sleep(3);
-                return 1;
-            }
-            
+
             while(1) {
-            usleep(100000);
-            if (parkingcnt >= 500)
+            usleep(500000);
+            /*if (parkingcnt >= 500)
             {
                 printf("주차 30초 이내 통과 실패. 실격하셨습니다.\n");
                 gameoverlaycheck=37;
@@ -2319,7 +2310,7 @@ void driveTest()
             gameoverlaycheck=54;
                 sleep(3);
                 return 1;
-            }
+            }*/
             dirfail=0;
             if(nums<=365 && nums>=330 && moving_r==0) {
                 if(dirfail>=7) {gameoverlaycheck=35; crash=1; testfail =1; sleep(2); gameoverlaycheck=54; sleep(2); return 1;}
@@ -2330,7 +2321,8 @@ void driveTest()
          }
 
          while(nums<=410) {
-            usleep(100000);
+            usleep(500000);
+            /*
             if (parkingcnt >= 500)
             {
                 printf("주차 30초 이내 통과 실패. 실격하셨습니다.\n");
@@ -2342,11 +2334,11 @@ void driveTest()
                 return 1;
             }
             else parkingcnt++;
-            }
+            }*/
         dirfail=0;
         while(1) {
-            usleep(100000);
-            if (parkingcnt >= 500)
+            usleep(500000);
+        /*    if (parkingcnt >= 500)
             {
                 printf("주차 30초 이내 통과 실패. 실격하셨습니다.\n");
                 gameoverlaycheck=37;
@@ -2355,7 +2347,7 @@ void driveTest()
             gameoverlaycheck=54;
                 sleep(3);
                 return 1;
-            }
+            }*/
             
             if(nums<=435 && nums>=423 && moving_r==0) {
                 if(dirfail>=15) {gameoverlaycheck=35; crash=1; testfail =1; sleep(2); gameoverlaycheck=54; sleep(2); return 1;}
@@ -2366,9 +2358,9 @@ void driveTest()
             
          }
         while(1) {
-            usleep(100000);
+            usleep(500000);
             if(nums>=439) reverseframe=1;
-            if (parkingcnt >= 500)
+       /*    if (parkingcnt >= 500)
             {
                 printf("주차 30초 이내 통과 실패. 실격하셨습니다.\n");
                 gameoverlaycheck=37;
@@ -2377,7 +2369,7 @@ void driveTest()
             gameoverlaycheck=54;
                 sleep(3);
                 return 1;
-            }
+            }*/
             dirfail=0;
             if(nums<=464 && nums>=440 && ( gear!=2 || moving_l==0 )) {
                 if(dirfail>=15) {gameoverlaycheck=35; crash=1; testfail =1; sleep(2); gameoverlaycheck=54; sleep(2); return 1;}
@@ -2388,8 +2380,8 @@ void driveTest()
          }
 
         while(1) {
-            usleep(100000);
-            if (parkingcnt >= 500)
+            usleep(500000);
+          /*  if (parkingcnt >= 500)
             {
                 printf("주차 30초 이내 통과 실패. 실격하셨습니다.\n");
                 gameoverlaycheck=37;
@@ -2398,7 +2390,7 @@ void driveTest()
             gameoverlaycheck=54;
                 sleep(3);
                 return 1;
-            }
+            }*/
             dirfail=0;
             if(nums<=475 && nums>=465 && gear!=2 ) {
                 if(dirfail>=15) {gameoverlaycheck=35; crash=1; testfail =1; sleep(2); gameoverlaycheck=54; sleep(2); return 1;}
@@ -2411,7 +2403,7 @@ void driveTest()
 
          while (1)
          {
-            if (parkingcnt >= 500 || nums>=483)
+         /*   if (parkingcnt >= 500 || nums>=483)
             {
                 printf("주차 실패. 실격하셨습니다.\n");
                 gameoverlaycheck=37;
@@ -2420,15 +2412,15 @@ void driveTest()
             gameoverlaycheck=54;
                 sleep(3);
                 return 1;
-            }
-            usleep(100000);
+            }*/
+            usleep(500000);
             if (nums<=482 && nums>=479 && sidebrake) {buzzerPlaySong(740);
                 sleep(1);
                 buzzerStopSong(); break; } // 주차 선 안에 위치한경우
             else parkingcnt++;
          }
 
-         while(1) {
+         while(1) {/*
             if (parkingcnt >= 500 || nums>=489)
             {
                 printf("주차 실패. 실격하셨습니다.\n");
@@ -2438,14 +2430,15 @@ void driveTest()
             gameoverlaycheck=54;
                 sleep(3);
                 return 1;
-            }
-            usleep(100000);
+            }*/
+            usleep(500000);
             if(nums<=488 && nums>=485 && gear==1) break;
             else parkingcnt++;
          }
-
-         while(1) {
             dirfail=0;
+         while(1) {
+            
+            usleep(500000);
             if(nums<=509 && nums>=489 && moving_r==0) {
                 if(dirfail>=15) {gameoverlaycheck=35; crash=1; testfail =1; sleep(2); gameoverlaycheck=54; sleep(2); return 1;}
                 else dirfail++;
@@ -2454,9 +2447,10 @@ void driveTest()
          }
 
          while(nums<=519) {usleep(1000);}
-
-         while(1) {
             dirfail=0;
+         while(1) {
+            
+            usleep(500000);
             if(nums<=539 && nums>=520 && moving_r==0) {
                 if(dirfail>=15) {gameoverlaycheck=35; crash=1; testfail =1; sleep(2); gameoverlaycheck=54; sleep(2); return 1;}
                 else dirfail++;
@@ -2515,9 +2509,10 @@ void driveTest()
          while(nums<=565) {usleep(1000);}
             // crs_emergency = 0;
 
-
-            while(1) {
             dirfail=0;
+            while(1) {
+            
+            usleep(500000);
             if(nums<=587 && nums>=567 && moving_r==0) {
                 if(dirfail>=5) {gameoverlaycheck=35; crash=1; testfail =1; sleep(2); gameoverlaycheck=54; sleep(2); return 1;}
                 else dirfail++;
@@ -2526,9 +2521,10 @@ void driveTest()
          }
 
          while(nums<=610) {usleep(1000);}
-
+             dirfail=0;
         while(1) {
-            dirfail=0;
+           
+            usleep(500000);
             if(nums<=630 && nums>=612 && moving_r==0) {
                 if(dirfail>=5) {gameoverlaycheck=35; crash=1; testfail =1; sleep(2); gameoverlaycheck=54; sleep(2); return 1;}
                 else dirfail++;
@@ -2537,9 +2533,10 @@ void driveTest()
          }
 
          while(nums<=690) {usleep(1000);}
-
-        while(1) {
             dirfail=0;
+        while(1) {
+            
+            usleep(500000);
             if(nums<=710 && nums>=693 && moving_r==0) {
                 if(dirfail>=5) {gameoverlaycheck=35; crash=1; testfail =1; sleep(2); gameoverlaycheck=54; sleep(2); return 1;}
                 else dirfail++;
@@ -2574,8 +2571,8 @@ void driveTest()
                 return 1;
             }
             usleep(100000);
-
-            if(nums<=766 && nums>=745 && trafLightState==3) // 적색신호등과 차량교차로 내 위치 판별 true
+            traflights = *trafLightState; 
+            if(nums<=766 && nums>=745 && traflights==3) // 적색신호등과 차량교차로 내 위치 판별 true
             {
                 printf("신호위반 발생! 실격하셨습니다.\n");
                 gameoverlaycheck=43;
@@ -2658,9 +2655,10 @@ void driveTest()
         }
 
         while(nums<=824) {usleep(1000);}
-
+        dirfail=0;
         while(1) {
-            dirfail=0;
+            
+            usleep(500000);
             if(nums<=853 && nums>=826 && moving_l==0) {
                 if(dirfail>=5) {gameoverlaycheck=35; crash=1; testfail =1; sleep(2); gameoverlaycheck=54; sleep(2); return 1; }
                 else dirfail++;
@@ -2669,9 +2667,10 @@ void driveTest()
          }
 
          while(nums<=879) {usleep(1000);}
-
-        while(1) {
             dirfail=0;
+        while(1) {
+            
+            usleep(500000);
             if(nums<=904 && nums>=881 && moving_l==0) {
                 if(dirfail>=5) {gameoverlaycheck=35; crash=1; testfail =1; sleep(2); gameoverlaycheck=54; sleep(2); return 1;}
                 else dirfail++;
@@ -2690,7 +2689,8 @@ void driveTest()
         accelcheck =0;
         gameoverlaycheck=0;
         while (1)
-        {
+        {   
+            usleep(500000);
             if (nums<=937 && nums>=911 &&carspeed == 0)
             {
                 printf("가속구간내 정지. 실격하셨습니다.\n");
@@ -2765,9 +2765,10 @@ void driveTest()
 
         while(nums<=979) {usleep(1000);}
 
-
-        while(1) {
             dirfail=0;
+        while(1) {
+            
+            usleep(500000);
             if(nums<=1003 && nums>=981 && moving_l==0) {
                 if(dirfail>=5) {gameoverlaycheck=35; crash=1; testfail =1; sleep(2); gameoverlaycheck=54; sleep(2); return 1;}
                 else dirfail++;
@@ -2803,6 +2804,7 @@ void driveTest()
         if(c_score>=80) {gameoverlaycheck=47; sleep(3); simufin=1; sleep(3); return 1;}
         else if(c_score>=80) {gameoverlaycheck=45; sleep(3);simufin=1; sleep(3); return 1; }
 
+    }
     }
     else if (next == 2)
         return;
