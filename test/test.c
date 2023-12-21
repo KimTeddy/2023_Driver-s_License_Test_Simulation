@@ -425,7 +425,8 @@ void now_turn_lcd(int level){
             {
                 str1 = "END                  ";
             }
-            lcdtextwrite(str1, str1, 1);
+            lcdtextwrite(str1, str_cnt, 1);
+            lcdtextwrite(str1, str_cnt, 2);
 }
 
 void *textlcd()
