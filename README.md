@@ -1,9 +1,18 @@
 # Embedded System
-- 강의 수강: 2023-2학기 임베디드시스템, 2023.09~12
-- 프로젝트 명: 운전면허 장내기능시험 모의 시뮬레이션
+<table>
+  <tr>
+    <td>강의 수강</td>
+    <td>2023-2학기 임베디드시스템, 2023.09~12</td>
+  </tr>
+  <tr>
+    <td>프로젝트 명</td>
+    <td>운전면허 장내기능시험 모의 시뮬레이션</td>
+  </tr>
+</table>
 <pre>
     
 </pre>
+
 - 전체 모습<br>
 ![image](https://github.com/KimTeddy/EmbeddedSystem/assets/68770209/61370dd1-1c04-4022-b3a7-9ea52d329c5b)
 - TFT-LCD & PERI Board<br>
@@ -12,7 +21,7 @@
 <!--![리사이즈KakaoTalk_20231221_004957180](https://github.com/KimTeddy/EmbeddedSystem/assets/68770209/fed32960-c538-47cf-b5b7-b6427de96460)-->
 <!--![KakaoTalk_20231221_004850454](https://github.com/KimTeddy/EmbeddedSystem/assets/68770209/b2aab785-53db-4fb3-a63e-aa09f30d3eb5)-->
 
-# 목차
+# 프로젝트 목차
 0. [초기 개발 모습](#0-초기-개발-모습)<br>
 1. [제안 아이디어](#1-제안-아이디어)<br>
     a. [제안 배경]()<br>
@@ -27,7 +36,7 @@
     a. [결론]()<br>
     b. [시연]()<br>
 5. 부록<br>
-    - Commit Graph
+- Commit Graph
 
 ## 0. 초기 개발 모습
 - OpenGL 사용, 3D 그래픽 구현
