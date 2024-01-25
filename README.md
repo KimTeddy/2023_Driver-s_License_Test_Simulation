@@ -1,10 +1,7 @@
 # Embedded System2023.09~12
 2023-2 임베디드시스템
-## 초기 개발 - OpenGL 사용, 3D 그래픽 구현
-- 프로젝트 제한조건->Xwindow 사용 불가로 인해 폐기
-![KakaoTalk_20231221_022149236](https://github.com/KimTeddy/EmbeddedSystem/assets/68770209/f3162c6e-9d3a-416f-9905-bf8205e7b953)
-
-
+## 목차
+0. 초기 개발 모습
 1. 제안 아이디어<br>
     a. 제안배경<br>
     b. 아이디어기술<br>
@@ -17,6 +14,11 @@
 4. 결과<br>
     a. 결론<br>
     b. 시연<br>
+
+## 초기 개발 모습
+- OpenGL 사용, 3D 그래픽 구현
+- 프로젝트 제한조건->Xwindow 사용 불가로 인해 폐기
+![KakaoTalk_20231221_022149236](https://github.com/KimTeddy/EmbeddedSystem/assets/68770209/f3162c6e-9d3a-416f-9905-bf8205e7b953)
 
 ## 1. 제안아이디어
 ### a. 제안 배경
