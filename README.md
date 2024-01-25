@@ -1,13 +1,18 @@
-# Embedded System2023.09~12
-2023-2 임베디드시스템
+# Embedded System
+- 강의 수강: 2023-2학기 임베디드시스템, 2023.09~12
+- 프로젝트 명: 운전면허 장내기능시험 모의 시뮬레이션
 <pre>
     
 </pre>
+- 전체 모습<br>
+![image](https://github.com/KimTeddy/EmbeddedSystem/assets/68770209/61370dd1-1c04-4022-b3a7-9ea52d329c5b)
+- TFT-LCD & PERI Board<br>
+&nbsp;<img src="https://github.com/KimTeddy/EmbeddedSystem/assets/68770209/fed32960-c538-47cf-b5b7-b6427de96460" width="30%">
+&nbsp;<img src="https://github.com/KimTeddy/EmbeddedSystem/assets/68770209/b2aab785-53db-4fb3-a63e-aa09f30d3eb5" width="35%">
+<!--![리사이즈KakaoTalk_20231221_004957180](https://github.com/KimTeddy/EmbeddedSystem/assets/68770209/fed32960-c538-47cf-b5b7-b6427de96460)-->
+<!--![KakaoTalk_20231221_004850454](https://github.com/KimTeddy/EmbeddedSystem/assets/68770209/b2aab785-53db-4fb3-a63e-aa09f30d3eb5)-->
 
-
-
-
-## 목차
+# 목차
 0. [초기 개발 모습](#0-초기-개발-모습)<br>
 1. [제안 아이디어](#1-제안-아이디어)<br>
     a. [제안 배경]()<br>
@@ -21,6 +26,8 @@
 4. [결과]()<br>
     a. [결론]()<br>
     b. [시연]()<br>
+5. 부록<br>
+    - Commit Graph
 
 ## 0. 초기 개발 모습
 - OpenGL 사용, 3D 그래픽 구현
@@ -32,7 +39,7 @@
 ![image](https://github.com/KimTeddy/EmbeddedSystem/assets/68770209/eb7cd5c1-2cbd-42bf-9dfb-511cc9f423d8)
 출처 : 통계청
 - 점점 떨어지고 있는 운전 면허 시험 합격률
-- 초보 운전자의 운전 미숙으로 인한 다양한 사고 발생 등의 사회적인 문제
+- 초보 운전자의 운전 미숙으로 인한 다양한 사고 발생 등의 사회적인 문제<br>
   ⇒ 현실적인 운전 경험을 모의로 제공하여 공간의 제약 없이 "운전면허 기능시험 모의 시뮬레이션"을 할 수 있도록 제작
 1. 운전 면허를 취득할 사람이라면 누구나 통과해야할 장내 기능 시험을 시뮬레이션으로 구현
 2. 시간과 공간의 제약 없이 시험해볼 수 있는 모의 시뮬레이션
@@ -90,12 +97,15 @@
     - 신호등 불빛으로 교차로에서 빨간 불일 때  차량이 교차로를 지나면 실격처리!<br>
 &nbsp;<img src="https://github.com/KimTeddy/EmbeddedSystem/assets/68770209/401bddce-b0d8-4e9d-9b4e-1ff345532bfd" width="30%"><br>
 <!--![KakaoTalk_20231221_043853273](https://github.com/KimTeddy/EmbeddedSystem/assets/68770209/401bddce-b0d8-4e9d-9b4e-1ff345532bfd)<br>-->
-&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://github.com/KimTeddy/EmbeddedSystem/assets/68770209/5a65d307-c6f9-4ef5-82f6-a2ff4a761b83" width="20%">
-&nbsp;&nbsp;<img src="https://github.com/KimTeddy/EmbeddedSystem/assets/68770209/e7959895-1e8b-4d28-a253-44b56ab01573" width="20%">
-&nbsp;&nbsp;<img src="https://github.com/KimTeddy/EmbeddedSystem/assets/68770209/7fe07c0a-176e-45c8-9bf3-665bd88b67e1" width="20%">
+<div align=center>
+<img src="https://github.com/KimTeddy/EmbeddedSystem/assets/68770209/5a65d307-c6f9-4ef5-82f6-a2ff4a761b83" width="20%">
+&nbsp;<img src="https://github.com/KimTeddy/EmbeddedSystem/assets/68770209/e7959895-1e8b-4d28-a253-44b56ab01573" width="20%">
+&nbsp;<img src="https://github.com/KimTeddy/EmbeddedSystem/assets/68770209/7fe07c0a-176e-45c8-9bf3-665bd88b67e1" width="20%">
+</div>
 <!--![KakaoTalk_20231221_0204207672](https://github.com/KimTeddy/EmbeddedSystem/assets/68770209/5a65d307-c6f9-4ef5-82f6-a2ff4a761b83)-->
 <!--![KakaoTalk_20231221_020420767_012](https://github.com/KimTeddy/EmbeddedSystem/assets/68770209/e7959895-1e8b-4d28-a253-44b56ab01573)-->
 <!--![KakaoTalk_20231221_020420767_022](https://github.com/KimTeddy/EmbeddedSystem/assets/68770209/7fe07c0a-176e-45c8-9bf3-665bd88b67e1)-->
+
 - Buzzer
     - 주행 시작 시 ”START 알림음”
     - 비상등과 방향등을 켰을 시 ”깜빡이 소리”
@@ -131,3 +141,7 @@
 - LED, 버튼, Buzzer, Text LCD, 가속도 센서 등 다양한 센서의 디바이스 드라이버들을 활용하여 프로젝트를 수행하고자 노력했다.
   이 과정에서 기기들 간의 상호 연결 및 통신에 대한 이해를 향상시키고, 리눅스 시스템에 대한 지식을 확장할 수 있었다. 
 - 이를 바탕으로, 팀원들간의 원활한 협업을 함으로써, 이번 임베디드시스템 프로젝트를 잘 마무리할 수 있었다.
+
+### 5. 부록
+- Commit Graph
+![image](https://github.com/KimTeddy/EmbeddedSystem/assets/68770209/d9d83fef-b4c1-44b8-b6ab-b5c5049b2d6f)
