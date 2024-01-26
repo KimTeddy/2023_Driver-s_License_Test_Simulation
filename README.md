@@ -15,12 +15,20 @@
      (b) 12. 21(목) : 최종 발표, 최종 보고서 제출<br>
     </td>
   </tr>
-    <tr>
+  <tr>
     <td align=center>프로젝트 수행기간</td>
     <td>
      (a) 초기 프로그램 : 10. 01 ~ 12. 17<br>
      (b) Device Driver : 11. 24 ~ 12. 12[3주(진도와 함께)]<br>
      (c) 최종 프로그램 : 12. 15 ~ 12. 21[1주(16주차)]<br>
+    </td>
+  </tr>
+  <tr>
+    <td align=center>사용 SW</td>
+    <td>
+Environment: <code>Linux</code> <code>VScode</code><br>
+Language: <code>C</code> <code>C++</code><br>
+Library: <code>OpenGL</code> <code>OpenCV</code>
     </td>
   </tr>
 </table>
