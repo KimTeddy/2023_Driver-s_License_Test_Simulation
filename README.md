@@ -119,10 +119,9 @@ echo "insmod all complete"
     - 안전벨트 / 사이드 브레이크 / 좌측 방향지시등 / 비상등 / 우측 방향지시등 / 기어
     - 키트의 6개의 버튼으로 자동차 제어에 사용되는 기능 요소 구현.
     - 각 버튼을 누르면 LED가 On/Off 되며 현재 상태 표시.<br>
-&nbsp;<img src="https://github.com/KimTeddy/EmbeddedSystem/assets/68770209/c238fb3c-0429-45bb-b0aa-87307b4b4a45" width="40%"><!--![SmartSelect_20231221_045426_Gallery-ezgif com-resize (1)](https://github.com/KimTeddy/EmbeddedSystem/assets/68770209/c238fb3c-0429-45bb-b0aa-87307b4b4a45)-->
     - 방향지시등 / 비상등의 경우 실제와 같이 깜빡임.<br>
-&nbsp;<img src="https://github.com/KimTeddy/EmbeddedSystem/assets/68770209/d675a11e-160a-43b1-a85e-2d3721de3157" width="40%">
-<!--![SmartSelect_20231221_043547_Gallery-ezgif com-resize](https://github.com/KimTeddy/EmbeddedSystem/assets/68770209/d675a11e-160a-43b1-a85e-2d3721de3157)-->
+&nbsp;<img src="https://github.com/KimTeddy/EmbeddedSystem/assets/68770209/c238fb3c-0429-45bb-b0aa-87307b4b4a45" width="40%"><!--![SmartSelect_20231221_045426_Gallery-ezgif com-resize (1)](https://github.com/KimTeddy/EmbeddedSystem/assets/68770209/c238fb3c-0429-45bb-b0aa-87307b4b4a45)-->
+&nbsp;<img src="https://github.com/KimTeddy/EmbeddedSystem/assets/68770209/d675a11e-160a-43b1-a85e-2d3721de3157" width="40%"><!--![SmartSelect_20231221_043547_Gallery-ezgif com-resize](https://github.com/KimTeddy/EmbeddedSystem/assets/68770209/d675a11e-160a-43b1-a85e-2d3721de3157)-->
 - FND(KimTeddy 담당)
     - [“현재점수” “감점될 점수”] 형식으로 표시.
     - 7-Segments 6자리 중 3-digit 사용, 현재 점수가 정확하게 표시됨.
