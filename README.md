@@ -28,16 +28,16 @@
     a. [제안 배경]()<br>
     b. [아이디어 기술]()<br>
 2. [연구방법]()<br>
-    a. [FLOW CHART]()<br>
-    b. [연구방법]()<br>
+    a. [SW 구성도]()<br>
+    b. [Flow Chart]()<br>
 3. [설계]()<br>
     a. [실행과정]()<br>
     b. [작동]()<br>
 4. [결과]()<br>
     a. [결론]()<br>
     b. [시연]()<br>
-5. 부록<br>
-- Commit Graph
+5. 부록
+<br>- Commit Graph
 
 ## 0. 초기 개발 모습
 - OpenGL 사용, 3D 그래픽 구현
