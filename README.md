@@ -25,23 +25,25 @@
 # 프로젝트 목차
 0. [초기 개발 모습](#0-초기-개발-모습)<br>
 1. [제안 아이디어](#1-제안-아이디어)<br>
-    a. [제안 배경]()<br>
-    b. [아이디어 기술]()<br>
-2. [연구방법]()<br>
-    a. [SW 구성도]()<br>
-    b. [Flow Chart]()<br>
-3. [설계]()<br>
-    a. [실행과정]()<br>
-    b. [작동]()<br>
-4. [결과]()<br>
-    a. [결론]()<br>
+    a. [제안 배경](#a-제안-배경)<br>
+    b. [아이디어 기술](#b-아이디어-기술)<br>
+2. [연구 방법](#2-연구-방법)<br>
+    a. [SW 구성도](#a-sw-구성도)<br>
+    b. [Flow Chart](#b-flow-chart)<br>
+3. [설계](#3-설계)<br>
+    a. [실행과정](#a-빌드업/실행과정)<br>
+    b. [작동](#b-작동)<br>
+4. [결과](#4-결과)<br>
+    a. [결론](#a-결론)<br>
     b. [시연]()<br>
-5. 부록
+5. [부록](#5-부록)
 <br>- Commit Graph
 
 ## 0. 초기 개발 모습
 - OpenGL 사용, 3D 그래픽 구현
-- 프로젝트 제한조건->Xwindow 사용 불가로 인해 폐기
+- 1000줄 코드 프로젝트 마감 2주 전 폐기
+  - 프로젝트 제한조건->Xwindow 사용 불가
+  - 따라서 OpenGL + EGL + 
 ![KakaoTalk_20231221_022149236](https://github.com/KimTeddy/EmbeddedSystem/assets/68770209/f3162c6e-9d3a-416f-9905-bf8205e7b953)
 
 ## 1. 제안 아이디어
@@ -84,9 +86,34 @@
 
 
 ## 3. 설계
-### a. 실행과정
+### a. 빌드업/실행과정
+1. led.c, led.h / button.c, button.h / buzzer.c, buzzer.h, buzzer_pitch.h, buzzer_soundeffect_defs.h / fnd.c, fnd.h / colorled.c, colorled.h / lcdtext.c, lcdtext.h / temp.c, temp.h / accelMagGyro.c, accelMagGyro.h / libfbdev.c, libfbdev.h / libbmp.c, libbmp.h, bitmapFileHeader.h 를 포함한 디바이스 드라이버 코드를 Makefile을 통해 libMyPeri.a 라이브러리로 컴파일한 후 결과 파일을 main.c와 같은 폴더에 탑재한다.
+2. touch.c, touch.h를 Makefile을 통해 libtouch.a 라이브러리 파일을 만든다.
+3. Makefile을 통해 libMyPeri.a, libtouch.a 라이브러리와 함께 main.c를 컴파일함과 동시에 나온 실행 파일을 udoo 보드로 자동 전송한다.
 - Makefile
 ![image](https://github.com/KimTeddy/EmbeddedSystem/assets/68770209/a7d0351b-880a-400c-99fc-51c55a3d215d)
+4. 미리 만들어 둔 loaddrv.sh파일을 실행하여 필요한 .ko 확장자인 디바이스 드라이버를 적재한다.
+- [loaddrv.sh](https://github.com/KimTeddy/EmbeddedSystem/blob/main/autodrv/loaddrv.sh)
+```sh
+#!/bin/bash
+# 드라이버 파일들의 배열 정의
+drivers=("buttondrv.ko" "buzzerdrv.ko" "fnddrv.ko" "leddrv.ko" "textlcddrv.ko")
+# 배열에 있는 각 드라이버를 순차적으로 로드
+for driver in "${drivers[@]}"
+do
+    echo "loading: $driver"
+    sudo insmod "$driver"
+    if [ $? -eq 0 ]; then
+        echo "SUCCESS: $driver ins complete"
+    else
+        echo "ERROR: $driver ins Failed"
+        exit 1  # 실패 시 스크립트 종료
+    fi
+done
+echo "insmod all complete"
+```
+5. udoo 보드에 원격접속 후 만든 실행 파일을 실행한다.
+
 ### b. 작동
 - Button & LED
     - 안전벨트 / 사이드 브레이크 / 좌측 방향지시등 / 비상등 / 우측 방향지시등 / 기어
@@ -159,5 +186,5 @@
 - 이를 바탕으로, 팀원들간의 원활한 협업을 함으로써, 이번 임베디드시스템 프로젝트를 잘 마무리할 수 있었다.
 
 ### 5. 부록
-- Commit Graph
+- Commit Graph<br>
 ![image](https://github.com/KimTeddy/EmbeddedSystem/assets/68770209/d9d83fef-b4c1-44b8-b6ab-b5c5049b2d6f)
