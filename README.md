@@ -43,59 +43,95 @@
 <!--![리사이즈KakaoTalk_20231221_004957180](https://github.com/KimTeddy/EmbeddedSystem/assets/68770209/fed32960-c538-47cf-b5b7-b6427de96460)-->
 <!--![KakaoTalk_20231221_004850454](https://github.com/KimTeddy/EmbeddedSystem/assets/68770209/b2aab785-53db-4fb3-a63e-aa09f30d3eb5)-->
 
+
 # 역할분담
 <table>
-    <tr>
+    <tr align=center>
         <th></th>
         <td>초기 프로젝트 기여</td>
         <td>Device Driver 제작</td>
         <td>최종 프로젝트 기여</td>
     </tr>
     <tr>
-        <th>나(팀장)</th>
+        <th align=center>나<br>(팀장)</th>
         <td>
-          팀원에게 OpenGL 알려주기<br>
-          OpenGL 화면 분할, 시점 변환, 애니메이션<br>
-          자동차 이동 알고리즘(전/후진 이동, 회전)<br>
-          Main Menu 디자인
+            <ul>
+                <li>팀원에게 OpenGL 알려주기</li>
+                <li>OpenGL 화면 분할, 시점 변환, 애니메이션</li>
+                <li>자동차 이동 알고리즘(전/후진 이동, 회전</li>
+                <li>Main Menu 디자인</li>
+            </ul>
         </td>
         <td>
-          Buzzer<br>
+            <ul>
+                <li>Buzzer</li>
+            </ul>
         </td>
-        <td>7-segment(6digit, 점수 애니메이션)<br> Buzzer(효과음 7종)</td>
+        <td>
+            <ul>
+                <li>7-segment(6digit, 점수 애니메이션)</li>
+                <li>Buzzer(효과음 7종)</li>
+                <li>자동차 이동 알고리즘(전/후진 이동, 회전</li>
+                <li>Main Menu 디자인</li>
+            </ul>
+        </td>
     </tr>
     <tr>
-        <th>1</th>
+        <th align=center>1</th>
         <td>
-          디바이스 드라이버를 프로젝트 마감 2주 전에 배워서 미리 할 수 있는게 거의 없었음.<br>
-          Color LED 신호등 기본 코드
+            <ul>
+                <li>Color LED 신호등 기본 코드</li>
+            </ul>
         </td>
         <td>
-          FND<br>
+            <ul>
+                <li>LED</li>
+                <li>Button</li>
+                <li>FND</li>
+                <li>bmp</li>
+            </ul>
         </td>
         <td>RGB LED(신호등)<br>프로그램 알고리즘</td>
     </tr>
     <tr>
-        <th>2</th>
+        <th align=center>2</th>
         <td>
-          차량 트랙 및 맵 모델링<br>
-          차선 이탈 판별<br>
-          자이로, 가속도 센서로 차량 속도 및 방향 조절
+            <ul>
+                <li>차량 트랙 및 맵 모델링</li>
+                <li>차선 이탈 판별</li>
+                <li>자이로, 가속도 센서로 차량 속도 및 방향 조절</li>
+            </ul>
         </td>
-        <td>D<br></td>
+        <td>
+            <ul>
+                <li>Charactor LCD</li>
+            </ul>
+        </td>
         <td>D<br></td>
     </tr>
     <tr>
-        <th>3</th>
-        <td>자동차 외형 모델링<br></td>
-        <td>D<br></td>
+        <th align=center>3</th>
         <td>
-          C<br>
+            <ul>
+                <li>자동차 외형 모델링</li>
+            </ul>
+        </td>
+        <td>
+            <ul>
+                <li>Button</li>
+                <li>Color LED</li>
+                <li>Touch Screen</li>
+            </ul>
+        </td>
+        <td>
+            <ul>
+                <li>Charactor LCD</li>
+            </ul>
         </td>
     </tr>
     <tr>
         <th>공통</th>
-        <td>D<br></td>
+        <td>디바이스 드라이버를 프로젝트 마감 2주 전에 배워서 미리 할 수 있는게 거의 없었음.</td>
         <td>D<br></td>
         <td>D<br></td>
     </tr>
