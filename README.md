@@ -40,11 +40,11 @@
 <br>- Commit Graph
 
 ## 0. 초기 개발 모습
-- OpenGL 사용, 3D 그래픽 구현
-- 1000줄 코드 프로젝트 마감 2주 전 폐기
-  - 프로젝트 제한조건->Xwindow 사용 불가
-  - 따라서 OpenGL + EGL + 
+- OpenGL 사용, 3D 그래픽 구현<br>
 ![KakaoTalk_20231221_022149236](https://github.com/KimTeddy/EmbeddedSystem/assets/68770209/f3162c6e-9d3a-416f-9905-bf8205e7b953)
+- 1000줄 코드, 프로젝트 마감 2주 전 폐기
+  - (초반에 안 알려주고 마감 2주 전에 알려준)프로젝트 제한조건 -> Xwindow 사용 불가
+  - 따라서 OpenGL을 EGL로 렌더링 후 BMP 파일로 빼내어 frame buffer로 출력하는 시도를 했으나 실패 -> 빠른 코드 폐기 판단
 
 ## 1. 제안 아이디어
 ### a. 제안 배경
@@ -87,12 +87,12 @@
 
 ## 3. 설계
 ### a. 빌드업/실행과정
-1. led.c, led.h / button.c, button.h / buzzer.c, buzzer.h, buzzer_pitch.h, buzzer_soundeffect_defs.h / fnd.c, fnd.h / colorled.c, colorled.h / lcdtext.c, lcdtext.h / temp.c, temp.h / accelMagGyro.c, accelMagGyro.h / libfbdev.c, libfbdev.h / libbmp.c, libbmp.h, bitmapFileHeader.h 를 포함한 디바이스 드라이버 코드를 Makefile을 통해 libMyPeri.a 라이브러리로 컴파일한 후 결과 파일을 main.c와 같은 폴더에 탑재한다.
-2. touch.c, touch.h를 Makefile을 통해 libtouch.a 라이브러리 파일을 만든다.
-3. Makefile을 통해 libMyPeri.a, libtouch.a 라이브러리와 함께 main.c를 컴파일함과 동시에 나온 실행 파일을 udoo 보드로 자동 전송한다.
+1. [노트북]led.c, led.h / button.c, button.h / buzzer.c, buzzer.h, buzzer_pitch.h, buzzer_soundeffect_defs.h / fnd.c, fnd.h / colorled.c, colorled.h / lcdtext.c, lcdtext.h / temp.c, temp.h / accelMagGyro.c, accelMagGyro.h / libfbdev.c, libfbdev.h / libbmp.c, libbmp.h, bitmapFileHeader.h 를 포함한 디바이스 드라이버 코드를 Makefile을 통해 libMyPeri.a 라이브러리로 컴파일한 후 결과 파일을 main.c와 같은 폴더에 탑재한다.
+2. [노트북]touch.c, touch.h를 Makefile을 통해 libtouch.a 라이브러리 파일을 만든다.
+3. [노트북]Makefile을 통해 libMyPeri.a, libtouch.a 라이브러리와 함께 main.c를 컴파일함과 동시에 나온 실행 파일을 udoo 보드로 자동 전송한다.
 - Makefile
 ![image](https://github.com/KimTeddy/EmbeddedSystem/assets/68770209/a7d0351b-880a-400c-99fc-51c55a3d215d)
-4. 미리 만들어 둔 loaddrv.sh파일을 실행하여 필요한 .ko 확장자인 디바이스 드라이버를 적재한다.
+4. [키트]udoo 보드에 원격접속 후 미리 만들어 둔 loaddrv.sh파일을 실행하여 필요한 .ko 확장자인 디바이스 드라이버를 적재한다.
 - [loaddrv.sh](https://github.com/KimTeddy/EmbeddedSystem/blob/main/autodrv/loaddrv.sh)
 ```sh
 #!/bin/bash
@@ -112,7 +112,7 @@ do
 done
 echo "insmod all complete"
 ```
-5. udoo 보드에 원격접속 후 만든 실행 파일을 실행한다.
+5. [키트]udoo 보드에 원격접속 후 만든 실행 파일을 실행한다.
 
 ### b. 작동
 - Button & LED
