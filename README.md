@@ -1,7 +1,7 @@
 # Embedded System
 <table>
   <tr>
-    <td>강의 수강</td>
+    <td>강의명</td>
     <td>2023-2학기 임베디드시스템, 2023.09~12</td>
   </tr>
   <tr>
@@ -14,7 +14,8 @@
 </pre>
 
 - 전체 모습<br>
-![image](https://github.com/KimTeddy/EmbeddedSystem/assets/68770209/61370dd1-1c04-4022-b3a7-9ea52d329c5b)
+![KakaoTalk_20231221_053445868](https://github.com/KimTeddy/EmbeddedSystem/assets/68770209/484a86e7-2857-44dd-b669-3461553506f5)
+
 - TFT-LCD & PERI Board<br>
 &nbsp;<img src="https://github.com/KimTeddy/EmbeddedSystem/assets/68770209/fed32960-c538-47cf-b5b7-b6427de96460" width="30%">
 &nbsp;<img src="https://github.com/KimTeddy/EmbeddedSystem/assets/68770209/b2aab785-53db-4fb3-a63e-aa09f30d3eb5" width="35%">
@@ -60,11 +61,11 @@
 
 ## 2. 연구 방법
 ### a. SW 구성도
-&nbsp;<img src="https://github.com/KimTeddy/EmbeddedSystem/assets/68770209/5a7b5e60-a5e1-49de-bbba-7144e60649db" width="40%">
+&nbsp;<img src="https://github.com/KimTeddy/EmbeddedSystem/assets/68770209/5a7b5e60-a5e1-49de-bbba-7144e60649db" width="60%">
 <!--![image](https://github.com/KimTeddy/EmbeddedSystem/assets/68770209/5a7b5e60-a5e1-49de-bbba-7144e60649db)-->
 ### b. Flow Chart
 - main<br>
-&nbsp;<img src="https://github.com/KimTeddy/EmbeddedSystem/assets/68770209/e5a5acbc-1255-4ac9-84d8-3f9fcfc88e0d" width="40%">
+&nbsp;<img src="https://github.com/KimTeddy/EmbeddedSystem/assets/68770209/e5a5acbc-1255-4ac9-84d8-3f9fcfc88e0d" width="80%">
 <!--![image](https://github.com/KimTeddy/EmbeddedSystem/assets/68770209/e5a5acbc-1255-4ac9-84d8-3f9fcfc88e0d)-->
 - Button & LED Thread<br>
 &nbsp;<img src="https://github.com/KimTeddy/EmbeddedSystem/assets/68770209/0ca8c03b-cf96-4343-b041-1145b22e1fd5" width="40%">
@@ -91,16 +92,18 @@
     - 안전벨트 / 사이드 브레이크 / 좌측 방향지시등 / 비상등 / 우측 방향지시등 / 기어
     - 키트의 6개의 버튼으로 자동차 제어에 사용되는 기능 요소 구현.
     - 각 버튼을 누르면 LED가 On/Off 되며 현재 상태 표시.<br>
-&nbsp;<img src="" width="40%">
+&nbsp;<img src="https://github.com/KimTeddy/EmbeddedSystem/assets/68770209/c238fb3c-0429-45bb-b0aa-87307b4b4a45" width="40%"><!--![SmartSelect_20231221_045426_Gallery-ezgif com-resize (1)](https://github.com/KimTeddy/EmbeddedSystem/assets/68770209/c238fb3c-0429-45bb-b0aa-87307b4b4a45)-->
     - 방향지시등 / 비상등의 경우 실제와 같이 깜빡임.<br>
-&nbsp;<img src="https://github.com/KimTeddy/EmbeddedSystem/assets/68770209/c238fb3c-0429-45bb-b0aa-87307b4b4a45" width="40%">
-<!--![SmartSelect_20231221_045426_Gallery-ezgif com-resize (1)](https://github.com/KimTeddy/EmbeddedSystem/assets/68770209/c238fb3c-0429-45bb-b0aa-87307b4b4a45)-->
-&nbsp;<img src="" width="40%">
+&nbsp;<img src="https://github.com/KimTeddy/EmbeddedSystem/assets/68770209/d675a11e-160a-43b1-a85e-2d3721de3157" width="40%">
+<!--![SmartSelect_20231221_043547_Gallery-ezgif com-resize](https://github.com/KimTeddy/EmbeddedSystem/assets/68770209/d675a11e-160a-43b1-a85e-2d3721de3157)-->
 - FND(KimTeddy 담당)
     - [“현재점수” “감점될 점수”] 형식으로 표시.
     - 7-Segments 6자리 중 3-digit 사용, 현재 점수가 정확하게 표시됨.
     - 오른쪽 2-digit은 감점 발생 시 감점될 점수 출력.
-    - 감점 점수는 4번 깜빡이고, 현재 점수에서 0.07초 간격으로 1씩 감소하는 애니메이션이 끝나면 마지막으로는 감점 점수를 뺀 현재 점수만 남게 띄움.
+    - 감점 점수는 4번 깜빡이고, 현재 점수에서 0.07초 간격으로 1씩 감소하는 애니메이션이 끝나면 마지막으로는 감점 점수를 뺀 현재 점수만 남게 띄움.<br>
+&nbsp;<img src="https://github.com/KimTeddy/EmbeddedSystem/assets/68770209/55f56318-1a87-4ecb-b421-f4bc3e5fe0c1" width="40%">
+<!--![KakaoTalk_20231221_030458642-ezgif com-resize](https://github.com/KimTeddy/EmbeddedSystem/assets/68770209/55f56318-1a87-4ecb-b421-f4bc3e5fe0c1)-->
+
 - Color LED
     - 빛의 3원색 RGB를 이용하여 신호등 빨강, 주황, 초록불 구현.
     - 신호등 불빛으로 교차로에서 빨간 불일 때  차량이 교차로를 지나면 실격처리!<br>
@@ -121,11 +124,15 @@
     - 각 단계들 넘어갈 시 “마리오 1UP 효과음”
     - 돌발상황 발생할 시 “돌발 경고음”
     - 감점 시 “감점 알림음”<br>
-&nbsp;<img src="https://github.com/KimTeddy/EmbeddedSystem/assets/68770209/4a49148f-f573-40c6-8300-93b713def9d0" width="40%">
+&nbsp;<img src="https://github.com/KimTeddy/EmbeddedSystem/assets/68770209/e64dd029-2630-4581-a42b-d531d1963dd1" width="40%">
+<!--![image](https://github.com/KimTeddy/EmbeddedSystem/assets/68770209/e64dd029-2630-4581-a42b-d531d1963dd1)-->
 <!--![image](https://github.com/KimTeddy/EmbeddedSystem/assets/68770209/4a49148f-f573-40c6-8300-93b713def9d0)-->
 - Accelerometer
     - 시뮬레이션이 START되면 시작 당시의 Accel센서 값을 저장한 후, while문을 돌며 현재 Accelerometer 값과 초기 Accelerometer 값을 비교.
-    - 비교된 값으로 핸들(키트)이 얼마나 기울었는지 판단하여 좌회전, 우회전, 서행, 가속, 브레이크를 구별할 수 있도록 구현.
+    - 비교된 값으로 핸들(키트)이 얼마나 기울었는지 판단하여 좌회전, 우회전, 서행, 가속, 브레이크를 구별할 수 있도록 구현.<br>
+&nbsp;<img src="https://github.com/KimTeddy/EmbeddedSystem/assets/68770209/2ef9e886-4236-4528-b237-e307ff674eea" width="20%">
+<!--![KakaoTalk_20231221_014546901](https://github.com/KimTeddy/EmbeddedSystem/assets/68770209/2ef9e886-4236-4528-b237-e307ff674eea)-->
+
 - TFT LCD(bmp+frame buffer)
     - TFT_LCD에 각 상황에 따라다른 화면을 출력하여 시뮬레이션 진행.
     - 시뮬레이션에서는 키트의 기울기에 따라 bmp이미지가 교체되며 애니메이션처럼 동작.
