@@ -1,15 +1,15 @@
 # Embedded System
 <table>
   <tr>
-    <td>기간</td>
+    <td align=center>기간</td>
     <td>2023.09~12, 2023-2학기 임베디드시스템</td>
   </tr>
   <tr>
-    <td>프로젝트 명</td>
+    <td align=center>프로젝트 명</td>
     <td>운전면허 장내기능시험 Simulation</td>
   </tr>
   <tr>
-    <td>주요 일정</td>
+    <td align=center>주요 일정</td>
     <td>
      (a) 11. 07 : 제안서 제출<br>
      (b) 12. 21 : 최종 발표<br>
