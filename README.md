@@ -48,9 +48,9 @@
 <table>
     <tr align=center>
         <th></th>
-        <td>초기 프로젝트 기여</td>
-        <td>Device Driver 제작</td>
-        <td>최종 프로젝트 기여</td>
+        <td>초기 프로젝트 기여<br><a href="https://github.com/KimTeddy/EmbeddedSystem/tree/main/OldProject" target="_blank">OpenGL, OldProject</a></td>
+        <td>Device Driver 제작<br><a href="https://github.com/KimTeddy/EmbeddedSystem/tree/main/libmyperi" target="_blank">libmyperi</a></td>
+        <td>최종 프로젝트 기여<br><a href="https://github.com/KimTeddy/EmbeddedSystem/tree/main/test" target="_blank">ProjectFolder</a></td>
     </tr>
     <tr>
         <th align=center>나<br>(팀장)</th>
@@ -65,6 +65,7 @@
         <td>
             <ul>
                 <li>Buzzer</li>
+                <li>gyroscope/accelerometer/magnetometer sensor</li>
             </ul>
         </td>
         <td>
@@ -89,6 +90,7 @@
                 <li>Button</li>
                 <li>FND</li>
                 <li>bmp</li>
+                <li>frameBuffer</li>
             </ul>
         </td>
         <td>RGB LED(신호등)<br>프로그램 알고리즘</td>
@@ -104,7 +106,7 @@
         </td>
         <td>
             <ul>
-                <li>Charactor LCD</li>
+                <li>CharactorLCD</li>
             </ul>
         </td>
         <td>D<br></td>
@@ -119,13 +121,14 @@
         <td>
             <ul>
                 <li>Button</li>
-                <li>Color LED</li>
-                <li>Touch Screen</li>
+                <li>ColorLED</li>
+                <li>TemperatureSensor</li>
+                <li>TouchScreen</li>
             </ul>
         </td>
         <td>
             <ul>
-                <li>Charactor LCD</li>
+                <li>CharactorLCD</li>
             </ul>
         </td>
     </tr>
