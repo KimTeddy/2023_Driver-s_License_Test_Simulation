@@ -1,22 +1,30 @@
 # Embedded System
 <table>
   <tr>
-    <td align=center>기간</td>
+    <td align=center>강의수강기간</td>
     <td>2023.09~12, 2023-2학기 임베디드시스템</td>
   </tr>
   <tr>
-    <td align=center>프로젝트 명</td>
+    <td align=center>프로젝트명</td>
     <td>운전면허 장내기능시험 Simulation</td>
   </tr>
   <tr>
-    <td align=center>주요 일정</td>
+    <td align=center>주요일정</td>
     <td>
-     (a) 11. 07 : 제안서 제출<br>
-     (b) 12. 21 : 최종 발표<br>
-     (c) 12. 21 : 최종 보고서 제출<br>
+     (a) 11. 07(화) : 제안서 제출<br>
+     (b) 12. 21(목) : 최종 발표, 최종 보고서 제출<br>
+    </td>
+  </tr>
+    <tr>
+    <td align=center>프로젝트 수행기간</td>
+    <td>
+     (a) 초기 프로그램 : 10. 01 ~ 12. 17<br>
+     (b) Device Driver : 11. 24 ~ 12. 12[3주(진도와 함께)]<br>
+     (c) 최종 프로그램 : 12. 15 ~ 12. 21[1주(16주차)]<br>
     </td>
   </tr>
 </table>
+=> 따라서 이 프로젝트는 디바이스 드라이버 작성을 제외하면 1주 안에 끝낸 프로젝트입니다.
 
 # 프로젝트 설명
 - 프로그램 실행 시 메인 화면이 나타나고 초기 설정이 완료된다.<br>
