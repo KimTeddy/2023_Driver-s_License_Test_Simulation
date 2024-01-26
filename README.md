@@ -47,10 +47,10 @@
 # 역할분담
 <table>
     <tr align=center>
-        <th></th>
-        <td>초기 프로젝트 기여<br><a href="https://github.com/KimTeddy/EmbeddedSystem/tree/main/OldProject" target="_blank">OpenGL, OldProject</a></td>
-        <td>Device Driver 제작<br><a href="https://github.com/KimTeddy/EmbeddedSystem/tree/main/libmyperi" target="_blank">libmyperi</a></td>
-        <td>최종 프로젝트 기여<br><a href="https://github.com/KimTeddy/EmbeddedSystem/tree/main/test" target="_blank">ProjectFolder</a></td>
+        <th width=5%></th>
+        <td width=40%>초기 프로젝트 기여<br><a href="https://github.com/KimTeddy/EmbeddedSystem/tree/main/OldProject" target="_blank">OpenGL, OldProject</a></td>
+        <td width=15%>Device Driver 제작<br><a href="https://github.com/KimTeddy/EmbeddedSystem/tree/main/libmyperi" target="_blank">libmyperi</a></td>
+        <td width=40%>최종 프로젝트 기여<br><a href="https://github.com/KimTeddy/EmbeddedSystem/tree/main/test" target="_blank">ProjectFolder</a></td>
     </tr>
     <tr>
         <th align=center>나<br>(팀장)</th>
@@ -65,7 +65,9 @@
         <td>
             <ul>
                 <li>Buzzer</li>
-                <li>gyroscope/accelerometer/magnetometer sensor</li>
+                <li>gyroscope,
+                    accelerometer,
+                    magnetometer Sensor</li>
             </ul>
         </td>
         <td>
@@ -93,7 +95,14 @@
                 <li>frameBuffer</li>
             </ul>
         </td>
-        <td>RGB LED(신호등)<br>프로그램 알고리즘</td>
+        <td>
+            <ul>
+                <li>프로그램 알고리즘</li>
+                <li>RGB LED(신호등)</li>
+                <li>팀원 코드 합치기</li>
+                <li>frameBuffer(bmp)</li>
+            </ul>
+        </td>
     </tr>
     <tr>
         <th align=center>2</th>
@@ -109,7 +118,7 @@
                 <li>CharactorLCD</li>
             </ul>
         </td>
-        <td>D<br></td>
+        <td>-<br></td>
     </tr>
     <tr>
         <th align=center>3</th>
@@ -128,15 +137,18 @@
         </td>
         <td>
             <ul>
-                <li>CharactorLCD</li>
+                <li>CharactorLCD(현재 진행단계, 경과시간 출력)</li>
+                <li>GyroSensor(기울기로 조작 구현)</li>
+                <li>TouchScreen(버튼별 터치 인식 범위 지정)</li>
+            </ul>
             </ul>
         </td>
     </tr>
     <tr>
         <th>공통</th>
         <td>디바이스 드라이버를 프로젝트 마감 2주 전에 배워서 미리 할 수 있는게 거의 없었음.</td>
-        <td>D<br></td>
-        <td>D<br></td>
+        <td>-<br></td>
+        <td>-<br></td>
     </tr>
 </table>
 
