@@ -72,8 +72,11 @@
         </td>
         <td>
             <ul>
+                <li>OpenCV사용(영상을 BMP 이미지 1000프레임으로 저장)<br><a href="https://github.com/KimTeddy/OpenCV/tree/main/231219_Video_to_bmp" target="_blank">해당 프로젝트(Video_to_bmp)</a></li>
                 <li>7-segment(6digit, 점수 애니메이션)</li>
                 <li>Buzzer(효과음 7종)</li>
+                <li>BMP이미지(차선이탈, 추돌)</li>
+                <li>PPT 제작</li>
             </ul>
         </td>
     </tr>
@@ -98,9 +101,10 @@
                 <li>프로그램 알고리즘</li>
                 <li>팀원 코드 합치기</li>
                 <li>RGB LED(신호등)</li>
+                <li>Button&LED(안전벨트,사이드브레이크,비상등,방향지시등,기어)</li>
                 <li>frameBuffer(bmp)</li>
                 <li>필요한 장면 이미지 컨설팅</li>
-                <li>Main Menu 디자인</li>
+                <li>BMP이미지(MainMenu 디자인)</li>
             </ul>
         </td>
     </tr>
@@ -118,7 +122,12 @@
                 <li>CharactorLCD</li>
             </ul>
         </td>
-        <td>-<br></td>
+        <td>
+            <ul>
+                <li>BMP이미지(각종 빨간 글씨 안내 메세지)</li>
+                <li>PPT 제작</li>
+            </ul>
+        </td>
     </tr>
     <tr>
         <th align=center>3</th>
@@ -138,9 +147,9 @@
         <td>
             <ul>
                 <li>CharactorLCD(현재 진행단계, 경과시간 출력)</li>
-                <li>GyroSensor(기울기로 조작 구현)</li>
+                <li>GyroSensor(기울기->엑셀,브레이크,좌/우회전 구현)</li>
                 <li>TouchScreen(버튼별 터치 인식 범위 지정)</li>
-            </ul>
+                <li>BMP이미지(Manual 전체, 기본 조작 테스트)</li>
             </ul>
         </td>
     </tr>
@@ -148,7 +157,12 @@
         <th>공통</th>
         <td>디바이스 드라이버를 프로젝트 마감 2주 전에 배워서 미리 할 수 있는게 거의 없었음.</td>
         <td>-<br></td>
-        <td>-<br></td>
+        <td>
+            <ul>
+                <li>bmp 이미지 제작</li>
+                <li>결과보고서 제작</li>
+            </ul>
+        </td>
     </tr>
 </table>
 
