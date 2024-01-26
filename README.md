@@ -76,6 +76,7 @@ Library: <code>OpenGL</code> <code>OpenCV</code>
                 <li>OpenGL 화면 분할, 시점 변환, 애니메이션</li>
                 <li>자동차 이동 알고리즘(전/후진 이동, 회전)</li>
                 <li>Main Menu 디자인</li>
+                <li><a href="https://github.com/KimTeddy/EmbeddedSystem/tree/main/OldProject/opengl-egl-test" target="_blank">opengl-egl-test</a></li>
             </ul>
         </td>
         <td>
@@ -89,7 +90,7 @@ Library: <code>OpenGL</code> <code>OpenCV</code>
         <td>
             <ul>
                 <li>OpenCV사용(영상을 BMP 이미지 1000프레임으로 저장)<br><a href="https://github.com/KimTeddy/OpenCV/tree/main/231219_Video_to_bmp" target="_blank">해당 프로젝트(Video_to_bmp)</a></li>
-                <li>7-segment(6digit, 점수 애니메이션)</li>
+                <li><a href="#b-작동" target="_blank">7-segment(6digit, 점수 애니메이션)</a></li>
                 <li>Buzzer(효과음 7종)</li>
                 <li>BMP이미지(차선이탈, 추돌)</li>
                 <li>PPT 제작</li>
