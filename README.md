@@ -130,7 +130,6 @@ Library: <code>OpenGL</code> <code>OpenCV</code>
             <ul>
                 <li>차량 트랙 및 맵 모델링</li>
                 <li>차선 이탈 판별</li>
-                <li>자이로, 가속도 센서로 차량 속도 및 방향 조절</li>
             </ul>
         </td>
         <td>
