@@ -150,6 +150,7 @@
                 <li>GyroSensor(기울기->엑셀,브레이크,좌/우회전 구현)</li>
                 <li>TouchScreen(버튼별 터치 인식 범위 지정)</li>
                 <li>BMP이미지(Manual 전체, 기본 조작 테스트)</li>
+                <li>PPT 제작</li>
             </ul>
         </td>
     </tr>
