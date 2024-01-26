@@ -58,7 +58,7 @@
             <ul>
                 <li>팀원에게 OpenGL 알려주기</li>
                 <li>OpenGL 화면 분할, 시점 변환, 애니메이션</li>
-                <li>자동차 이동 알고리즘(전/후진 이동, 회전</li>
+                <li>자동차 이동 알고리즘(전/후진 이동, 회전)</li>
                 <li>Main Menu 디자인</li>
             </ul>
         </td>
@@ -74,8 +74,6 @@
             <ul>
                 <li>7-segment(6digit, 점수 애니메이션)</li>
                 <li>Buzzer(효과음 7종)</li>
-                <li>자동차 이동 알고리즘(전/후진 이동, 회전</li>
-                <li>Main Menu 디자인</li>
             </ul>
         </td>
     </tr>
@@ -98,9 +96,11 @@
         <td>
             <ul>
                 <li>프로그램 알고리즘</li>
-                <li>RGB LED(신호등)</li>
                 <li>팀원 코드 합치기</li>
+                <li>RGB LED(신호등)</li>
                 <li>frameBuffer(bmp)</li>
+                <li>필요한 장면 이미지 컨설팅</li>
+                <li>Main Menu 디자인</li>
             </ul>
         </td>
     </tr>
