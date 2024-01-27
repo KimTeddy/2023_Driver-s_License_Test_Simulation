@@ -26,8 +26,8 @@
   <tr>
     <th align=center>Software</th>
     <td>
-OS: <code>Labtop: Linux(하모니카3.0)</code> <code>Kit: Linux</code>
-IDE: <code>Labtop: VScode</code><br>
+OS: <code>Labtop: Linux(하모니카3.0)</code> <code>Kit: Linux</code><br>
+Code Editor: <code>Labtop: Visual Studio Code</code><br>
 Language: <code>C</code> <code>C++</code><br>
 Library: <code>OpenGL</code> <code>OpenCV</code>
     </td>
