@@ -362,4 +362,4 @@ echo "insmod all complete"
 
 ### 5. 부록
 - Commit Graph<br>
-![image](https://github.com/KimTeddy/EmbeddedSystem/assets/68770209/d9d83fef-b4c1-44b8-b6ab-b5c5049b2d6f)
+![image01](https://github.com/KimTeddy/EmbeddedSystem/assets/68770209/8dc6fec4-c637-43e4-892a-40cb5b537567)
