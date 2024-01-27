@@ -1,22 +1,22 @@
 # Embedded System
 <table>
   <tr>
-    <td align=center>강의수강기간</td>
+    <th align=center>강의수강</th>
     <td>2023.09~12, 2023-2학기 임베디드시스템</td>
   </tr>
   <tr>
-    <td align=center>프로젝트명</td>
+    <th align=center>프로젝트명</th>
     <td>운전면허 장내기능시험 Simulation</td>
   </tr>
   <tr>
-    <td align=center>주요일정</td>
+    <th align=center>주요일정</th>
     <td>
      (a) 11. 07(화) : 제안서 제출<br>
      (b) 12. 21(목) : 최종 발표, 최종 보고서 제출<br>
     </td>
   </tr>
   <tr>
-    <td align=center>프로젝트 수행기간</td>
+    <th align=center>프로젝트 수행기간</th>
     <td>
      (a) 초기 프로그램 : 10. 01 ~ 12. 17<br>
      (b) Device Driver : 11. 24 ~ 12. 12[3주(진도와 함께)]<br>
@@ -24,7 +24,7 @@
     </td>
   </tr>
   <tr>
-    <td align=center>사용 SW</td>
+    <th align=center>사용 SW</th>
     <td>
 Environment: <code>Linux</code> <code>VScode</code><br>
 Language: <code>C</code> <code>C++</code><br>
