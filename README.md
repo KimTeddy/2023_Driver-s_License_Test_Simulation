@@ -1,38 +1,51 @@
 # Embedded System
 <table>
   <tr>
-    <th align=center>강의수강</th>
-    <td>2023.09~12, 2023-2학기 임베디드시스템</td>
+    <th align=center>프로젝트명</th>
+    <th>운전면허 장내기능시험 Simulation</th>
   </tr>
   <tr>
-    <th align=center>프로젝트명</th>
-    <td>운전면허 장내기능시험 Simulation</td>
+    <th align=center width=30%>강의수강</th>
+    <td width=70%>2023.09~12, 2023-2학기 임베디드시스템</td>
   </tr>
   <tr>
     <th align=center>주요일정</th>
     <td>
-     (a) 11. 07(화) : 제안서 제출<br>
-     (b) 12. 21(목) : 최종 발표, 최종 보고서 제출<br>
+     (a) 2023. 11. 07(화) : 제안서 제출<br>
+     (b) 2023. 12. 21(목) : 최종 발표, 최종 보고서 제출<br>
     </td>
   </tr>
   <tr>
     <th align=center>프로젝트 수행기간</th>
     <td>
-     (a) 초기 프로그램 : 10. 01 ~ 12. 17<br>
-     (b) Device Driver : 11. 24 ~ 12. 12[3주(진도와 함께)]<br>
-     (c) 최종 프로그램 : 12. 15 ~ 12. 21[1주(16주차)]<br>
+     (a) 초기 프로그램 : 2023. 10. 01 ~ 12. 17<br>
+     (b) Device Driver : 2023. 11. 24 ~ 12. 12[3주(진도와 함께)]<br>
+     (c) 최종 프로그램 : 2023. 12. 15 ~ 12. 21[1주(16주차)]<br>
     </td>
   </tr>
   <tr>
-    <th align=center>사용 SW</th>
+    <th align=center>Software</th>
     <td>
-Environment: <code>Linux</code> <code>VScode</code><br>
+OS: <code>Labtop: Linux(하모니카3.0)</code> <code>Kit: Linux</code>
+IDE: <code>Labtop: VScode</code><br>
 Language: <code>C</code> <code>C++</code><br>
 Library: <code>OpenGL</code> <code>OpenCV</code>
     </td>
   </tr>
+  <tr>
+    <th align=center>Hardware</th>
+    <td>
+Kit: <code>Mainboard: udoo board</code>  +  <code>GPIO board: peri board</code><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<img src="https://github.com/KimTeddy/EmbeddedSystem/assets/68770209/d6fc3847-ee80-42f3-b7b7-8bf72dc45a95" width="18%">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<img src="https://github.com/KimTeddy/EmbeddedSystem/assets/68770209/b2aab785-53db-4fb3-a63e-aa09f30d3eb5" width="13%">
+    </td>
+  </tr>
 </table>
-=> 따라서 이 프로젝트는 디바이스 드라이버 작성을 제외하면 1주 안에 끝낸 프로젝트입니다.
+==> 따라서 이 프로젝트는 디바이스 드라이버 작성을 제외하면 1주 안에 끝낸 프로젝트입니다.
+<!--<a href="https://github.com/KimTeddy/EmbeddedSystem/assets/68770209/d6fc3847-ee80-42f3-b7b7-8bf72dc45a95" target="_blank"><code>udoo board</code></a>-->
+<!--![image](https://github.com/KimTeddy/EmbeddedSystem/assets/68770209/d6fc3847-ee80-42f3-b7b7-8bf72dc45a95)-->
 
 # 프로젝트 설명
 - 프로그램 실행 시 메인 화면이 나타나고 초기 설정이 완료된다.<br>
