@@ -29,7 +29,7 @@
 OS: <code>Labtop: Linux(HamoniKR-3.0-64bit)</code> <code>Kit: Linux(UDOOBuntu)</code><br>
 Virtual Machine: <code>Labtop: Oracle VM VirtualBox</code><br>
 Code Editor: <code>Labtop: Visual Studio Code</code><br>
-Language: <code>C</code> <code>C++</code><br>
+Language: <code>C</code> <code>C++</code> <code>Makefile</code> <code>Shell script</code><br>
 Library: <code>OpenGL</code> <code>OpenCV</code>
     </td>
   </tr>
@@ -103,8 +103,8 @@ Kit: <code>Mainboard: udoo board</code>  +  <code>GPIO board: peri board</code><
         </td>
         <td>
             <ul>
-                <li>OpenCV사용(영상을 BMP 이미지 1000프레임으로 저장)<br><a href="https://github.com/KimTeddy/OpenCV/tree/main/231219_Video_to_bmp" target="_blank">해당 프로젝트(Video_to_bmp)</a></li>
-                <li><a href="#b-작동" target="_blank">7-segment(6digit, 점수 애니메이션)</a></li>
+                <li>OpenCV사용(영상을 BMP 이미지 1000프레임으로 저장)<br><a href="https://github.com/KimTeddy/OpenCV/tree/main/231219_Video_to_bmp" target="_blank">해당 프로젝트</a>(Video_to_bmp)</li>
+                <li><a href="#b-작동" target="_blank">7-segment</a>(6digit, 점수 애니메이션)</li>
                 <li>Buzzer(효과음 7종)</li>
                 <li>BMP이미지(차선이탈, 추돌)</li>
                 <li>PPT 제작</li>
@@ -136,6 +136,7 @@ Kit: <code>Mainboard: udoo board</code>  +  <code>GPIO board: peri board</code><
                 <li>frameBuffer(bmp)</li>
                 <li>필요한 장면 이미지 컨설팅</li>
                 <li>BMP이미지(MainMenu 디자인)</li>
+                <li><a href="https://github.com/KimTeddy/EmbeddedSystem/tree/main/autodrv" target="_blank">Shell Script 파일</a>(DeviceDriver 자동 탑재, WiFi 자동 연결)</li>
             </ul>
         </td>
     </tr>
@@ -187,7 +188,7 @@ Kit: <code>Mainboard: udoo board</code>  +  <code>GPIO board: peri board</code><
     <tr>
         <th>공통</th>
         <td>디바이스 드라이버를 프로젝트 마감 2주 전에 배워서 미리 할 수 있는게 거의 없었음.</td>
-        <td>-<br></td>
+        <td align=center>-<br></td>
         <td>
             <ul>
                 <li>bmp 이미지 제작</li>
