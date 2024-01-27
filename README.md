@@ -77,13 +77,13 @@ Kit: <code>Mainboard: udoo board</code>  +  <code>GPIO board: peri board</code><
 # 역할분담
 <table>
     <tr align=center>
-        <th width=5%></th>
-        <td width=40%>초기 프로젝트 기여<br><a href="https://github.com/KimTeddy/EmbeddedSystem/tree/main/OldProject" target="_blank">OpenGL, OldProject</a></td>
+        <th width=10%></th>
+        <td width=35%>초기 프로젝트 기여<br><a href="https://github.com/KimTeddy/EmbeddedSystem/tree/main/OldProject" target="_blank">OpenGL, OldProject</a></td>
         <td width=15%>Device Driver 제작<br><a href="https://github.com/KimTeddy/EmbeddedSystem/tree/main/libmyperi" target="_blank">libmyperi</a></td>
         <td width=40%>최종 프로젝트 기여<br><a href="https://github.com/KimTeddy/EmbeddedSystem/tree/main/test" target="_blank">ProjectFolder</a></td>
     </tr>
     <tr>
-        <th align=center>나<br>(팀장)</th>
+        <th align=center><a href="https://github.com/KimTeddy/EmbeddedSystem/commits?author=KimTeddy"><code>KimTeddy</code></a><br>(나, 팀장)</th>
         <td>
             <ul>
                 <li>팀원에게 OpenGL 알려주기</li>
@@ -112,7 +112,7 @@ Kit: <code>Mainboard: udoo board</code>  +  <code>GPIO board: peri board</code><
         </td>
     </tr>
     <tr>
-        <th align=center>1</th>
+        <th align=center><a href="https://github.com/KimTeddy/EmbeddedSystem/commits?author=kms0511"><code>kms0511</code></a></th>
         <td>
             <ul>
                 <li>Color LED 신호등 기본 코드</li>
@@ -141,7 +141,7 @@ Kit: <code>Mainboard: udoo board</code>  +  <code>GPIO board: peri board</code><
         </td>
     </tr>
     <tr>
-        <th align=center>2</th>
+        <th align=center><a href="https://github.com/KimTeddy/EmbeddedSystem/commits?author=bllobll5"><code>bllobll5</code></a></th>
         <td>
             <ul>
                 <li>차량 트랙 및 맵 모델링</li>
@@ -161,7 +161,7 @@ Kit: <code>Mainboard: udoo board</code>  +  <code>GPIO board: peri board</code><
         </td>
     </tr>
     <tr>
-        <th align=center>3</th>
+        <th align=center><a href="https://github.com/KimTeddy/EmbeddedSystem/commits?author=JW-LEE-1015"><code>JW-LEE-1015</code></a></th>
         <td>
             <ul>
                 <li>자동차 외형 모델링</li>
