@@ -26,7 +26,7 @@
   <tr>
     <th align=center>Software</th>
     <td>
-OS: <code>Labtop: Linux(하모니카3.0)</code> <code>Kit: Linux</code><br>
+OS: <code>Labtop: Linux(HamoniKR-3.0-64bit)</code> <code>Kit: Linux(UDOOBuntu)</code><br>
 Virtual Machine: <code>Labtop: Oracle VM VirtualBox</code><br>
 Code Editor: <code>Labtop: Visual Studio Code</code><br>
 Language: <code>C</code> <code>C++</code><br>
