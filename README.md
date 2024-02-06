@@ -155,6 +155,7 @@ Kit: <code>Mainboard: udoo board</code>  +  <code>GPIO board: peri board</code><
         </td>
         <td>
             <ul>
+                <li>Buzzer 디바이스드라이버 효과음 함수 사용</li>
                 <li>BMP이미지(각종 빨간 글씨 안내 메세지)</li>
                 <li>PPT 제작</li>
             </ul>
